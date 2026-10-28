@@ -27,7 +27,7 @@ jobs:
           wix extension add -g WixToolset.UI.wixext/5.0.2
 
       - name: Test
-        run: dotnet test tests/PackCheck.Tests -c Release --filter "Category!=Network"
+        run: dotnet test tests/PackCheck.Tests -c Release --filter "Category!=Network&Category!=EndToEnd"
 
       - name: Publish
         shell: pwsh

@@ -143,8 +143,11 @@ internal sealed partial class MorePlatforms(HttpClient http)
             case ServerPlatform.Quilt:
             {
                 using var d = await JsonAsync("https://meta.quiltmc.org/v3/versions/installer", ct).ConfigureAwait(false);
-                var i = d.RootElement[0];
-                return new ServerDownload("quilt-installer.jar", new Uri(i.GetProperty("url").GetString()!), i.GetProperty("hashes").GetProperty("sha1").GetString(), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+                var url = d.RootElement[0].GetProperty("url").GetString()!;
+
+                // The meta API's hash fields can lag behind the artifact; the Maven .sha1 next to the jar is authoritative.
+                var sha1 = (await http.GetStringAsync(new Uri(url + ".sha1"), ct).ConfigureAwait(false)).Trim().Split(' ')[0];
+                return new ServerDownload("quilt-installer.jar", new Uri(url), sha1, HashAlgorithmName.SHA1, 0, IsInstaller: true);
             }
 
             case ServerPlatform.SpongeVanilla:

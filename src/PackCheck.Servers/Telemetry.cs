@@ -189,7 +189,7 @@ public static partial class TpsParser
     [GeneratedRegex(@"^\s*\*?(?<v>[0-9]+(?:\.[0-9]+)?)\*?,\s*\*?[0-9]+(?:\.[0-9]+)?\*?,")]
     private static partial Regex Spark();
 
-    [GeneratedRegex(@"§.")]
+    [GeneratedRegex(@"\u00A7.|\x1B\[[0-9;?]*[A-Za-z]")]
     private static partial Regex ColorCodes();
 
     public static double? TryParse(string line)

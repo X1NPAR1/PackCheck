@@ -61,17 +61,36 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Border CornerRadius="7" Padding="14,8" Background="{DynamicResource Surface2Brush}" BorderThickness="1" BorderBrush="{Binding Overall, Converter={StaticResource StatusBrush}}" l:Anim.PopIn="True">
-                    <TextBlock Text="{Binding OverallText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="16" Foreground="{Binding Overall, Converter={StaticResource StatusBrush}}" AutomationProperties.AutomationId="OverallResult" />
+                <Border CornerRadius="9" Padding="16,10" Background="{DynamicResource Surface2Brush}" BorderThickness="2" BorderBrush="{Binding Overall, Converter={StaticResource StatusBrush}}" l:Anim.PopIn="True" VerticalAlignment="Stretch">
+                    <TextBlock Text="{Binding OverallText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
+                               Foreground="{Binding Overall, Converter={StaticResource StatusBrush}}" AutomationProperties.AutomationId="OverallResult" />
                 </Border>
-                <TextBlock VerticalAlignment="Center" Margin="16,0,0,0" FontSize="13">
-                    <Run Text="✔" Foreground="{DynamicResource PassBrush}" /><Run Text="{Binding PassCount, Mode=OneWay}" />
-                    <Run Text="   ▲" Foreground="{DynamicResource WarnBrush}" /><Run Text="{Binding WarnCount, Mode=OneWay}" />
-                    <Run Text="   ✖" Foreground="{DynamicResource FailBrush}" /><Run Text="{Binding FailCount, Mode=OneWay}" />
-                    <Run Text="   –" Foreground="{DynamicResource SkipBrush}" /><Run Text="{Binding SkipCount, Mode=OneWay}" />
-                </TextBlock>
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                    <StackPanel>
+                        <TextBlock Text="{Binding PassCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource PassBrush}" />
+                        <TextBlock Text="{l:Loc Status_Pass}" Style="{StaticResource Muted}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                    <StackPanel>
+                        <TextBlock Text="{Binding WarnCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource WarnBrush}" />
+                        <TextBlock Text="{l:Loc Status_Warn}" Style="{StaticResource Muted}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                    <StackPanel>
+                        <TextBlock Text="{Binding FailCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource FailBrush}" />
+                        <TextBlock Text="{l:Loc Status_Fail}" Style="{StaticResource Muted}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                    <StackPanel>
+                        <TextBlock Text="{Binding SkipCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource SkipBrush}" />
+                        <TextBlock Text="{l:Loc Status_Skip}" Style="{StaticResource Muted}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
             </StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <CheckBox IsChecked="{Binding ProblemsOnly}" Content="{l:Loc Validate_Filter_Problems}" VerticalAlignment="Center" Margin="0,0,14,0" />
                 <Button Content="JSON" Command="{Binding ExportCommand}" CommandParameter="json" Margin="0,0,6,0" />
                 <Button Content="HTML" Command="{Binding ExportCommand}" CommandParameter="html" />

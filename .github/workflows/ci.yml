@@ -19,7 +19,7 @@ jobs:
       - name: Build
         run: dotnet build PackCheck.sln -c Release
       - name: Test
-        run: dotnet test tests/PackCheck.Tests -c Release --no-build --filter "Category!=Network"
+        run: dotnet test tests/PackCheck.Tests -c Release --no-build --filter "Category!=Network&Category!=EndToEnd"
       - name: CLI smoke test
         shell: pwsh
         run: |

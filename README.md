@@ -35,32 +35,41 @@ Static checks never execute plugin code. A real startup test is available, but y
 ## Features
 
 **Servers**
-- Paper, Purpur, Vanilla, Fabric, Forge and NeoForge, resolved from each project's official API. Downloads are hash-verified wherever the source publishes a hash; Forge and NeoForge installers run automatically
-- Detects installed Java runtimes and installs Eclipse Temurin from the Adoptium API (checksum verified)
-- Explicit EULA consent: nothing is accepted on your behalf
-- Live console with command history (↑/↓), log filter and colored warnings and errors; RAM and CPU readout with a memory sparkline
-- The whole server process tree runs inside a Windows Job Object, so nothing keeps running after a crash or when you force-stop
-- `server.properties` editor that keeps your comments and key order
-- Plugin manager: enable or disable plugins, add JARs, search and install from Modrinth and Hangar
-- Mods and modpacks from Modrinth and CurseForge, filtered to the server's Minecraft version and loader; Modrinth `.mrpack` files are installed file by file with SHA-512 checks
-- Zip backups with retention, and restore with confirmation
-- Keeps running in the system tray when the window is closed, so servers stay up
+- 16 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer and Arclight. Version lists come from each project's own API, so only versions with a real download appear.
+- Downloads are hash-verified wherever the source publishes a hash; Forge, NeoForge, Quilt and BuildTools run automatically.
+- The right Java (8, 17, 21 or 25) is installed automatically from Eclipse Temurin before a server starts.
+- Explicit EULA consent: nothing is accepted on your behalf.
+- Live dashboard: ring gauges for TPS, CPU, RAM and ping with five health levels, players, uptime, disk and world size.
+- Console with level filters and counters, search, timestamps, copy/save, command history and Tab completion, quick actions, player list and crash detection.
+- Files tab: upload by drag and drop, multi-select, copy/cut/paste, zip/unzip, delete to the Recycle Bin, and a code editor with line numbers, syntax highlighting and a syntax check before saving.
+- `server.properties` editor with every setting explained, grouped, typed and resettable.
+- Every server process tree runs in a Windows Job Object; nothing keeps running after a crash or a forced stop.
+- Zip backups with retention and restore.
+
+**Plugins, mods and modpacks**
+- Browse Modrinth, Hangar and CurseForge page by page, sorted by downloads or updates, without having to search first.
+- Items that do not match the selected server's Minecraft version or loader cannot be installed, and the reason is shown.
+- Modrinth `.mrpack` modpacks are installed file by file with SHA-512 checks; CurseForge server packs are extracted safely.
+- The sidebar only enables Plugins or Mods when the selected server can use them.
+
+**Online**
+- Open a server to the internet: a firewall rule (after you approve the Windows prompt) and UPnP forwarding on the router.
+- Copy the public address, get A and SRV records for your own domain, optionally keep a DuckDNS name up to date.
+- Carrier-grade NAT is detected and explained. Closing removes the forwarding and the firewall rule again.
 
 **Validation**
-- Pack structure, `server.properties` values, corrupt or unreadable JARs, oversized files
-- Reads `plugin.yml` and `paper-plugin.yml` metadata; compatibility is never guessed from file names
-- Required and optional dependencies, duplicates (same plugin name, or byte-identical files)
-- `api-version` vs. server version, Java version vs. Minecraft version
-- Results are `PASS`, `WARN`, `FAIL`, `SKIP` or `ERROR`. "Failed" and "could not run" are never the same thing
-- **Pre-flight**: adding, enabling or disabling a plugin is validated first. If the change introduces new problems, you see them and can roll back
-- Run history per pack, with a diff showing what changed and what broke since the previous run
-- JSON (with a [schema](docs/schema/report.schema.json)) and self-contained HTML reports with a strict CSP
+- Pack structure, `server.properties` values, corrupt or unreadable JARs, oversized files.
+- Reads `plugin.yml` and `paper-plugin.yml` metadata; compatibility is never guessed from file names.
+- Required and optional dependencies, duplicates, `api-version` vs. server version, Java vs. Minecraft version.
+- Results are `PASS`, `WARN`, `FAIL`, `SKIP` or `ERROR`. "Failed" and "could not run" are never the same thing.
+- Pre-flight checks before plugin changes, run history with diff, JSON (with a [schema](docs/schema/report.schema.json)) and self-contained HTML reports.
 
 **App**
-- English, Turkish, German, French and Russian, switchable instantly
-- Dark and light themes (or follow Windows), with Full, Reduced or Off animations that also respect Windows' animation setting
-- Updates from GitHub Releases (see below)
-- No telemetry
+- EXE and MSI installers, per-user, no admin rights needed.
+- English, Turkish, German, French and Russian, switchable instantly.
+- Dark and light themes (or follow Windows); Full, Reduced or Off animations.
+- Runs in the system tray, optionally starts with Windows.
+- No telemetry.
 
 ## Updates
 
@@ -74,10 +83,10 @@ On every start, PackCheck asks GitHub for the latest release.
 
 ## Install
 
-1. Download `PackCheck-win-x64.zip` from the [latest release](https://github.com/X1NPAR1/PackCheck/releases/latest).
-2. Extract it anywhere you can write to (for example `D:\Apps\PackCheck`), then run `PackCheck.exe`.
+Download **`PackCheck-Setup-<version>.exe`** (or the `.msi`) from the [latest release](https://github.com/X1NPAR1/PackCheck/releases/latest) and run it.
+It installs for your Windows user only, so no administrator rights are needed, and later updates install silently.
 
-The build is self-contained, so .NET does not need to be installed. Windows 10 or 11 (x64) is required. The binaries are not code-signed yet, so SmartScreen may warn on the first launch.
+The app is self-contained, so .NET does not need to be installed. Windows 10 or 11 (x64) is required. The binaries are not code-signed yet, so SmartScreen may warn on the first launch.
 
 ## CLI
 
@@ -161,6 +170,8 @@ Requires the .NET 10 SDK on Windows.
 
 - Windows only.
 - Proxies (Velocity, BungeeCord) are not supported yet. Pack validation focuses on Bukkit/Paper plugins; mods are not analyzed yet.
+- Pufferfish is not offered because its build server was not reachable; Magma, Glowstone and Waterfall are no longer maintained.
+- PackCheck cannot test from outside whether your server is reachable over the internet; ask a friend to try.
 - CurseForge needs your own API key (Settings), because CurseForge does not allow anonymous access.
 - Fabric's server launcher has no published checksum, so it is verified only by HTTPS.
 - The runtime test isolates files, ports and memory, but plugin code still runs with your user account's rights. Read [docs/security.md](docs/security.md) before you use it on plugins you don't trust.

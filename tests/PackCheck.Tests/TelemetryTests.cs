@@ -30,6 +30,7 @@ public class TelemetryTests
     [InlineData("[12:00:00 INFO]: TPS from last 1m, 5m, 15m: 19.98, 20.0, 20.0", 19.98)]
     [InlineData("§6TPS from last 1m, 5m, 15m: §a*20.0, §a20.0, §a20.0", 20.0)]
     [InlineData("Overall: Mean tick time: 2.345 ms. Mean TPS: 17.500", 17.5)]
+    [InlineData("[22:12:50 INFO]: \u001b[38;5;3mTPS from last 1m, 5m, 15m: \u001b[0m\u001b[38;5;10m20,0\u001b[0m, \u001b[38;5;10m19,8\u001b[0m", 20.0)]
     public void ParsesTps(string line, double tps) => Assert.Equal(tps, TpsParser.TryParse(line));
 
     [Fact]
