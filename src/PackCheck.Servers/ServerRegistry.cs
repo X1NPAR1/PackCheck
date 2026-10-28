@@ -188,6 +188,20 @@ public sealed partial class ServerCreator
         return log.ToString();
     }
 
+    /// <summary>BuildTools compiles Java sources, so it needs a JDK even when the server itself runs on a JRE.</summary>
+    private async Task<string> JdkForAsync(Request r, CancellationToken ct)
+    {
+        if (JavaRuntimes.IsJdk(r.JavaPath))
+        {
+            return r.JavaPath;
+        }
+
+        var tools = java ?? new JavaRuntimes(http);
+        var required = MinecraftVersion.TryParse(r.Version, out var mc) ? mc.RequiredJava() : 21;
+        var jdk = await tools.EnsureJdkAsync(required, await tools.DetectAsync(ct).ConfigureAwait(false), null, ct).ConfigureAwait(false);
+        return jdk.JavaExe;
+    }
+
     /// <summary>Compiles Spigot or CraftBukkit with the official BuildTools in a temporary folder, keeps only the server jar.</summary>
     public static async Task<string> RunBuildToolsAsync(string javaPath, string dir, string version, ServerPlatform platform, IProgress<(double, string)>? progress, CancellationToken ct)
     {
@@ -273,7 +287,7 @@ public sealed partial class ServerCreator
 }
 
 /// <summary>Creates a ready-to-run server folder: verified JAR, eula.txt (only after explicit consent), server.properties.</summary>
-public sealed partial class ServerCreator(ServerSources sources, HttpClient http)
+public sealed partial class ServerCreator(ServerSources sources, HttpClient http, JavaRuntimes? java = null)
 {
     public sealed record Request(string Name, string ParentFolder, ServerPlatform Platform, string Version, string JavaPath, int MaxMemoryMb, int Port, string? Seed, bool AcceptEula);
 
@@ -326,7 +340,7 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             progress?.Report((0.72, "install"));
             (jar, argsFile) = r.Platform switch
             {
-                ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(r.JavaPath, dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
+                ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(await JdkForAsync(r, ct).ConfigureAwait(false), dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
                 ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct).ConfigureAwait(false), null),
                 _ => await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false),
             };

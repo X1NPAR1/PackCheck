@@ -119,9 +119,19 @@ public sealed partial class JavaRuntimes(HttpClient http)
     }
 
     /// <summary>Downloads a Temurin JRE zip, verifies its SHA-256 and extracts it into the PackCheck runtimes folder.</summary>
-    public async Task<JavaRuntime> InstallTemurinAsync(int feature, IProgress<double>? progress, CancellationToken ct)
+    public static bool IsJdk(string javaExe) => File.Exists(Path.Combine(Path.GetDirectoryName(javaExe)!, "javac.exe"));
+
+    /// <summary>A JDK (with javac) is needed to compile Spigot/CraftBukkit with BuildTools.</summary>
+    public async Task<JavaRuntime> EnsureJdkAsync(int required, IReadOnlyList<JavaRuntime> known, IProgress<double>? progress, CancellationToken ct)
     {
-        var api = new Uri($"https://api.adoptium.net/v3/assets/latest/{feature}/hotspot?os=windows&architecture=x64&image_type=jre&vendor=eclipse");
+        var match = known.Where(r => r.FeatureVersion >= required && IsJdk(r.JavaExe)).OrderBy(r => r.FeatureVersion).FirstOrDefault();
+        return match ?? await InstallTemurinAsync(InstallableFeature(required), progress, ct, jdk: true).ConfigureAwait(false);
+    }
+
+    public async Task<JavaRuntime> InstallTemurinAsync(int feature, IProgress<double>? progress, CancellationToken ct, bool jdk = false)
+    {
+        var image = jdk ? "jdk" : "jre";
+        var api = new Uri($"https://api.adoptium.net/v3/assets/latest/{feature}/hotspot?os=windows&architecture=x64&image_type={image}&vendor=eclipse");
         await using var s = await http.GetStreamAsync(api, ct).ConfigureAwait(false);
         using var doc = await JsonDocument.ParseAsync(s, cancellationToken: ct).ConfigureAwait(false);
         var pkg = doc.RootElement[0].GetProperty("binary").GetProperty("package");
@@ -129,10 +139,10 @@ public sealed partial class JavaRuntimes(HttpClient http)
         var sha = pkg.GetProperty("checksum").GetString()!;
 
         Directory.CreateDirectory(AppPaths.Runtimes);
-        var zip = Path.Combine(AppPaths.Runtimes, $"temurin-{feature}.zip");
+        var zip = Path.Combine(AppPaths.Runtimes, $"temurin-{feature}-{image}.zip");
         await VerifiedDownloader.DownloadAsync(http, url, zip, sha, HashAlgorithmName.SHA256, 300L * 1024 * 1024, progress, ct).ConfigureAwait(false);
 
-        var target = Path.Combine(AppPaths.Runtimes, $"temurin-{feature}");
+        var target = Path.Combine(AppPaths.Runtimes, jdk ? $"temurin-{feature}-jdk" : $"temurin-{feature}");
         if (Directory.Exists(target))
         {
             Directory.Delete(target, true);

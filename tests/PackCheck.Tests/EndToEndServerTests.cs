@@ -19,6 +19,9 @@ public class EndToEndServerTests(ITestOutputHelper output)
     [InlineData(ServerPlatform.Forge)]
     [InlineData(ServerPlatform.NeoForge)]
     [InlineData(ServerPlatform.Quilt)]
+    [InlineData(ServerPlatform.Spigot)]
+    [InlineData(ServerPlatform.Folia)]
+    [InlineData(ServerPlatform.Mohist)]
     public async Task CreateStartCommandStop(ServerPlatform platform)
     {
         var root = Environment.GetEnvironmentVariable("PACKCHECK_E2E_DIR");
@@ -46,7 +49,7 @@ public class EndToEndServerTests(ITestOutputHelper output)
         var started = DateTime.Now;
         try
         {
-            var creator = new ServerCreator(sources, http);
+            var creator = new ServerCreator(sources, http, java);
             var port = 25600 + (int)platform;
             var def = await creator.CreateAsync(new ServerCreator.Request(name, root, platform, version, runtime.JavaExe, 2048, port, null, AcceptEula: true), null, CancellationToken.None);
             output.WriteLine($"{platform} {version}: created in {(DateTime.Now - started).TotalSeconds:0}s with {runtime.Display} -> jar {def.JarFile}, args {def.ArgsFile ?? "-"}");
