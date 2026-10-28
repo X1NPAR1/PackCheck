@@ -56,6 +56,96 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
 
     public bool HasServer => Server is not null;
 
+    /// <summary>Router web page address (default gateway), for manual port forwarding.</summary>
+    [ObservableProperty]
+    private string? _routerAddress;
+
+    /// <summary>Manual forwarding guide; opens by itself when UPnP did not work.</summary>
+    [ObservableProperty]
+    private bool _showRouterGuide;
+
+    [ObservableProperty]
+    private string? _outsideResult;
+
+    [ObservableProperty]
+    private bool? _outsideOk;
+
+    [ObservableProperty]
+    private bool _isChecking;
+
+    partial void OnUpnpOkChanged(bool? value)
+    {
+        if (value == false)
+        {
+            ShowRouterGuide = true;
+        }
+    }
+
+    [RelayCommand]
+    private void OpenRouter()
+    {
+        if (RouterAddress is { } r)
+        {
+            Shell32.Open($"http://{r}/");
+        }
+    }
+
+    [RelayCommand]
+    private void CopyText(string? text)
+    {
+        if (!string.IsNullOrEmpty(text))
+        {
+            System.Windows.Clipboard.SetText(text);
+            MainViewModel.Shell?.Toast(Loc.T("Online_Copied"));
+        }
+    }
+
+    /// <summary>Asks an outside service whether the server answers on the public address, i.e. whether friends can really join.</summary>
+    [RelayCommand]
+    private async Task CheckOutsideAsync()
+    {
+        if (Server is null || IsChecking)
+        {
+            return;
+        }
+
+        IsChecking = true;
+        OutsideResult = Loc.T("Online_Checking");
+        OutsideOk = null;
+        try
+        {
+            PublicIp ??= (await PublicAddress.GetAsync(http, CancellationToken.None).ConfigureAwait(true))?.ToString();
+            if (PublicIp is null)
+            {
+                OutsideResult = Loc.T("Online_CheckNoIp");
+                return;
+            }
+
+            if (!Server.IsRunning)
+            {
+                OutsideResult = Loc.T("Online_CheckNotRunning");
+                return;
+            }
+
+            var (online, motd) = await PublicAddress.CheckFromOutsideAsync(http, PublicIp, Port, CancellationToken.None).ConfigureAwait(true);
+            OutsideOk = online;
+            OutsideResult = online switch
+            {
+                true => Loc.F("Online_CheckOk", $"{PublicIp}:{Port}", motd ?? string.Empty),
+                false => Loc.F("Online_CheckFail", $"{PublicIp}:{Port}"),
+                null => Loc.T("Online_CheckUnknown"),
+            };
+            if (online == false)
+            {
+                ShowRouterGuide = true;
+            }
+        }
+        finally
+        {
+            IsChecking = false;
+        }
+    }
+
     public int Port => Server?.Definition.Port ?? 25565;
 
     public string ARecord => Domain.Length == 0 ? string.Empty : $"{Domain.Trim()}.   A   {PublicIp ?? "<public IP>"}";
@@ -88,7 +178,9 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
             return;
         }
 
-        LocalIp = PublicAddress.LocalAddress()?.ToString();
+        var local = PublicAddress.LocalAddress();
+        LocalIp = local?.ToString();
+        RouterAddress = PublicAddress.Gateway(local)?.ToString();
         var ip = await PublicAddress.GetAsync(http, CancellationToken.None).ConfigureAwait(true);
         PublicIp = ip?.ToString();
         FirewallOk = await Task.Run(() => Firewall.RuleExists(Port)).ConfigureAwait(true);

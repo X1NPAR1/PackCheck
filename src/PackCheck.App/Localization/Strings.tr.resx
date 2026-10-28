@@ -289,6 +289,37 @@ Hayır: açık bırakıp çık.
 İptal: PackCheck'te kal.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Bazı portlar kapatılamadı (yönetici izni verilmedi). Bir dahaki sefere Online sayfasından kapatabilirsin.</value></data>
   <data name="Assistant_EulaNotice" xml:space="preserve"><value>Onaylamak bu sunucular için Minecraft EULA'sını (aka.ms/MinecraftEULA) da kabul etmek demektir.</value></data>
+  <data name="Online_GuideTitle" xml:space="preserve"><value>Modemde port yönlendirme (elle)</value></data>
+  <data name="Online_GuideWhy" xml:space="preserve"><value>Modemin evdeki tüm cihazları tek bir dış IP'nin arkasında saklar. Minecraft trafiğinin hangi bilgisayara gideceği söylenmezse dışarıdan gelen bağlantıları çöpe atar; bu yüzden arkadaşların IP:port ile giremez. PackCheck bunu otomatik (UPnP) dener; modem izin vermezse bu kuralı bir kere kendin eklemelisin.</value></data>
+  <data name="Online_GuideToggle" xml:space="preserve"><value>Göster / gizle</value></data>
+  <data name="Online_GuideValues" xml:space="preserve"><value>Modeme tam olarak bu değerleri gir</value></data>
+  <data name="Online_GName" xml:space="preserve"><value>Ad / servis</value></data>
+  <data name="Online_GProtocol" xml:space="preserve"><value>Protokol</value></data>
+  <data name="Online_GProtocolValue" xml:space="preserve"><value>TCP (veya TCP/UDP / Her ikisi)</value></data>
+  <data name="Online_GExternal" xml:space="preserve"><value>Dış (WAN) port</value></data>
+  <data name="Online_GInternalIp" xml:space="preserve"><value>İç IP / cihaz</value></data>
+  <data name="Online_GInternalPort" xml:space="preserve"><value>İç (LAN) port</value></data>
+  <data name="Online_GuideSteps" xml:space="preserve"><value>Adımlar</value></data>
+  <data name="Online_Step0" xml:space="preserve"><value>Önce yukarıdaki "Herkese aç" düğmesine bas: Windows güvenlik duvarında porta izin verir (bir kere yönetici onayı ister). Güvenlik duvarı engellerken sadece modem yönlendirmesi yetmez.</value></data>
+  <data name="Online_Step1" xml:space="preserve"><value>Tarayıcıda modem arayüzünü aç ve giriş yap (şifre genelde modemin altındaki etikette yazar):</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Yönlendirme menüsünü bul. Adı markaya göre değişir: Port Yönlendirme, NAT, Sanal Sunucu (Virtual Server), Port Eşleme, Uygulamalar ve Oyunlar. Türk Telekom, Superonline, TurkNet modemlerinde genelde "NAT" veya "Port Yönlendirme" altındadır.</value></data>
+  <data name="Online_Step3" xml:space="preserve"><value>Yukarıdaki değerlerle yeni bir kural ekle ve kaydet. Modem port aralığı isterse başlangıç ve bitişe aynı portu yaz.</value></data>
+  <data name="Online_Step4" xml:space="preserve"><value>Bu bilgisayara sabit bir yerel IP ver (aynı modemde DHCP rezervasyonu / "statik IP"). Yoksa yeniden başlatınca IP değişir ve kural çalışmaz.</value></data>
+  <data name="Online_Step5" xml:space="preserve"><value>Sunucuyu başlat, sonra yukarıdaki "Dışarıdan test et" düğmesine bas. Yeşil görürsen arkadaşların dış IP ve portla girebilir.</value></data>
+  <data name="Online_GuideTrouble" xml:space="preserve"><value>Hâlâ girilemiyorsa</value></data>
+  <data name="Online_Trouble1" xml:space="preserve"><value>• CGNAT: Modem sayfasında görünen WAN/İnternet IP'si buradaki dış IP'den farklıysa (veya 100.64–100.127, 10., 192.168. ile başlıyorsa) servis sağlayıcın bir IP'yi birden fazla müşteriye paylaştırıyordur. Bu durumda yönlendirme işe yaramaz; sağlayıcından gerçek (statik) IP iste veya playit.gg gibi bir tünel servisi kullan.</value></data>
+  <data name="Online_Trouble2" xml:space="preserve"><value>• İki modem varsa (servis sağlayıcının modemi + kendi Wi-Fi modemin): portu ikisinde de yönlendir ya da sağlayıcı modemini köprü (bridge) moduna al.</value></data>
+  <data name="Online_Trouble3" xml:space="preserve"><value>• Kendi ağından dış IP ile denemek çoğu modemde çalışmaz ("hairpin/NAT loopback" desteği yoktur). Evde yerel adresi kullan; dış adresi bir arkadaşın veya dışarıdan test düğmesi denesin.</value></data>
+  <data name="Online_Trouble4" xml:space="preserve"><value>• Dış IP'n zamanla değişebilir; çıplak IP yerine aşağıdaki DuckDNS adresini paylaş. Ayrıca sunucunun açık olduğundan ve online-mode/whitelist ayarlarının arkadaşına izin verdiğinden emin ol.</value></data>
+  <data name="Online_OpenRouter" xml:space="preserve"><value>Modem arayüzünü aç</value></data>
+  <data name="Online_CheckButton" xml:space="preserve"><value>Dışarıdan test et</value></data>
+  <data name="Online_CheckPrivacy" xml:space="preserve"><value>Dış IP'ni ve portunu mcsrvstat.us'e gönderir; o da bir oyuncu gibi bağlanmayı dener.</value></data>
+  <data name="Online_Checking" xml:space="preserve"><value>İnternetten test ediliyor…</value></data>
+  <data name="Online_CheckOk" xml:space="preserve"><value>Erişilebilir: {0} internetten cevap veriyor. {1}</value></data>
+  <data name="Online_CheckFail" xml:space="preserve"><value>{0} internetten erişilemiyor. Modem portu henüz yönlendirmiyor (aşağıdaki rehbere bak) veya servis sağlayıcın CGNAT kullanıyor.</value></data>
+  <data name="Online_CheckUnknown" xml:space="preserve"><value>Test servisine ulaşılamadı. Sonra tekrar dene veya bir arkadaşından girmesini iste.</value></data>
+  <data name="Online_CheckNoIp" xml:space="preserve"><value>Dış IP adresin bulunamadı (internet bağlantısı yok mu?).</value></data>
+  <data name="Online_CheckNotRunning" xml:space="preserve"><value>Önce sunucuyu başlat; test ona bir oyuncu gibi bağlanır.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>
@@ -339,7 +370,7 @@ Hayır: açık bırakıp çık.
   <data name="Online_Firewall" xml:space="preserve"><value>Güvenlik duvarı</value></data>
   <data name="Online_Allowed" xml:space="preserve"><value>İzin verildi</value></data>
   <data name="Online_Closed" xml:space="preserve"><value>Kapalı</value></data>
-  <data name="Online_Note" xml:space="preserve"><value>Aynı ağdaki oyuncular her zaman yerel adresle bağlanabilir. PackCheck dışarıdan erişimi kendisi test edemez; bir arkadaşından denemesini iste.</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Aynı ağdaki oyuncular yerel adresle her zaman girebilir. "Herkese aç"tan sonra dışarıdakilerin gerçekten girip giremediğini "Dışarıdan test et" ile kontrol et.</value></data>
   <data name="Online_DomainTitle" xml:space="preserve"><value>Kendi alan adın</value></data>
   <data name="Online_DomainHint" xml:space="preserve"><value>Sahip olduğun bir alan adı gir (ör. play.example.com). Bu kayıtları DNS sağlayıcında oluştur.</value></data>
   <data name="Online_SrvHint" xml:space="preserve"><value>SRV kaydıyla oyuncular port yazmadan sadece alan adıyla bağlanabilir.</value></data>

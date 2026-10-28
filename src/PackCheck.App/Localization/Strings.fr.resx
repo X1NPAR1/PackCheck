@@ -289,6 +289,37 @@ Non : quitter en le laissant ouvert.
 Annuler : rester dans PackCheck.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Certains ports n'ont pas pu être fermés (invite administrateur refusée). Vous pourrez les fermer depuis la page En ligne.</value></data>
   <data name="Assistant_EulaNotice" xml:space="preserve"><value>Approuver accepte aussi le CLUF de Minecraft (aka.ms/MinecraftEULA) pour ces serveurs.</value></data>
+  <data name="Online_GuideTitle" xml:space="preserve"><value>Configurer la redirection de port sur la box</value></data>
+  <data name="Online_GuideWhy" xml:space="preserve"><value>Votre box cache tous les appareils derrière une seule IP publique. Tant qu'elle ne sait pas quel PC reçoit le trafic Minecraft, elle rejette les connexions extérieures : vos amis ne peuvent pas rejoindre avec IP:port. PackCheck essaie automatiquement (UPnP) ; si la box refuse, ajoutez la règle une fois vous-même.</value></data>
+  <data name="Online_GuideToggle" xml:space="preserve"><value>Afficher / masquer</value></data>
+  <data name="Online_GuideValues" xml:space="preserve"><value>Saisissez exactement ces valeurs dans la box</value></data>
+  <data name="Online_GName" xml:space="preserve"><value>Nom / service</value></data>
+  <data name="Online_GProtocol" xml:space="preserve"><value>Protocole</value></data>
+  <data name="Online_GProtocolValue" xml:space="preserve"><value>TCP (ou TCP/UDP / Les deux)</value></data>
+  <data name="Online_GExternal" xml:space="preserve"><value>Port externe / WAN</value></data>
+  <data name="Online_GInternalIp" xml:space="preserve"><value>IP interne / appareil</value></data>
+  <data name="Online_GInternalPort" xml:space="preserve"><value>Port interne / LAN</value></data>
+  <data name="Online_GuideSteps" xml:space="preserve"><value>Étapes</value></data>
+  <data name="Online_Step0" xml:space="preserve"><value>Cliquez d'abord sur « Ouvrir à Internet » : le port est autorisé dans le pare-feu Windows (une invite administrateur). La redirection seule ne suffit pas si le pare-feu bloque.</value></data>
+  <data name="Online_Step1" xml:space="preserve"><value>Ouvrez la page de la box dans un navigateur et connectez-vous (le mot de passe est souvent sous la box) :</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Trouvez le menu de redirection. Le nom dépend du modèle : Redirection de ports, NAT/PAT, Serveur virtuel, Applications et jeux.</value></data>
+  <data name="Online_Step3" xml:space="preserve"><value>Ajoutez une règle avec les valeurs ci-dessus et enregistrez. Si une plage est demandée, mettez le même port au début et à la fin.</value></data>
+  <data name="Online_Step4" xml:space="preserve"><value>Donnez une IP locale fixe à ce PC (bail DHCP statique dans la box), sinon la règle ne marche plus si l'IP change.</value></data>
+  <data name="Online_Step5" xml:space="preserve"><value>Démarrez le serveur puis cliquez sur « Tester depuis l'extérieur ». Vert : vos amis peuvent rejoindre avec votre IP publique et le port.</value></data>
+  <data name="Online_GuideTrouble" xml:space="preserve"><value>Si ça ne marche toujours pas</value></data>
+  <data name="Online_Trouble1" xml:space="preserve"><value>• CGNAT : si l'IP WAN affichée par la box diffère de l'IP publique ici (ou commence par 100.64–100.127, 10., 192.168.), le FAI partage une IP entre clients. Demandez une IP publique ou utilisez un tunnel comme playit.gg.</value></data>
+  <data name="Online_Trouble2" xml:space="preserve"><value>• Deux routeurs (box + routeur Wi-Fi) : redirigez sur les deux, ou passez la box en mode bridge.</value></data>
+  <data name="Online_Trouble3" xml:space="preserve"><value>• Tester depuis votre propre réseau échoue souvent (pas de NAT loopback). Utilisez l'adresse locale chez vous et laissez un ami (ou le test extérieur) essayer l'adresse publique.</value></data>
+  <data name="Online_Trouble4" xml:space="preserve"><value>• Votre IP publique peut changer ; partagez plutôt un nom DuckDNS (ci-dessous). Vérifiez aussi que le serveur tourne et que online-mode/whitelist autorisent votre ami.</value></data>
+  <data name="Online_OpenRouter" xml:space="preserve"><value>Ouvrir la page de la box</value></data>
+  <data name="Online_CheckButton" xml:space="preserve"><value>Tester depuis l'extérieur</value></data>
+  <data name="Online_CheckPrivacy" xml:space="preserve"><value>Envoie votre IP publique et le port à mcsrvstat.us, qui tente de se connecter comme un joueur.</value></data>
+  <data name="Online_Checking" xml:space="preserve"><value>Test depuis Internet…</value></data>
+  <data name="Online_CheckOk" xml:space="preserve"><value>Accessible : {0} répond depuis Internet. {1}</value></data>
+  <data name="Online_CheckFail" xml:space="preserve"><value>{0} n'est pas joignable depuis Internet. La box ne redirige pas encore le port (voir le guide) ou le FAI utilise du CGNAT.</value></data>
+  <data name="Online_CheckUnknown" xml:space="preserve"><value>Le service de test est injoignable. Réessayez plus tard ou demandez à un ami.</value></data>
+  <data name="Online_CheckNoIp" xml:space="preserve"><value>IP publique introuvable (pas de connexion ?).</value></data>
+  <data name="Online_CheckNotRunning" xml:space="preserve"><value>Démarrez d'abord le serveur ; le test s'y connecte comme un joueur.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>
@@ -339,7 +370,7 @@ Annuler : rester dans PackCheck.</value></data>
   <data name="Online_Firewall" xml:space="preserve"><value>Pare-feu</value></data>
   <data name="Online_Allowed" xml:space="preserve"><value>Autorisé</value></data>
   <data name="Online_Closed" xml:space="preserve"><value>Fermé</value></data>
-  <data name="Online_Note" xml:space="preserve"><value>Les joueurs du même réseau peuvent toujours utiliser l'adresse locale. PackCheck ne peut pas tester l'accès depuis l'extérieur.</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Les joueurs du même réseau peuvent toujours rejoindre avec l'adresse locale. Après « Ouvrir à Internet », « Tester depuis l'extérieur » vérifie si l'on vous atteint vraiment.</value></data>
   <data name="Online_DomainTitle" xml:space="preserve"><value>Votre domaine</value></data>
   <data name="Online_DomainHint" xml:space="preserve"><value>Saisissez votre domaine (ex. play.example.com) et créez ces enregistrements chez votre fournisseur DNS.</value></data>
   <data name="Online_SrvHint" xml:space="preserve"><value>Avec l'enregistrement SRV, le domaine suffit, sans port.</value></data>

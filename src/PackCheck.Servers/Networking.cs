@@ -49,6 +49,62 @@ public static class PublicAddress
         }
     }
 
+    /// <summary>The router (default gateway) of the interface that owns <paramref name="local"/>; its web page is where port forwarding is set up.</summary>
+    public static IPAddress? Gateway(IPAddress? local)
+    {
+        try
+        {
+            foreach (var nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+            {
+                var props = nic.GetIPProperties();
+                if (local is null || props.UnicastAddresses.Any(u => u.Address.Equals(local)))
+                {
+                    var gw = props.GatewayAddresses.Select(g => g.Address).FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork && !a.Equals(IPAddress.Any));
+                    if (gw is not null)
+                    {
+                        return gw;
+                    }
+                }
+            }
+        }
+        catch (System.Net.NetworkInformation.NetworkInformationException)
+        {
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Asks the public mcsrvstat.us service to ping host:port from the internet. Returns true/false, or null when the service could not be asked.
+    /// Only called when the user presses "Test from outside".
+    /// </summary>
+    public static async Task<(bool? Online, string? Motd)> CheckFromOutsideAsync(HttpClient http, string host, int port, CancellationToken ct)
+    {
+        try
+        {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            cts.CancelAfter(TimeSpan.FromSeconds(20));
+            using var req = new HttpRequestMessage(HttpMethod.Get, new Uri($"https://api.mcsrvstat.us/3/{Uri.EscapeDataString(host)}:{port}"));
+            req.Headers.UserAgent.ParseAdd("PackCheck/3 (+https://github.com/X1NPAR1/PackCheck)");
+            using var res = await http.SendAsync(req, cts.Token).ConfigureAwait(false);
+            if (!res.IsSuccessStatusCode)
+            {
+                return (null, null);
+            }
+
+            using var doc = System.Text.Json.JsonDocument.Parse(await res.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false));
+            var online = doc.RootElement.TryGetProperty("online", out var o) && o.GetBoolean();
+            var motd = online && doc.RootElement.TryGetProperty("motd", out var m) && m.TryGetProperty("clean", out var c) && c.ValueKind == System.Text.Json.JsonValueKind.Array
+                ? string.Join(" ", c.EnumerateArray().Select(x => x.GetString()))
+                : null;
+            return (online, motd);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or OperationCanceledException or System.Text.Json.JsonException)
+        {
+            return (null, null);
+        }
+    }
+
     /// <summary>100.64.0.0/10 (carrier-grade NAT) or private ranges on the WAN side mean port forwarding cannot work.</summary>
     public static bool IsCarrierGradeOrPrivate(IPAddress ip)
     {

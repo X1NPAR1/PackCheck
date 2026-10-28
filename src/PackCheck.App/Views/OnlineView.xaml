@@ -106,7 +106,101 @@
                             </TextBlock>
                         </StackPanel>
                     </UniformGrid>
-                    <TextBlock Text="{l:Loc Online_Note}" Style="{StaticResource Muted}" FontSize="12" Margin="0,14,0,0" />
+                    <TextBlock Text="{l:Loc Online_Note}" Style="{StaticResource Muted}" FontSize="12" Margin="0,14,0,0" TextWrapping="Wrap" />
+
+                    <!-- outside test -->
+                    <DockPanel Margin="0,14,0,0">
+                        <Button DockPanel.Dock="Left" Content="{l:Loc Online_CheckButton}" Command="{Binding CheckOutsideCommand}" AutomationProperties.AutomationId="OnlineCheckOutside" Margin="0,0,12,0" VerticalAlignment="Top" />
+                        <StackPanel>
+                            <TextBlock Text="{Binding OutsideResult}" TextWrapping="Wrap" FontWeight="SemiBold" Visibility="{Binding OutsideResult, Converter={StaticResource NullVis}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OutsideOk}" Value="True"><Setter Property="Foreground" Value="{DynamicResource PassBrush}" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding OutsideOk}" Value="False"><Setter Property="Foreground" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="{l:Loc Online_CheckPrivacy}" Style="{StaticResource Muted}" FontSize="11.5" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- manual port forwarding -->
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0" AutomationProperties.AutomationId="RouterGuide">
+                <StackPanel>
+                    <ToggleButton IsChecked="{Binding ShowRouterGuide}" Cursor="Hand">
+                        <ToggleButton.Template>
+                            <ControlTemplate TargetType="ToggleButton"><Border Background="Transparent"><ContentPresenter /></Border></ControlTemplate>
+                        </ToggleButton.Template>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Right" Text="{l:Loc Online_GuideToggle}" Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" />
+                            <StackPanel>
+                                <TextBlock Text="{l:Loc Online_GuideTitle}" Style="{StaticResource H2}" FontSize="15" />
+                                <TextBlock Text="{l:Loc Online_GuideWhy}" Style="{StaticResource Muted}" FontSize="12.5" TextWrapping="Wrap" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </DockPanel>
+                    </ToggleButton>
+
+                    <StackPanel Visibility="{Binding ShowRouterGuide, Converter={StaticResource BoolVis}}" Margin="0,14,0,0" l:Anim.PopIn="True">
+                        <!-- values to type into the router -->
+                        <TextBlock Text="{l:Loc Online_GuideValues}" Style="{StaticResource Label}" Margin="0,0,0,8" />
+                        <Border CornerRadius="8" Background="{DynamicResource Surface2Brush}" Padding="14,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="0,4,18,4" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                    </Style>
+                                </Grid.Resources>
+                                <TextBlock Text="{l:Loc Online_GName}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Column="1" Text="Minecraft" FontFamily="{StaticResource MonoFont}" />
+                                <TextBlock Grid.Row="1" Text="{l:Loc Online_GProtocol}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{l:Loc Online_GProtocolValue}" FontFamily="{StaticResource MonoFont}" TextWrapping="Wrap" />
+                                <TextBlock Grid.Row="2" Text="{l:Loc Online_GExternal}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Port}" FontFamily="{StaticResource MonoFont}" />
+                                <TextBlock Grid.Row="3" Text="{l:Loc Online_GInternalIp}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding LocalIp, TargetNullValue='–'}" FontFamily="{StaticResource MonoFont}" />
+                                <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource GhostButton}" Content="{l:Loc About_Copy}" Padding="8,2" Command="{Binding CopyTextCommand}" CommandParameter="{Binding LocalIp}" />
+                                <TextBlock Grid.Row="4" Text="{l:Loc Online_GInternalPort}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Port}" FontFamily="{StaticResource MonoFont}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- steps -->
+                        <TextBlock Text="{l:Loc Online_GuideSteps}" Style="{StaticResource Label}" Margin="0,16,0,8" />
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8" Visibility="{Binding FirewallOk, Converter={x:Static l:Inverse.Visibility}}"><Run Text="0. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step0}" Foreground="{DynamicResource WarnBrush}" /></TextBlock>
+                        <DockPanel Margin="0,0,0,8">
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Online_OpenRouter}" Command="{Binding OpenRouterCommand}" Margin="12,0,0,0" VerticalAlignment="Top"
+                                    Visibility="{Binding RouterAddress, Converter={StaticResource NullVis}}" />
+                            <TextBlock TextWrapping="Wrap"><Run Text="1. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step1}" /><Run Text=" " /><Run Text="{Binding RouterAddress, Mode=OneWay, StringFormat='http://{0}/', TargetNullValue=''}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" /></TextBlock>
+                        </DockPanel>
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"><Run Text="2. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step2}" /></TextBlock>
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"><Run Text="3. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step3}" /></TextBlock>
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"><Run Text="4. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step4}" /></TextBlock>
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,8"><Run Text="5. " FontWeight="SemiBold" /><Run Text="{l:Loc Online_Step5}" /></TextBlock>
+
+                        <!-- common reasons it still fails -->
+                        <TextBlock Text="{l:Loc Online_GuideTrouble}" Style="{StaticResource Label}" Margin="0,10,0,8" />
+                        <TextBlock Text="{l:Loc Online_Trouble1}" TextWrapping="Wrap" Margin="0,0,0,6" Style="{StaticResource Muted}" FontSize="12.5" />
+                        <TextBlock Text="{l:Loc Online_Trouble2}" TextWrapping="Wrap" Margin="0,0,0,6" Style="{StaticResource Muted}" FontSize="12.5" />
+                        <TextBlock Text="{l:Loc Online_Trouble3}" TextWrapping="Wrap" Margin="0,0,0,6" Style="{StaticResource Muted}" FontSize="12.5" />
+                        <TextBlock Text="{l:Loc Online_Trouble4}" TextWrapping="Wrap" Margin="0,0,0,6" Style="{StaticResource Muted}" FontSize="12.5" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

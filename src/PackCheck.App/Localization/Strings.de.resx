@@ -289,6 +289,37 @@ Nein: beenden und offen lassen.
 Abbrechen: in PackCheck bleiben.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Einige Ports konnten nicht geschlossen werden (Administratorabfrage abgelehnt). Du kannst sie beim nächsten Mal auf der Seite Online schließen.</value></data>
   <data name="Assistant_EulaNotice" xml:space="preserve"><value>Mit der Zustimmung akzeptierst du auch die Minecraft-EULA (aka.ms/MinecraftEULA) für diese Server.</value></data>
+  <data name="Online_GuideTitle" xml:space="preserve"><value>Portweiterleitung am Router einrichten</value></data>
+  <data name="Online_GuideWhy" xml:space="preserve"><value>Dein Router versteckt alle Geräte hinter einer öffentlichen IP. Solange er nicht weiß, welcher PC den Minecraft-Verkehr bekommt, verwirft er Verbindungen von außen – Freunde kommen mit IP:Port nicht rein. PackCheck versucht das automatisch (UPnP); erlaubt der Router das nicht, lege die Regel einmal selbst an.</value></data>
+  <data name="Online_GuideToggle" xml:space="preserve"><value>Ein-/ausblenden</value></data>
+  <data name="Online_GuideValues" xml:space="preserve"><value>Genau diese Werte im Router eintragen</value></data>
+  <data name="Online_GName" xml:space="preserve"><value>Name / Dienst</value></data>
+  <data name="Online_GProtocol" xml:space="preserve"><value>Protokoll</value></data>
+  <data name="Online_GProtocolValue" xml:space="preserve"><value>TCP (oder TCP/UDP / Beide)</value></data>
+  <data name="Online_GExternal" xml:space="preserve"><value>Externer / WAN-Port</value></data>
+  <data name="Online_GInternalIp" xml:space="preserve"><value>Interne IP / Gerät</value></data>
+  <data name="Online_GInternalPort" xml:space="preserve"><value>Interner / LAN-Port</value></data>
+  <data name="Online_GuideSteps" xml:space="preserve"><value>Schritte</value></data>
+  <data name="Online_Step0" xml:space="preserve"><value>Drücke zuerst oben „Für das Internet öffnen“: Das gibt den Port in der Windows-Firewall frei (eine Administratorabfrage). Nur die Router-Weiterleitung reicht nicht, solange die Firewall blockiert.</value></data>
+  <data name="Online_Step1" xml:space="preserve"><value>Öffne die Router-Seite im Browser und melde dich an (das Passwort steht meist auf einem Aufkleber am Router):</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Suche das Weiterleitungsmenü. Der Name hängt vom Hersteller ab: Portfreigabe, Portweiterleitung, NAT, Virtueller Server (bei FRITZ!Box: Internet › Freigaben).</value></data>
+  <data name="Online_Step3" xml:space="preserve"><value>Lege eine neue Regel mit den Werten oben an und speichere. Fragt der Router nach einem Bereich, trage denselben Port als Anfang und Ende ein.</value></data>
+  <data name="Online_Step4" xml:space="preserve"><value>Gib diesem PC eine feste lokale IP (DHCP-Reservierung im selben Router), sonst greift die Regel nach einem Neustart nicht mehr.</value></data>
+  <data name="Online_Step5" xml:space="preserve"><value>Starte den Server und drücke oben „Von außen testen“. Grün heißt: Freunde können mit deiner öffentlichen IP und dem Port beitreten.</value></data>
+  <data name="Online_GuideTrouble" xml:space="preserve"><value>Wenn es immer noch nicht klappt</value></data>
+  <data name="Online_Trouble1" xml:space="preserve"><value>• CGNAT: Weicht die WAN-IP auf der Router-Seite von der öffentlichen IP hier ab (oder beginnt mit 100.64–100.127, 10., 192.168.), teilt dein Anbieter eine IP mit anderen Kunden. Dann hilft keine Weiterleitung; frage nach einer öffentlichen IP oder nutze einen Tunnel wie playit.gg.</value></data>
+  <data name="Online_Trouble2" xml:space="preserve"><value>• Zwei Router (Provider-Modem + eigener WLAN-Router): Port auf beiden weiterleiten oder das Modem in den Bridge-Modus setzen.</value></data>
+  <data name="Online_Trouble3" xml:space="preserve"><value>• Tests aus dem eigenen Netz scheitern oft, weil viele Router kein NAT-Loopback können. Zuhause die lokale Adresse nutzen, die öffentliche einen Freund (oder den Außentest) probieren lassen.</value></data>
+  <data name="Online_Trouble4" xml:space="preserve"><value>• Deine öffentliche IP kann sich ändern; teile lieber einen DuckDNS-Namen (unten). Prüfe auch, ob der Server läuft und online-mode/Whitelist deinen Freund zulassen.</value></data>
+  <data name="Online_OpenRouter" xml:space="preserve"><value>Router-Seite öffnen</value></data>
+  <data name="Online_CheckButton" xml:space="preserve"><value>Von außen testen</value></data>
+  <data name="Online_CheckPrivacy" xml:space="preserve"><value>Sendet deine öffentliche IP und den Port an mcsrvstat.us, das sich wie ein Spieler verbindet.</value></data>
+  <data name="Online_Checking" xml:space="preserve"><value>Test aus dem Internet…</value></data>
+  <data name="Online_CheckOk" xml:space="preserve"><value>Erreichbar: {0} antwortet aus dem Internet. {1}</value></data>
+  <data name="Online_CheckFail" xml:space="preserve"><value>{0} ist aus dem Internet nicht erreichbar. Der Router leitet den Port noch nicht weiter (siehe Anleitung unten) oder dein Anbieter nutzt CGNAT.</value></data>
+  <data name="Online_CheckUnknown" xml:space="preserve"><value>Der Testdienst war nicht erreichbar. Später erneut versuchen oder einen Freund bitten.</value></data>
+  <data name="Online_CheckNoIp" xml:space="preserve"><value>Deine öffentliche IP wurde nicht gefunden (keine Internetverbindung?).</value></data>
+  <data name="Online_CheckNotRunning" xml:space="preserve"><value>Starte zuerst den Server; der Test verbindet sich wie ein Spieler.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>
@@ -339,7 +370,7 @@ Abbrechen: in PackCheck bleiben.</value></data>
   <data name="Online_Firewall" xml:space="preserve"><value>Firewall</value></data>
   <data name="Online_Allowed" xml:space="preserve"><value>Erlaubt</value></data>
   <data name="Online_Closed" xml:space="preserve"><value>Geschlossen</value></data>
-  <data name="Online_Note" xml:space="preserve"><value>Spieler im selben Netzwerk können immer über die lokale Adresse beitreten. PackCheck kann die Erreichbarkeit von außen nicht selbst prüfen.</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Spieler im selben Netz können immer über die lokale Adresse beitreten. Nach „Für das Internet öffnen“ prüft „Von außen testen“, ob man dich von außen wirklich erreicht.</value></data>
   <data name="Online_DomainTitle" xml:space="preserve"><value>Eigene Domain</value></data>
   <data name="Online_DomainHint" xml:space="preserve"><value>Gib eine eigene Domain ein (z. B. play.example.com) und lege diese Einträge beim DNS-Anbieter an.</value></data>
   <data name="Online_SrvHint" xml:space="preserve"><value>Mit dem SRV-Eintrag genügt die Domain, ohne Port.</value></data>

@@ -289,6 +289,37 @@ No: quit and keep it open.
 Cancel: stay in PackCheck.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Some ports could not be closed (the administrator prompt was declined). You can close them on the Online page next time.</value></data>
   <data name="Assistant_EulaNotice" xml:space="preserve"><value>Approving also accepts the Minecraft EULA (aka.ms/MinecraftEULA) for these servers.</value></data>
+  <data name="Online_GuideTitle" xml:space="preserve"><value>Set up port forwarding on your router</value></data>
+  <data name="Online_GuideWhy" xml:space="preserve"><value>Your router hides every device behind one public IP. Unless it is told which computer gets Minecraft traffic, it drops connections from outside, so friends cannot join with IP:port. PackCheck tries this automatically (UPnP); if the router does not allow it, add the rule yourself once.</value></data>
+  <data name="Online_GuideToggle" xml:space="preserve"><value>Show / hide</value></data>
+  <data name="Online_GuideValues" xml:space="preserve"><value>Enter exactly these values in the router</value></data>
+  <data name="Online_GName" xml:space="preserve"><value>Name / service</value></data>
+  <data name="Online_GProtocol" xml:space="preserve"><value>Protocol</value></data>
+  <data name="Online_GProtocolValue" xml:space="preserve"><value>TCP (or TCP/UDP / Both)</value></data>
+  <data name="Online_GExternal" xml:space="preserve"><value>External / WAN port</value></data>
+  <data name="Online_GInternalIp" xml:space="preserve"><value>Internal IP / device</value></data>
+  <data name="Online_GInternalPort" xml:space="preserve"><value>Internal / LAN port</value></data>
+  <data name="Online_GuideSteps" xml:space="preserve"><value>Steps</value></data>
+  <data name="Online_Step0" xml:space="preserve"><value>Press "Open to the internet" above first: it allows the port in the Windows firewall (one administrator prompt). Router forwarding alone is not enough while the firewall blocks it.</value></data>
+  <data name="Online_Step1" xml:space="preserve"><value>Open your router's page in a browser and sign in (the password is usually on a sticker under the router):</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Find the forwarding menu. Its name depends on the brand: Port Forwarding, NAT, Virtual Server, Port Mapping, Applications &amp; Gaming (on Turkish ISP modems often "NAT" / "Port Yönlendirme" / "Sanal Sunucu").</value></data>
+  <data name="Online_Step3" xml:space="preserve"><value>Add a new rule with the values above and save. If the router asks for a port range, enter the same port as start and end.</value></data>
+  <data name="Online_Step4" xml:space="preserve"><value>Give this PC a fixed local IP (DHCP reservation / "static lease" in the same router), otherwise the rule stops working when the IP changes after a restart.</value></data>
+  <data name="Online_Step5" xml:space="preserve"><value>Start the server, then press "Test from outside" above. Green means friends can join with your public IP and port.</value></data>
+  <data name="Online_GuideTrouble" xml:space="preserve"><value>If it still does not work</value></data>
+  <data name="Online_Trouble1" xml:space="preserve"><value>• CGNAT: if the WAN/Internet IP shown on the router page differs from the public IP here (or starts with 100.64–100.127, 10., 192.168.), your provider shares one IP between customers. Forwarding cannot work; ask the provider for a public (static) IP, or use a tunnel service such as playit.gg.</value></data>
+  <data name="Online_Trouble2" xml:space="preserve"><value>• Two routers (ISP modem + your own Wi-Fi router): forward the port on both, or put the ISP modem in bridge mode.</value></data>
+  <data name="Online_Trouble3" xml:space="preserve"><value>• Testing from your own network often fails because many routers do not support "hairpin" connections to their own public IP. Use the local address at home and let a friend (or the outside test) try the public one.</value></data>
+  <data name="Online_Trouble4" xml:space="preserve"><value>• Your public IP can change; share a DuckDNS name (below) instead of the raw IP. Also make sure the server is running and online-mode/whitelist allow your friend.</value></data>
+  <data name="Online_OpenRouter" xml:space="preserve"><value>Open router page</value></data>
+  <data name="Online_CheckButton" xml:space="preserve"><value>Test from outside</value></data>
+  <data name="Online_CheckPrivacy" xml:space="preserve"><value>Sends your public IP and port to mcsrvstat.us, which tries to connect like a player would.</value></data>
+  <data name="Online_Checking" xml:space="preserve"><value>Testing from the internet…</value></data>
+  <data name="Online_CheckOk" xml:space="preserve"><value>Reachable: {0} answers from the internet. {1}</value></data>
+  <data name="Online_CheckFail" xml:space="preserve"><value>Not reachable from the internet at {0}. The router is not forwarding the port yet (see the guide below), or your provider uses CGNAT.</value></data>
+  <data name="Online_CheckUnknown" xml:space="preserve"><value>The test service could not be reached. Try again later or ask a friend to join.</value></data>
+  <data name="Online_CheckNoIp" xml:space="preserve"><value>Your public IP could not be found (no internet connection?).</value></data>
+  <data name="Online_CheckNotRunning" xml:space="preserve"><value>Start the server first; the test connects to it like a player.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>
@@ -339,7 +370,7 @@ Cancel: stay in PackCheck.</value></data>
   <data name="Online_Firewall" xml:space="preserve"><value>Firewall</value></data>
   <data name="Online_Allowed" xml:space="preserve"><value>Allowed</value></data>
   <data name="Online_Closed" xml:space="preserve"><value>Closed</value></data>
-  <data name="Online_Note" xml:space="preserve"><value>Players on the same network can always join with the local address. PackCheck cannot test reachability from outside; ask a friend to try.</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Players on the same network can always join with the local address. After "Open to the internet", use "Test from outside" to see whether people outside really reach you.</value></data>
   <data name="Online_DomainTitle" xml:space="preserve"><value>Your own domain</value></data>
   <data name="Online_DomainHint" xml:space="preserve"><value>Enter a domain you own (e.g. play.example.com). Create these records at your DNS provider.</value></data>
   <data name="Online_SrvHint" xml:space="preserve"><value>With the SRV record players can join with just the domain, without a port.</value></data>

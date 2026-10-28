@@ -289,6 +289,37 @@
 Отмена: остаться в PackCheck.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Некоторые порты не удалось закрыть (запрос администратора отклонён). Закройте их на странице «Онлайн» в следующий раз.</value></data>
   <data name="Assistant_EulaNotice" xml:space="preserve"><value>Подтверждая, вы также принимаете EULA Minecraft (aka.ms/MinecraftEULA) для этих серверов.</value></data>
+  <data name="Online_GuideTitle" xml:space="preserve"><value>Настройка проброса порта на роутере</value></data>
+  <data name="Online_GuideWhy" xml:space="preserve"><value>Роутер прячет все устройства за одним внешним IP. Пока он не знает, какому компьютеру отдавать трафик Minecraft, он отбрасывает входящие подключения, и друзья не могут зайти по IP:порт. PackCheck пробует сделать это автоматически (UPnP); если роутер не позволяет, добавьте правило вручную один раз.</value></data>
+  <data name="Online_GuideToggle" xml:space="preserve"><value>Показать / скрыть</value></data>
+  <data name="Online_GuideValues" xml:space="preserve"><value>Введите в роутере ровно эти значения</value></data>
+  <data name="Online_GName" xml:space="preserve"><value>Имя / служба</value></data>
+  <data name="Online_GProtocol" xml:space="preserve"><value>Протокол</value></data>
+  <data name="Online_GProtocolValue" xml:space="preserve"><value>TCP (или TCP/UDP / Оба)</value></data>
+  <data name="Online_GExternal" xml:space="preserve"><value>Внешний (WAN) порт</value></data>
+  <data name="Online_GInternalIp" xml:space="preserve"><value>Внутренний IP / устройство</value></data>
+  <data name="Online_GInternalPort" xml:space="preserve"><value>Внутренний (LAN) порт</value></data>
+  <data name="Online_GuideSteps" xml:space="preserve"><value>Шаги</value></data>
+  <data name="Online_Step0" xml:space="preserve"><value>Сначала нажмите «Открыть для интернета» выше: порт будет разрешён в брандмауэре Windows (один запрос администратора). Одного проброса на роутере мало, пока брандмауэр блокирует.</value></data>
+  <data name="Online_Step1" xml:space="preserve"><value>Откройте страницу роутера в браузере и войдите (пароль обычно на наклейке снизу роутера):</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Найдите меню проброса. Название зависит от модели: Port Forwarding, NAT, Виртуальный сервер, Переадресация портов.</value></data>
+  <data name="Online_Step3" xml:space="preserve"><value>Добавьте правило с этими значениями и сохраните. Если просят диапазон, укажите один и тот же порт в начале и конце.</value></data>
+  <data name="Online_Step4" xml:space="preserve"><value>Закрепите за этим ПК постоянный локальный IP (резервирование DHCP в том же роутере), иначе после перезагрузки правило перестанет работать.</value></data>
+  <data name="Online_Step5" xml:space="preserve"><value>Запустите сервер и нажмите «Проверить извне». Зелёный — друзья смогут зайти по внешнему IP и порту.</value></data>
+  <data name="Online_GuideTrouble" xml:space="preserve"><value>Если всё ещё не работает</value></data>
+  <data name="Online_Trouble1" xml:space="preserve"><value>• CGNAT: если WAN-IP на странице роутера отличается от внешнего IP здесь (или начинается с 100.64–100.127, 10., 192.168.), провайдер делит один IP между клиентами. Проброс не поможет; попросите «белый» IP или используйте туннель, например playit.gg.</value></data>
+  <data name="Online_Trouble2" xml:space="preserve"><value>• Два роутера (модем провайдера + свой Wi-Fi роутер): пробросьте порт на обоих или переведите модем в режим моста.</value></data>
+  <data name="Online_Trouble3" xml:space="preserve"><value>• Проверка из своей же сети часто не работает (нет NAT loopback). Дома используйте локальный адрес, а внешний пусть проверит друг или тест извне.</value></data>
+  <data name="Online_Trouble4" xml:space="preserve"><value>• Внешний IP может меняться — делитесь именем DuckDNS (ниже). И проверьте, что сервер запущен, а online-mode/whitelist пускают друга.</value></data>
+  <data name="Online_OpenRouter" xml:space="preserve"><value>Открыть страницу роутера</value></data>
+  <data name="Online_CheckButton" xml:space="preserve"><value>Проверить извне</value></data>
+  <data name="Online_CheckPrivacy" xml:space="preserve"><value>Отправляет внешний IP и порт на mcsrvstat.us, который пробует подключиться как игрок.</value></data>
+  <data name="Online_Checking" xml:space="preserve"><value>Проверка из интернета…</value></data>
+  <data name="Online_CheckOk" xml:space="preserve"><value>Доступен: {0} отвечает из интернета. {1}</value></data>
+  <data name="Online_CheckFail" xml:space="preserve"><value>{0} недоступен из интернета. Роутер ещё не пробрасывает порт (см. инструкцию ниже) или провайдер использует CGNAT.</value></data>
+  <data name="Online_CheckUnknown" xml:space="preserve"><value>Сервис проверки недоступен. Повторите позже или попросите друга зайти.</value></data>
+  <data name="Online_CheckNoIp" xml:space="preserve"><value>Не удалось определить внешний IP (нет интернета?).</value></data>
+  <data name="Online_CheckNotRunning" xml:space="preserve"><value>Сначала запустите сервер: проверка подключается к нему как игрок.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>
@@ -339,7 +370,7 @@
   <data name="Online_Firewall" xml:space="preserve"><value>Брандмауэр</value></data>
   <data name="Online_Allowed" xml:space="preserve"><value>Разрешено</value></data>
   <data name="Online_Closed" xml:space="preserve"><value>Закрыто</value></data>
-  <data name="Online_Note" xml:space="preserve"><value>Игроки из той же сети всегда могут подключиться по локальному адресу. PackCheck не может проверить доступ снаружи.</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Игроки в той же сети всегда могут зайти по локальному адресу. После «Открыть для интернета» нажмите «Проверить извне», чтобы узнать, доступны ли вы снаружи.</value></data>
   <data name="Online_DomainTitle" xml:space="preserve"><value>Свой домен</value></data>
   <data name="Online_DomainHint" xml:space="preserve"><value>Введите свой домен (например play.example.com) и создайте эти записи у DNS-провайдера.</value></data>
   <data name="Online_SrvHint" xml:space="preserve"><value>С записью SRV достаточно домена, без порта.</value></data>
