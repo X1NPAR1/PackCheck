@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Servers" xml:space="preserve"><value>Servers</value></data>
+  <data name="Nav_Validate" xml:space="preserve"><value>Validate</value></data>
+  <data name="Nav_Plugins" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Nav_About" xml:space="preserve"><value>About</value></data>
+  <data name="Tagline" xml:space="preserve"><value>Minecraft server studio</value></data>
+  <data name="Splash_Settings" xml:space="preserve"><value>Loading settings…</value></data>
+  <data name="Splash_Theme" xml:space="preserve"><value>Applying theme and language…</value></data>
+  <data name="Splash_Java" xml:space="preserve"><value>Detecting Java runtimes…</value></data>
+  <data name="Splash_Servers" xml:space="preserve"><value>Loading servers…</value></data>
+  <data name="Splash_Updates" xml:space="preserve"><value>Checking for updates…</value></data>
+  <data name="Splash_Almost" xml:space="preserve"><value>Almost there…</value></data>
+  <data name="Splash_Ready" xml:space="preserve"><value>Ready!</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Common_Error" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Common_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Common_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Common_OpenFolder" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Servers_Title" xml:space="preserve"><value>Your servers</value></data>
+  <data name="Servers_New" xml:space="preserve"><value>New server</value></data>
+  <data name="Servers_Import" xml:space="preserve"><value>Add existing</value></data>
+  <data name="Servers_Empty" xml:space="preserve"><value>No servers yet</value></data>
+  <data name="Servers_EmptyHint" xml:space="preserve"><value>Create a Paper server in a few steps, or add a folder you already have.</value></data>
+  <data name="Servers_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Servers_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Servers_Restart" xml:space="preserve"><value>Restart</value></data>
+  <data name="Servers_Kill" xml:space="preserve"><value>Force stop</value></data>
+  <data name="Servers_Validate" xml:space="preserve"><value>Validate</value></data>
+  <data name="Servers_Remove" xml:space="preserve"><value>Remove from list</value></data>
+  <data name="Servers_Console" xml:space="preserve"><value>Console</value></data>
+  <data name="Servers_Properties" xml:space="preserve"><value>Properties</value></data>
+  <data name="Servers_Backups" xml:space="preserve"><value>Backups</value></data>
+  <data name="Servers_PluginsTab" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Servers_CommandHint" xml:space="preserve"><value>Type a command and press Enter</value></data>
+  <data name="Servers_Filter" xml:space="preserve"><value>Filter log…</value></data>
+  <data name="Servers_Memory" xml:space="preserve"><value>Memory</value></data>
+  <data name="Servers_Cpu" xml:space="preserve"><value>CPU</value></data>
+  <data name="Servers_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Servers_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Stop the server before changing its files.</value></data>
+  <data name="Servers_Saved" xml:space="preserve"><value>server.properties saved.</value></data>
+  <data name="Backups_Create" xml:space="preserve"><value>Create backup</value></data>
+  <data name="Backups_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Backups_Empty" xml:space="preserve"><value>No backups yet.</value></data>
+  <data name="Backups_Keep" xml:space="preserve"><value>Keep last</value></data>
+  <data name="Backups_RestoreConfirm" xml:space="preserve"><value>Replace the server folder with this backup? Current files will be lost.</value></data>
+  <data name="Backups_Done" xml:space="preserve"><value>Backup created.</value></data>
+  <data name="State_Stopped" xml:space="preserve"><value>Stopped</value></data>
+  <data name="State_Starting" xml:space="preserve"><value>Starting</value></data>
+  <data name="State_Running" xml:space="preserve"><value>Running</value></data>
+  <data name="State_Stopping" xml:space="preserve"><value>Stopping</value></data>
+  <data name="State_Crashed" xml:space="preserve"><value>Crashed</value></data>
+  <data name="Wizard_Title" xml:space="preserve"><value>Create a server</value></data>
+  <data name="Wizard_Name" xml:space="preserve"><value>Server name</value></data>
+  <data name="Wizard_Folder" xml:space="preserve"><value>Location</value></data>
+  <data name="Wizard_Platform" xml:space="preserve"><value>Platform</value></data>
+  <data name="Wizard_Version" xml:space="preserve"><value>Minecraft version</value></data>
+  <data name="Wizard_Java" xml:space="preserve"><value>Java runtime</value></data>
+  <data name="Wizard_JavaInstall" xml:space="preserve"><value>Install Java {0}</value></data>
+  <data name="Wizard_JavaNeeded" xml:space="preserve"><value>Minecraft {0} needs Java {1} or newer.</value></data>
+  <data name="Wizard_Memory" xml:space="preserve"><value>Maximum memory (MB)</value></data>
+  <data name="Wizard_Seed" xml:space="preserve"><value>World seed (optional)</value></data>
+  <data name="Wizard_Eula" xml:space="preserve"><value>I have read and accept the Minecraft End User License Agreement (aka.ms/MinecraftEULA).</value></data>
+  <data name="Wizard_Create" xml:space="preserve"><value>Create server</value></data>
+  <data name="Wizard_Step_resolve" xml:space="preserve"><value>Finding the official build…</value></data>
+  <data name="Wizard_Step_download" xml:space="preserve"><value>Downloading and verifying…</value></data>
+  <data name="Wizard_Step_configure" xml:space="preserve"><value>Writing configuration…</value></data>
+  <data name="Wizard_Step_done" xml:space="preserve"><value>Server created.</value></data>
+  <data name="Wizard_LoadingVersions" xml:space="preserve"><value>Loading versions…</value></data>
+  <data name="Wizard_Offline" xml:space="preserve"><value>Versions could not be loaded. Check your connection.</value></data>
+  <data name="Validate_Title" xml:space="preserve"><value>Validate a pack</value></data>
+  <data name="Validate_Subtitle" xml:space="preserve"><value>Static analysis never runs plugin code. Pick a server folder or a .zip pack.</value></data>
+  <data name="Validate_PickFolder" xml:space="preserve"><value>Choose folder</value></data>
+  <data name="Validate_PickZip" xml:space="preserve"><value>Choose .zip</value></data>
+  <data name="Validate_Run" xml:space="preserve"><value>Run checks</value></data>
+  <data name="Validate_McVersion" xml:space="preserve"><value>Minecraft version</value></data>
+  <data name="Validate_Runtime" xml:space="preserve"><value>Also run an isolated startup test (executes plugins in a temporary copy)</value></data>
+  <data name="Validate_RuntimeWarn" xml:space="preserve"><value>Plugins are programs. The test uses a throw-away copy, binds to 127.0.0.1, limits memory and kills the process tree, but plugin code still runs with your user rights. Only enable this for plugins you trust.</value></data>
+  <data name="Validate_Export" xml:space="preserve"><value>Export</value></data>
+  <data name="Validate_History" xml:space="preserve"><value>History</value></data>
+  <data name="Validate_Diff" xml:space="preserve"><value>Changes since previous run</value></data>
+  <data name="Validate_NoDiff" xml:space="preserve"><value>Nothing changed since the previous run.</value></data>
+  <data name="Validate_Empty" xml:space="preserve"><value>Results appear here, check by check.</value></data>
+  <data name="Validate_Evidence" xml:space="preserve"><value>Evidence</value></data>
+  <data name="Validate_Fix" xml:space="preserve"><value>Fix</value></data>
+  <data name="Validate_FixEstimated" xml:space="preserve"><value>Suggestion (estimated)</value></data>
+  <data name="Validate_NotRun" xml:space="preserve"><value>Could not run</value></data>
+  <data name="Validate_Confidence" xml:space="preserve"><value>Confidence</value></data>
+  <data name="Validate_Filter_All" xml:space="preserve"><value>All</value></data>
+  <data name="Validate_Filter_Problems" xml:space="preserve"><value>Problems</value></data>
+  <data name="Validate_Exported" xml:space="preserve"><value>Report saved.</value></data>
+  <data name="Overall_Pass" xml:space="preserve"><value>PASS</value></data>
+  <data name="Overall_PassWithWarnings" xml:space="preserve"><value>PASS WITH WARNINGS</value></data>
+  <data name="Overall_Fail" xml:space="preserve"><value>FAIL</value></data>
+  <data name="Overall_Incomplete" xml:space="preserve"><value>INCOMPLETE</value></data>
+  <data name="Status_Pass" xml:space="preserve"><value>Pass</value></data>
+  <data name="Status_Warn" xml:space="preserve"><value>Warning</value></data>
+  <data name="Status_Fail" xml:space="preserve"><value>Fail</value></data>
+  <data name="Status_Skip" xml:space="preserve"><value>Skipped</value></data>
+  <data name="Status_Error" xml:space="preserve"><value>Could not run</value></data>
+  <data name="Plugins_Title" xml:space="preserve"><value>Find plugins</value></data>
+  <data name="Plugins_Subtitle" xml:space="preserve"><value>Search Modrinth and Hangar. Downloads are checksum-verified and validated before they are added.</value></data>
+  <data name="Plugins_Search" xml:space="preserve"><value>Search plugins…</value></data>
+  <data name="Plugins_Target" xml:space="preserve"><value>Install into</value></data>
+  <data name="Plugins_Install" xml:space="preserve"><value>Install</value></data>
+  <data name="Plugins_Installed" xml:space="preserve"><value>Installed {0}.</value></data>
+  <data name="Plugins_Downloads" xml:space="preserve"><value>{0:N0} downloads</value></data>
+  <data name="Plugins_NetworkOff" xml:space="preserve"><value>Online providers are turned off in Settings.</value></data>
+  <data name="Plugins_ProviderFailed" xml:space="preserve"><value>{0} is unavailable: {1}</value></data>
+  <data name="Plugins_Installed_List" xml:space="preserve"><value>Installed plugins</value></data>
+  <data name="Plugins_Disable" xml:space="preserve"><value>Disable</value></data>
+  <data name="Plugins_Enable" xml:space="preserve"><value>Enable</value></data>
+  <data name="Plugins_AddFile" xml:space="preserve"><value>Add .jar…</value></data>
+  <data name="Preflight_Title" xml:space="preserve"><value>Pre-flight check found problems</value></data>
+  <data name="Preflight_Body" xml:space="preserve"><value>Applying this change would introduce:
+{0}
+
+Apply anyway?</value></data>
+  <data name="Preflight_Apply" xml:space="preserve"><value>Apply anyway</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="Settings_Theme_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Settings_Theme_Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Settings_Theme_System" xml:space="preserve"><value>System</value></data>
+  <data name="Settings_Animations" xml:space="preserve"><value>Animations</value></data>
+  <data name="Settings_Anim_Full" xml:space="preserve"><value>Full</value></data>
+  <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Reduced</value></data>
+  <data name="Settings_Anim_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>Windows' "Show animations" setting is respected.</value></data>
+  <data name="Settings_ServerFolder" xml:space="preserve"><value>Default server folder</value></data>
+  <data name="Settings_Network" xml:space="preserve"><value>Allow online plugin providers (Modrinth, Hangar)</value></data>
+  <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>
+  <data name="Settings_AutoUpdate" xml:space="preserve"><value>Install new releases automatically</value></data>
+  <data name="Settings_AutoUpdateHint" xml:space="preserve"><value>When on, PackCheck installs a new GitHub release at startup without asking.</value></data>
+  <data name="Settings_CheckNow" xml:space="preserve"><value>Check now</value></data>
+  <data name="Settings_UpToDate" xml:space="preserve"><value>You are on the latest version ({0}).</value></data>
+  <data name="Settings_Telemetry" xml:space="preserve"><value>PackCheck collects no telemetry.</value></data>
+  <data name="Settings_Java" xml:space="preserve"><value>Java runtimes</value></data>
+  <data name="Settings_JavaNone" xml:space="preserve"><value>No Java runtime found.</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>Update available</value></data>
+  <data name="Update_Banner" xml:space="preserve"><value>PackCheck {0} is available.</value></data>
+  <data name="Update_Now" xml:space="preserve"><value>Update now</value></data>
+  <data name="Update_Later" xml:space="preserve"><value>Later</value></data>
+  <data name="Update_DaysLeft" xml:space="preserve"><value>You can postpone for {0} more day(s). After that PackCheck updates itself on start.</value></data>
+  <data name="Update_LastDay" xml:space="preserve"><value>This is the last day to postpone. Tomorrow PackCheck updates itself on start.</value></data>
+  <data name="Update_Forced" xml:space="preserve"><value>The postponement period has ended. Installing {0}…</value></data>
+  <data name="Update_Auto" xml:space="preserve"><value>Automatic update: installing {0}…</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>Downloading update… {0:P0}</value></data>
+  <data name="Update_Failed" xml:space="preserve"><value>The update could not be installed: {0}</value></data>
+  <data name="Update_Notes" xml:space="preserve"><value>What's new</value></data>
+  <data name="About_Version" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="About_Body" xml:space="preserve"><value>PackCheck creates, runs and validates Minecraft Java servers. Static checks are evidence-based and never execute plugin code.</value></data>
+  <data name="About_Disclaimer" xml:space="preserve"><value>Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</value></data>
+  <data name="About_Licenses" xml:space="preserve"><value>Open-source licenses</value></data>
+  <data name="About_Repo" xml:space="preserve"><value>Source code on GitHub</value></data>
+</root>

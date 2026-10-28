@@ -1,0 +1,86 @@
+<UserControl x:Class="PackCheck.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             AutomationProperties.AutomationId="SettingsPage">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+            <TextBlock Text="{l:Loc Settings_Title}" Style="{StaticResource H1}" Margin="0,0,0,18" />
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_Language}" Style="{StaticResource Label}" Margin="0,0,0,6" />
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" Width="260" HorizontalAlignment="Left" AutomationProperties.AutomationId="LanguageBox">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Flag}" Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock Text="{Binding Name}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Text="{l:Loc Settings_Theme}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                    <ComboBox SelectedIndex="{Binding ThemeIndex}" Width="260" HorizontalAlignment="Left" AutomationProperties.AutomationId="ThemeBox">
+                        <ComboBoxItem Content="{l:Loc Settings_Theme_Dark}" />
+                        <ComboBoxItem Content="{l:Loc Settings_Theme_Light}" />
+                        <ComboBoxItem Content="{l:Loc Settings_Theme_System}" />
+                    </ComboBox>
+
+                    <TextBlock Text="{l:Loc Settings_Animations}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                    <ComboBox SelectedIndex="{Binding AnimationIndex}" Width="260" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="{l:Loc Settings_Anim_Full}" />
+                        <ComboBoxItem Content="{l:Loc Settings_Anim_Reduced}" />
+                        <ComboBoxItem Content="{l:Loc Settings_Anim_Off}" />
+                    </ComboBox>
+                    <TextBlock Text="{l:Loc Settings_AnimHint}" Style="{StaticResource Muted}" FontSize="12" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_Updates}" Style="{StaticResource H2}" FontSize="15" />
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoUpdate}" Margin="0,14,0,0" AutomationProperties.AutomationId="AutoUpdateSwitch">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Settings_AutoUpdate}" FontWeight="Medium" />
+                            <TextBlock Text="{l:Loc Settings_AutoUpdateHint}" Style="{StaticResource Muted}" FontSize="12" />
+                        </StackPanel>
+                    </CheckBox>
+                    <DockPanel Margin="0,14,0,0">
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Settings_CheckNow}" Command="{Binding CheckNowCommand}" />
+                        <TextBlock VerticalAlignment="Center" Style="{StaticResource Muted}">
+                            <Run Text="PackCheck" /><Run Text=" " /><Run Text="{Binding CurrentVersion, Mode=OneWay}" />
+                        </TextBlock>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_ServerFolder}" Style="{StaticResource Label}" Margin="0,0,0,6" />
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseFolderCommand}" Margin="8,0,0,0" />
+                        <TextBox Text="{Binding ServerFolder}" IsReadOnly="True" />
+                    </DockPanel>
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AllowNetwork}" Margin="0,18,0,0">
+                        <TextBlock Text="{l:Loc Settings_Network}" TextWrapping="Wrap" />
+                    </CheckBox>
+                    <TextBlock Text="{l:Loc Settings_Java}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                    <TextBlock Text="{l:Loc Settings_JavaNone}" Style="{StaticResource Muted}" Visibility="{Binding Runtimes.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                    <ItemsControl ItemsSource="{Binding Runtimes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,3">
+                                    <TextBlock Text="{Binding Display}" FontSize="13" />
+                                    <TextBlock Text="{Binding JavaExe}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{l:Loc Settings_Telemetry}" Style="{StaticResource Muted}" FontSize="12" Margin="0,18,0,0" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

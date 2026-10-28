@@ -1,0 +1,18 @@
+<UserControl x:Class="PackCheck.App.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             AutomationProperties.AutomationId="AboutPage">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="620">
+            <Image x:Name="Wordmark" Width="460" RenderOptions.BitmapScalingMode="HighQuality" l:Anim.PopIn="True" />
+            <TextBlock Text="{Binding Version}" Style="{StaticResource Muted}" HorizontalAlignment="Center" Margin="0,18,0,0" />
+            <TextBlock Text="{l:Loc About_Body}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,14,0,0" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
+                <Button Content="{l:Loc About_Repo}" Style="{StaticResource PrimaryButton}" Command="{Binding OpenRepoCommand}" Margin="0,0,8,0" />
+                <Button Content="{l:Loc About_Licenses}" Command="{Binding OpenLicensesCommand}" />
+            </StackPanel>
+            <TextBlock Text="{l:Loc About_Disclaimer}" Style="{StaticResource Muted}" FontSize="12" TextAlignment="Center" Margin="0,28,0,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>

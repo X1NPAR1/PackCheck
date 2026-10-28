@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PackCheck</AssemblyName>
+    <RootNamespace>PackCheck.App</RootNamespace>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SatelliteResourceLanguages>en;tr;de;fr;ru</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);CA1001;CA1812;CA2227;CA1056;CA1054;CA1826</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PackCheck.Servers\PackCheck.Servers.csproj" />
+    <ProjectReference Include="..\PackCheck.Validation\PackCheck.Validation.csproj" />
+    <ProjectReference Include="..\PackCheck.Reporting\PackCheck.Reporting.csproj" />
+    <ProjectReference Include="..\PackCheck.Providers\PackCheck.Providers.csproj" />
+    <ProjectReference Include="..\PackCheck.Updater\PackCheck.Updater.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*.png;Assets\**\*.ttf;Assets\app.ico" />
+    <None Include="Assets\Fonts\*.txt" CopyToOutputDirectory="PreserveNewest" LinkBase="licenses" />
+    <EmbeddedResource Update="Localization\Strings.resx" LogicalName="PackCheck.App.Localization.Strings.resources" />
+  </ItemGroup>
+
+</Project>

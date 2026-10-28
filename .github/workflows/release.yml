@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Test
+        run: dotnet test tests/PackCheck.Tests -c Release
+      - name: Publish
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          dotnet publish src/PackCheck.App -c Release -r win-x64 --self-contained true -p:Version=$version -p:InformationalVersion=$version -o publish/PackCheck
+          dotnet publish src/PackCheck.UpdateHelper -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:Version=$version -o publish/helper
+          Copy-Item publish/helper/PackCheck.UpdateHelper.exe publish/PackCheck/
+          dotnet publish src/PackCheck.Cli -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:Version=$version -o publish/cli
+          Compress-Archive -Path publish/PackCheck/* -DestinationPath PackCheck-win-x64.zip
+          Compress-Archive -Path publish/cli/packcheck.exe -DestinationPath packcheck-cli-win-x64.zip
+          foreach ($f in 'PackCheck-win-x64.zip', 'packcheck-cli-win-x64.zip') {
+            "$((Get-FileHash $f -Algorithm SHA256).Hash.ToLowerInvariant())  $f" | Out-File -Encoding ascii -NoNewline "$f.sha256"
+          }
+      - name: Create release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $notes = "release-notes/${{ github.ref_name }}.md"
+          if (-not (Test-Path $notes)) { $notes = $null }
+          $args = @('release', 'create', '${{ github.ref_name }}', 'PackCheck-win-x64.zip', 'PackCheck-win-x64.zip.sha256', 'packcheck-cli-win-x64.zip', 'packcheck-cli-win-x64.zip.sha256', '--title', 'PackCheck ${{ github.ref_name }}')
+          if ($notes) { $args += @('--notes-file', $notes) } else { $args += '--generate-notes' }
+          gh @args

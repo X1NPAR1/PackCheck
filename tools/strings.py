@@ -1,0 +1,203 @@
+"""Single source of truth for UI strings. Generates Strings.<culture>.resx for en, tr, de, fr, ru.
+
+Run: python tools/strings.py   (fails if any language misses a key)
+"""
+from pathlib import Path
+from xml.sax.saxutils import escape
+
+LANGS = ["en", "tr", "de", "fr", "ru"]
+
+S = {
+    # navigation
+    "Nav_Servers": ["Servers", "Sunucular", "Server", "Serveurs", "Серверы"],
+    "Nav_Validate": ["Validate", "Doğrula", "Prüfen", "Valider", "Проверка"],
+    "Nav_Plugins": ["Plugins", "Eklentiler", "Plugins", "Plugins", "Плагины"],
+    "Nav_Settings": ["Settings", "Ayarlar", "Einstellungen", "Paramètres", "Настройки"],
+    "Nav_About": ["About", "Hakkında", "Über", "À propos", "О программе"],
+    "Tagline": ["Minecraft server studio", "Minecraft sunucu stüdyosu", "Minecraft-Server-Studio", "Studio de serveurs Minecraft", "Студия серверов Minecraft"],
+    # splash
+    "Splash_Settings": ["Loading settings…", "Ayarlar yükleniyor…", "Einstellungen werden geladen…", "Chargement des paramètres…", "Загрузка настроек…"],
+    "Splash_Theme": ["Applying theme and language…", "Tema ve dil uygulanıyor…", "Design und Sprache werden angewendet…", "Application du thème et de la langue…", "Применение темы и языка…"],
+    "Splash_Java": ["Detecting Java runtimes…", "Java sürümleri algılanıyor…", "Java-Laufzeiten werden erkannt…", "Détection des environnements Java…", "Поиск сред Java…"],
+    "Splash_Servers": ["Loading servers…", "Sunucular yükleniyor…", "Server werden geladen…", "Chargement des serveurs…", "Загрузка серверов…"],
+    "Splash_Updates": ["Checking for updates…", "Güncellemeler kontrol ediliyor…", "Suche nach Updates…", "Recherche de mises à jour…", "Проверка обновлений…"],
+    "Splash_Almost": ["Almost there…", "Neredeyse hazır…", "Fast fertig…", "Presque prêt…", "Почти готово…"],
+    "Splash_Ready": ["Ready!", "Hazır!", "Bereit!", "Prêt !", "Готово!"],
+    # common
+    "Common_Cancel": ["Cancel", "İptal", "Abbrechen", "Annuler", "Отмена"],
+    "Common_Close": ["Close", "Kapat", "Schließen", "Fermer", "Закрыть"],
+    "Common_Browse": ["Browse…", "Gözat…", "Durchsuchen…", "Parcourir…", "Обзор…"],
+    "Common_Save": ["Save", "Kaydet", "Speichern", "Enregistrer", "Сохранить"],
+    "Common_Confirm": ["Confirm", "Onayla", "Bestätigen", "Confirmer", "Подтвердить"],
+    "Common_Error": ["Something went wrong", "Bir sorun oluştu", "Etwas ist schiefgelaufen", "Une erreur est survenue", "Что-то пошло не так"],
+    "Common_Back": ["Back", "Geri", "Zurück", "Retour", "Назад"],
+    "Common_Next": ["Next", "İleri", "Weiter", "Suivant", "Далее"],
+    "Common_OpenFolder": ["Open folder", "Klasörü aç", "Ordner öffnen", "Ouvrir le dossier", "Открыть папку"],
+    # servers
+    "Servers_Title": ["Your servers", "Sunucuların", "Deine Server", "Vos serveurs", "Ваши серверы"],
+    "Servers_New": ["New server", "Yeni sunucu", "Neuer Server", "Nouveau serveur", "Новый сервер"],
+    "Servers_Import": ["Add existing", "Mevcut ekle", "Vorhandenen hinzufügen", "Ajouter existant", "Добавить существующий"],
+    "Servers_Empty": ["No servers yet", "Henüz sunucu yok", "Noch keine Server", "Aucun serveur pour l'instant", "Серверов пока нет"],
+    "Servers_EmptyHint": ["Create a Paper server in a few steps, or add a folder you already have.", "Birkaç adımda bir Paper sunucusu oluştur veya var olan bir klasörü ekle.", "Erstelle in wenigen Schritten einen Paper-Server oder füge einen vorhandenen Ordner hinzu.", "Créez un serveur Paper en quelques étapes ou ajoutez un dossier existant.", "Создайте сервер Paper за несколько шагов или добавьте существующую папку."],
+    "Servers_Start": ["Start", "Başlat", "Starten", "Démarrer", "Запустить"],
+    "Servers_Stop": ["Stop", "Durdur", "Stoppen", "Arrêter", "Остановить"],
+    "Servers_Restart": ["Restart", "Yeniden başlat", "Neu starten", "Redémarrer", "Перезапустить"],
+    "Servers_Kill": ["Force stop", "Zorla durdur", "Erzwungen beenden", "Forcer l'arrêt", "Принудительно остановить"],
+    "Servers_Validate": ["Validate", "Doğrula", "Prüfen", "Valider", "Проверить"],
+    "Servers_Remove": ["Remove from list", "Listeden kaldır", "Aus Liste entfernen", "Retirer de la liste", "Убрать из списка"],
+    "Servers_Console": ["Console", "Konsol", "Konsole", "Console", "Консоль"],
+    "Servers_Properties": ["Properties", "Özellikler", "Eigenschaften", "Propriétés", "Свойства"],
+    "Servers_Backups": ["Backups", "Yedekler", "Backups", "Sauvegardes", "Резервные копии"],
+    "Servers_PluginsTab": ["Plugins", "Eklentiler", "Plugins", "Plugins", "Плагины"],
+    "Servers_CommandHint": ["Type a command and press Enter", "Bir komut yaz ve Enter'a bas", "Befehl eingeben und Enter drücken", "Tapez une commande puis Entrée", "Введите команду и нажмите Enter"],
+    "Servers_Filter": ["Filter log…", "Günlüğü filtrele…", "Log filtern…", "Filtrer le journal…", "Фильтр журнала…"],
+    "Servers_Memory": ["Memory", "Bellek", "Arbeitsspeicher", "Mémoire", "Память"],
+    "Servers_Cpu": ["CPU", "CPU", "CPU", "CPU", "ЦП"],
+    "Servers_Port": ["Port", "Port", "Port", "Port", "Порт"],
+    "Servers_Version": ["Version", "Sürüm", "Version", "Version", "Версия"],
+    "Servers_SaveWhileRunning": ["Stop the server before changing its files.", "Dosyaları değiştirmeden önce sunucuyu durdur.", "Stoppe den Server, bevor du Dateien änderst.", "Arrêtez le serveur avant de modifier ses fichiers.", "Остановите сервер перед изменением файлов."],
+    "Servers_Saved": ["server.properties saved.", "server.properties kaydedildi.", "server.properties gespeichert.", "server.properties enregistré.", "server.properties сохранён."],
+    "Backups_Create": ["Create backup", "Yedek oluştur", "Backup erstellen", "Créer une sauvegarde", "Создать копию"],
+    "Backups_Restore": ["Restore", "Geri yükle", "Wiederherstellen", "Restaurer", "Восстановить"],
+    "Backups_Empty": ["No backups yet.", "Henüz yedek yok.", "Noch keine Backups.", "Aucune sauvegarde.", "Резервных копий нет."],
+    "Backups_Keep": ["Keep last", "Son kaç tane tutulsun", "Behalte die letzten", "Conserver les derniers", "Хранить последние"],
+    "Backups_RestoreConfirm": ["Replace the server folder with this backup? Current files will be lost.", "Sunucu klasörü bu yedekle değiştirilsin mi? Mevcut dosyalar kaybolur.", "Serverordner durch dieses Backup ersetzen? Aktuelle Dateien gehen verloren.", "Remplacer le dossier du serveur par cette sauvegarde ? Les fichiers actuels seront perdus.", "Заменить папку сервера этой копией? Текущие файлы будут потеряны."],
+    "Backups_Done": ["Backup created.", "Yedek oluşturuldu.", "Backup erstellt.", "Sauvegarde créée.", "Копия создана."],
+    "State_Stopped": ["Stopped", "Durdu", "Gestoppt", "Arrêté", "Остановлен"],
+    "State_Starting": ["Starting", "Başlıyor", "Startet", "Démarrage", "Запуск"],
+    "State_Running": ["Running", "Çalışıyor", "Läuft", "En marche", "Работает"],
+    "State_Stopping": ["Stopping", "Duruyor", "Stoppt", "Arrêt", "Остановка"],
+    "State_Crashed": ["Crashed", "Çöktü", "Abgestürzt", "Planté", "Сбой"],
+    # wizard
+    "Wizard_Title": ["Create a server", "Sunucu oluştur", "Server erstellen", "Créer un serveur", "Создание сервера"],
+    "Wizard_Name": ["Server name", "Sunucu adı", "Servername", "Nom du serveur", "Имя сервера"],
+    "Wizard_Folder": ["Location", "Konum", "Speicherort", "Emplacement", "Расположение"],
+    "Wizard_Platform": ["Platform", "Platform", "Plattform", "Plateforme", "Платформа"],
+    "Wizard_Version": ["Minecraft version", "Minecraft sürümü", "Minecraft-Version", "Version de Minecraft", "Версия Minecraft"],
+    "Wizard_Java": ["Java runtime", "Java çalışma ortamı", "Java-Laufzeit", "Environnement Java", "Среда Java"],
+    "Wizard_JavaInstall": ["Install Java {0}", "Java {0} kur", "Java {0} installieren", "Installer Java {0}", "Установить Java {0}"],
+    "Wizard_JavaNeeded": ["Minecraft {0} needs Java {1} or newer.", "Minecraft {0} için Java {1} veya üstü gerekir.", "Minecraft {0} benötigt Java {1} oder neuer.", "Minecraft {0} nécessite Java {1} ou plus récent.", "Для Minecraft {0} нужна Java {1} или новее."],
+    "Wizard_Memory": ["Maximum memory (MB)", "En fazla bellek (MB)", "Maximaler Speicher (MB)", "Mémoire maximale (Mo)", "Максимум памяти (МБ)"],
+    "Wizard_Seed": ["World seed (optional)", "Dünya tohumu (isteğe bağlı)", "Welt-Seed (optional)", "Graine du monde (facultatif)", "Сид мира (необязательно)"],
+    "Wizard_Eula": ["I have read and accept the Minecraft End User License Agreement (aka.ms/MinecraftEULA).", "Minecraft Son Kullanıcı Lisans Sözleşmesi'ni (aka.ms/MinecraftEULA) okudum ve kabul ediyorum.", "Ich habe den Minecraft-Endbenutzer-Lizenzvertrag (aka.ms/MinecraftEULA) gelesen und akzeptiere ihn.", "J'ai lu et j'accepte le contrat de licence utilisateur final de Minecraft (aka.ms/MinecraftEULA).", "Я прочитал(а) и принимаю лицензионное соглашение Minecraft (aka.ms/MinecraftEULA)."],
+    "Wizard_Create": ["Create server", "Sunucuyu oluştur", "Server erstellen", "Créer le serveur", "Создать сервер"],
+    "Wizard_Step_resolve": ["Finding the official build…", "Resmi sürüm bulunuyor…", "Offizieller Build wird gesucht…", "Recherche de la version officielle…", "Поиск официальной сборки…"],
+    "Wizard_Step_download": ["Downloading and verifying…", "İndiriliyor ve doğrulanıyor…", "Download und Prüfung…", "Téléchargement et vérification…", "Загрузка и проверка…"],
+    "Wizard_Step_configure": ["Writing configuration…", "Yapılandırma yazılıyor…", "Konfiguration wird geschrieben…", "Écriture de la configuration…", "Запись конфигурации…"],
+    "Wizard_Step_done": ["Server created.", "Sunucu oluşturuldu.", "Server erstellt.", "Serveur créé.", "Сервер создан."],
+    "Wizard_LoadingVersions": ["Loading versions…", "Sürümler yükleniyor…", "Versionen werden geladen…", "Chargement des versions…", "Загрузка версий…"],
+    "Wizard_Offline": ["Versions could not be loaded. Check your connection.", "Sürümler yüklenemedi. Bağlantını kontrol et.", "Versionen konnten nicht geladen werden. Prüfe deine Verbindung.", "Impossible de charger les versions. Vérifiez votre connexion.", "Не удалось загрузить версии. Проверьте подключение."],
+    # validation
+    "Validate_Title": ["Validate a pack", "Paketi doğrula", "Pack prüfen", "Valider un pack", "Проверка сборки"],
+    "Validate_Subtitle": ["Static analysis never runs plugin code. Pick a server folder or a .zip pack.", "Statik analiz eklenti kodunu asla çalıştırmaz. Bir sunucu klasörü veya .zip paketi seç.", "Die statische Analyse führt nie Plugin-Code aus. Wähle einen Serverordner oder ein .zip-Pack.", "L'analyse statique n'exécute jamais le code des plugins. Choisissez un dossier serveur ou un pack .zip.", "Статический анализ никогда не запускает код плагинов. Выберите папку сервера или .zip."],
+    "Validate_PickFolder": ["Choose folder", "Klasör seç", "Ordner wählen", "Choisir un dossier", "Выбрать папку"],
+    "Validate_PickZip": ["Choose .zip", ".zip seç", ".zip wählen", "Choisir un .zip", "Выбрать .zip"],
+    "Validate_Run": ["Run checks", "Kontrolleri çalıştır", "Prüfung starten", "Lancer les contrôles", "Запустить проверку"],
+    "Validate_McVersion": ["Minecraft version", "Minecraft sürümü", "Minecraft-Version", "Version de Minecraft", "Версия Minecraft"],
+    "Validate_Runtime": ["Also run an isolated startup test (executes plugins in a temporary copy)", "İzole başlangıç testi de yap (eklentileri geçici bir kopyada çalıştırır)", "Zusätzlich isolierten Starttest ausführen (führt Plugins in einer temporären Kopie aus)", "Lancer aussi un test de démarrage isolé (exécute les plugins dans une copie temporaire)", "Также выполнить изолированный тест запуска (плагины запускаются во временной копии)"],
+    "Validate_RuntimeWarn": ["Plugins are programs. The test uses a throw-away copy, binds to 127.0.0.1, limits memory and kills the process tree, but plugin code still runs with your user rights. Only enable this for plugins you trust.", "Eklentiler birer programdır. Test geçici bir kopya kullanır, 127.0.0.1'e bağlanır, belleği sınırlar ve süreç ağacını sonlandırır; ancak eklenti kodu yine de senin kullanıcı yetkilerinle çalışır. Yalnızca güvendiğin eklentiler için aç.", "Plugins sind Programme. Der Test nutzt eine Wegwerf-Kopie, bindet an 127.0.0.1, begrenzt den Speicher und beendet den Prozessbaum – Plugin-Code läuft aber mit deinen Benutzerrechten. Nur für vertrauenswürdige Plugins aktivieren.", "Les plugins sont des programmes. Le test utilise une copie jetable, écoute sur 127.0.0.1, limite la mémoire et termine l'arbre de processus, mais le code s'exécute avec vos droits. N'activez cela que pour des plugins de confiance.", "Плагины — это программы. Тест использует временную копию, слушает 127.0.0.1, ограничивает память и завершает дерево процессов, но код плагинов выполняется с вашими правами. Включайте только для доверенных плагинов."],
+    "Validate_Export": ["Export", "Dışa aktar", "Exportieren", "Exporter", "Экспорт"],
+    "Validate_History": ["History", "Geçmiş", "Verlauf", "Historique", "История"],
+    "Validate_Diff": ["Changes since previous run", "Önceki çalıştırmadan beri değişenler", "Änderungen seit dem letzten Lauf", "Changements depuis l'exécution précédente", "Изменения с прошлого запуска"],
+    "Validate_NoDiff": ["Nothing changed since the previous run.", "Önceki çalıştırmadan beri değişiklik yok.", "Seit dem letzten Lauf hat sich nichts geändert.", "Rien n'a changé depuis l'exécution précédente.", "С прошлого запуска ничего не изменилось."],
+    "Validate_Empty": ["Results appear here, check by check.", "Sonuçlar burada tek tek görünecek.", "Ergebnisse erscheinen hier, Prüfung für Prüfung.", "Les résultats apparaissent ici, contrôle par contrôle.", "Результаты появятся здесь по мере проверки."],
+    "Validate_Evidence": ["Evidence", "Kanıt", "Nachweis", "Preuve", "Доказательства"],
+    "Validate_Fix": ["Fix", "Çözüm", "Lösung", "Correction", "Исправление"],
+    "Validate_FixEstimated": ["Suggestion (estimated)", "Öneri (tahmini)", "Vorschlag (geschätzt)", "Suggestion (estimée)", "Совет (предположительно)"],
+    "Validate_NotRun": ["Could not run", "Çalıştırılamadı", "Konnte nicht ausgeführt werden", "N'a pas pu s'exécuter", "Не удалось выполнить"],
+    "Validate_Confidence": ["Confidence", "Güven", "Sicherheit", "Confiance", "Достоверность"],
+    "Validate_Filter_All": ["All", "Tümü", "Alle", "Tous", "Все"],
+    "Validate_Filter_Problems": ["Problems", "Sorunlar", "Probleme", "Problèmes", "Проблемы"],
+    "Validate_Exported": ["Report saved.", "Rapor kaydedildi.", "Bericht gespeichert.", "Rapport enregistré.", "Отчёт сохранён."],
+    "Overall_Pass": ["PASS", "GEÇTİ", "BESTANDEN", "RÉUSSI", "ПРОЙДЕНО"],
+    "Overall_PassWithWarnings": ["PASS WITH WARNINGS", "UYARILARLA GEÇTİ", "MIT WARNUNGEN BESTANDEN", "RÉUSSI AVEC AVERTISSEMENTS", "ПРОЙДЕНО С ПРЕДУПРЕЖДЕНИЯМИ"],
+    "Overall_Fail": ["FAIL", "BAŞARISIZ", "FEHLGESCHLAGEN", "ÉCHEC", "ОШИБКА"],
+    "Overall_Incomplete": ["INCOMPLETE", "EKSİK", "UNVOLLSTÄNDIG", "INCOMPLET", "НЕ ЗАВЕРШЕНО"],
+    "Status_Pass": ["Pass", "Geçti", "OK", "Réussi", "Пройдено"],
+    "Status_Warn": ["Warning", "Uyarı", "Warnung", "Avertissement", "Предупреждение"],
+    "Status_Fail": ["Fail", "Hata", "Fehler", "Échec", "Ошибка"],
+    "Status_Skip": ["Skipped", "Atlandı", "Übersprungen", "Ignoré", "Пропущено"],
+    "Status_Error": ["Could not run", "Çalışmadı", "Nicht ausgeführt", "Non exécuté", "Не выполнено"],
+    # plugins
+    "Plugins_Title": ["Find plugins", "Eklenti bul", "Plugins finden", "Trouver des plugins", "Поиск плагинов"],
+    "Plugins_Subtitle": ["Search Modrinth and Hangar. Downloads are checksum-verified and validated before they are added.", "Modrinth ve Hangar'da ara. İndirmeler checksum ile doğrulanır ve eklenmeden önce kontrol edilir.", "Suche auf Modrinth und Hangar. Downloads werden per Prüfsumme verifiziert und vor dem Hinzufügen geprüft.", "Recherchez sur Modrinth et Hangar. Les téléchargements sont vérifiés par somme de contrôle et validés avant l'ajout.", "Поиск на Modrinth и Hangar. Загрузки проверяются по контрольной сумме и валидируются перед добавлением."],
+    "Plugins_Search": ["Search plugins…", "Eklenti ara…", "Plugins suchen…", "Rechercher des plugins…", "Поиск плагинов…"],
+    "Plugins_Target": ["Install into", "Şuraya kur", "Installieren in", "Installer dans", "Установить в"],
+    "Plugins_Install": ["Install", "Kur", "Installieren", "Installer", "Установить"],
+    "Plugins_Installed": ["Installed {0}.", "{0} kuruldu.", "{0} installiert.", "{0} installé.", "{0} установлен."],
+    "Plugins_Downloads": ["{0:N0} downloads", "{0:N0} indirme", "{0:N0} Downloads", "{0:N0} téléchargements", "{0:N0} загрузок"],
+    "Plugins_NetworkOff": ["Online providers are turned off in Settings.", "Çevrim içi sağlayıcılar Ayarlar'da kapalı.", "Online-Anbieter sind in den Einstellungen deaktiviert.", "Les fournisseurs en ligne sont désactivés dans les paramètres.", "Онлайн-источники отключены в настройках."],
+    "Plugins_ProviderFailed": ["{0} is unavailable: {1}", "{0} kullanılamıyor: {1}", "{0} ist nicht erreichbar: {1}", "{0} est indisponible : {1}", "{0} недоступен: {1}"],
+    "Plugins_Installed_List": ["Installed plugins", "Kurulu eklentiler", "Installierte Plugins", "Plugins installés", "Установленные плагины"],
+    "Plugins_Disable": ["Disable", "Devre dışı bırak", "Deaktivieren", "Désactiver", "Отключить"],
+    "Plugins_Enable": ["Enable", "Etkinleştir", "Aktivieren", "Activer", "Включить"],
+    "Plugins_AddFile": ["Add .jar…", ".jar ekle…", ".jar hinzufügen…", "Ajouter un .jar…", "Добавить .jar…"],
+    "Preflight_Title": ["Pre-flight check found problems", "Ön kontrol sorun buldu", "Vorabprüfung hat Probleme gefunden", "Le contrôle préalable a trouvé des problèmes", "Предварительная проверка нашла проблемы"],
+    "Preflight_Body": ["Applying this change would introduce:\n{0}\n\nApply anyway?", "Bu değişiklik şunlara yol açar:\n{0}\n\nYine de uygulansın mı?", "Diese Änderung würde Folgendes verursachen:\n{0}\n\nTrotzdem anwenden?", "Cette modification introduirait :\n{0}\n\nAppliquer quand même ?", "Это изменение приведёт к:\n{0}\n\nВсё равно применить?"],
+    "Preflight_Apply": ["Apply anyway", "Yine de uygula", "Trotzdem anwenden", "Appliquer quand même", "Всё равно применить"],
+    # settings
+    "Settings_Title": ["Settings", "Ayarlar", "Einstellungen", "Paramètres", "Настройки"],
+    "Settings_Language": ["Language", "Dil", "Sprache", "Langue", "Язык"],
+    "Settings_Theme": ["Theme", "Tema", "Design", "Thème", "Тема"],
+    "Settings_Theme_Dark": ["Dark", "Koyu", "Dunkel", "Sombre", "Тёмная"],
+    "Settings_Theme_Light": ["Light", "Açık", "Hell", "Clair", "Светлая"],
+    "Settings_Theme_System": ["System", "Sistem", "System", "Système", "Системная"],
+    "Settings_Animations": ["Animations", "Animasyonlar", "Animationen", "Animations", "Анимации"],
+    "Settings_Anim_Full": ["Full", "Tam", "Voll", "Complètes", "Полные"],
+    "Settings_Anim_Reduced": ["Reduced", "Azaltılmış", "Reduziert", "Réduites", "Уменьшенные"],
+    "Settings_Anim_Off": ["Off", "Kapalı", "Aus", "Désactivées", "Выкл."],
+    "Settings_AnimHint": ["Windows' \"Show animations\" setting is respected.", "Windows'un \"Animasyonları göster\" ayarına uyulur.", "Die Windows-Einstellung „Animationen anzeigen“ wird berücksichtigt.", "Le paramètre Windows « Afficher les animations » est respecté.", "Учитывается параметр Windows «Показывать анимацию»."],
+    "Settings_ServerFolder": ["Default server folder", "Varsayılan sunucu klasörü", "Standard-Serverordner", "Dossier des serveurs par défaut", "Папка серверов по умолчанию"],
+    "Settings_Network": ["Allow online plugin providers (Modrinth, Hangar)", "Çevrim içi eklenti sağlayıcılarına izin ver (Modrinth, Hangar)", "Online-Plugin-Anbieter erlauben (Modrinth, Hangar)", "Autoriser les fournisseurs en ligne (Modrinth, Hangar)", "Разрешить онлайн-источники плагинов (Modrinth, Hangar)"],
+    "Settings_Updates": ["Updates", "Güncellemeler", "Updates", "Mises à jour", "Обновления"],
+    "Settings_AutoUpdate": ["Install new releases automatically", "Yeni sürümleri otomatik kur", "Neue Versionen automatisch installieren", "Installer automatiquement les nouvelles versions", "Устанавливать новые версии автоматически"],
+    "Settings_AutoUpdateHint": ["When on, PackCheck installs a new GitHub release at startup without asking.", "Açıkken PackCheck, yeni bir GitHub sürümünü açılışta sormadan kurar.", "Wenn aktiviert, installiert PackCheck neue GitHub-Versionen beim Start ohne Nachfrage.", "Si activé, PackCheck installe une nouvelle version GitHub au démarrage sans demander.", "Если включено, PackCheck устанавливает новую версию с GitHub при запуске без вопросов."],
+    "Settings_CheckNow": ["Check now", "Şimdi kontrol et", "Jetzt prüfen", "Vérifier maintenant", "Проверить сейчас"],
+    "Settings_UpToDate": ["You are on the latest version ({0}).", "En son sürümü kullanıyorsun ({0}).", "Du nutzt die neueste Version ({0}).", "Vous utilisez la dernière version ({0}).", "У вас последняя версия ({0})."],
+    "Settings_Telemetry": ["PackCheck collects no telemetry.", "PackCheck hiçbir telemetri toplamaz.", "PackCheck sammelt keine Telemetrie.", "PackCheck ne collecte aucune télémétrie.", "PackCheck не собирает телеметрию."],
+    "Settings_Java": ["Java runtimes", "Java çalışma ortamları", "Java-Laufzeiten", "Environnements Java", "Среды Java"],
+    "Settings_JavaNone": ["No Java runtime found.", "Java bulunamadı.", "Keine Java-Laufzeit gefunden.", "Aucun environnement Java trouvé.", "Java не найдена."],
+    # update
+    "Update_Available": ["Update available", "Güncelleme mevcut", "Update verfügbar", "Mise à jour disponible", "Доступно обновление"],
+    "Update_Banner": ["PackCheck {0} is available.", "PackCheck {0} yayınlandı.", "PackCheck {0} ist verfügbar.", "PackCheck {0} est disponible.", "Доступен PackCheck {0}."],
+    "Update_Now": ["Update now", "Şimdi güncelle", "Jetzt aktualisieren", "Mettre à jour", "Обновить сейчас"],
+    "Update_Later": ["Later", "Daha sonra", "Später", "Plus tard", "Позже"],
+    "Update_DaysLeft": ["You can postpone for {0} more day(s). After that PackCheck updates itself on start.", "{0} gün daha erteleyebilirsin. Sonrasında PackCheck açılışta kendini günceller.", "Du kannst noch {0} Tag(e) verschieben. Danach aktualisiert sich PackCheck beim Start selbst.", "Vous pouvez reporter encore {0} jour(s). Ensuite, PackCheck se mettra à jour au démarrage.", "Можно отложить ещё на {0} дн. После этого PackCheck обновится при запуске."],
+    "Update_LastDay": ["This is the last day to postpone. Tomorrow PackCheck updates itself on start.", "Ertelemek için son gün. Yarın PackCheck açılışta kendini günceller.", "Heute ist der letzte Tag zum Verschieben. Morgen aktualisiert sich PackCheck beim Start.", "C'est le dernier jour de report. Demain, PackCheck se mettra à jour au démarrage.", "Сегодня последний день отсрочки. Завтра PackCheck обновится при запуске."],
+    "Update_Forced": ["The postponement period has ended. Installing {0}…", "Erteleme süresi doldu. {0} kuruluyor…", "Die Aufschubfrist ist abgelaufen. {0} wird installiert…", "La période de report est terminée. Installation de {0}…", "Срок отсрочки истёк. Устанавливается {0}…"],
+    "Update_Auto": ["Automatic update: installing {0}…", "Otomatik güncelleme: {0} kuruluyor…", "Automatisches Update: {0} wird installiert…", "Mise à jour automatique : installation de {0}…", "Автообновление: устанавливается {0}…"],
+    "Update_Downloading": ["Downloading update… {0:P0}", "Güncelleme indiriliyor… {0:P0}", "Update wird heruntergeladen… {0:P0}", "Téléchargement de la mise à jour… {0:P0}", "Загрузка обновления… {0:P0}"],
+    "Update_Failed": ["The update could not be installed: {0}", "Güncelleme kurulamadı: {0}", "Das Update konnte nicht installiert werden: {0}", "La mise à jour n'a pas pu être installée : {0}", "Не удалось установить обновление: {0}"],
+    "Update_Notes": ["What's new", "Yenilikler", "Neuigkeiten", "Nouveautés", "Что нового"],
+    # about
+    "About_Version": ["Version {0}", "Sürüm {0}", "Version {0}", "Version {0}", "Версия {0}"],
+    "About_Body": ["PackCheck creates, runs and validates Minecraft Java servers. Static checks are evidence-based and never execute plugin code.", "PackCheck Minecraft Java sunucularını oluşturur, çalıştırır ve doğrular. Statik kontroller kanıta dayanır ve eklenti kodunu asla çalıştırmaz.", "PackCheck erstellt, betreibt und prüft Minecraft-Java-Server. Statische Prüfungen sind nachweisbasiert und führen nie Plugin-Code aus.", "PackCheck crée, exécute et valide des serveurs Minecraft Java. Les contrôles statiques reposent sur des preuves et n'exécutent jamais le code des plugins.", "PackCheck создаёт, запускает и проверяет серверы Minecraft Java. Статические проверки основаны на фактах и никогда не запускают код плагинов."],
+    "About_Disclaimer": ["Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.", "Resmi bir Minecraft ürünü değildir. Mojang veya Microsoft tarafından onaylanmamıştır ve onlarla ilişkili değildir.", "Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.", "Produit non officiel de Minecraft. Non approuvé par Mojang ou Microsoft et non associé à eux.", "Не является официальным продуктом Minecraft. Не одобрено Mojang или Microsoft и не связано с ними."],
+    "About_Licenses": ["Open-source licenses", "Açık kaynak lisansları", "Open-Source-Lizenzen", "Licences open source", "Лицензии открытого ПО"],
+    "About_Repo": ["Source code on GitHub", "GitHub'daki kaynak kod", "Quellcode auf GitHub", "Code source sur GitHub", "Исходный код на GitHub"],
+}
+
+HEADER = """<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+"""
+
+def main() -> None:
+    out = Path(__file__).resolve().parent.parent / "src" / "PackCheck.App" / "Localization"
+    out.mkdir(parents=True, exist_ok=True)
+    for key, values in S.items():
+        if len(values) != len(LANGS) or any(not v for v in values):
+            raise SystemExit(f"missing translation for {key}")
+    for i, lang in enumerate(LANGS):
+        name = "Strings.resx" if lang == "en" else f"Strings.{lang}.resx"
+        body = "".join(
+            f'  <data name="{k}" xml:space="preserve"><value>{escape(v[i])}</value></data>\n' for k, v in S.items()
+        )
+        (out / name).write_text(HEADER + body + "</root>\n", encoding="utf-8")
+    print(f"{len(S)} keys x {len(LANGS)} languages")
+
+if __name__ == "__main__":
+    main()

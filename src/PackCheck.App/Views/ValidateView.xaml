@@ -1,0 +1,173 @@
+<UserControl x:Class="PackCheck.App.Views.ValidateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             AutomationProperties.AutomationId="ValidatePage">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis" />
+        <l:NullToVisibility x:Key="NullVis" />
+        <l:StatusBrush x:Key="StatusBrush" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="3" Margin="0,0,0,18">
+            <TextBlock Text="{l:Loc Validate_Title}" Style="{StaticResource H1}" />
+            <TextBlock Text="{l:Loc Validate_Subtitle}" Style="{StaticResource Muted}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource Card}">
+            <StackPanel>
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Validate_PickZip}" Command="{Binding PickZipCommand}" Margin="8,0,0,0" />
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Validate_PickFolder}" Command="{Binding PickFolderCommand}" Margin="8,0,0,0" />
+                    <TextBox Text="{Binding Target, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" AutomationProperties.AutomationId="ValidateTarget" />
+                </DockPanel>
+                <DockPanel Margin="0,12,0,0">
+                    <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Command="{Binding RunCommand}" AutomationProperties.AutomationId="RunValidation">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconValidate}" Style="{StaticResource IconPath}" Width="14" Stroke="{DynamicResource OnPrimaryBrush}" />
+                            <TextBlock Text="{l:Loc Validate_Run}" Margin="8,0,0,0" Foreground="{DynamicResource OnPrimaryBrush}" />
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="{l:Loc Validate_McVersion}" VerticalAlignment="Center" Style="{StaticResource Muted}" />
+                    <TextBox Text="{Binding MinecraftVersion}" Width="90" Margin="10,0,16,0" HorizontalAlignment="Left" />
+                    <CheckBox IsChecked="{Binding RuntimeTest}" VerticalAlignment="Center" AutomationProperties.AutomationId="RuntimeOptIn">
+                        <TextBlock Text="{l:Loc Validate_Runtime}" TextWrapping="Wrap" />
+                    </CheckBox>
+                </DockPanel>
+                <Border Margin="0,12,0,0" Padding="12,10" CornerRadius="7" Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource WarnBrush}" BorderThickness="1,0,0,0"
+                        Visibility="{Binding RuntimeTest, Converter={StaticResource BoolVis}}">
+                    <TextBlock Text="{l:Loc Validate_RuntimeWarn}" TextWrapping="Wrap" FontSize="12.5" />
+                </Border>
+                <ProgressBar Margin="0,12,0,0" IsIndeterminate="True" Visibility="{Binding IsRunning, Converter={StaticResource BoolVis}}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Summary -->
+        <Grid Grid.Row="2" Margin="0,16,0,10" Visibility="{Binding HasReport, Converter={StaticResource BoolVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Border CornerRadius="7" Padding="14,8" Background="{DynamicResource Surface2Brush}" BorderThickness="1" BorderBrush="{Binding Overall, Converter={StaticResource StatusBrush}}" l:Anim.PopIn="True">
+                    <TextBlock Text="{Binding OverallText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="16" Foreground="{Binding Overall, Converter={StaticResource StatusBrush}}" AutomationProperties.AutomationId="OverallResult" />
+                </Border>
+                <TextBlock VerticalAlignment="Center" Margin="16,0,0,0" FontSize="13">
+                    <Run Text="✔" Foreground="{DynamicResource PassBrush}" /><Run Text="{Binding PassCount, Mode=OneWay}" />
+                    <Run Text="   ▲" Foreground="{DynamicResource WarnBrush}" /><Run Text="{Binding WarnCount, Mode=OneWay}" />
+                    <Run Text="   ✖" Foreground="{DynamicResource FailBrush}" /><Run Text="{Binding FailCount, Mode=OneWay}" />
+                    <Run Text="   –" Foreground="{DynamicResource SkipBrush}" /><Run Text="{Binding SkipCount, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding ProblemsOnly}" Content="{l:Loc Validate_Filter_Problems}" VerticalAlignment="Center" Margin="0,0,14,0" />
+                <Button Content="JSON" Command="{Binding ExportCommand}" CommandParameter="json" Margin="0,0,6,0" />
+                <Button Content="HTML" Command="{Binding ExportCommand}" CommandParameter="html" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Results -->
+        <Grid Grid.Row="3">
+            <TextBlock Text="{l:Loc Validate_Empty}" Style="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Visibility="{Binding Checks.Count, Converter={x:Static l:Inverse.Visibility}}" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Checks}" l:Anim.Stagger="True" AutomationProperties.AutomationId="CheckList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="9" Margin="0,0,0,8">
+                                <Grid>
+                                    <Border Width="4" HorizontalAlignment="Left" CornerRadius="9,0,0,9" Background="{Binding Status, Converter={StaticResource StatusBrush}}" />
+                                    <StackPanel Margin="18,12,14,12">
+                                        <ToggleButton IsChecked="{Binding IsExpanded}" Cursor="Hand" Focusable="True">
+                                            <ToggleButton.Template>
+                                                <ControlTemplate TargetType="ToggleButton">
+                                                    <Border Background="Transparent"><ContentPresenter /></Border>
+                                                </ControlTemplate>
+                                            </ToggleButton.Template>
+                                            <DockPanel>
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Result.Id}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
+                                                <TextBlock DockPanel.Dock="Left" Text="{Binding StatusText}" Width="110" FontWeight="SemiBold" FontSize="12" Foreground="{Binding Status, Converter={StaticResource StatusBrush}}" VerticalAlignment="Center" />
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Result.Name}" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding Result.Description}" Style="{StaticResource Muted}" FontSize="13" />
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </ToggleButton>
+                                        <StackPanel Margin="110,10,0,0" Visibility="{Binding IsExpanded, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
+                                            <TextBlock Visibility="{Binding Result.AffectedFile, Converter={StaticResource NullVis}}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" Text="{Binding Result.AffectedFile}" />
+                                            <StackPanel Visibility="{Binding HasEvidence, Converter={StaticResource BoolVis}}">
+                                                <TextBlock Text="{l:Loc Validate_Evidence}" Style="{StaticResource Label}" Margin="0,8,0,4" />
+                                                <Border Background="{DynamicResource ConsoleBgBrush}" CornerRadius="6" Padding="10,8">
+                                                    <TextBlock Text="{Binding EvidenceText}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="#D8D6CE" TextWrapping="Wrap" />
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel Visibility="{Binding FixLabel, Converter={StaticResource NullVis}}">
+                                                <TextBlock Text="{Binding FixLabel}" Style="{StaticResource Label}" Margin="0,8,0,4" />
+                                                <TextBlock Text="{Binding Result.Fix.Text}" TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            <StackPanel Visibility="{Binding Result.NotRunReason, Converter={StaticResource NullVis}}">
+                                                <TextBlock Text="{l:Loc Validate_NotRun}" Style="{StaticResource Label}" Margin="0,8,0,4" />
+                                                <TextBlock Text="{Binding Result.NotRunReason}" TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" Style="{StaticResource Muted}" FontSize="12">
+                                                <Run Text="{l:Loc Validate_Confidence}" /><Run Text=": " /><Run Text="{Binding Result.Confidence, Mode=OneWay}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- History + diff -->
+        <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Validate_Diff}" Style="{StaticResource H2}" FontSize="15" />
+                    <TextBlock Text="{l:Loc Validate_NoDiff}" Style="{StaticResource Muted}" Margin="0,8,0,0" FontSize="12.5">
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{x:Static l:AllTrue.Visibility}">
+                                <Binding Path="HasDiff" />
+                                <Binding Path="Diff.Count" Converter="{x:Static l:Inverse.Bool}" />
+                            </MultiBinding>
+                        </TextBlock.Visibility>
+                    </TextBlock>
+                    <ItemsControl ItemsSource="{Binding Diff}" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12.5" Margin="0,3" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Validate_History}" Style="{StaticResource H2}" FontSize="15" />
+                    <ItemsControl ItemsSource="{Binding History}" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Display}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,3" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

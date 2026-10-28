@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/X1NPAR1/PackCheck/docs/schema/report.schema.json",
+  "title": "PackCheck validation report",
+  "type": "object",
+  "required": ["schema", "tool", "toolVersion", "target", "startedAt", "duration", "overall", "checks"],
+  "properties": {
+    "schema": { "const": "1.0" },
+    "tool": { "type": "string" },
+    "toolVersion": { "type": "string" },
+    "target": { "type": "string" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "duration": { "type": "string" },
+    "overall": { "enum": ["Pass", "PassWithWarnings", "Fail", "Incomplete"] },
+    "checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "plugins": { "type": "array", "items": { "$ref": "#/$defs/plugin" } }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "required": ["id", "name", "status", "description", "evidence", "confidence"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "enum": ["Pass", "Warn", "Fail", "Skip", "Error"] },
+        "description": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "affectedFile": { "type": "string" },
+        "affectedPlugin": { "type": "string" },
+        "confidence": { "enum": ["Low", "Medium", "High"] },
+        "fix": { "type": "object", "required": ["text", "isCertain"], "properties": { "text": { "type": "string" }, "isCertain": { "type": "boolean" } } },
+        "notRunReason": { "type": "string" }
+      }
+    },
+    "plugin": {
+      "type": "object",
+      "required": ["fileName", "sha256", "size"],
+      "properties": {
+        "fileName": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer" },
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "apiVersion": { "type": "string" },
+        "depends": { "type": "array", "items": { "type": "string" } },
+        "softDepends": { "type": "array", "items": { "type": "string" } },
+        "isCorrupt": { "type": "boolean" }
+      }
+    }
+  }
+}

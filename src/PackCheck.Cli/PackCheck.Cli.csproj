@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PackCheck.Validation\PackCheck.Validation.csproj" />
+    <ProjectReference Include="..\PackCheck.Reporting\PackCheck.Reporting.csproj" />
+    <ProjectReference Include="..\PackCheck.Providers\PackCheck.Providers.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>packcheck</AssemblyName>
+    
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
