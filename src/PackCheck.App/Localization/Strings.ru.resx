@@ -206,6 +206,7 @@
   <data name="Java_Failed" xml:space="preserve"><value>Не удалось установить Java: {0}</value></data>
   <data name="Splash_InstallJava" xml:space="preserve"><value>Первый запуск: установка Java 21… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>Запускать PackCheck вместе с Windows (в трее)</value></data>
+  <data name="Wizard_Supports" xml:space="preserve"><value>Поддерживает {0} – {1} (версий: {2})</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

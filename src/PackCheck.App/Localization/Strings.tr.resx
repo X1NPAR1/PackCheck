@@ -206,6 +206,7 @@ Yine de uygulansın mı?</value></data>
   <data name="Java_Failed" xml:space="preserve"><value>Java kurulamadı: {0}</value></data>
   <data name="Splash_InstallJava" xml:space="preserve"><value>İlk açılış: Java 21 kuruluyor… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>PackCheck'i Windows ile başlat (tepside açılır)</value></data>
+  <data name="Wizard_Supports" xml:space="preserve"><value>Desteklenen: {0} – {1} ({2} sürüm)</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

@@ -13,6 +13,16 @@ public enum ServerPlatform
     Fabric,
     Forge,
     NeoForge,
+    Folia,
+    Leaf,
+    Leaves,
+    Spigot,
+    CraftBukkit,
+    Quilt,
+    SpongeVanilla,
+    Mohist,
+    Youer,
+    Arclight,
 }
 
 /// <summary>A file to fetch. Installers (Forge/NeoForge) are run with --installServer after download.</summary>
@@ -20,11 +30,24 @@ public sealed record ServerDownload(string FileName, Uri Url, string? Hash, Hash
 
 public static class PlatformInfo
 {
-    public static bool UsesPlugins(ServerPlatform p) => p is ServerPlatform.Paper or ServerPlatform.Purpur;
+    public static bool UsesPlugins(ServerPlatform p) => p is ServerPlatform.Paper or ServerPlatform.Purpur or ServerPlatform.Folia or ServerPlatform.Leaf
+        or ServerPlatform.Leaves or ServerPlatform.Spigot or ServerPlatform.CraftBukkit or ServerPlatform.Mohist or ServerPlatform.Youer or ServerPlatform.Arclight;
 
-    public static bool UsesMods(ServerPlatform p) => p is ServerPlatform.Fabric or ServerPlatform.Forge or ServerPlatform.NeoForge;
+    public static bool UsesMods(ServerPlatform p) => p is ServerPlatform.Fabric or ServerPlatform.Forge or ServerPlatform.NeoForge or ServerPlatform.Quilt
+        or ServerPlatform.Mohist or ServerPlatform.Youer or ServerPlatform.Arclight;
 
-    public static string Loader(ServerPlatform p) => p.ToString().ToLowerInvariant();
+    public static bool IsHybrid(ServerPlatform p) => UsesPlugins(p) && UsesMods(p);
+
+    /// <summary>Mod loader id used by mod catalogs.</summary>
+    public static string Loader(ServerPlatform p) => p switch
+    {
+        ServerPlatform.Mohist => "forge",
+        ServerPlatform.Youer or ServerPlatform.Arclight => "neoforge",
+        _ => p.ToString().ToLowerInvariant(),
+    };
+
+    /// <summary>Folder that holds add-ons; hybrids keep plugins in "plugins" and mods in "mods".</summary>
+    public static string ContentFolder(ServerPlatform p, bool mods) => mods ? "mods" : "plugins";
 
     /// <summary>NeoForge "21.1.77" -> "1.21.1", "21.0.5" -> "1.21", "26.1.2.123" -> "26.1.2".</summary>
     public static string? NeoForgeToMinecraft(string neo)
@@ -61,6 +84,11 @@ public sealed class ServerSources(HttpClient http)
 
     public async Task<IReadOnlyList<string>> GetVersionsAsync(ServerPlatform platform, CancellationToken ct)
     {
+        if (await new MorePlatforms(http).VersionsAsync(platform, ct).ConfigureAwait(false) is { } more)
+        {
+            return more;
+        }
+
         switch (platform)
         {
             case ServerPlatform.Purpur:
@@ -78,7 +106,10 @@ public sealed class ServerSources(HttpClient http)
             case ServerPlatform.Forge:
             {
                 using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
-                return Newest(doc.RootElement.GetProperty("promos").EnumerateObject().Select(p => p.Name[..p.Name.LastIndexOf('-')]));
+                // Forge ships an installer from Minecraft 1.5.2 on; older builds cannot be installed as a server.
+                var minimum = new MinecraftVersion(1, 5, 2);
+                return Newest(doc.RootElement.GetProperty("promos").EnumerateObject().Select(p => p.Name[..p.Name.LastIndexOf('-')])
+                    .Where(v => MinecraftVersion.TryParse(v, out var mv) && mv >= minimum));
             }
 
             case ServerPlatform.NeoForge:
@@ -98,9 +129,13 @@ public sealed class ServerSources(HttpClient http)
         }
 
         using var manifest = await GetJsonAsync(MojangManifest, ct).ConfigureAwait(false);
+
+        // Mojang's metadata has no server jar for releases older than 1.2.5.
+        var firstServer = new MinecraftVersion(1, 2, 5);
         return manifest.RootElement.GetProperty("versions").EnumerateArray()
             .Where(v => v.GetProperty("type").GetString() == "release")
             .Select(v => v.GetProperty("id").GetString()!)
+            .Where(v => MinecraftVersion.TryParse(v, out var mv) && mv >= firstServer)
             .ToList();
     }
 
@@ -115,6 +150,11 @@ public sealed class ServerSources(HttpClient http)
 
     public async Task<ServerDownload> ResolveAsync(ServerPlatform platform, string version, CancellationToken ct)
     {
+        if (await new MorePlatforms(http).ResolveAsync(platform, version, ct).ConfigureAwait(false) is { } more)
+        {
+            return more;
+        }
+
         var v = Uri.EscapeDataString(version);
         switch (platform)
         {

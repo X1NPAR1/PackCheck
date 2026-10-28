@@ -377,8 +377,9 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
                 }
                 else
                 {
-                    Directory.CreateDirectory(server.PluginsDir);
-                    var dest = Path.Combine(server.PluginsDir, Path.GetFileName(f.FileName));
+                    var folder = Kind == CatalogKind.Plugin ? server.PluginsDir : server.ModsDir;
+                    Directory.CreateDirectory(folder);
+                    var dest = Path.Combine(folder, Path.GetFileName(f.FileName));
                     ok = await Preflight.ConfirmChangeAsync(def, () => File.Copy(temp, dest, overwrite: false), () => File.Delete(dest)).ConfigureAwait(true);
                 }
 

@@ -210,7 +210,8 @@ public static partial class TpsParser
     /// <summary>The command that prints TPS on this platform, or null when the platform has none.</summary>
     public static string? CommandFor(ServerPlatform p, bool hasSpark) => p switch
     {
-        ServerPlatform.Paper or ServerPlatform.Purpur => "tps",
+        ServerPlatform.Paper or ServerPlatform.Purpur or ServerPlatform.Folia or ServerPlatform.Leaf or ServerPlatform.Leaves
+            or ServerPlatform.Spigot or ServerPlatform.CraftBukkit or ServerPlatform.Mohist or ServerPlatform.Youer or ServerPlatform.Arclight => "tps",
         ServerPlatform.Forge => "forge tps",
         ServerPlatform.NeoForge => "neoforge tps",
         _ when hasSpark => "spark tps",

@@ -139,6 +139,7 @@
                             </DockPanel>
                             <TextBlock Text="{l:Loc Wizard_Version}" Style="{StaticResource Label}" />
                             <ComboBox ItemsSource="{Binding Versions}" SelectedItem="{Binding Version}" AutomationProperties.AutomationId="WizardVersion" />
+                            <TextBlock Text="{Binding SupportedRange}" Style="{StaticResource Muted}" FontSize="12" Margin="0,4,0,0" />
                             <TextBlock Text="{l:Loc Wizard_Seed}" Style="{StaticResource Label}" />
                             <TextBox Text="{Binding Seed}" />
                         </StackPanel>

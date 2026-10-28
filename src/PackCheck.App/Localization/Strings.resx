@@ -206,6 +206,7 @@ Apply anyway?</value></data>
   <data name="Java_Failed" xml:space="preserve"><value>Java could not be installed: {0}</value></data>
   <data name="Splash_InstallJava" xml:space="preserve"><value>First start: installing Java 21… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>Start PackCheck with Windows (opens in the tray)</value></data>
+  <data name="Wizard_Supports" xml:space="preserve"><value>Supports {0} – {1} ({2} versions)</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

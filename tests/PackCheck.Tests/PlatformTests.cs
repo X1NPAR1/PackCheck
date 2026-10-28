@@ -33,15 +33,29 @@ public class PlatformTests
     [InlineData(ServerPlatform.Fabric)]
     [InlineData(ServerPlatform.Forge)]
     [InlineData(ServerPlatform.NeoForge)]
-    public async Task ResolvesNewestVersion(ServerPlatform platform)
+    [InlineData(ServerPlatform.Folia)]
+    [InlineData(ServerPlatform.Leaf)]
+    [InlineData(ServerPlatform.Leaves)]
+    [InlineData(ServerPlatform.Spigot)]
+    [InlineData(ServerPlatform.CraftBukkit)]
+    [InlineData(ServerPlatform.Quilt)]
+    [InlineData(ServerPlatform.SpongeVanilla)]
+    [InlineData(ServerPlatform.Mohist)]
+    [InlineData(ServerPlatform.Youer)]
+    [InlineData(ServerPlatform.Arclight)]
+    public async Task ResolvesNewestAndOldestVersion(ServerPlatform platform)
     {
         using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("PackCheck-tests/2.0");
         var sources = new ServerSources(http);
         var versions = await sources.GetVersionsAsync(platform, CancellationToken.None);
         Assert.NotEmpty(versions);
-        var dl = await sources.ResolveAsync(platform, versions[0], CancellationToken.None);
-        Assert.Equal(Uri.UriSchemeHttps, dl.Url.Scheme);
-        using var head = await http.SendAsync(new HttpRequestMessage(HttpMethod.Head, dl.Url));
-        Assert.True(head.IsSuccessStatusCode, $"{platform} {versions[0]} -> {dl.Url} {(int)head.StatusCode}");
+        foreach (var v in new[] { versions[0], versions[^1] }.Distinct())
+        {
+            var dl = await sources.ResolveAsync(platform, v, CancellationToken.None);
+            Assert.Equal(Uri.UriSchemeHttps, dl.Url.Scheme);
+            using var res = await http.SendAsync(new HttpRequestMessage(HttpMethod.Get, dl.Url), HttpCompletionOption.ResponseHeadersRead);
+            Assert.True(res.IsSuccessStatusCode, $"{platform} {v} -> {dl.Url} {(int)res.StatusCode}");
+        }
     }
 }

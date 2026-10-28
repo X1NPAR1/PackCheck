@@ -214,6 +214,7 @@ S = {
     "Java_Failed": ["Java could not be installed: {0}", "Java kurulamadı: {0}", "Java konnte nicht installiert werden: {0}", "Impossible d'installer Java : {0}", "Не удалось установить Java: {0}"],
     "Splash_InstallJava": ["First start: installing Java 21… {0}", "İlk açılış: Java 21 kuruluyor… {0}", "Erster Start: Java 21 wird installiert… {0}", "Premier démarrage : installation de Java 21… {0}", "Первый запуск: установка Java 21… {0}"],
     "Settings_StartWithWindows": ["Start PackCheck with Windows (opens in the tray)", "PackCheck'i Windows ile başlat (tepside açılır)", "PackCheck mit Windows starten (im Infobereich)", "Démarrer PackCheck avec Windows (zone de notification)", "Запускать PackCheck вместе с Windows (в трее)"],
+    "Wizard_Supports": ["Supports {0} – {1} ({2} versions)", "Desteklenen: {0} – {1} ({2} sürüm)", "Unterstützt {0} – {1} ({2} Versionen)", "Prend en charge {0} – {1} ({2} versions)", "Поддерживает {0} – {1} (версий: {2})"],
     # settings
     "Settings_Title": ["Settings", "Ayarlar", "Einstellungen", "Paramètres", "Настройки"],
     "Settings_Language": ["Language", "Dil", "Sprache", "Langue", "Язык"],

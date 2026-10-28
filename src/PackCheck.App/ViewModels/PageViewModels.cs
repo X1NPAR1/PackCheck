@@ -89,6 +89,9 @@ public sealed partial class CreateServerViewModel : ObservableObject
     [ObservableProperty]
     private bool _versionsFailed;
 
+    [ObservableProperty]
+    private string? _supportedRange;
+
     public int RequiredJava => MinecraftVersion.TryParse(Version, out var v) ? v.RequiredJava() : 21;
 
     public bool NeedsJava => Runtime is null || Runtime.FeatureVersion < RequiredJava;
@@ -102,6 +105,8 @@ public sealed partial class CreateServerViewModel : ObservableObject
     private async Task LoadVersionsAsync()
     {
         VersionsFailed = false;
+        SupportedRange = null;
+        Versions.Clear();
         Status = Loc.T("Wizard_LoadingVersions");
         try
         {
@@ -113,6 +118,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
             }
 
             Version = Versions.FirstOrDefault();
+            SupportedRange = Versions.Count == 0 ? null : Loc.F("Wizard_Supports", Versions[^1], Versions[0], Versions.Count);
             Status = null;
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or System.Text.Json.JsonException or KeyNotFoundException)

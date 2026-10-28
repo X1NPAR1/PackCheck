@@ -126,6 +126,8 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     public bool HasContentTab => UsesPlugins || UsesMods;
 
+    public bool IsHybrid => PlatformInfo.IsHybrid(Definition.Platform);
+
     public string ContentTabKey => UsesMods ? "Nav_Mods" : "Nav_Plugins";
 
     // ----- console -----
@@ -827,7 +829,10 @@ public sealed partial class ServerItemViewModel : ObservableObject
     }
 
     // ----- plugins / mods -----
-    public string PluginsDir => Path.Combine(Definition.Directory, UsesMods ? "mods" : "plugins");
+    /// <summary>Hybrids keep plugins in "plugins"; pure mod platforms use "mods".</summary>
+    public string PluginsDir => Path.Combine(Definition.Directory, UsesPlugins ? "plugins" : "mods");
+
+    public string ModsDir => Path.Combine(Definition.Directory, "mods");
 
     public string DisabledDir => Path.Combine(PluginsDir, ".disabled");
 

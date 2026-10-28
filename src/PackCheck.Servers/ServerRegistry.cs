@@ -125,6 +125,103 @@ public static class Backups
 
 public sealed partial class ServerCreator
 {
+    private static async Task<string> RunJavaAsync(string javaPath, string workDir, IEnumerable<string> args, string logFile, TimeSpan timeout, IProgress<(double, string)>? progress, CancellationToken ct)
+    {
+        var psi = new System.Diagnostics.ProcessStartInfo(javaPath)
+        {
+            WorkingDirectory = workDir,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+        };
+        foreach (var a in args)
+        {
+            psi.ArgumentList.Add(a);
+        }
+
+        using var p = System.Diagnostics.Process.Start(psi)!;
+        var log = new System.Text.StringBuilder();
+        var lines = 0;
+        void OnLine(string? l)
+        {
+            if (l is null)
+            {
+                return;
+            }
+
+            lock (log)
+            {
+                log.AppendLine(l);
+                lines++;
+            }
+
+            // BuildTools prints a few thousand lines; use them as a rough progress signal.
+            progress?.Report((0.72 + (Math.Min(lines, 4000) / 4000d * 0.18), "install"));
+        }
+
+        p.OutputDataReceived += (_, e) => OnLine(e.Data);
+        p.ErrorDataReceived += (_, e) => OnLine(e.Data);
+        p.BeginOutputReadLine();
+        p.BeginErrorReadLine();
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        cts.CancelAfter(timeout);
+        try
+        {
+            await p.WaitForExitAsync(cts.Token).ConfigureAwait(false);
+        }
+        finally
+        {
+            if (!p.HasExited)
+            {
+                p.Kill(entireProcessTree: true);
+            }
+
+            await File.WriteAllTextAsync(logFile, log.ToString(), CancellationToken.None).ConfigureAwait(false);
+        }
+
+        if (p.ExitCode != 0)
+        {
+            throw new InvalidOperationException($"The build failed (exit code {p.ExitCode}). See {Path.GetFileName(logFile)} in the server folder.");
+        }
+
+        return log.ToString();
+    }
+
+    /// <summary>Compiles Spigot or CraftBukkit with the official BuildTools in a temporary folder, keeps only the server jar.</summary>
+    public static async Task<string> RunBuildToolsAsync(string javaPath, string dir, string version, ServerPlatform platform, IProgress<(double, string)>? progress, CancellationToken ct)
+    {
+        var build = Path.Combine(dir, ".buildtools");
+        Directory.CreateDirectory(build);
+        File.Move(Path.Combine(dir, "BuildTools.jar"), Path.Combine(build, "BuildTools.jar"), overwrite: true);
+        var target = platform == ServerPlatform.Spigot ? "spigot" : "craftbukkit";
+        await RunJavaAsync(javaPath, build, ["-jar", "BuildTools.jar", "--rev", version, "--compile", target, "--output-dir", dir, "--disable-certificate-check"],
+            Path.Combine(dir, "buildtools-output.log"), TimeSpan.FromMinutes(45), progress, ct).ConfigureAwait(false);
+        var jar = Directory.EnumerateFiles(dir, $"{target}-*.jar").Select(Path.GetFileName).OfType<string>().FirstOrDefault()
+            ?? throw new InvalidOperationException("BuildTools finished but produced no server jar.");
+        try
+        {
+            Directory.Delete(build, true);
+        }
+        catch (IOException)
+        {
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+
+        return jar;
+    }
+
+    /// <summary>Runs the Quilt installer in server mode; it downloads the vanilla server and writes quilt-server-launch.jar.</summary>
+    public static async Task<string> RunQuiltInstallerAsync(string javaPath, string dir, string version, CancellationToken ct)
+    {
+        await RunJavaAsync(javaPath, dir, ["-jar", "quilt-installer.jar", "install", "server", version, "--download-server", $"--install-dir={dir}"],
+            Path.Combine(dir, "installer-output.log"), TimeSpan.FromMinutes(20), null, ct).ConfigureAwait(false);
+        File.Delete(Path.Combine(dir, "quilt-installer.jar"));
+        return File.Exists(Path.Combine(dir, "quilt-server-launch.jar")) ? "quilt-server-launch.jar" : throw new InvalidOperationException("The Quilt installer produced no launcher.");
+    }
+
     /// <summary>Runs a Forge/NeoForge installer and returns how the server must be launched.</summary>
     public static async Task<(string Jar, string? ArgsFile)> RunInstallerAsync(string javaPath, string dir, string installer, CancellationToken ct)
     {
@@ -200,7 +297,15 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
         }
 
         Directory.CreateDirectory(dir);
-        Directory.CreateDirectory(Path.Combine(dir, PlatformInfo.UsesMods(r.Platform) ? "mods" : "plugins"));
+        if (PlatformInfo.UsesMods(r.Platform))
+        {
+            Directory.CreateDirectory(Path.Combine(dir, "mods"));
+        }
+
+        if (PlatformInfo.UsesPlugins(r.Platform))
+        {
+            Directory.CreateDirectory(Path.Combine(dir, "plugins"));
+        }
 
         progress?.Report((0.05, "resolve"));
         var dl = await sources.ResolveAsync(r.Platform, r.Version, ct).ConfigureAwait(false);
@@ -209,7 +314,8 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             ServerPlatform.Paper => "paper.jar",
             ServerPlatform.Purpur => "purpur.jar",
             ServerPlatform.Fabric => "fabric-server-launch.jar",
-            _ => "server.jar",
+            ServerPlatform.Vanilla => "server.jar",
+            _ => dl.FileName,
         };
         await VerifiedDownloader.DownloadAsync(http, dl.Url, Path.Combine(dir, jar), dl.Hash, dl.Algorithm, 300L * 1024 * 1024,
             new Progress<double>(p => progress?.Report((0.1 + (p * 0.6), "download"))), ct).ConfigureAwait(false);
@@ -218,7 +324,12 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
         if (dl.IsInstaller)
         {
             progress?.Report((0.72, "install"));
-            (jar, argsFile) = await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false);
+            (jar, argsFile) = r.Platform switch
+            {
+                ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(r.JavaPath, dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
+                ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct).ConfigureAwait(false), null),
+                _ => await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false),
+            };
         }
 
         progress?.Report((0.92, "configure"));
