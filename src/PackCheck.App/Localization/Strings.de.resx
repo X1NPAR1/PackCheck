@@ -137,7 +137,7 @@ Trotzdem anwenden?</value></data>
   <data name="Settings_Anim_Full" xml:space="preserve"><value>Voll</value></data>
   <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Reduziert</value></data>
   <data name="Settings_Anim_Off" xml:space="preserve"><value>Aus</value></data>
-  <data name="Settings_AnimHint" xml:space="preserve"><value>Die Windows-Einstellung „Animationen anzeigen“ wird berücksichtigt.</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>Aus deaktiviert alle Bewegungen, Reduziert verkürzt sie.</value></data>
   <data name="Settings_ServerFolder" xml:space="preserve"><value>Standard-Serverordner</value></data>
   <data name="Settings_Network" xml:space="preserve"><value>Online-Plugin-Anbieter erlauben (Modrinth, Hangar)</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

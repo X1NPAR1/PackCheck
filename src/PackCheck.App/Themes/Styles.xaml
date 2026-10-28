@@ -23,9 +23,9 @@
     <Geometry x:Key="IconMin">M6,12 H18</Geometry>
     <Geometry x:Key="IconMax">M6,6 H18 V18 H6 Z</Geometry>
 
+    <!-- Foreground is inherited (set on windows), so text inside primary buttons picks up OnPrimary. -->
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource UiFont}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
     </Style>
     <Style x:Key="H1" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

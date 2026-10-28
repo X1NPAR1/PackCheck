@@ -1,14 +1,14 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Color x:Key="BgColor">#F2F0E9</Color>
-  <SolidColorBrush x:Key="BgBrush" Color="#F2F0E9" />
-  <Color x:Key="SurfaceColor">#FBFAF6</Color>
-  <SolidColorBrush x:Key="SurfaceBrush" Color="#FBFAF6" />
-  <Color x:Key="Surface2Color">#EEECE4</Color>
-  <SolidColorBrush x:Key="Surface2Brush" Color="#EEECE4" />
-  <Color x:Key="Surface3Color">#E4E1D7</Color>
-  <SolidColorBrush x:Key="Surface3Brush" Color="#E4E1D7" />
-  <Color x:Key="LineColor">#D6D3C8</Color>
-  <SolidColorBrush x:Key="LineBrush" Color="#D6D3C8" />
+  <Color x:Key="BgColor">#F3F3F1</Color>
+  <SolidColorBrush x:Key="BgBrush" Color="#F3F3F1" />
+  <Color x:Key="SurfaceColor">#FFFFFF</Color>
+  <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+  <Color x:Key="Surface2Color">#EEEEEB</Color>
+  <SolidColorBrush x:Key="Surface2Brush" Color="#EEEEEB" />
+  <Color x:Key="Surface3Color">#E2E2DE</Color>
+  <SolidColorBrush x:Key="Surface3Brush" Color="#E2E2DE" />
+  <Color x:Key="LineColor">#D9D9D4</Color>
+  <SolidColorBrush x:Key="LineBrush" Color="#D9D9D4" />
   <Color x:Key="TextColor">#1F2220</Color>
   <SolidColorBrush x:Key="TextBrush" Color="#1F2220" />
   <Color x:Key="TextMutedColor">#55574F</Color>
@@ -23,8 +23,8 @@
   <SolidColorBrush x:Key="PrimaryPressedBrush" Color="#346623" />
   <Color x:Key="OnPrimaryColor">#FFFFFF</Color>
   <SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF" />
-  <Color x:Key="PrimarySoftColor">#DCE8D2</Color>
-  <SolidColorBrush x:Key="PrimarySoftBrush" Color="#DCE8D2" />
+  <Color x:Key="PrimarySoftColor">#E3ECDB</Color>
+  <SolidColorBrush x:Key="PrimarySoftBrush" Color="#E3ECDB" />
   <Color x:Key="StoneColor">#7B7A72</Color>
   <SolidColorBrush x:Key="StoneBrush" Color="#7B7A72" />
   <Color x:Key="PassColor">#3E7A27</Color>

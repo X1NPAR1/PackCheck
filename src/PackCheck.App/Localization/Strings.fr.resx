@@ -137,7 +137,7 @@ Appliquer quand même ?</value></data>
   <data name="Settings_Anim_Full" xml:space="preserve"><value>Complètes</value></data>
   <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Réduites</value></data>
   <data name="Settings_Anim_Off" xml:space="preserve"><value>Désactivées</value></data>
-  <data name="Settings_AnimHint" xml:space="preserve"><value>Le paramètre Windows « Afficher les animations » est respecté.</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>Désactivées supprime tout mouvement ; Réduites les raccourcit.</value></data>
   <data name="Settings_ServerFolder" xml:space="preserve"><value>Dossier des serveurs par défaut</value></data>
   <data name="Settings_Network" xml:space="preserve"><value>Autoriser les fournisseurs en ligne (Modrinth, Hangar)</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mises à jour</value></data>

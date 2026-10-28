@@ -137,7 +137,7 @@ Apply anyway?</value></data>
   <data name="Settings_Anim_Full" xml:space="preserve"><value>Full</value></data>
   <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Reduced</value></data>
   <data name="Settings_Anim_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Settings_AnimHint" xml:space="preserve"><value>Windows' "Show animations" setting is respected.</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>Off disables all motion; Reduced makes it shorter.</value></data>
   <data name="Settings_ServerFolder" xml:space="preserve"><value>Default server folder</value></data>
   <data name="Settings_Network" xml:space="preserve"><value>Allow online plugin providers (Modrinth, Hangar)</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

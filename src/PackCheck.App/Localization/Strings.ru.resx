@@ -137,7 +137,7 @@
   <data name="Settings_Anim_Full" xml:space="preserve"><value>Полные</value></data>
   <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Уменьшенные</value></data>
   <data name="Settings_Anim_Off" xml:space="preserve"><value>Выкл.</value></data>
-  <data name="Settings_AnimHint" xml:space="preserve"><value>Учитывается параметр Windows «Показывать анимацию».</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>«Выкл.» отключает всю анимацию, «Уменьшенные» сокращает её.</value></data>
   <data name="Settings_ServerFolder" xml:space="preserve"><value>Папка серверов по умолчанию</value></data>
   <data name="Settings_Network" xml:space="preserve"><value>Разрешить онлайн-источники плагинов (Modrinth, Hangar)</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Обновления</value></data>

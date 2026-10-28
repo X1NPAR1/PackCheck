@@ -137,7 +137,7 @@ Yine de uygulansın mı?</value></data>
   <data name="Settings_Anim_Full" xml:space="preserve"><value>Tam</value></data>
   <data name="Settings_Anim_Reduced" xml:space="preserve"><value>Azaltılmış</value></data>
   <data name="Settings_Anim_Off" xml:space="preserve"><value>Kapalı</value></data>
-  <data name="Settings_AnimHint" xml:space="preserve"><value>Windows'un "Animasyonları göster" ayarına uyulur.</value></data>
+  <data name="Settings_AnimHint" xml:space="preserve"><value>Kapalı tüm hareketi kapatır; Azaltılmış kısaltır.</value></data>
   <data name="Settings_ServerFolder" xml:space="preserve"><value>Varsayılan sunucu klasörü</value></data>
   <data name="Settings_Network" xml:space="preserve"><value>Çevrim içi eklenti sağlayıcılarına izin ver (Modrinth, Hangar)</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Güncellemeler</value></data>

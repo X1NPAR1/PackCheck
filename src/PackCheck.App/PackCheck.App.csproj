@@ -30,7 +30,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\**\*.png;Assets\**\*.ttf;Assets\app.ico" />
-    <None Include="Assets\Fonts\*.txt" CopyToOutputDirectory="PreserveNewest" LinkBase="licenses" />
+    <None Remove="Assets\Fonts\*.txt" />
+    <Content Include="Assets\Fonts\*.txt" Link="licenses\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Update="Localization\Strings.resx" LogicalName="PackCheck.App.Localization.Strings.resources" />
   </ItemGroup>
 

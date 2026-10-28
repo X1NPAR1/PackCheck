@@ -4,7 +4,7 @@
         xmlns:c="clr-namespace:PackCheck.App.Controls"
         Title="PackCheck" Width="560" Height="420" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="True" Icon="/Assets/app.ico"
-        AutomationProperties.AutomationId="Splash">
+        Foreground="{DynamicResource TextBrush}" AutomationProperties.AutomationId="Splash">
     <Border x:Name="Root" CornerRadius="16" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" Opacity="0">
         <Border.RenderTransform><ScaleTransform x:Name="RootScale" ScaleX="0.96" ScaleY="0.96" CenterX="280" CenterY="210" /></Border.RenderTransform>
         <Grid Margin="32">

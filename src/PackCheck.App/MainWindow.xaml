@@ -6,7 +6,7 @@
         xmlns:v="clr-namespace:PackCheck.App.Views"
         Title="PackCheck" Width="1280" Height="800" MinWidth="980" MinHeight="640"
         WindowStartupLocation="CenterScreen" Icon="/Assets/app.ico"
-        Background="{DynamicResource BgBrush}" AutomationProperties.AutomationId="MainWindow">
+        Background="{DynamicResource BgBrush}" Foreground="{DynamicResource TextBrush}" FontFamily="{StaticResource UiFont}" AutomationProperties.AutomationId="MainWindow">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="40" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
     </WindowChrome.WindowChrome>

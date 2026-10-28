@@ -8,8 +8,6 @@ namespace PackCheck.App.Infrastructure;
 /// <summary>Swaps the color dictionary at runtime and keeps the native title bar in sync.</summary>
 public static partial class ThemeManager
 {
-    private static ResourceDictionary? _current;
-
     public static bool IsDark { get; private set; } = true;
 
     public static event EventHandler? ThemeChanged;
@@ -24,14 +22,15 @@ public static partial class ThemeManager
         };
 
         var dict = new ResourceDictionary { Source = new Uri($"pack://application:,,,/PackCheck;component/Themes/{(IsDark ? "Dark" : "Light")}.xaml") };
+        // Remove every color dictionary (including the one App.xaml loads at startup),
+        // otherwise the old theme keeps winning because later dictionaries take precedence.
         var merged = Application.Current.Resources.MergedDictionaries;
-        if (_current is not null)
+        foreach (var old in merged.Where(d => d.Source is { } src && src.OriginalString.Contains("Themes/Dark.xaml", StringComparison.Ordinal) || d.Source?.OriginalString.Contains("Themes/Light.xaml", StringComparison.Ordinal) == true).ToList())
         {
-            merged.Remove(_current);
+            merged.Remove(old);
         }
 
         merged.Insert(0, dict);
-        _current = dict;
 
         foreach (Window w in Application.Current.Windows)
         {
@@ -70,7 +69,8 @@ public static class Motion
 {
     public static AnimationLevel Level { get; set; } = AnimationLevel.Full;
 
-    public static bool Enabled => Level != AnimationLevel.Off && SystemParameters.ClientAreaAnimation;
+    /// <summary>The in-app setting decides; Off disables every animation.</summary>
+    public static bool Enabled => Level != AnimationLevel.Off;
 
     public static Duration D(int ms) => new(TimeSpan.FromMilliseconds(!Enabled ? 0 : Level == AnimationLevel.Reduced ? ms / 2 : ms));
 }

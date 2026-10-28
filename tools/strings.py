@@ -146,7 +146,7 @@ S = {
     "Settings_Anim_Full": ["Full", "Tam", "Voll", "Complètes", "Полные"],
     "Settings_Anim_Reduced": ["Reduced", "Azaltılmış", "Reduziert", "Réduites", "Уменьшенные"],
     "Settings_Anim_Off": ["Off", "Kapalı", "Aus", "Désactivées", "Выкл."],
-    "Settings_AnimHint": ["Windows' \"Show animations\" setting is respected.", "Windows'un \"Animasyonları göster\" ayarına uyulur.", "Die Windows-Einstellung „Animationen anzeigen“ wird berücksichtigt.", "Le paramètre Windows « Afficher les animations » est respecté.", "Учитывается параметр Windows «Показывать анимацию»."],
+    "Settings_AnimHint": ["Off disables all motion; Reduced makes it shorter.", "Kapalı tüm hareketi kapatır; Azaltılmış kısaltır.", "Aus deaktiviert alle Bewegungen, Reduziert verkürzt sie.", "Désactivées supprime tout mouvement ; Réduites les raccourcit.", "«Выкл.» отключает всю анимацию, «Уменьшенные» сокращает её."],
     "Settings_ServerFolder": ["Default server folder", "Varsayılan sunucu klasörü", "Standard-Serverordner", "Dossier des serveurs par défaut", "Папка серверов по умолчанию"],
     "Settings_Network": ["Allow online plugin providers (Modrinth, Hangar)", "Çevrim içi eklenti sağlayıcılarına izin ver (Modrinth, Hangar)", "Online-Plugin-Anbieter erlauben (Modrinth, Hangar)", "Autoriser les fournisseurs en ligne (Modrinth, Hangar)", "Разрешить онлайн-источники плагинов (Modrinth, Hangar)"],
     "Settings_Updates": ["Updates", "Güncellemeler", "Updates", "Mises à jour", "Обновления"],
