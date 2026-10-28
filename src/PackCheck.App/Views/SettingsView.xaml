@@ -6,12 +6,59 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel MaxWidth="760" HorizontalAlignment="Left">
-            <TextBlock Text="{l:Loc Settings_Title}" Style="{StaticResource H1}" Margin="0,0,0,18" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="3" Text="{l:Loc Settings_Title}" Style="{StaticResource H1}" Margin="0,0,0,18" />
 
-            <Border Style="{StaticResource Card}">
+        <!-- Section sidebar + search -->
+        <StackPanel Grid.Row="1">
+            <TextBox x:Name="SearchBox" Tag="{l:Loc Settings_Search}" TextChanged="OnSearch" Margin="0,0,0,12" AutomationProperties.Name="{l:Loc Settings_Search}"
+                     AutomationProperties.AutomationId="SettingsSearch" />
+            <ListBox x:Name="Sections" BorderThickness="0" Background="Transparent" SelectionChanged="OnSection" AutomationProperties.AutomationId="SettingsSections">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="Bd" CornerRadius="8" Padding="12,9" Margin="0,0,0,2" Background="Transparent" Cursor="Hand">
+                                        <ContentPresenter />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2Brush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimarySoftBrush}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBoxItem Tag="SecAppearance"><TextBlock Text="{l:Loc Settings_SecAppearance}" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecAi"><TextBlock Text="{l:Loc Ai_Title}" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecUpdates"><TextBlock Text="{l:Loc Settings_Updates}" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecServers"><TextBlock Text="{l:Loc Settings_SecServers}" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecIntegrations"><TextBlock Text="{l:Loc Settings_SecIntegrations}" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecJava"><TextBlock Text="Java" FontWeight="Medium" /></ListBoxItem>
+            </ListBox>
+            <TextBlock x:Name="NoMatch" Text="{l:Loc Settings_NoMatch}" Style="{StaticResource Muted}" FontSize="12.5" Margin="4,8,0,0" Visibility="Collapsed" TextWrapping="Wrap" />
+        </StackPanel>
+
+    <ScrollViewer x:Name="Scroller" Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto">
+        <StackPanel x:Name="Cards" MaxWidth="760" HorizontalAlignment="Left">
+            <Border x:Name="SecAppearance" Style="{StaticResource Card}" Margin="0,0,0,14">
                 <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_SecAppearance}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,12" />
                     <TextBlock Text="{l:Loc Settings_Language}" Style="{StaticResource Label}" Margin="0,0,0,6" />
                     <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" Width="260" HorizontalAlignment="Left" AutomationProperties.AutomationId="LanguageBox">
                         <ComboBox.ItemTemplate>
@@ -41,34 +88,38 @@
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource Card}" Margin="0,14,0,0" AutomationProperties.AutomationId="AiSettings">
+            <Border x:Name="SecAi" Style="{StaticResource Card}" Margin="0,0,0,14" AutomationProperties.AutomationId="AiSettings">
                 <StackPanel>
                     <TextBlock Text="{l:Loc Ai_Title}" Style="{StaticResource H2}" FontSize="15" />
                     <TextBlock Text="{l:Loc Ai_Hint}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10" />
                     <TextBlock Text="{l:Loc Ai_Provider}" Style="{StaticResource Label}" Margin="0,0,0,6" />
-                    <ComboBox ItemsSource="{Binding AiProviders}" SelectedItem="{Binding AiProvider}" Width="260" HorizontalAlignment="Left">
+                    <ComboBox ItemsSource="{Binding AiProviders}" SelectedItem="{Binding AiProvider}" Width="260" HorizontalAlignment="Left" AutomationProperties.AutomationId="AiProviderBox">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate><TextBlock Text="{Binding}" /></DataTemplate>
+                            <DataTemplate><TextBlock Text="{Binding Converter={x:Static l:AiProviderName.Instance}}" /></DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <StackPanel Visibility="{Binding AiNeedsKey, Converter={StaticResource BoolVis}}">
                         <TextBlock Text="{l:Loc Ai_Key}" Style="{StaticResource Label}" Margin="0,14,0,6" />
-                        <TextBox Text="{Binding AiKey, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Ai_KeyHint}" FontFamily="{StaticResource MonoFont}" Width="420" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding AiKey, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Ai_KeyHint}" FontFamily="{StaticResource MonoFont}" Width="420" HorizontalAlignment="Left" />
+                            <Button Style="{StaticResource GhostButton}" Content="{l:Loc Ai_GetKey}" Command="{Binding OpenAiKeyPageCommand}" Margin="8,0,0,0" />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
                         <Button Content="{l:Loc Ai_Connect}" Style="{StaticResource PrimaryButton}" Command="{Binding AiConnectCommand}" IsEnabled="{Binding AiBusy, Converter={x:Static l:Inverse.Bool}}" />
                         <TextBlock Text="{Binding AiStatus}" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="12,0,0,0" />
                     </StackPanel>
                     <TextBlock Text="{l:Loc Ai_Model}" Style="{StaticResource Label}" Margin="0,14,0,6" />
-                    <ComboBox ItemsSource="{Binding AiModels}" SelectedItem="{Binding AiModel}" Width="420" HorizontalAlignment="Left">
+                    <ComboBox ItemsSource="{Binding AiModels}" SelectedItem="{Binding AiModel}" Width="420" HorizontalAlignment="Left" AutomationProperties.AutomationId="AiModelBox">
                         <ComboBox.ItemTemplate>
                             <DataTemplate><TextBlock Text="{Binding}" /></DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <TextBlock Text="{l:Loc Ai_ModelHint}" Style="{StaticResource Muted}" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <Border x:Name="SecUpdates" Style="{StaticResource Card}" Margin="0,0,0,14">
                 <StackPanel>
                     <TextBlock Text="{l:Loc Settings_Updates}" Style="{StaticResource H2}" FontSize="15" />
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoUpdate}" Margin="0,14,0,0" AutomationProperties.AutomationId="AutoUpdateSwitch">
@@ -86,8 +137,9 @@
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+            <Border x:Name="SecServers" Style="{StaticResource Card}" Margin="0,0,0,14">
                 <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_SecServers}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,12" />
                     <TextBlock Text="{l:Loc Settings_ServerFolder}" Style="{StaticResource Label}" Margin="0,0,0,6" />
                     <DockPanel>
                         <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseFolderCommand}" Margin="8,0,0,0" />
@@ -99,12 +151,24 @@
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding MinimizeToTray}" Margin="0,18,0,0">
                         <TextBlock Text="{l:Loc Settings_Tray}" TextWrapping="Wrap" />
                     </CheckBox>
-                    <TextBlock Text="{l:Loc Settings_CurseForge}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="SecIntegrations" Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_SecIntegrations}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,12" />
+                    <TextBlock Text="{l:Loc Settings_CurseForge}" Style="{StaticResource Label}" Margin="0,0,0,6" />
                     <TextBox Text="{Binding CurseForgeKey, UpdateSourceTrigger=LostFocus}" FontFamily="{StaticResource MonoFont}" AutomationProperties.Name="{l:Loc Settings_CurseForge}" />
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AllowNetwork}" Margin="0,18,0,0">
                         <TextBlock Text="{l:Loc Settings_Network}" TextWrapping="Wrap" />
                     </CheckBox>
-                    <TextBlock Text="{l:Loc Settings_Java}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                    <TextBlock Text="{l:Loc Settings_Telemetry}" Style="{StaticResource Muted}" FontSize="12" Margin="0,18,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="SecJava" Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Settings_Java}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,8" />
                     <TextBlock Text="{l:Loc Settings_JavaNone}" Style="{StaticResource Muted}" Visibility="{Binding Runtimes.Count, Converter={x:Static l:Inverse.Visibility}}" />
                     <ItemsControl ItemsSource="{Binding Runtimes}">
                         <ItemsControl.ItemTemplate>
@@ -116,9 +180,9 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="{l:Loc Settings_Telemetry}" Style="{StaticResource Muted}" FontSize="12" Margin="0,18,0,0" />
                 </StackPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>
+    </Grid>
 </UserControl>

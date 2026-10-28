@@ -45,7 +45,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
 
     public bool IsConfigured => settings.AiModel is not null && (AiProviders.IsLocal(settings.AiProvider) || Secrets.Unprotect(settings.AiKey) is not null);
 
-    public string ModelText => $"{settings.AiProvider} · {settings.AiModel ?? "–"}";
+    public string ModelText => $"{AiProviders.DisplayName(settings.AiProvider)} · {settings.AiModel ?? "–"}";
 
     public string ServerText => servers.Selected is { } s ? s.Name : Loc.T("Assistant_NoServer");
 

@@ -17,6 +17,12 @@ public enum AiProviderKind
     OpenRouter,
     Ollama,
     LmStudio,
+
+    // Added in 3.1.1; appended so settings saved as numbers keep their meaning.
+    Grok,
+    DeepSeek,
+    Mistral,
+    Groq,
 }
 
 public sealed record AiToolSpec(string Name, string Description, JsonObject Schema);
@@ -43,11 +49,69 @@ public static class AiProviders
     {
         AiProviderKind.OpenAI => "https://api.openai.com/v1",
         AiProviderKind.Gemini => "https://generativelanguage.googleapis.com/v1beta/openai",
+        AiProviderKind.Grok => "https://api.x.ai/v1",
+        AiProviderKind.DeepSeek => "https://api.deepseek.com/v1",
+        AiProviderKind.Mistral => "https://api.mistral.ai/v1",
+        AiProviderKind.Groq => "https://api.groq.com/openai/v1",
         AiProviderKind.OpenRouter => "https://openrouter.ai/api/v1",
         AiProviderKind.Ollama => "http://localhost:11434/v1",
         AiProviderKind.LmStudio => "http://localhost:1234/v1",
         _ => "https://api.anthropic.com",
     };
+
+    /// <summary>Display name with the company, for the provider picker.</summary>
+    public static string DisplayName(AiProviderKind k) => k switch
+    {
+        AiProviderKind.Anthropic => "Anthropic Claude",
+        AiProviderKind.OpenAI => "OpenAI ChatGPT",
+        AiProviderKind.Gemini => "Google Gemini",
+        AiProviderKind.Grok => "xAI Grok",
+        AiProviderKind.DeepSeek => "DeepSeek",
+        AiProviderKind.Mistral => "Mistral AI",
+        AiProviderKind.Groq => "Groq",
+        AiProviderKind.OpenRouter => "OpenRouter",
+        AiProviderKind.Ollama => "Ollama (local)",
+        AiProviderKind.LmStudio => "LM Studio (local)",
+        _ => k.ToString(),
+    };
+
+    /// <summary>Where the user gets an API key.</summary>
+    public static string? KeyPage(AiProviderKind k) => k switch
+    {
+        AiProviderKind.Anthropic => "https://console.anthropic.com/settings/keys",
+        AiProviderKind.OpenAI => "https://platform.openai.com/api-keys",
+        AiProviderKind.Gemini => "https://aistudio.google.com/apikey",
+        AiProviderKind.Grok => "https://console.x.ai",
+        AiProviderKind.DeepSeek => "https://platform.deepseek.com/api_keys",
+        AiProviderKind.Mistral => "https://console.mistral.ai/api-keys",
+        AiProviderKind.Groq => "https://console.groq.com/keys",
+        AiProviderKind.OpenRouter => "https://openrouter.ai/keys",
+        _ => null,
+    };
+
+    /// <summary>
+    /// Well-known chat models shown before connecting, so there is always something to pick.
+    /// "Connect" replaces them with the provider's live list.
+    /// </summary>
+    public static IReadOnlyList<string> SuggestedModels(AiProviderKind k) => k switch
+    {
+        AiProviderKind.Anthropic => ["claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"],
+        AiProviderKind.OpenAI => ["gpt-5", "gpt-5-mini", "gpt-4.1", "gpt-4o-mini"],
+        AiProviderKind.Gemini => ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"],
+        AiProviderKind.Grok => ["grok-4", "grok-3", "grok-3-mini"],
+        AiProviderKind.DeepSeek => ["deepseek-chat", "deepseek-reasoner"],
+        AiProviderKind.Mistral => ["mistral-large-latest", "mistral-medium-latest", "mistral-small-latest", "codestral-latest"],
+        AiProviderKind.Groq => ["llama-3.3-70b-versatile", "openai/gpt-oss-120b", "qwen/qwen3-32b"],
+        AiProviderKind.OpenRouter => ["anthropic/claude-sonnet-5-5", "openai/gpt-5", "google/gemini-2.5-pro", "x-ai/grok-4", "deepseek/deepseek-chat"],
+        _ => [],
+    };
+
+    /// <summary>Drops embeddings, speech, image and moderation models from a provider's list; only chat models can drive the assistant.</summary>
+    public static bool IsChatModel(string id)
+    {
+        string[] skip = ["embed", "whisper", "tts", "dall-e", "image", "moderation", "audio", "transcribe", "realtime", "search", "rerank", "ocr", "guard", "imagen", "veo", "aqa"];
+        return !skip.Any(x => id.Contains(x, StringComparison.OrdinalIgnoreCase));
+    }
 
     /// <summary>The provider's own model list, so the user picks a model instead of typing one.</summary>
     public static async Task<IReadOnlyList<string>> ListModelsAsync(AiProviderKind kind, string? apiKey, HttpClient http, CancellationToken ct)
@@ -69,7 +133,7 @@ public static class AiProviders
         res.EnsureSuccessStatusCode();
         using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false));
         return doc.RootElement.GetProperty("data").EnumerateArray().Select(m => m.GetProperty("id").GetString()!)
-            .Select(id => id.StartsWith("models/", StringComparison.Ordinal) ? id[7..] : id).Order(StringComparer.OrdinalIgnoreCase).ToList();
+            .Select(id => id.StartsWith("models/", StringComparison.Ordinal) ? id[7..] : id).Where(IsChatModel).Order(StringComparer.OrdinalIgnoreCase).ToList();
     }
 
     public static IAiConversation Start(AiProviderKind kind, string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools, HttpClient http) =>

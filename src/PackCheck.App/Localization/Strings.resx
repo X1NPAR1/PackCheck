@@ -255,6 +255,13 @@ Apply anyway?</value></data>
   <data name="CheckCat_Versions" xml:space="preserve"><value>Version compatibility</value></data>
   <data name="CheckCat_Runtime" xml:space="preserve"><value>Runtime test</value></data>
   <data name="CheckCat_Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Ai_GetKey" xml:space="preserve"><value>Get a key ↗</value></data>
+  <data name="Ai_ModelHint" xml:space="preserve"><value>Pick a model from the list. "Connect" loads every model your key can use.</value></data>
+  <data name="Settings_Search" xml:space="preserve"><value>Search settings…</value></data>
+  <data name="Settings_NoMatch" xml:space="preserve"><value>No setting matches.</value></data>
+  <data name="Settings_SecAppearance" xml:space="preserve"><value>Language and appearance</value></data>
+  <data name="Settings_SecServers" xml:space="preserve"><value>Servers and startup</value></data>
+  <data name="Settings_SecIntegrations" xml:space="preserve"><value>Downloads and privacy</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

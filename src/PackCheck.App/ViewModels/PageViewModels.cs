@@ -693,9 +693,14 @@ public sealed partial class SettingsViewModel : ObservableObject
         _minimizeToTray = settings.MinimizeToTray;
         _startWithWindows = Autostart.IsEnabled();
         _aiProvider = settings.AiProvider;
+        FillSuggested(settings.AiProvider);
         if (settings.AiModel is not null)
         {
-            AiModels.Add(settings.AiModel);
+            if (!AiModels.Contains(settings.AiModel))
+            {
+                AiModels.Insert(0, settings.AiModel);
+            }
+
             _aiModel = settings.AiModel;
         }
         _curseForgeKey = settings.CurseForgeApiKey ?? string.Empty;
@@ -708,7 +713,11 @@ public sealed partial class SettingsViewModel : ObservableObject
     private bool _startWithWindows;
 
     // ----- AI -----
-    public IReadOnlyList<Ai.AiProviderKind> AiProviders { get; } = Enum.GetValues<Ai.AiProviderKind>();
+    public IReadOnlyList<Ai.AiProviderKind> AiProviders { get; } =
+    [
+        Ai.AiProviderKind.Anthropic, Ai.AiProviderKind.OpenAI, Ai.AiProviderKind.Gemini, Ai.AiProviderKind.Grok, Ai.AiProviderKind.DeepSeek,
+        Ai.AiProviderKind.Mistral, Ai.AiProviderKind.Groq, Ai.AiProviderKind.OpenRouter, Ai.AiProviderKind.Ollama, Ai.AiProviderKind.LmStudio,
+    ];
 
     public ObservableCollection<string> AiModels { get; } = [];
 
@@ -730,9 +739,30 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     public bool AiNeedsKey => !Ai.AiProviders.IsLocal(AiProvider);
 
-    partial void OnAiProviderChanged(Ai.AiProviderKind value)
+    public string? AiKeyPage => Ai.AiProviders.KeyPage(AiProvider);
+
+    [RelayCommand]
+    private void OpenAiKeyPage()
+    {
+        if (AiKeyPage is { } url)
+        {
+            Shell32.Open(url);
+        }
+    }
+
+    private void FillSuggested(Ai.AiProviderKind kind)
     {
         AiModels.Clear();
+        foreach (var m in Ai.AiProviders.SuggestedModels(kind))
+        {
+            AiModels.Add(m);
+        }
+    }
+
+    partial void OnAiProviderChanged(Ai.AiProviderKind value)
+    {
+        FillSuggested(value);
+        OnPropertyChanged(nameof(AiKeyPage));
         AiStatus = null;
         if (value != _settings.AiProvider)
         {

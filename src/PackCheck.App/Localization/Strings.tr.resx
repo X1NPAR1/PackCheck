@@ -255,6 +255,13 @@ Yine de uygulansın mı?</value></data>
   <data name="CheckCat_Versions" xml:space="preserve"><value>Sürüm uyumu</value></data>
   <data name="CheckCat_Runtime" xml:space="preserve"><value>Çalıştırma testi</value></data>
   <data name="CheckCat_Other" xml:space="preserve"><value>Diğer</value></data>
+  <data name="Ai_GetKey" xml:space="preserve"><value>Anahtar al ↗</value></data>
+  <data name="Ai_ModelHint" xml:space="preserve"><value>Listeden bir model seç. "Bağlan" anahtarının kullanabildiği tüm modelleri yükler.</value></data>
+  <data name="Settings_Search" xml:space="preserve"><value>Ayarlarda ara…</value></data>
+  <data name="Settings_NoMatch" xml:space="preserve"><value>Eşleşen ayar yok.</value></data>
+  <data name="Settings_SecAppearance" xml:space="preserve"><value>Dil ve görünüm</value></data>
+  <data name="Settings_SecServers" xml:space="preserve"><value>Sunucular ve başlangıç</value></data>
+  <data name="Settings_SecIntegrations" xml:space="preserve"><value>İndirmeler ve gizlilik</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

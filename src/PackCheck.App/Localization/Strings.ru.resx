@@ -255,6 +255,13 @@
   <data name="CheckCat_Versions" xml:space="preserve"><value>Совместимость версий</value></data>
   <data name="CheckCat_Runtime" xml:space="preserve"><value>Тест запуска</value></data>
   <data name="CheckCat_Other" xml:space="preserve"><value>Прочее</value></data>
+  <data name="Ai_GetKey" xml:space="preserve"><value>Получить ключ ↗</value></data>
+  <data name="Ai_ModelHint" xml:space="preserve"><value>Выберите модель из списка. «Подключить» загрузит все модели, доступные вашему ключу.</value></data>
+  <data name="Settings_Search" xml:space="preserve"><value>Поиск настроек…</value></data>
+  <data name="Settings_NoMatch" xml:space="preserve"><value>Ничего не найдено.</value></data>
+  <data name="Settings_SecAppearance" xml:space="preserve"><value>Язык и внешний вид</value></data>
+  <data name="Settings_SecServers" xml:space="preserve"><value>Серверы и запуск</value></data>
+  <data name="Settings_SecIntegrations" xml:space="preserve"><value>Загрузки и приватность</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>
