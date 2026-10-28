@@ -329,6 +329,58 @@ Der Server kann die Datei evtl. nicht lesen. Trotzdem speichern?</value></data>
   <data name="Props_Modified" xml:space="preserve"><value>{0} geändert</value></data>
   <data name="Props_Range" xml:space="preserve"><value>Muss zwischen {0} und {1} liegen.</value></data>
   <data name="Validate_TargetHint" xml:space="preserve"><value>Serverordner oder .zip-Pack</value></data>
+  <data name="Nav_Proxy" xml:space="preserve"><value>Proxy</value></data>
+  <data name="Nav_ProxyNoContent" xml:space="preserve"><value>{0} ist ein Proxy; Plugins und Mods gehören auf die Backend-Server.</value></data>
+  <data name="Proxy_Title" xml:space="preserve"><value>Proxy-Netzwerk</value></data>
+  <data name="Proxy_Subtitle" xml:space="preserve"><value>Verbinde einen Velocity- oder BungeeCord-Proxy mit mehreren Servern. PackCheck schreibt die Konfiguration und sichert jeden Backend-Server ab.</value></data>
+  <data name="Proxy_NoneTitle" xml:space="preserve"><value>Noch kein Proxy</value></data>
+  <data name="Proxy_NoneBody" xml:space="preserve"><value>Erstelle einen Server mit Velocity (empfohlen) oder BungeeCord und komm dann zurück.</value></data>
+  <data name="Proxy_StartAll" xml:space="preserve"><value>Alle starten</value></data>
+  <data name="Proxy_StopAll" xml:space="preserve"><value>Alle stoppen</value></data>
+  <data name="Proxy_Motd" xml:space="preserve"><value>Netzwerknachricht (MOTD)</value></data>
+  <data name="Proxy_Backends" xml:space="preserve"><value>Backend-Server</value></data>
+  <data name="Proxy_BackendsHint" xml:space="preserve"><value>Wähle die Server, die über den Proxy erreichbar sind. Der Standardserver ist der erste Halt.</value></data>
+  <data name="Proxy_MakeDefault" xml:space="preserve"><value>Als Standard</value></data>
+  <data name="Proxy_Default" xml:space="preserve"><value>Standard</value></data>
+  <data name="Proxy_Apply" xml:space="preserve"><value>Konfiguration anwenden</value></data>
+  <data name="Proxy_ApplyBody" xml:space="preserve"><value>PackCheck schreibt die Proxy-Konfiguration und ändert diese Backends: {0}
+
+Sie laufen offline, lauschen nur auf 127.0.0.1 und vertrauen dem Weiterleitungsschlüssel.</value></data>
+  <data name="Proxy_Applied" xml:space="preserve"><value>Konfiguration geschrieben.</value></data>
+  <data name="Proxy_NoBackends" xml:space="preserve"><value>Wähle mindestens einen Backend-Server.</value></data>
+  <data name="Proxy_StopFirst" xml:space="preserve"><value>Stoppe Proxy und Backends, bevor du die Konfiguration änderst.</value></data>
+  <data name="Proxy_Check" xml:space="preserve"><value>Einrichtung prüfen</value></data>
+  <data name="Proxy_CheckTitle" xml:space="preserve"><value>Prüfung</value></data>
+  <data name="Proxy_AllGood" xml:space="preserve"><value>Alles passt: Schlüssel, Offline-Modus, Loopback-Bindung und Ports.</value></data>
+  <data name="Proxy_Note" xml:space="preserve"><value>Öffne auf der Online-Seite nur den Proxy-Port; Backends bleiben lokal.</value></data>
+  <data name="Nav_Assistant" xml:space="preserve"><value>Assistent</value></data>
+  <data name="Assistant_Title" xml:space="preserve"><value>KI-Assistent</value></data>
+  <data name="Assistant_Subtitle" xml:space="preserve"><value>Frage zu Fehlern, Konfigurationen, Plugins und Mods oder lass Server einrichten. Gewählter Server:</value></data>
+  <data name="Assistant_NoServer" xml:space="preserve"><value>keiner</value></data>
+  <data name="Assistant_New" xml:space="preserve"><value>Neuer Chat</value></data>
+  <data name="Assistant_SetupTitle" xml:space="preserve"><value>Verbinde zuerst ein KI-Modell</value></data>
+  <data name="Assistant_SetupBody" xml:space="preserve"><value>Wähle in Einstellungen &gt; KI-Assistent einen Anbieter und ein Modell. Lokale Modelle (Ollama, LM Studio) brauchen keinen Schlüssel.</value></data>
+  <data name="Assistant_Empty" xml:space="preserve"><value>Probiere: "Mein Server stürzt beim Start ab, sieh dir die Konsole an" oder "Erstelle 3 Server: Paper-Lobby, Fabric-Survival und Velocity-Proxy".</value></data>
+  <data name="Assistant_InputHint" xml:space="preserve"><value>Nachricht · Enter sendet, Umschalt+Enter neue Zeile</value></data>
+  <data name="Assistant_AttachConsole" xml:space="preserve"><value>+ Konsole</value></data>
+  <data name="Assistant_Approve" xml:space="preserve"><value>Änderung bestätigen</value></data>
+  <data name="Assistant_Allow" xml:space="preserve"><value>Erlauben</value></data>
+  <data name="Assistant_Deny" xml:space="preserve"><value>Ablehnen</value></data>
+  <data name="Assistant_Allowed" xml:space="preserve"><value>Erlaubt</value></data>
+  <data name="Assistant_Denied" xml:space="preserve"><value>Abgelehnt</value></data>
+  <data name="Assistant_Cancelled" xml:space="preserve"><value>Gestoppt.</value></data>
+  <data name="Assistant_Error" xml:space="preserve"><value>Die KI-Anfrage ist fehlgeschlagen: {0}</value></data>
+  <data name="Assistant_NotConfigured" xml:space="preserve"><value>Verbinde zuerst ein Modell in den Einstellungen.</value></data>
+  <data name="Ai_Title" xml:space="preserve"><value>KI-Assistent</value></data>
+  <data name="Ai_Hint" xml:space="preserve"><value>Anbieter wählen, verbinden, dann ein Modell auswählen. Der Schlüssel wird verschlüsselt gespeichert und nur an diesen Anbieter gesendet.</value></data>
+  <data name="Ai_Provider" xml:space="preserve"><value>Anbieter</value></data>
+  <data name="Ai_Key" xml:space="preserve"><value>API-Schlüssel</value></data>
+  <data name="Ai_KeyHint" xml:space="preserve"><value>Schlüssel einfügen (leer lassen, um den gespeicherten zu behalten)</value></data>
+  <data name="Ai_Connect" xml:space="preserve"><value>Verbinden und Modelle laden</value></data>
+  <data name="Ai_Model" xml:space="preserve"><value>Modell</value></data>
+  <data name="Ai_ModelsFound" xml:space="preserve"><value>{0} Modelle verfügbar - wähle eins.</value></data>
+  <data name="Ai_ConnectFailed" xml:space="preserve"><value>Verbindung fehlgeschlagen: {0}</value></data>
+  <data name="Ai_Selected" xml:space="preserve"><value>Verwende {1} ({0}).</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Einstellungen</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>

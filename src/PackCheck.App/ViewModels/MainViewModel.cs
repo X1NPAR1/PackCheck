@@ -2,6 +2,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PackCheck.App.Infrastructure;
+using PackCheck.Servers;
 using PackCheck.Updater;
 
 namespace PackCheck.App.ViewModels;
@@ -11,13 +12,15 @@ public sealed partial class MainViewModel : ObservableObject
     private readonly UpdateService _updates;
     private CancellationTokenSource? _toastCts;
 
-    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, ModsViewModel mods, OnlineViewModel online, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
+    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, ModsViewModel mods, OnlineViewModel online, ProxyViewModel proxy, AssistantViewModel assistant, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
     {
         Servers = servers;
         Validate = validate;
         Plugins = plugins;
         Mods = mods;
         Online = online;
+        Proxy = proxy;
+        Assistant = assistant;
         Settings = settings;
         About = about;
         _updates = updates;
@@ -52,6 +55,7 @@ public sealed partial class MainViewModel : ObservableObject
         PluginsEnabled = s?.UsesPlugins == true;
         ModsEnabled = s?.UsesMods == true;
         string Reason(bool forMods) => s is null ? Loc.T("Nav_NeedServer")
+            : ProxyConfigurator.IsProxy(s.Definition.Platform) ? Loc.F("Nav_ProxyNoContent", s.Definition.Platform)
             : !s.UsesPlugins && !s.UsesMods ? Loc.F("Nav_VanillaNoContent", s.Definition.Platform)
             : forMods ? Loc.F("Nav_ModsOff", s.Definition.Platform) : Loc.F("Nav_PluginsOff", s.Definition.Platform);
         PluginsDisabledReason = PluginsEnabled ? null : Reason(false);
@@ -69,6 +73,8 @@ public sealed partial class MainViewModel : ObservableObject
     public PluginsViewModel Plugins { get; }
     public ModsViewModel Mods { get; }
     public OnlineViewModel Online { get; }
+    public ProxyViewModel Proxy { get; }
+    public AssistantViewModel Assistant { get; }
     public SettingsViewModel Settings { get; }
     public AboutViewModel About { get; }
 
@@ -117,6 +123,8 @@ public sealed partial class MainViewModel : ObservableObject
         4 => About,
         5 => RefreshMods(),
         6 => ActivateOnline(),
+        7 => ActivateProxy(),
+        8 => ActivateAssistant(),
         _ => Servers,
     };
 
@@ -124,6 +132,18 @@ public sealed partial class MainViewModel : ObservableObject
     {
         Mods.Activate();
         return Mods;
+    }
+
+    private AssistantViewModel ActivateAssistant()
+    {
+        Assistant.Activate();
+        return Assistant;
+    }
+
+    private ProxyViewModel ActivateProxy()
+    {
+        Proxy.Activate();
+        return Proxy;
     }
 
     private OnlineViewModel ActivateOnline()
@@ -148,6 +168,8 @@ public sealed partial class MainViewModel : ObservableObject
             AboutViewModel => 4,
             ModsViewModel => 5,
             OnlineViewModel => 6,
+            ProxyViewModel => 7,
+            AssistantViewModel => 8,
             _ => 0,
         };
     }

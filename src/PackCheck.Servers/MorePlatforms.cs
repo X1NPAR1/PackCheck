@@ -93,6 +93,17 @@ internal sealed partial class MorePlatforms(HttpClient http)
                 return Releases((await Task.WhenAll(checks).ConfigureAwait(false)).OfType<string>());
             }
 
+            case ServerPlatform.Velocity:
+            {
+                // Proxy versions, not Minecraft versions; snapshots are skipped.
+                using var d = await JsonAsync("https://fill.papermc.io/v3/projects/velocity", ct).ConfigureAwait(false);
+                return d.RootElement.GetProperty("versions").EnumerateObject().SelectMany(g => g.Value.EnumerateArray().Select(v => v.GetString()!))
+                    .Where(v => !v.Contains("SNAPSHOT", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            case ServerPlatform.BungeeCord:
+                return ["latest"];
+
             case ServerPlatform.Arclight:
             {
                 using var d = await JsonAsync("https://api.github.com/repos/IzzelAliz/Arclight/releases?per_page=40", ct).ConfigureAwait(false);
@@ -175,6 +186,17 @@ internal sealed partial class MorePlatforms(HttpClient http)
                 return new ServerDownload($"{project}.jar", new Uri($"https://api.mohistmc.com/project/{project}/{v}/builds/{b.GetProperty("id").GetInt32()}/download"),
                     b.GetProperty("file_sha256").GetString(), HashAlgorithmName.SHA256, 0);
             }
+
+            case ServerPlatform.Velocity:
+            {
+                using var d = await JsonAsync($"https://fill.papermc.io/v3/projects/velocity/versions/{v}/builds/latest", ct).ConfigureAwait(false);
+                var dl = d.RootElement.GetProperty("downloads").GetProperty("server:default");
+                return new ServerDownload("velocity.jar", new Uri(dl.GetProperty("url").GetString()!), dl.GetProperty("checksums").GetProperty("sha256").GetString(), HashAlgorithmName.SHA256, 0);
+            }
+
+            case ServerPlatform.BungeeCord:
+                // md_5's Jenkins publishes no checksum; HTTPS only.
+                return new ServerDownload("BungeeCord.jar", new Uri("https://hub.spigotmc.org/jenkins/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar"), null, HashAlgorithmName.SHA256, 0);
 
             case ServerPlatform.Arclight:
             {

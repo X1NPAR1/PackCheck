@@ -17,6 +17,8 @@
         <DataTemplate DataType="{x:Type vm:PluginsViewModel}"><v:PluginsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:ModsViewModel}"><v:PluginsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:OnlineViewModel}"><v:OnlineView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProxyViewModel}"><v:ProxyView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AssistantViewModel}"><v:AssistantView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><v:SettingsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:AboutViewModel}"><v:AboutView /></DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -97,11 +99,25 @@
                             <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="9" Height="9" Stroke="{DynamicResource FailBrush}" />
                         </Border>
                     </Grid>
+                    <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavProxy"
+                                 IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=7}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconProxy}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                            <TextBlock Text="{l:Loc Nav_Proxy}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                        </StackPanel>
+                    </RadioButton>
                     <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavOnline"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=6}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconOnline}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                             <TextBlock Text="{l:Loc Nav_Online}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavAssistant"
+                                 IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=8}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconAssistant}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                            <TextBlock Text="{l:Loc Nav_Assistant}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavSettings"

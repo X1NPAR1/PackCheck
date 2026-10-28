@@ -197,7 +197,7 @@ public sealed partial class ServerCreator
         }
 
         var tools = java ?? new JavaRuntimes(http);
-        var required = MinecraftVersion.TryParse(r.Version, out var mc) ? mc.RequiredJava() : 21;
+        var required = PlatformInfo.RequiredJava(r.Platform, r.Version);
         var jdk = await tools.EnsureJdkAsync(required, await tools.DetectAsync(ct).ConfigureAwait(false), null, ct).ConfigureAwait(false);
         return jdk.JavaExe;
     }
@@ -329,6 +329,8 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             ServerPlatform.Purpur => "purpur.jar",
             ServerPlatform.Fabric => "fabric-server-launch.jar",
             ServerPlatform.Vanilla => "server.jar",
+            ServerPlatform.Velocity => "velocity.jar",
+            ServerPlatform.BungeeCord => "BungeeCord.jar",
             _ => dl.FileName,
         };
         await VerifiedDownloader.DownloadAsync(http, dl.Url, Path.Combine(dir, jar), dl.Hash, dl.Algorithm, 300L * 1024 * 1024,

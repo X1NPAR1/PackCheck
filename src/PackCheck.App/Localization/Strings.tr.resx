@@ -329,6 +329,58 @@ Sunucu bu dosyayı okuyamayabilir. Yine de kaydedilsin mi?</value></data>
   <data name="Props_Modified" xml:space="preserve"><value>{0} değişti</value></data>
   <data name="Props_Range" xml:space="preserve"><value>{0} ile {1} arasında olmalı.</value></data>
   <data name="Validate_TargetHint" xml:space="preserve"><value>Sunucu klasörü veya .zip paketi</value></data>
+  <data name="Nav_Proxy" xml:space="preserve"><value>Proxy</value></data>
+  <data name="Nav_ProxyNoContent" xml:space="preserve"><value>{0} bir proxy; eklenti ve modlar arka sunuculara kurulur.</value></data>
+  <data name="Proxy_Title" xml:space="preserve"><value>Proxy ağı</value></data>
+  <data name="Proxy_Subtitle" xml:space="preserve"><value>Bir Velocity veya BungeeCord proxy'sini birden çok sunucuya bağla. PackCheck proxy ayarlarını yazar ve her arka sunucuyu güvenli hale getirir.</value></data>
+  <data name="Proxy_NoneTitle" xml:space="preserve"><value>Henüz proxy yok</value></data>
+  <data name="Proxy_NoneBody" xml:space="preserve"><value>Velocity (önerilen) veya BungeeCord platformuyla bir sunucu oluştur, sonra buraya dön.</value></data>
+  <data name="Proxy_StartAll" xml:space="preserve"><value>Hepsini başlat</value></data>
+  <data name="Proxy_StopAll" xml:space="preserve"><value>Hepsini durdur</value></data>
+  <data name="Proxy_Motd" xml:space="preserve"><value>Ağ mesajı (MOTD)</value></data>
+  <data name="Proxy_Backends" xml:space="preserve"><value>Arka sunucular</value></data>
+  <data name="Proxy_BackendsHint" xml:space="preserve"><value>Oyuncuların proxy üzerinden ulaşacağı sunucuları işaretle. Varsayılan sunucu ilk girdikleri yerdir.</value></data>
+  <data name="Proxy_MakeDefault" xml:space="preserve"><value>Varsayılan yap</value></data>
+  <data name="Proxy_Default" xml:space="preserve"><value>Varsayılan</value></data>
+  <data name="Proxy_Apply" xml:space="preserve"><value>Ayarları uygula</value></data>
+  <data name="Proxy_ApplyBody" xml:space="preserve"><value>PackCheck proxy ayarlarını yazacak ve şu arka sunucuları değiştirecek: {0}
+
+Bunlar çevrimdışı modda çalışacak, sadece 127.0.0.1'i dinleyecek ve proxy'nin gizli anahtarına güvenecek.</value></data>
+  <data name="Proxy_Applied" xml:space="preserve"><value>Ayarlar yazıldı.</value></data>
+  <data name="Proxy_NoBackends" xml:space="preserve"><value>En az bir arka sunucu seç.</value></data>
+  <data name="Proxy_StopFirst" xml:space="preserve"><value>Ayarları değiştirmeden önce proxy'yi ve arka sunucuları durdur.</value></data>
+  <data name="Proxy_Check" xml:space="preserve"><value>Kurulumu kontrol et</value></data>
+  <data name="Proxy_CheckTitle" xml:space="preserve"><value>Kurulum kontrolü</value></data>
+  <data name="Proxy_AllGood" xml:space="preserve"><value>Her şey uyumlu: gizli anahtar, çevrimdışı mod, yerel bağlantı ve portlar.</value></data>
+  <data name="Proxy_Note" xml:space="preserve"><value>Online sayfasında sadece proxy'nin portunu aç; arka sunucular yerel kalır.</value></data>
+  <data name="Nav_Assistant" xml:space="preserve"><value>Asistan</value></data>
+  <data name="Assistant_Title" xml:space="preserve"><value>Yapay zeka asistanı</value></data>
+  <data name="Assistant_Subtitle" xml:space="preserve"><value>Hataları, ayarları, eklenti ve modları sor ya da sunucu kurdur. Seçili sunucu:</value></data>
+  <data name="Assistant_NoServer" xml:space="preserve"><value>yok</value></data>
+  <data name="Assistant_New" xml:space="preserve"><value>Yeni sohbet</value></data>
+  <data name="Assistant_SetupTitle" xml:space="preserve"><value>Önce bir yapay zeka modeli bağla</value></data>
+  <data name="Assistant_SetupBody" xml:space="preserve"><value>Ayarlar &gt; Yapay zeka asistanı bölümünden bir sağlayıcı ve modelini seç. Yerel modeller (Ollama, LM Studio) anahtar istemez.</value></data>
+  <data name="Assistant_Empty" xml:space="preserve"><value>Dene: "Sunucum açılışta çöküyor, konsola bak", "plugins/Essentials/messages.yml dosyasını Türkçeye çevir" veya "3 sunucu kur: Paper lobi, Fabric survival ve Velocity proxy".</value></data>
+  <data name="Assistant_InputHint" xml:space="preserve"><value>Asistana yaz · Enter gönderir, Shift+Enter yeni satır</value></data>
+  <data name="Assistant_AttachConsole" xml:space="preserve"><value>+ Konsol</value></data>
+  <data name="Assistant_Approve" xml:space="preserve"><value>Değişikliği onayla</value></data>
+  <data name="Assistant_Allow" xml:space="preserve"><value>İzin ver</value></data>
+  <data name="Assistant_Deny" xml:space="preserve"><value>Reddet</value></data>
+  <data name="Assistant_Allowed" xml:space="preserve"><value>İzin verildi</value></data>
+  <data name="Assistant_Denied" xml:space="preserve"><value>Reddedildi</value></data>
+  <data name="Assistant_Cancelled" xml:space="preserve"><value>Durduruldu.</value></data>
+  <data name="Assistant_Error" xml:space="preserve"><value>Yapay zeka isteği başarısız: {0}</value></data>
+  <data name="Assistant_NotConfigured" xml:space="preserve"><value>Önce Ayarlar'dan bir model bağla.</value></data>
+  <data name="Ai_Title" xml:space="preserve"><value>Yapay zeka asistanı</value></data>
+  <data name="Ai_Hint" xml:space="preserve"><value>Bir sağlayıcı seç, bağlan, sonra modellerinden birini seç. Anahtar Windows kullanıcın için şifreli saklanır ve sadece o sağlayıcıya gönderilir.</value></data>
+  <data name="Ai_Provider" xml:space="preserve"><value>Sağlayıcı</value></data>
+  <data name="Ai_Key" xml:space="preserve"><value>API anahtarı</value></data>
+  <data name="Ai_KeyHint" xml:space="preserve"><value>Anahtarı yapıştır (kayıtlı olanı korumak için boş bırak)</value></data>
+  <data name="Ai_Connect" xml:space="preserve"><value>Bağlan ve modelleri getir</value></data>
+  <data name="Ai_Model" xml:space="preserve"><value>Model</value></data>
+  <data name="Ai_ModelsFound" xml:space="preserve"><value>{0} model bulundu - birini seç.</value></data>
+  <data name="Ai_ConnectFailed" xml:space="preserve"><value>Bağlanılamadı: {0}</value></data>
+  <data name="Ai_Selected" xml:space="preserve"><value>{1} kullanılıyor ({0}).</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

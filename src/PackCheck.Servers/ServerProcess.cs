@@ -49,7 +49,11 @@ public sealed class ServerProcess : IAsyncDisposable
             ]);
         }
 
-        if (def.ArgsFile is not null)
+        if (ProxyConfigurator.IsProxy(def.Platform))
+        {
+            args.AddRange(["-jar", def.JarFile]);
+        }
+        else if (def.ArgsFile is not null)
         {
             // Modern Forge / NeoForge: java [jvm args] @libraries/.../win_args.txt nogui
             args.Add("@" + def.ArgsFile);
@@ -116,7 +120,9 @@ public sealed class ServerProcess : IAsyncDisposable
             return;
         }
 
-        if (State == ServerState.Starting && line.Contains("Done (", StringComparison.Ordinal) && line.Contains("For help, type", StringComparison.Ordinal))
+        var ready = line.Contains("Done (", StringComparison.Ordinal) && (line.Contains("For help, type", StringComparison.Ordinal) || ProxyConfigurator.IsProxy(_def.Platform))
+            || (_def.Platform == ServerPlatform.BungeeCord && line.Contains("Listening on", StringComparison.Ordinal));
+        if (State == ServerState.Starting && ready)
         {
             SetState(ServerState.Running);
         }
@@ -143,7 +149,7 @@ public sealed class ServerProcess : IAsyncDisposable
         }
 
         SetState(ServerState.Stopping);
-        await SendCommandAsync("stop").ConfigureAwait(false);
+        await SendCommandAsync(ProxyConfigurator.IsProxy(_def.Platform) ? "end" : "stop").ConfigureAwait(false);
         using var cts = new CancellationTokenSource(timeout);
         try
         {

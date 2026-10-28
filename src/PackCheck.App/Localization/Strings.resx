@@ -329,6 +329,58 @@ The server may fail to read this file. Save anyway?</value></data>
   <data name="Props_Modified" xml:space="preserve"><value>{0} changed</value></data>
   <data name="Props_Range" xml:space="preserve"><value>Must be between {0} and {1}.</value></data>
   <data name="Validate_TargetHint" xml:space="preserve"><value>Server folder or .zip pack</value></data>
+  <data name="Nav_Proxy" xml:space="preserve"><value>Proxy</value></data>
+  <data name="Nav_ProxyNoContent" xml:space="preserve"><value>{0} is a proxy; plugins and mods belong on its backend servers.</value></data>
+  <data name="Proxy_Title" xml:space="preserve"><value>Proxy network</value></data>
+  <data name="Proxy_Subtitle" xml:space="preserve"><value>Connect a Velocity or BungeeCord proxy to several servers. PackCheck writes the proxy config and secures every backend.</value></data>
+  <data name="Proxy_NoneTitle" xml:space="preserve"><value>No proxy yet</value></data>
+  <data name="Proxy_NoneBody" xml:space="preserve"><value>Create a server with the Velocity (recommended) or BungeeCord platform, then come back here.</value></data>
+  <data name="Proxy_StartAll" xml:space="preserve"><value>Start all</value></data>
+  <data name="Proxy_StopAll" xml:space="preserve"><value>Stop all</value></data>
+  <data name="Proxy_Motd" xml:space="preserve"><value>Network message (MOTD)</value></data>
+  <data name="Proxy_Backends" xml:space="preserve"><value>Backend servers</value></data>
+  <data name="Proxy_BackendsHint" xml:space="preserve"><value>Tick the servers players should reach through the proxy. The default server is where they land first.</value></data>
+  <data name="Proxy_MakeDefault" xml:space="preserve"><value>Make default</value></data>
+  <data name="Proxy_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Proxy_Apply" xml:space="preserve"><value>Apply configuration</value></data>
+  <data name="Proxy_ApplyBody" xml:space="preserve"><value>PackCheck will write the proxy config and change these backends: {0}
+
+They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's forwarding secret.</value></data>
+  <data name="Proxy_Applied" xml:space="preserve"><value>Configuration written.</value></data>
+  <data name="Proxy_NoBackends" xml:space="preserve"><value>Select at least one backend server.</value></data>
+  <data name="Proxy_StopFirst" xml:space="preserve"><value>Stop the proxy and its backends before changing the configuration.</value></data>
+  <data name="Proxy_Check" xml:space="preserve"><value>Check setup</value></data>
+  <data name="Proxy_CheckTitle" xml:space="preserve"><value>Setup check</value></data>
+  <data name="Proxy_AllGood" xml:space="preserve"><value>Everything matches: secret, offline mode, loopback binding and ports.</value></data>
+  <data name="Proxy_Note" xml:space="preserve"><value>Open only the proxy's port on the Online page; backends stay local.</value></data>
+  <data name="Nav_Assistant" xml:space="preserve"><value>Assistant</value></data>
+  <data name="Assistant_Title" xml:space="preserve"><value>AI assistant</value></data>
+  <data name="Assistant_Subtitle" xml:space="preserve"><value>Ask about errors, configs, plugins and mods, or let it set up servers. Selected server:</value></data>
+  <data name="Assistant_NoServer" xml:space="preserve"><value>none</value></data>
+  <data name="Assistant_New" xml:space="preserve"><value>New chat</value></data>
+  <data name="Assistant_SetupTitle" xml:space="preserve"><value>Connect an AI model first</value></data>
+  <data name="Assistant_SetupBody" xml:space="preserve"><value>Choose a provider and one of its models in Settings &gt; AI assistant. Local models (Ollama, LM Studio) need no key.</value></data>
+  <data name="Assistant_Empty" xml:space="preserve"><value>Try: "My server crashes on start, look at the console", "Translate plugins/Essentials/messages.yml to Turkish" or "Create 3 servers: a Paper lobby, a Fabric survival and a Velocity proxy".</value></data>
+  <data name="Assistant_InputHint" xml:space="preserve"><value>Message the assistant · Enter sends, Shift+Enter new line</value></data>
+  <data name="Assistant_AttachConsole" xml:space="preserve"><value>+ Console</value></data>
+  <data name="Assistant_Approve" xml:space="preserve"><value>Approve change</value></data>
+  <data name="Assistant_Allow" xml:space="preserve"><value>Allow</value></data>
+  <data name="Assistant_Deny" xml:space="preserve"><value>Reject</value></data>
+  <data name="Assistant_Allowed" xml:space="preserve"><value>Allowed</value></data>
+  <data name="Assistant_Denied" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Assistant_Cancelled" xml:space="preserve"><value>Stopped.</value></data>
+  <data name="Assistant_Error" xml:space="preserve"><value>The AI request failed: {0}</value></data>
+  <data name="Assistant_NotConfigured" xml:space="preserve"><value>Connect a model in Settings first.</value></data>
+  <data name="Ai_Title" xml:space="preserve"><value>AI assistant</value></data>
+  <data name="Ai_Hint" xml:space="preserve"><value>Pick a provider, connect, then pick one of its models. The key is stored encrypted for your Windows user and only sent to that provider.</value></data>
+  <data name="Ai_Provider" xml:space="preserve"><value>Provider</value></data>
+  <data name="Ai_Key" xml:space="preserve"><value>API key</value></data>
+  <data name="Ai_KeyHint" xml:space="preserve"><value>Paste the key (leave empty to keep the saved one)</value></data>
+  <data name="Ai_Connect" xml:space="preserve"><value>Connect and load models</value></data>
+  <data name="Ai_Model" xml:space="preserve"><value>Model</value></data>
+  <data name="Ai_ModelsFound" xml:space="preserve"><value>{0} models available - pick one.</value></data>
+  <data name="Ai_ConnectFailed" xml:space="preserve"><value>Could not connect: {0}</value></data>
+  <data name="Ai_Selected" xml:space="preserve"><value>Using {1} ({0}).</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

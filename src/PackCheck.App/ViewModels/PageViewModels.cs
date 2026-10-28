@@ -92,7 +92,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
     [ObservableProperty]
     private string? _supportedRange;
 
-    public int RequiredJava => MinecraftVersion.TryParse(Version, out var v) ? v.RequiredJava() : 21;
+    public int RequiredJava => Version is null ? 21 : PlatformInfo.RequiredJava(Platform, Version);
 
     public bool NeedsJava => Runtime is null || Runtime.FeatureVersion < RequiredJava;
 
@@ -464,6 +464,12 @@ public sealed partial class SettingsViewModel : ObservableObject
         _serverFolder = settings.DefaultServerFolder;
         _minimizeToTray = settings.MinimizeToTray;
         _startWithWindows = Autostart.IsEnabled();
+        _aiProvider = settings.AiProvider;
+        if (settings.AiModel is not null)
+        {
+            AiModels.Add(settings.AiModel);
+            _aiModel = settings.AiModel;
+        }
         _curseForgeKey = settings.CurseForgeApiKey ?? string.Empty;
     }
 
@@ -472,6 +478,93 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _startWithWindows;
+
+    // ----- AI -----
+    public IReadOnlyList<Ai.AiProviderKind> AiProviders { get; } = Enum.GetValues<Ai.AiProviderKind>();
+
+    public ObservableCollection<string> AiModels { get; } = [];
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(AiNeedsKey))]
+    private Ai.AiProviderKind _aiProvider;
+
+    [ObservableProperty]
+    private string? _aiModel;
+
+    [ObservableProperty]
+    private string _aiKey = string.Empty;
+
+    [ObservableProperty]
+    private string? _aiStatus;
+
+    [ObservableProperty]
+    private bool _aiBusy;
+
+    public bool AiNeedsKey => !Ai.AiProviders.IsLocal(AiProvider);
+
+    partial void OnAiProviderChanged(Ai.AiProviderKind value)
+    {
+        AiModels.Clear();
+        AiStatus = null;
+        if (value != _settings.AiProvider)
+        {
+            AiKey = string.Empty;
+        }
+    }
+
+    partial void OnAiModelChanged(string? value)
+    {
+        if (value is not null)
+        {
+            _settings.AiProvider = AiProvider;
+            _settings.AiModel = value;
+            _settings.Save();
+            AiStatus = Loc.F("Ai_Selected", AiProvider, value);
+        }
+    }
+
+    /// <summary>Saves the key (encrypted) and fetches the provider's models so the user can pick one.</summary>
+    [RelayCommand]
+    private async Task AiConnectAsync()
+    {
+        AiBusy = true;
+        AiStatus = null;
+        try
+        {
+            var key = AiNeedsKey ? AiKey.Trim() : null;
+            if (AiNeedsKey && string.IsNullOrEmpty(key))
+            {
+                key = Secrets.Unprotect(_settings.AiKey);
+            }
+
+            var http = (System.Net.Http.HttpClient)App.Services.GetService(typeof(System.Net.Http.HttpClient))!;
+            var models = await Ai.AiProviders.ListModelsAsync(AiProvider, key, http, CancellationToken.None).ConfigureAwait(true);
+            if (AiNeedsKey && !string.IsNullOrEmpty(AiKey))
+            {
+                _settings.AiKey = Secrets.Protect(AiKey.Trim());
+                AiKey = string.Empty;
+            }
+
+            _settings.AiProvider = AiProvider;
+            _settings.Save();
+            AiModels.Clear();
+            foreach (var m in models)
+            {
+                AiModels.Add(m);
+            }
+
+            AiStatus = Loc.F("Ai_ModelsFound", models.Count);
+            AiModel = models.Contains(_settings.AiModel ?? string.Empty) ? _settings.AiModel : null;
+        }
+        catch (Exception ex) when (ex is System.Net.Http.HttpRequestException or InvalidOperationException or System.Text.Json.JsonException or Anthropic.Exceptions.AnthropicApiException or KeyNotFoundException)
+        {
+            AiStatus = Loc.F("Ai_ConnectFailed", ex.Message);
+        }
+        finally
+        {
+            AiBusy = false;
+        }
+    }
 
     partial void OnStartWithWindowsChanged(bool value) => Autostart.Set(value);
 

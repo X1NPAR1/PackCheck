@@ -40,6 +40,9 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
     [RelayCommand]
     private void NewServer() => Wizard = new CreateServerViewModel(sources, creator, java, state, settings, OnCreated, () => Wizard = null);
 
+    /// <summary>Registers a server created elsewhere (assistant, scripts).</summary>
+    public void Add(ServerDefinition def) => OnCreated(def);
+
     private void OnCreated(ServerDefinition def)
     {
         registry.Upsert(def);

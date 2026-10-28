@@ -35,10 +35,8 @@ public class EndToEndServerTests(ITestOutputHelper output)
         var sources = new ServerSources(http);
         var versions = await sources.GetVersionsAsync(platform, CancellationToken.None);
         var version = versions[0];
-        Assert.True(MinecraftVersion.TryParse(version, out var mc));
-
         var java = new JavaRuntimes(http);
-        var runtime = await java.EnsureAsync(mc.RequiredJava(), await java.DetectAsync(CancellationToken.None), null, CancellationToken.None);
+        var runtime = await java.EnsureAsync(PlatformInfo.RequiredJava(platform, version), await java.DetectAsync(CancellationToken.None), null, CancellationToken.None);
         var name = $"pc-e2e-{platform.ToString().ToLowerInvariant()}";
         var dir = Path.Combine(root, name);
         PackCheck.Core.FileSystem.DeleteDirectory(dir);

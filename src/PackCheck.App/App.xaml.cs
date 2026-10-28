@@ -100,6 +100,8 @@ public partial class App : Application
                 s.AddSingleton<PluginsViewModel>();
                 s.AddSingleton<SettingsViewModel>();
                 s.AddSingleton<OnlineViewModel>();
+                s.AddSingleton<ProxyViewModel>();
+                s.AddSingleton<AssistantViewModel>();
                 s.AddSingleton<AboutViewModel>();
             })
             .Build();

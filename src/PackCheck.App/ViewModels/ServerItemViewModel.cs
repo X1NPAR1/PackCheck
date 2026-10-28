@@ -548,12 +548,11 @@ public sealed partial class ServerItemViewModel : ObservableObject
     /// <summary>Makes sure the right Java exists before starting; downloads Temurin when it does not.</summary>
     private async Task EnsureJavaAsync()
     {
-        if (!Core.MinecraftVersion.TryParse(Definition.MinecraftVersion, out var mc))
+        var required = PlatformInfo.RequiredJava(Definition.Platform, Definition.MinecraftVersion);
+        if (JarJava.RequiredFeature(Path.Combine(Definition.Directory, Definition.JarFile)) is { } fromJar && fromJar > required)
         {
-            return;
+            required = fromJar;
         }
-
-        var required = mc.RequiredJava();
         var current = File.Exists(Definition.JavaPath) ? await JavaRuntimes.ProbeAsync(Definition.JavaPath, CancellationToken.None).ConfigureAwait(true) : null;
         var ok = current is not null && (required <= 8 ? current.FeatureVersion == 8 : current.FeatureVersion >= required);
         if (ok)

@@ -23,6 +23,8 @@ public enum ServerPlatform
     Mohist,
     Youer,
     Arclight,
+    Velocity,
+    BungeeCord,
 }
 
 /// <summary>A file to fetch. Installers (Forge/NeoForge) are run with --installServer after download.</summary>
@@ -35,6 +37,14 @@ public static class PlatformInfo
 
     public static bool UsesMods(ServerPlatform p) => p is ServerPlatform.Fabric or ServerPlatform.Forge or ServerPlatform.NeoForge or ServerPlatform.Quilt
         or ServerPlatform.Mohist or ServerPlatform.Youer or ServerPlatform.Arclight;
+
+    /// <summary>Java feature version a server needs. Proxies version independently of Minecraft.</summary>
+    public static int RequiredJava(ServerPlatform p, string version) => p switch
+    {
+        ServerPlatform.Velocity => version.StartsWith("3.", StringComparison.Ordinal) ? 21 : 25,
+        ServerPlatform.BungeeCord => 21,
+        _ => MinecraftVersion.TryParse(version, out var mc) ? mc.RequiredJava() : 21,
+    };
 
     public static bool IsHybrid(ServerPlatform p) => UsesPlugins(p) && UsesMods(p);
 

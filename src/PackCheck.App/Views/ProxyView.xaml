@@ -1,0 +1,121 @@
+<UserControl x:Class="PackCheck.App.Views.ProxyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             AutomationProperties.AutomationId="ProxyPage">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis" />
+        <l:NullToVisibility x:Key="NullVis" />
+        <l:StatusBrush x:Key="StatusBrush" />
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="960" HorizontalAlignment="Left">
+            <DockPanel Margin="0,0,0,18">
+                <ComboBox DockPanel.Dock="Right" Width="260" VerticalAlignment="Bottom" ItemsSource="{Binding Proxies}" SelectedItem="{Binding Proxy}"
+                          Visibility="{Binding HasProxy, Converter={StaticResource BoolVis}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding PlatformText, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Proxy_Title}" Style="{StaticResource H1}" />
+                    <TextBlock Text="{l:Loc Proxy_Subtitle}" Style="{StaticResource Muted}" Margin="0,4,16,0" />
+                </StackPanel>
+            </DockPanel>
+
+            <!-- no proxy yet -->
+            <Border Style="{StaticResource Card}" Padding="40" Visibility="{Binding HasProxy, Converter={x:Static l:Inverse.Visibility}}">
+                <StackPanel HorizontalAlignment="Center" MaxWidth="460">
+                    <TextBlock Text="{l:Loc Proxy_NoneTitle}" Style="{StaticResource H2}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{l:Loc Proxy_NoneBody}" Style="{StaticResource Muted}" TextAlignment="Center" Margin="0,8,0,0" />
+                    <Button Content="{l:Loc Servers_New}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateProxyCommand}" HorizontalAlignment="Center" Margin="0,18,0,0" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Visibility="{Binding HasProxy, Converter={StaticResource BoolVis}}">
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <Button Content="{l:Loc Proxy_StartAll}" Style="{StaticResource PrimaryButton}" Command="{Binding StartAllCommand}" Margin="0,0,8,0" AutomationProperties.AutomationId="ProxyStartAll" />
+                                <Button Content="{l:Loc Proxy_StopAll}" Command="{Binding StopAllCommand}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Proxy.Name}" Style="{StaticResource H2}" />
+                                <TextBlock Style="{StaticResource Muted}"><Run Text="{Binding Proxy.StateText, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding Proxy.PlatformText, Mode=OneWay}" /><Run Text=" · :" /><Run Text="{Binding Proxy.Definition.Port, Mode=OneWay}" /></TextBlock>
+                            </StackPanel>
+                        </DockPanel>
+                        <TextBlock Text="{l:Loc Proxy_Motd}" Style="{StaticResource Label}" />
+                        <TextBox Text="{Binding Motd}" Width="420" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Proxy_Backends}" Style="{StaticResource H2}" FontSize="15" />
+                        <TextBlock Text="{l:Loc Proxy_BackendsHint}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10" />
+                        <ItemsControl ItemsSource="{Binding Backends}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                                        <DockPanel>
+                                            <Button DockPanel.Dock="Right" Padding="10,5" Command="{Binding DataContext.MakeDefaultCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                                                <Button.Style>
+                                                    <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                                        <Setter Property="Content" Value="{l:Loc Proxy_MakeDefault}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsDefault}" Value="True">
+                                                                <Setter Property="Content" Value="{l:Loc Proxy_Default}" />
+                                                                <Setter Property="Foreground" Value="{DynamicResource PassBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <CheckBox IsChecked="{Binding Selected}" VerticalAlignment="Center">
+                                                <TextBlock><Run Text="{Binding Server.Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding Server.PlatformText, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /><Run Text="  :" Foreground="{DynamicResource TextMutedBrush}" /><Run Text="{Binding Server.Definition.Port, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /></TextBlock>
+                                            </CheckBox>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                            <Button Content="{l:Loc Proxy_Apply}" Style="{StaticResource PrimaryButton}" Command="{Binding ApplyCommand}" Margin="0,0,8,0" AutomationProperties.AutomationId="ProxyApply" />
+                            <Button Content="{l:Loc Proxy_Check}" Command="{Binding CheckCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,14,0,0" Visibility="{Binding Checked, Converter={StaticResource BoolVis}}">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Proxy_CheckTitle}" Style="{StaticResource H2}" FontSize="15" />
+                        <TextBlock Text="{l:Loc Proxy_AllGood}" Foreground="{DynamicResource PassBrush}" Margin="0,8,0,0" Visibility="{Binding Issues.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding Issues}" Margin="0,8,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,3">
+                                        <Ellipse DockPanel.Dock="Left" Width="8" Height="8" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Setter Property="Fill" Value="{DynamicResource WarnBrush}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Severity}" Value="error"><Setter Property="Fill" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="{l:Loc Proxy_Note}" Style="{StaticResource Muted}" FontSize="12" Margin="0,12,0,0" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

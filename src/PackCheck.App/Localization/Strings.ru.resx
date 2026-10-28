@@ -329,6 +329,58 @@
   <data name="Props_Modified" xml:space="preserve"><value>Изменено: {0}</value></data>
   <data name="Props_Range" xml:space="preserve"><value>Должно быть от {0} до {1}.</value></data>
   <data name="Validate_TargetHint" xml:space="preserve"><value>Папка сервера или .zip</value></data>
+  <data name="Nav_Proxy" xml:space="preserve"><value>Прокси</value></data>
+  <data name="Nav_ProxyNoContent" xml:space="preserve"><value>{0} — прокси; плагины и моды ставятся на серверы за ним.</value></data>
+  <data name="Proxy_Title" xml:space="preserve"><value>Прокси-сеть</value></data>
+  <data name="Proxy_Subtitle" xml:space="preserve"><value>Подключите прокси Velocity или BungeeCord к нескольким серверам. PackCheck запишет настройки и защитит каждый сервер.</value></data>
+  <data name="Proxy_NoneTitle" xml:space="preserve"><value>Прокси пока нет</value></data>
+  <data name="Proxy_NoneBody" xml:space="preserve"><value>Создайте сервер на Velocity (рекомендуется) или BungeeCord и вернитесь сюда.</value></data>
+  <data name="Proxy_StartAll" xml:space="preserve"><value>Запустить все</value></data>
+  <data name="Proxy_StopAll" xml:space="preserve"><value>Остановить все</value></data>
+  <data name="Proxy_Motd" xml:space="preserve"><value>Сообщение сети (MOTD)</value></data>
+  <data name="Proxy_Backends" xml:space="preserve"><value>Серверы за прокси</value></data>
+  <data name="Proxy_BackendsHint" xml:space="preserve"><value>Отметьте серверы, доступные через прокси. Сервер по умолчанию — первый, куда попадают игроки.</value></data>
+  <data name="Proxy_MakeDefault" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="Proxy_Default" xml:space="preserve"><value>Основной</value></data>
+  <data name="Proxy_Apply" xml:space="preserve"><value>Применить настройки</value></data>
+  <data name="Proxy_ApplyBody" xml:space="preserve"><value>PackCheck запишет настройки прокси и изменит: {0}
+
+Они будут в офлайн-режиме, слушать только 127.0.0.1 и доверять секрету прокси.</value></data>
+  <data name="Proxy_Applied" xml:space="preserve"><value>Настройки записаны.</value></data>
+  <data name="Proxy_NoBackends" xml:space="preserve"><value>Выберите хотя бы один сервер.</value></data>
+  <data name="Proxy_StopFirst" xml:space="preserve"><value>Остановите прокси и серверы перед изменением настроек.</value></data>
+  <data name="Proxy_Check" xml:space="preserve"><value>Проверить</value></data>
+  <data name="Proxy_CheckTitle" xml:space="preserve"><value>Проверка</value></data>
+  <data name="Proxy_AllGood" xml:space="preserve"><value>Всё совпадает: секрет, офлайн-режим, привязка к 127.0.0.1 и порты.</value></data>
+  <data name="Proxy_Note" xml:space="preserve"><value>На странице «Онлайн» открывайте только порт прокси; серверы остаются локальными.</value></data>
+  <data name="Nav_Assistant" xml:space="preserve"><value>Ассистент</value></data>
+  <data name="Assistant_Title" xml:space="preserve"><value>ИИ-ассистент</value></data>
+  <data name="Assistant_Subtitle" xml:space="preserve"><value>Спрашивайте об ошибках, настройках, плагинах и модах или поручите создать серверы. Выбранный сервер:</value></data>
+  <data name="Assistant_NoServer" xml:space="preserve"><value>нет</value></data>
+  <data name="Assistant_New" xml:space="preserve"><value>Новый чат</value></data>
+  <data name="Assistant_SetupTitle" xml:space="preserve"><value>Сначала подключите модель ИИ</value></data>
+  <data name="Assistant_SetupBody" xml:space="preserve"><value>Выберите провайдера и модель в Настройки &gt; ИИ-ассистент. Локальным моделям (Ollama, LM Studio) ключ не нужен.</value></data>
+  <data name="Assistant_Empty" xml:space="preserve"><value>Попробуйте: «Сервер падает при запуске, посмотри консоль» или «Создай 3 сервера: лобби Paper, выживание Fabric и прокси Velocity».</value></data>
+  <data name="Assistant_InputHint" xml:space="preserve"><value>Сообщение · Enter — отправить, Shift+Enter — новая строка</value></data>
+  <data name="Assistant_AttachConsole" xml:space="preserve"><value>+ Консоль</value></data>
+  <data name="Assistant_Approve" xml:space="preserve"><value>Подтвердите изменение</value></data>
+  <data name="Assistant_Allow" xml:space="preserve"><value>Разрешить</value></data>
+  <data name="Assistant_Deny" xml:space="preserve"><value>Отклонить</value></data>
+  <data name="Assistant_Allowed" xml:space="preserve"><value>Разрешено</value></data>
+  <data name="Assistant_Denied" xml:space="preserve"><value>Отклонено</value></data>
+  <data name="Assistant_Cancelled" xml:space="preserve"><value>Остановлено.</value></data>
+  <data name="Assistant_Error" xml:space="preserve"><value>Запрос к ИИ не удался: {0}</value></data>
+  <data name="Assistant_NotConfigured" xml:space="preserve"><value>Сначала подключите модель в настройках.</value></data>
+  <data name="Ai_Title" xml:space="preserve"><value>ИИ-ассистент</value></data>
+  <data name="Ai_Hint" xml:space="preserve"><value>Выберите провайдера, подключитесь и выберите модель. Ключ хранится в зашифрованном виде и отправляется только этому провайдеру.</value></data>
+  <data name="Ai_Provider" xml:space="preserve"><value>Провайдер</value></data>
+  <data name="Ai_Key" xml:space="preserve"><value>API-ключ</value></data>
+  <data name="Ai_KeyHint" xml:space="preserve"><value>Вставьте ключ (оставьте пустым, чтобы сохранить текущий)</value></data>
+  <data name="Ai_Connect" xml:space="preserve"><value>Подключиться и загрузить модели</value></data>
+  <data name="Ai_Model" xml:space="preserve"><value>Модель</value></data>
+  <data name="Ai_ModelsFound" xml:space="preserve"><value>Доступно моделей: {0} — выберите одну.</value></data>
+  <data name="Ai_ConnectFailed" xml:space="preserve"><value>Не удалось подключиться: {0}</value></data>
+  <data name="Ai_Selected" xml:space="preserve"><value>Используется {1} ({0}).</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

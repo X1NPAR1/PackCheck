@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
              AutomationProperties.AutomationId="SettingsPage">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis" />
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel MaxWidth="760" HorizontalAlignment="Left">
             <TextBlock Text="{l:Loc Settings_Title}" Style="{StaticResource H1}" Margin="0,0,0,18" />
@@ -35,6 +38,33 @@
                         <ComboBoxItem Content="{l:Loc Settings_Anim_Off}" />
                     </ComboBox>
                     <TextBlock Text="{l:Loc Settings_AnimHint}" Style="{StaticResource Muted}" FontSize="12" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0" AutomationProperties.AutomationId="AiSettings">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Ai_Title}" Style="{StaticResource H2}" FontSize="15" />
+                    <TextBlock Text="{l:Loc Ai_Hint}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10" />
+                    <TextBlock Text="{l:Loc Ai_Provider}" Style="{StaticResource Label}" Margin="0,0,0,6" />
+                    <ComboBox ItemsSource="{Binding AiProviders}" SelectedItem="{Binding AiProvider}" Width="260" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate><TextBlock Text="{Binding}" /></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Visibility="{Binding AiNeedsKey, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="{l:Loc Ai_Key}" Style="{StaticResource Label}" Margin="0,14,0,6" />
+                        <TextBox Text="{Binding AiKey, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Ai_KeyHint}" FontFamily="{StaticResource MonoFont}" Width="420" HorizontalAlignment="Left" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Content="{l:Loc Ai_Connect}" Style="{StaticResource PrimaryButton}" Command="{Binding AiConnectCommand}" IsEnabled="{Binding AiBusy, Converter={x:Static l:Inverse.Bool}}" />
+                        <TextBlock Text="{Binding AiStatus}" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="12,0,0,0" />
+                    </StackPanel>
+                    <TextBlock Text="{l:Loc Ai_Model}" Style="{StaticResource Label}" Margin="0,14,0,6" />
+                    <ComboBox ItemsSource="{Binding AiModels}" SelectedItem="{Binding AiModel}" Width="420" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate><TextBlock Text="{Binding}" /></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </Border>
 

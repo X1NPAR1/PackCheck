@@ -34,6 +34,11 @@ public sealed class AppSettings
     public string? OnlineDomain { get; set; }
     public string? DuckDnsDomain { get; set; }
     public string? DuckDnsToken { get; set; }
+    public PackCheck.App.Ai.AiProviderKind AiProvider { get; set; } = PackCheck.App.Ai.AiProviderKind.Anthropic;
+    public string? AiModel { get; set; }
+
+    /// <summary>API key, encrypted with DPAPI for the current Windows user.</summary>
+    public string? AiKey { get; set; }
     public string? CurseForgeApiKey { get; set; }
     public string DefaultServerFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PackCheck Servers");
 
