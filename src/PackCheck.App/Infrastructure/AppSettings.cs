@@ -29,6 +29,7 @@ public sealed class AppSettings
     public bool AllowNetworkProviders { get; set; } = true;
     public int BackupsToKeep { get; set; } = 5;
     public bool MinimizeToTray { get; set; } = true;
+    public bool FirstRunDone { get; set; }
     public string? CurseForgeApiKey { get; set; }
     public string DefaultServerFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PackCheck Servers");
 
@@ -58,5 +59,31 @@ public sealed class AppSettings
         var tmp = AppPaths.SettingsFile + ".tmp";
         File.WriteAllText(tmp, JsonSerializer.Serialize(this, Json));
         File.Move(tmp, AppPaths.SettingsFile, overwrite: true);
+    }
+}
+
+/// <summary>Per-user autostart via the HKCU Run key (no admin rights needed).</summary>
+public static class Autostart
+{
+    private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    private const string Name = "PackCheck";
+
+    public static bool IsEnabled()
+    {
+        using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RunKey);
+        return key?.GetValue(Name) is string;
+    }
+
+    public static void Set(bool enabled)
+    {
+        using var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RunKey);
+        if (enabled)
+        {
+            key.SetValue(Name, $"\"{Environment.ProcessPath}\" --minimized");
+        }
+        else
+        {
+            key.DeleteValue(Name, throwOnMissingValue: false);
+        }
     }
 }

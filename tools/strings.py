@@ -210,6 +210,10 @@ S = {
     "Nav_VanillaNoContent": ["{0} servers run neither plugins nor mods.", "{0} sunucuları eklenti veya mod çalıştırmaz.", "{0}-Server unterstützen weder Plugins noch Mods.", "Les serveurs {0} n'exécutent ni plugins ni mods.", "Серверы {0} не поддерживают ни плагины, ни моды."],
     "Nav_PluginsOff": ["The selected server ({0}) uses mods, not plugins.", "Seçili sunucu ({0}) eklenti değil mod kullanır.", "Der gewählte Server ({0}) nutzt Mods, keine Plugins.", "Le serveur sélectionné ({0}) utilise des mods, pas des plugins.", "Выбранный сервер ({0}) использует моды, а не плагины."],
     "Nav_ModsOff": ["The selected server ({0}) uses plugins, not mods.", "Seçili sunucu ({0}) mod değil eklenti kullanır.", "Der gewählte Server ({0}) nutzt Plugins, keine Mods.", "Le serveur sélectionné ({0}) utilise des plugins, pas des mods.", "Выбранный сервер ({0}) использует плагины, а не моды."],
+    "Java_Installing": ["Installing Java {0} (Eclipse Temurin)…", "Java {0} kuruluyor (Eclipse Temurin)…", "Java {0} wird installiert (Eclipse Temurin)…", "Installation de Java {0} (Eclipse Temurin)…", "Установка Java {0} (Eclipse Temurin)…"],
+    "Java_Failed": ["Java could not be installed: {0}", "Java kurulamadı: {0}", "Java konnte nicht installiert werden: {0}", "Impossible d'installer Java : {0}", "Не удалось установить Java: {0}"],
+    "Splash_InstallJava": ["First start: installing Java 21… {0}", "İlk açılış: Java 21 kuruluyor… {0}", "Erster Start: Java 21 wird installiert… {0}", "Premier démarrage : installation de Java 21… {0}", "Первый запуск: установка Java 21… {0}"],
+    "Settings_StartWithWindows": ["Start PackCheck with Windows (opens in the tray)", "PackCheck'i Windows ile başlat (tepside açılır)", "PackCheck mit Windows starten (im Infobereich)", "Démarrer PackCheck avec Windows (zone de notification)", "Запускать PackCheck вместе с Windows (в трее)"],
     # settings
     "Settings_Title": ["Settings", "Ayarlar", "Einstellungen", "Paramètres", "Настройки"],
     "Settings_Language": ["Language", "Dil", "Sprache", "Langue", "Язык"],

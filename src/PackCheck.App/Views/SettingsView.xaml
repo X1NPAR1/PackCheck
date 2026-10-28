@@ -63,6 +63,9 @@
                         <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseFolderCommand}" Margin="8,0,0,0" />
                         <TextBox Text="{Binding ServerFolder}" IsReadOnly="True" />
                     </DockPanel>
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding StartWithWindows}" Margin="0,18,0,0" AutomationProperties.AutomationId="StartWithWindows">
+                        <TextBlock Text="{l:Loc Settings_StartWithWindows}" TextWrapping="Wrap" />
+                    </CheckBox>
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding MinimizeToTray}" Margin="0,18,0,0">
                         <TextBlock Text="{l:Loc Settings_Tray}" TextWrapping="Wrap" />
                     </CheckBox>

@@ -535,13 +535,57 @@ public sealed partial class ServerItemViewModel : ObservableObject
     }
 
     // ----- commands -----
+    [ObservableProperty]
+    private string? _preparing;
+
+    /// <summary>Makes sure the right Java exists before starting; downloads Temurin when it does not.</summary>
+    private async Task EnsureJavaAsync()
+    {
+        if (!Core.MinecraftVersion.TryParse(Definition.MinecraftVersion, out var mc))
+        {
+            return;
+        }
+
+        var required = mc.RequiredJava();
+        var current = File.Exists(Definition.JavaPath) ? await JavaRuntimes.ProbeAsync(Definition.JavaPath, CancellationToken.None).ConfigureAwait(true) : null;
+        var ok = current is not null && (required <= 8 ? current.FeatureVersion == 8 : current.FeatureVersion >= required);
+        if (ok)
+        {
+            return;
+        }
+
+        var java = (JavaRuntimes)App.Services.GetService(typeof(JavaRuntimes))!;
+        var state = (AppState)App.Services.GetService(typeof(AppState))!;
+        Preparing = Loc.F("Java_Installing", JavaRuntimes.InstallableFeature(required));
+        Add(new ConsoleEntry(DateTime.Now.ToString("HH:mm:ss", Loc.Instance.Culture), "Command", "PackCheck", Preparing, Preparing));
+        var runtime = await java.EnsureAsync(required, state.JavaRuntimes, new Progress<double>(p => Preparing = Loc.F("Java_Installing", JavaRuntimes.InstallableFeature(required)) + $" {p:P0}"), CancellationToken.None).ConfigureAwait(true);
+        if (!state.JavaRuntimes.Any(r => r.JavaExe == runtime.JavaExe))
+        {
+            state.JavaRuntimes = [runtime, .. state.JavaRuntimes];
+        }
+
+        Definition = Definition with { JavaPath = runtime.JavaExe };
+        _registry.Upsert(Definition);
+        _process.UpdateDefinition(Definition);
+        Add(new ConsoleEntry(DateTime.Now.ToString("HH:mm:ss", Loc.Instance.Culture), "Command", "PackCheck", runtime.Display, runtime.Display));
+        Preparing = null;
+        _ = RefreshDiskAsync();
+    }
+
     [RelayCommand]
     private async Task StartAsync()
     {
         try
         {
             ClearConsole();
+            await EnsureJavaAsync().ConfigureAwait(true);
             await _process.StartAsync().ConfigureAwait(true);
+        }
+        catch (System.Net.Http.HttpRequestException ex)
+        {
+            Preparing = null;
+            Add(new ConsoleEntry(DateTime.Now.ToString("HH:mm:ss", Loc.Instance.Culture), "Error", "PackCheck", Loc.F("Java_Failed", ex.Message), ex.Message));
+            MainViewModel.Shell?.Toast(Loc.F("Java_Failed", ex.Message), isError: true);
         }
         catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
         {

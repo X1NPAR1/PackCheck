@@ -15,13 +15,16 @@ public enum ServerState
 /// <summary>Runs one Minecraft server as a child process inside a Job Object with a live console.</summary>
 public sealed class ServerProcess : IAsyncDisposable
 {
-    private readonly ServerDefinition _def;
+    private ServerDefinition _def;
     private Process? _process;
     private JobObject? _job;
 
     public ServerProcess(ServerDefinition definition) => _def = definition;
 
     public event EventHandler<string>? Output;
+
+    /// <summary>Applies changed settings (e.g. a newly installed Java) for the next start.</summary>
+    public void UpdateDefinition(ServerDefinition definition) => _def = definition;
 
     public event EventHandler<ServerState>? StateChanged;
 

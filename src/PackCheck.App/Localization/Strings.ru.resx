@@ -202,6 +202,10 @@
   <data name="Nav_VanillaNoContent" xml:space="preserve"><value>Серверы {0} не поддерживают ни плагины, ни моды.</value></data>
   <data name="Nav_PluginsOff" xml:space="preserve"><value>Выбранный сервер ({0}) использует моды, а не плагины.</value></data>
   <data name="Nav_ModsOff" xml:space="preserve"><value>Выбранный сервер ({0}) использует плагины, а не моды.</value></data>
+  <data name="Java_Installing" xml:space="preserve"><value>Установка Java {0} (Eclipse Temurin)…</value></data>
+  <data name="Java_Failed" xml:space="preserve"><value>Не удалось установить Java: {0}</value></data>
+  <data name="Splash_InstallJava" xml:space="preserve"><value>Первый запуск: установка Java 21… {0}</value></data>
+  <data name="Settings_StartWithWindows" xml:space="preserve"><value>Запускать PackCheck вместе с Windows (в трее)</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

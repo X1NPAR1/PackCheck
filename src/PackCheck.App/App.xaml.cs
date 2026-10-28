@@ -114,6 +114,27 @@ public partial class App : Application
             Log.Warning(ex, "Java detection failed");
         }
 
+        // First run: install a current LTS Java so the first server can start right away.
+        if (!settings.FirstRunDone)
+        {
+            if (!state.JavaRuntimes.Any(r => r.FeatureVersion >= 21))
+            {
+                try
+                {
+                    var java = Services.GetRequiredService<JavaRuntimes>();
+                    var rt = await java.InstallTemurinAsync(21, new Progress<double>(p => splash.Report(0.38 + (p * 0.18), Loc.F("Splash_InstallJava", $"{p:P0}"))), CancellationToken.None).ConfigureAwait(true);
+                    state.JavaRuntimes = [rt, .. state.JavaRuntimes];
+                }
+                catch (Exception ex) when (ex is HttpRequestException or IOException or InvalidOperationException or System.Text.Json.JsonException)
+                {
+                    Log.Warning(ex, "First-run Java install skipped");
+                }
+            }
+
+            settings.FirstRunDone = true;
+            settings.Save();
+        }
+
         // Step 4: servers
         splash.Report(0.58, Loc.T("Splash_Servers"));
         var servers = Services.GetRequiredService<ServersViewModel>();
@@ -133,12 +154,24 @@ public partial class App : Application
 
         // Main window is created hidden with the theme background, so there is no white flash.
         MainWindow = main;
+        var minimized = e.Args.Contains("--minimized", StringComparer.OrdinalIgnoreCase);
         main.Opacity = 0;
-        main.Show();
+        if (!minimized)
+        {
+            main.Show();
+        }
+
         await splash.FadeOutAsync().ConfigureAwait(true);
         splash.Close();
-        main.FadeIn();
         Tray = new TrayIcon(main.ShowFromTray, Quit);
+        if (minimized)
+        {
+            main.Opacity = 1;
+        }
+        else
+        {
+            main.FadeIn();
+        }
 
         await Services.GetRequiredService<MainViewModel>().HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
     }

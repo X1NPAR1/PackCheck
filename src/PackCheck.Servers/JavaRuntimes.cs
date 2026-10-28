@@ -96,6 +96,28 @@ public sealed partial class JavaRuntimes(HttpClient http)
         return first == 1 && parts.Length > 1 && int.TryParse(parts[1], out var second) ? second : first;
     }
 
+    /// <summary>Temurin publishes 8, 11, 17, 21 and 25; map a requirement to the release to install.</summary>
+    public static int InstallableFeature(int required) => required switch
+    {
+        <= 8 => 8,
+        <= 11 => 11,
+        <= 17 => 17,
+        <= 21 => 21,
+        _ => 25,
+    };
+
+    /// <summary>
+    /// Returns a runtime that satisfies the requirement, installing Temurin when none is present.
+    /// Old Minecraft versions (Java 8 era) prefer exactly Java 8, because newer Java breaks them.
+    /// </summary>
+    public async Task<JavaRuntime> EnsureAsync(int required, IReadOnlyList<JavaRuntime> known, IProgress<double>? progress, CancellationToken ct)
+    {
+        var match = required <= 8
+            ? known.FirstOrDefault(r => r.FeatureVersion == 8)
+            : known.Where(r => r.FeatureVersion >= required).OrderBy(r => r.FeatureVersion).FirstOrDefault();
+        return match ?? await InstallTemurinAsync(InstallableFeature(required), progress, ct).ConfigureAwait(false);
+    }
+
     /// <summary>Downloads a Temurin JRE zip, verifies its SHA-256 and extracts it into the PackCheck runtimes folder.</summary>
     public async Task<JavaRuntime> InstallTemurinAsync(int feature, IProgress<double>? progress, CancellationToken ct)
     {

@@ -138,7 +138,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         IsWorking = true;
         try
         {
-            var rt = await _java.InstallTemurinAsync(RequiredJava, new Progress<double>(p => { Progress = p; Status = $"Java {RequiredJava} … {p:P0}"; }), CancellationToken.None).ConfigureAwait(true);
+            var rt = await _java.EnsureAsync(RequiredJava, _state.JavaRuntimes, new Progress<double>(p => { Progress = p; Status = $"Java {RequiredJava} … {p:P0}"; }), CancellationToken.None).ConfigureAwait(true);
             _state.JavaRuntimes = [rt, .. _state.JavaRuntimes];
             Runtimes.Insert(0, rt);
             Runtime = rt;
@@ -159,10 +159,18 @@ public sealed partial class CreateServerViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanCreate))]
     private async Task CreateAsync()
     {
-        if (Version is null || Runtime is null || NeedsJava)
+        if (Version is null)
         {
-            Status = JavaHint;
             return;
+        }
+
+        if (Runtime is null || NeedsJava)
+        {
+            await InstallJavaAsync().ConfigureAwait(true);
+            if (Runtime is null || NeedsJava)
+            {
+                return;
+            }
         }
 
         IsWorking = true;
@@ -449,11 +457,17 @@ public sealed partial class SettingsViewModel : ObservableObject
         _allowNetwork = settings.AllowNetworkProviders;
         _serverFolder = settings.DefaultServerFolder;
         _minimizeToTray = settings.MinimizeToTray;
+        _startWithWindows = Autostart.IsEnabled();
         _curseForgeKey = settings.CurseForgeApiKey ?? string.Empty;
     }
 
     [ObservableProperty]
     private bool _minimizeToTray;
+
+    [ObservableProperty]
+    private bool _startWithWindows;
+
+    partial void OnStartWithWindowsChanged(bool value) => Autostart.Set(value);
 
     [ObservableProperty]
     private string _curseForgeKey;
