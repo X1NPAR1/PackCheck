@@ -179,6 +179,10 @@
   <data name="Console_Saved" xml:space="preserve"><value>Журнал сохранён.</value></data>
   <data name="Console_Crashed" xml:space="preserve"><value>Сервер неожиданно остановился</value></data>
   <data name="Console_CrashNoDetail" xml:space="preserve"><value>Строка ошибки не выведена. Подробности в latest.log.</value></data>
+  <data name="Console_AskAi" xml:space="preserve"><value>Спросить ассистента</value></data>
+  <data name="Console_PrevMatch" xml:space="preserve"><value>Предыдущее совпадение (Shift+Enter)</value></data>
+  <data name="Console_NextMatch" xml:space="preserve"><value>Следующее совпадение (Enter)</value></data>
+  <data name="Console_FilterOnly" xml:space="preserve"><value>Только совпадения</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using PackCheck.App.Infrastructure;
 using PackCheck.App.ViewModels;
@@ -13,17 +14,20 @@ public partial class ServerDetailView : UserControl
     public ServerDetailView()
     {
         InitializeComponent();
+        Output.AddHandler(Hyperlink.ClickEvent, new RoutedEventHandler(OnPlayerLink));
         DataContextChanged += (_, _) =>
         {
             if (_vm is not null)
             {
                 _vm.ScrollRequested -= OnScrollRequested;
+                _vm.FocusRequested -= OnFocusRequested;
             }
 
             _vm = DataContext as ServerItemViewModel;
             if (_vm is not null)
             {
                 _vm.ScrollRequested += OnScrollRequested;
+                _vm.FocusRequested += OnFocusRequested;
                 OnScrollRequested(this, EventArgs.Empty);
             }
         };
@@ -41,6 +45,35 @@ public partial class ServerDetailView : UserControl
         if (sv is null || sv.VerticalOffset >= sv.ScrollableHeight - 40)
         {
             Output.ScrollIntoView(Output.Items[^1]);
+        }
+    }
+
+    private void OnFocusRequested(object? sender, ConsoleEntry entry)
+    {
+        Output.SelectedItem = entry;
+        Output.ScrollIntoView(entry);
+    }
+
+    /// <summary>Enter / Shift+Enter in the search box jump to the next / previous match.</summary>
+    private void OnSearchKey(object sender, KeyEventArgs e)
+    {
+        if (_vm is null || e.Key != Key.Enter)
+        {
+            return;
+        }
+
+        // The search text binding is delayed; push it now so the jump uses what was typed.
+        SearchBox.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateSource();
+        (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ? _vm.PreviousMatchCommand : _vm.NextMatchCommand).Execute(null);
+        e.Handled = true;
+    }
+
+    private void OnPlayerLink(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is Hyperlink { Tag: string name } && _vm is not null)
+        {
+            ShowPlayerMenu(Output, name);
+            e.Handled = true;
         }
     }
 
@@ -100,12 +133,20 @@ public partial class ServerDetailView : UserControl
     /// <summary>Player name click: menu with common moderation commands.</summary>
     private void OnPlayerClick(object sender, RoutedEventArgs e)
     {
-        if (sender is not Button { Content: string name } button || _vm is null)
+        if (sender is Button { Content: string name } button)
+        {
+            ShowPlayerMenu(button, name);
+        }
+    }
+
+    private void ShowPlayerMenu(FrameworkElement target, string name)
+    {
+        if (_vm is null)
         {
             return;
         }
 
-        var menu = new ContextMenu();
+        var menu = new ContextMenu { PlacementTarget = target, Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint };
         foreach (var (key, verb) in new[] { ("Player_Op", "op"), ("Player_Kick", "kick"), ("Player_Ban", "ban"), ("Player_Tp", "tp") })
         {
             var item = new MenuItem { Header = Loc.T(key) };
@@ -113,7 +154,6 @@ public partial class ServerDetailView : UserControl
             menu.Items.Add(item);
         }
 
-        button.ContextMenu = menu;
         menu.IsOpen = true;
     }
 }

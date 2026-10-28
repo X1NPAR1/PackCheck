@@ -179,6 +179,10 @@ Apply anyway?</value></data>
   <data name="Console_Saved" xml:space="preserve"><value>Log saved.</value></data>
   <data name="Console_Crashed" xml:space="preserve"><value>The server stopped unexpectedly</value></data>
   <data name="Console_CrashNoDetail" xml:space="preserve"><value>No error line was printed. Open latest.log for details.</value></data>
+  <data name="Console_AskAi" xml:space="preserve"><value>Ask the assistant</value></data>
+  <data name="Console_PrevMatch" xml:space="preserve"><value>Previous match (Shift+Enter)</value></data>
+  <data name="Console_NextMatch" xml:space="preserve"><value>Next match (Enter)</value></data>
+  <data name="Console_FilterOnly" xml:space="preserve"><value>Only matches</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

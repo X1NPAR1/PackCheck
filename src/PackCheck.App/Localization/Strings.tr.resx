@@ -179,6 +179,10 @@ Yine de uygulansın mı?</value></data>
   <data name="Console_Saved" xml:space="preserve"><value>Günlük kaydedildi.</value></data>
   <data name="Console_Crashed" xml:space="preserve"><value>Sunucu beklenmedik şekilde durdu</value></data>
   <data name="Console_CrashNoDetail" xml:space="preserve"><value>Hata satırı yazılmadı. Ayrıntılar için latest.log dosyasını aç.</value></data>
+  <data name="Console_AskAi" xml:space="preserve"><value>Asistana sor</value></data>
+  <data name="Console_PrevMatch" xml:space="preserve"><value>Önceki eşleşme (Shift+Enter)</value></data>
+  <data name="Console_NextMatch" xml:space="preserve"><value>Sonraki eşleşme (Enter)</value></data>
+  <data name="Console_FilterOnly" xml:space="preserve"><value>Sadece eşleşenler</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

@@ -66,6 +66,17 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         OnPropertyChanged(nameof(ServerText));
     }
 
+    /// <summary>Opens the assistant with a prepared question (crash banner, validation) and sends it when a model is set up.</summary>
+    public void Ask(string text)
+    {
+        MainViewModel.Shell?.Navigate(this);
+        Input = text;
+        if (IsConfigured && SendCommand.CanExecute(null))
+        {
+            SendCommand.Execute(null);
+        }
+    }
+
     [RelayCommand]
     private void NewChat()
     {

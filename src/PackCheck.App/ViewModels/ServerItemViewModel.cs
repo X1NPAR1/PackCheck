@@ -179,6 +179,21 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [ObservableProperty]
     private string _search = string.Empty;
 
+    /// <summary>When off, search only highlights matches and Next/Previous jump between them.</summary>
+    [ObservableProperty]
+    private bool _filterSearch;
+
+    [ObservableProperty]
+    private string? _matchPosition;
+
+    /// <summary>Player names seen in the log; the console turns them into links.</summary>
+    [ObservableProperty]
+    private IReadOnlyList<string> _knownPlayers = [];
+
+    private readonly List<ConsoleEntry> _matches = [];
+    private int _matchIndex = -1;
+    private readonly HashSet<string> _seenPlayers = new(StringComparer.OrdinalIgnoreCase);
+
     [ObservableProperty]
     private bool _showInfo = true;
 
@@ -241,6 +256,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public string StateText => Loc.T("State_" + State);
 
     public event EventHandler? ScrollRequested;
+
+    /// <summary>Asks the view to select and reveal one line (search navigation).</summary>
+    public event EventHandler<ConsoleEntry>? FocusRequested;
 
     partial void OnStateChanged(ServerState value)
     {
@@ -319,6 +337,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
         _ => "Info",
     };
 
+    [GeneratedRegex(@"^(?:UUID of player (?<name>[A-Za-z0-9_]{3,16}) is|<(?<name>[A-Za-z0-9_]{3,16})>|(?<name>[A-Za-z0-9_]{3,16})(?:\[/[^\]]+\] logged in| lost connection| (?:joined|left) the game))")]
+    private static partial Regex PlayerMention();
+
     [GeneratedRegex(@"^(?<name>[A-Za-z0-9_]{3,16}) (joined|left) the game$")]
     private static partial Regex JoinLeave();
 
@@ -350,6 +371,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     private void Track(LogLine line)
     {
+        var mention = PlayerMention().Match(line.Message);
+        if (mention.Success && _seenPlayers.Add(mention.Groups["name"].Value))
+        {
+            KnownPlayers = [.. _seenPlayers];
+        }
+
         var m = JoinLeave().Match(line.Message);
         if (m.Success)
         {
@@ -409,7 +436,20 @@ public sealed partial class ServerItemViewModel : ObservableObject
         Console.Add(entry);
         if (Console.Count > MaxConsoleLines)
         {
+            if (_matches.Count > 0 && ReferenceEquals(_matches[0], Console[0]))
+            {
+                _matches.RemoveAt(0);
+                _matchIndex--;
+            }
+
             Console.RemoveAt(0);
+        }
+
+        if (IsMatch(entry))
+        {
+            _matches.Add(entry);
+            MatchCount = _matches.Count;
+            UpdateMatchPosition();
         }
 
         ScrollRequested?.Invoke(this, EventArgs.Empty);
@@ -423,21 +463,62 @@ public sealed partial class ServerItemViewModel : ObservableObject
             "Error" => ShowError,
             _ => ShowInfo,
         };
-        return levelOk && (Search.Length == 0 || e.Raw.Contains(Search, StringComparison.OrdinalIgnoreCase));
+        return levelOk && (!FilterSearch || IsMatch(e));
     }
+
+    private bool IsMatch(ConsoleEntry e) => Search.Length > 0 && e.Raw.Contains(Search, StringComparison.OrdinalIgnoreCase);
 
     private void Rebuild()
     {
         Console.Clear();
-        var matches = 0;
+        _matches.Clear();
+        _matchIndex = -1;
         foreach (var e in _all.Where(Visible))
         {
             Console.Add(e);
-            matches++;
+            if (IsMatch(e))
+            {
+                _matches.Add(e);
+            }
         }
 
-        MatchCount = Search.Length == 0 ? 0 : matches;
+        MatchCount = _matches.Count;
+        UpdateMatchPosition();
         ScrollRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    partial void OnFilterSearchChanged(bool value) => Rebuild();
+
+    private void UpdateMatchPosition() =>
+        MatchPosition = Search.Length == 0 ? null : _matchIndex < 0 ? $"{_matches.Count}" : $"{_matchIndex + 1}/{_matches.Count}";
+
+    [RelayCommand]
+    private void NextMatch() => StepMatch(1);
+
+    [RelayCommand]
+    private void PreviousMatch() => StepMatch(-1);
+
+    private void StepMatch(int delta)
+    {
+        if (_matches.Count == 0)
+        {
+            return;
+        }
+
+        _matchIndex = _matchIndex < 0
+            ? (delta > 0 ? 0 : _matches.Count - 1)
+            : (_matchIndex + delta + _matches.Count) % _matches.Count;
+        UpdateMatchPosition();
+        FocusRequested?.Invoke(this, _matches[_matchIndex]);
+    }
+
+    /// <summary>Crash banner: hands the error and the last console lines to the assistant.</summary>
+    [RelayCommand]
+    private void AskAi()
+    {
+        var tail = string.Join("\n", _all.Skip(Math.Max(0, _all.Count - 80)).Select(e => e.Raw));
+        MainViewModel.Shell?.Assistant.Ask(
+            $"My server \"{Name}\" ({Definition.Platform} {Definition.MinecraftVersion}) crashed. Find the cause and tell me how to fix it.\n\nLast console lines:\n```\n{tail}\n```");
     }
 
     private async Task SampleAsync()

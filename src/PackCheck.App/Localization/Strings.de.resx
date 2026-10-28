@@ -179,6 +179,10 @@ Trotzdem anwenden?</value></data>
   <data name="Console_Saved" xml:space="preserve"><value>Log gespeichert.</value></data>
   <data name="Console_Crashed" xml:space="preserve"><value>Der Server wurde unerwartet beendet</value></data>
   <data name="Console_CrashNoDetail" xml:space="preserve"><value>Es wurde keine Fehlerzeile ausgegeben. Details in latest.log.</value></data>
+  <data name="Console_AskAi" xml:space="preserve"><value>Assistent fragen</value></data>
+  <data name="Console_PrevMatch" xml:space="preserve"><value>Vorheriger Treffer (Umschalt+Enter)</value></data>
+  <data name="Console_NextMatch" xml:space="preserve"><value>Nächster Treffer (Enter)</value></data>
+  <data name="Console_FilterOnly" xml:space="preserve"><value>Nur Treffer</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

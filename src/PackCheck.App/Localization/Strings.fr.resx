@@ -179,6 +179,10 @@ Appliquer quand même ?</value></data>
   <data name="Console_Saved" xml:space="preserve"><value>Journal enregistré.</value></data>
   <data name="Console_Crashed" xml:space="preserve"><value>Le serveur s'est arrêté de façon inattendue</value></data>
   <data name="Console_CrashNoDetail" xml:space="preserve"><value>Aucune ligne d'erreur. Voir latest.log.</value></data>
+  <data name="Console_AskAi" xml:space="preserve"><value>Demander à l'assistant</value></data>
+  <data name="Console_PrevMatch" xml:space="preserve"><value>Résultat précédent (Maj+Entrée)</value></data>
+  <data name="Console_NextMatch" xml:space="preserve"><value>Résultat suivant (Entrée)</value></data>
+  <data name="Console_FilterOnly" xml:space="preserve"><value>Seulement les résultats</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

@@ -173,6 +173,8 @@
                 BorderBrush="{DynamicResource FailBrush}" BorderThickness="1" Visibility="{Binding IsCrashed, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Content="{l:Loc Console_OpenLog}" Command="{Binding OpenLatestLogCommand}" Padding="10,5" />
+                <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{l:Loc Console_AskAi}" Command="{Binding AskAiCommand}" Padding="10,5" Margin="0,0,8,0"
+                        AutomationProperties.AutomationId="CrashAskAi" />
                 <StackPanel>
                     <TextBlock Text="{l:Loc Console_Crashed}" FontWeight="SemiBold" Foreground="{DynamicResource FailBrush}" />
                     <TextBlock Text="{Binding CrashSummary}" Style="{StaticResource Muted}" FontSize="12.5" TextTrimming="CharacterEllipsis" />
@@ -295,9 +297,14 @@
                                     <Button Style="{StaticResource ConsoleButton}" Command="{Binding SaveLogCommand}" Content="{l:Loc Console_Save}" />
                                     <Button Style="{StaticResource ConsoleButton}" Command="{Binding ClearConsoleCommand}" Content="{l:Loc Console_Clear}" Margin="0" />
                                 </StackPanel>
-                                <TextBlock DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource ConsoleMutedBrush}"
-                                           Text="{Binding MatchCount, StringFormat='{}{0} ✓'}" Visibility="{Binding MatchCount, Converter={StaticResource NullVis}}" />
-                                <TextBox Height="32" Style="{StaticResource ConsoleInput}" Tag="{l:Loc Console_Search}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0" Visibility="{Binding MatchPosition, Converter={StaticResource NullVis}}">
+                                    <TextBlock VerticalAlignment="Center" FontSize="12" Margin="0,0,8,0" Foreground="{DynamicResource ConsoleMutedBrush}" Text="{Binding MatchPosition}"
+                                               AutomationProperties.AutomationId="ConsoleMatchPosition" />
+                                    <Button Style="{StaticResource ConsoleButton}" Content="↑" ToolTip="{l:Loc Console_PrevMatch}" Command="{Binding PreviousMatchCommand}" AutomationProperties.Name="{l:Loc Console_PrevMatch}" />
+                                    <Button Style="{StaticResource ConsoleButton}" Content="↓" ToolTip="{l:Loc Console_NextMatch}" Command="{Binding NextMatchCommand}" AutomationProperties.Name="{l:Loc Console_NextMatch}" />
+                                    <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding FilterSearch}" Content="{l:Loc Console_FilterOnly}" Margin="0" />
+                                </StackPanel>
+                                <TextBox x:Name="SearchBox" PreviewKeyDown="OnSearchKey" Height="32" Style="{StaticResource ConsoleInput}" Tag="{l:Loc Console_Search}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=200}"
                                          AutomationProperties.Name="{l:Loc Console_Search}" />
                             </DockPanel>
                         </StackPanel>
@@ -363,7 +370,9 @@
                                     <DockPanel>
                                         <TextBlock DockPanel.Dock="Left" Text="{Binding Time}" Width="64" FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{DynamicResource ConsoleMutedBrush}"
                                                    Visibility="{Binding DataContext.ShowTimestamps, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource BoolVis}}" />
-                                        <TextBlock Text="{Binding Message}" FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{Binding Level, Converter={x:Static l:ConsoleBrush.Instance}}">
+                                        <TextBlock l:ConsoleText.Text="{Binding Message}" FontFamily="{StaticResource MonoFont}"
+                                                   l:ConsoleText.Search="{Binding DataContext.Search, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                   l:ConsoleText.Players="{Binding DataContext.KnownPlayers, RelativeSource={RelativeSource AncestorType=ListBox}}" FontSize="12.5" Foreground="{Binding Level, Converter={x:Static l:ConsoleBrush.Instance}}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="TextWrapping" Value="Wrap" />

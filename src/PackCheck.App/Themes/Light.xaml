@@ -54,6 +54,8 @@
   <SolidColorBrush x:Key="ConsoleErrorBrush" Color="#F06B61" />
   <SolidColorBrush x:Key="ConsoleCmdBrush" Color="#8FD46A" />
   <SolidColorBrush x:Key="ConsoleSelectBrush" Color="#2C3A24" />
+  <SolidColorBrush x:Key="ConsoleMatchBrush" Color="#5C4A12" />
+  <SolidColorBrush x:Key="ConsoleLinkBrush" Color="#8FD16A" />
   <SolidColorBrush x:Key="ConsoleInputBrush" Color="#1C1C1C" />
   <SolidColorBrush x:Key="ConsoleLineBrush" Color="#2A2A2A" />
 </ResourceDictionary>
