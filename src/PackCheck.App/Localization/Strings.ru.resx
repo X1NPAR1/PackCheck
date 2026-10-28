@@ -141,6 +141,49 @@
   <data name="Tray_Exit" xml:space="preserve"><value>Выход</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck продолжает работать в трее. Ваши серверы продолжают работу.</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Запуск установщика платформы…</value></data>
+  <data name="Tab_Overview" xml:space="preserve"><value>Обзор</value></data>
+  <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
+  <data name="Gauge_Cpu" xml:space="preserve"><value>ЦП</value></data>
+  <data name="Gauge_Ram" xml:space="preserve"><value>ОЗУ</value></data>
+  <data name="Gauge_Ping" xml:space="preserve"><value>Пинг</value></data>
+  <data name="Gauge_Threads" xml:space="preserve"><value>Потоков: {0}</value></data>
+  <data name="Gauge_PingNoReply" xml:space="preserve"><value>Сервер ещё не ответил на запрос статуса.</value></data>
+  <data name="Gauge_TpsUnsupported" xml:space="preserve"><value>У {0} нет команды TPS. Установите мод spark, чтобы её измерять.</value></data>
+  <data name="Health_0" xml:space="preserve"><value>Отлично</value></data>
+  <data name="Health_1" xml:space="preserve"><value>Хорошо</value></data>
+  <data name="Health_2" xml:space="preserve"><value>Средне</value></data>
+  <data name="Health_3" xml:space="preserve"><value>Плохо</value></data>
+  <data name="Health_4" xml:space="preserve"><value>Критично</value></data>
+  <data name="Card_Players" xml:space="preserve"><value>Игроки</value></data>
+  <data name="Card_Disk" xml:space="preserve"><value>Место на диске</value></data>
+  <data name="Card_World" xml:space="preserve"><value>Миры</value></data>
+  <data name="Card_Uptime" xml:space="preserve"><value>Время работы</value></data>
+  <data name="Card_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Card_Platform" xml:space="preserve"><value>Платформа</value></data>
+  <data name="Console_Search" xml:space="preserve"><value>Поиск по журналу…</value></data>
+  <data name="Console_CommandHint" xml:space="preserve"><value>Введите команду (без /) и нажмите Enter · Tab — автодополнение</value></data>
+  <data name="Console_Send" xml:space="preserve"><value>Отправить</value></data>
+  <data name="Console_Clear" xml:space="preserve"><value>Очистить</value></data>
+  <data name="Console_Copy" xml:space="preserve"><value>Копировать</value></data>
+  <data name="Console_Save" xml:space="preserve"><value>Сохранить журнал</value></data>
+  <data name="Console_Pause" xml:space="preserve"><value>Пауза</value></data>
+  <data name="Console_Wrap" xml:space="preserve"><value>Перенос</value></data>
+  <data name="Console_Time" xml:space="preserve"><value>Время</value></data>
+  <data name="Console_Matches" xml:space="preserve"><value>Совпадений: {0}</value></data>
+  <data name="Console_Quick" xml:space="preserve"><value>Быстрые действия</value></data>
+  <data name="Console_Players" xml:space="preserve"><value>Игроки онлайн</value></data>
+  <data name="Console_NoPlayers" xml:space="preserve"><value>Никого нет в сети.</value></data>
+  <data name="Console_Empty" xml:space="preserve"><value>Запустите сервер, чтобы увидеть консоль.</value></data>
+  <data name="Console_NotRunning" xml:space="preserve"><value>Сервер не запущен.</value></data>
+  <data name="Console_Copied" xml:space="preserve"><value>Консоль скопирована.</value></data>
+  <data name="Console_Saved" xml:space="preserve"><value>Журнал сохранён.</value></data>
+  <data name="Console_Crashed" xml:space="preserve"><value>Сервер неожиданно остановился</value></data>
+  <data name="Console_CrashNoDetail" xml:space="preserve"><value>Строка ошибки не выведена. Подробности в latest.log.</value></data>
+  <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
+  <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
+  <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>
+  <data name="Player_Ban" xml:space="preserve"><value>Забанить</value></data>
+  <data name="Player_Tp" xml:space="preserve"><value>Телепорт на спавн</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

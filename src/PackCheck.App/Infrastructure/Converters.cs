@@ -270,3 +270,50 @@ public sealed class AllTrue : IMultiValueConverter
 
     public object[] ConvertBack(object value, Type[] targetTypes, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
+
+/// <summary>Health level (0 excellent … 4 critical, -1 none) to its theme brush.</summary>
+public sealed class HealthBrush : IValueConverter
+{
+    public static HealthBrush Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        Application.Current.TryFindResource(value is int i and >= 0 and <= 4 ? $"Health{i}Brush" : "HealthNoneBrush");
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+/// <summary>Health level to its localized word ("Excellent" …), empty when there is no data.</summary>
+public sealed class HealthText : IValueConverter
+{
+    public static HealthText Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is int i and >= 0 and <= 4 ? Loc.T("Health_" + i) : string.Empty;
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+/// <summary>Console line level to the fixed console palette.</summary>
+public sealed class ConsoleBrush : IValueConverter
+{
+    public static ConsoleBrush Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Application.Current.TryFindResource((value as string) switch
+    {
+        "Warn" => "ConsoleWarnBrush",
+        "Error" => "ConsoleErrorBrush",
+        "Command" => "ConsoleCmdBrush",
+        _ => "ConsoleTextBrush",
+    });
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+public sealed class CountToBool : IValueConverter
+{
+    public static CountToBool Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is int i && i > 0;
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}

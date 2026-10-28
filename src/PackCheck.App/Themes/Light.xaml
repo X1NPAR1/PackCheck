@@ -37,10 +37,23 @@
   <SolidColorBrush x:Key="SkipBrush" Color="#6B6C66" />
   <Color x:Key="InfoColor">#4F6F68</Color>
   <SolidColorBrush x:Key="InfoBrush" Color="#4F6F68" />
-  <Color x:Key="ConsoleBgColor">#1E201F</Color>
-  <SolidColorBrush x:Key="ConsoleBgBrush" Color="#1E201F" />
   <Color x:Key="OverlayColor">#99202220</Color>
   <SolidColorBrush x:Key="OverlayBrush" Color="#99202220" />
   <Color x:Key="FocusColor">#3F7A2A</Color>
   <SolidColorBrush x:Key="FocusBrush" Color="#3F7A2A" />
+  <SolidColorBrush x:Key="Health0Brush" Color="#1FA463" />
+  <SolidColorBrush x:Key="Health1Brush" Color="#5C9E2E" />
+  <SolidColorBrush x:Key="Health2Brush" Color="#B8930F" />
+  <SolidColorBrush x:Key="Health3Brush" Color="#C7681C" />
+  <SolidColorBrush x:Key="Health4Brush" Color="#C33A31" />
+  <SolidColorBrush x:Key="HealthNoneBrush" Color="#C9C9C4" />
+  <SolidColorBrush x:Key="ConsoleBgBrush" Color="#121212" />
+  <SolidColorBrush x:Key="ConsoleTextBrush" Color="#D8D8D2" />
+  <SolidColorBrush x:Key="ConsoleMutedBrush" Color="#76766F" />
+  <SolidColorBrush x:Key="ConsoleWarnBrush" Color="#E6C24D" />
+  <SolidColorBrush x:Key="ConsoleErrorBrush" Color="#F06B61" />
+  <SolidColorBrush x:Key="ConsoleCmdBrush" Color="#8FD46A" />
+  <SolidColorBrush x:Key="ConsoleSelectBrush" Color="#2C3A24" />
+  <SolidColorBrush x:Key="ConsoleInputBrush" Color="#1C1C1C" />
+  <SolidColorBrush x:Key="ConsoleLineBrush" Color="#2A2A2A" />
 </ResourceDictionary>

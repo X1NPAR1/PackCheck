@@ -11,3 +11,7 @@ global using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 global using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 global using ListBox = System.Windows.Controls.ListBox;
 global using Pen = System.Windows.Media.Pen;
+global using Clipboard = System.Windows.Clipboard;
+global using Button = System.Windows.Controls.Button;
+global using ContextMenu = System.Windows.Controls.ContextMenu;
+global using MenuItem = System.Windows.Controls.MenuItem;

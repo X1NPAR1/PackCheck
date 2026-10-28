@@ -141,6 +141,49 @@ Yine de uygulansın mı?</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Çıkış</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck tepside çalışmaya devam ediyor. Sunucuların çalışmayı sürdürüyor.</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Platform kurulumu çalışıyor…</value></data>
+  <data name="Tab_Overview" xml:space="preserve"><value>Genel bakış</value></data>
+  <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
+  <data name="Gauge_Cpu" xml:space="preserve"><value>CPU</value></data>
+  <data name="Gauge_Ram" xml:space="preserve"><value>RAM</value></data>
+  <data name="Gauge_Ping" xml:space="preserve"><value>Ping</value></data>
+  <data name="Gauge_Threads" xml:space="preserve"><value>{0} iş parçacığı</value></data>
+  <data name="Gauge_PingNoReply" xml:space="preserve"><value>Sunucu durum sorgusuna henüz cevap vermedi.</value></data>
+  <data name="Gauge_TpsUnsupported" xml:space="preserve"><value>{0} için TPS komutu yok. Ölçmek için spark modunu kur.</value></data>
+  <data name="Health_0" xml:space="preserve"><value>Mükemmel</value></data>
+  <data name="Health_1" xml:space="preserve"><value>İyi</value></data>
+  <data name="Health_2" xml:space="preserve"><value>Orta</value></data>
+  <data name="Health_3" xml:space="preserve"><value>Kötü</value></data>
+  <data name="Health_4" xml:space="preserve"><value>Çok kötü</value></data>
+  <data name="Card_Players" xml:space="preserve"><value>Oyuncular</value></data>
+  <data name="Card_Disk" xml:space="preserve"><value>Disk kullanımı</value></data>
+  <data name="Card_World" xml:space="preserve"><value>Dünyalar</value></data>
+  <data name="Card_Uptime" xml:space="preserve"><value>Çalışma süresi</value></data>
+  <data name="Card_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Card_Platform" xml:space="preserve"><value>Platform</value></data>
+  <data name="Console_Search" xml:space="preserve"><value>Günlükte ara…</value></data>
+  <data name="Console_CommandHint" xml:space="preserve"><value>Komut yaz (/ olmadan) ve Enter'a bas · Tab tamamlar</value></data>
+  <data name="Console_Send" xml:space="preserve"><value>Gönder</value></data>
+  <data name="Console_Clear" xml:space="preserve"><value>Temizle</value></data>
+  <data name="Console_Copy" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Console_Save" xml:space="preserve"><value>Günlüğü kaydet</value></data>
+  <data name="Console_Pause" xml:space="preserve"><value>Duraklat</value></data>
+  <data name="Console_Wrap" xml:space="preserve"><value>Satır kaydır</value></data>
+  <data name="Console_Time" xml:space="preserve"><value>Saat</value></data>
+  <data name="Console_Matches" xml:space="preserve"><value>{0} eşleşme</value></data>
+  <data name="Console_Quick" xml:space="preserve"><value>Hızlı işlemler</value></data>
+  <data name="Console_Players" xml:space="preserve"><value>Çevrimiçi oyuncular</value></data>
+  <data name="Console_NoPlayers" xml:space="preserve"><value>Kimse çevrimiçi değil.</value></data>
+  <data name="Console_Empty" xml:space="preserve"><value>Konsolu burada görmek için sunucuyu başlat.</value></data>
+  <data name="Console_NotRunning" xml:space="preserve"><value>Sunucu çalışmıyor.</value></data>
+  <data name="Console_Copied" xml:space="preserve"><value>Konsol panoya kopyalandı.</value></data>
+  <data name="Console_Saved" xml:space="preserve"><value>Günlük kaydedildi.</value></data>
+  <data name="Console_Crashed" xml:space="preserve"><value>Sunucu beklenmedik şekilde durdu</value></data>
+  <data name="Console_CrashNoDetail" xml:space="preserve"><value>Hata satırı yazılmadı. Ayrıntılar için latest.log dosyasını aç.</value></data>
+  <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
+  <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
+  <data name="Player_Kick" xml:space="preserve"><value>At</value></data>
+  <data name="Player_Ban" xml:space="preserve"><value>Yasakla</value></data>
+  <data name="Player_Tp" xml:space="preserve"><value>Doğuş noktasına ışınla</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

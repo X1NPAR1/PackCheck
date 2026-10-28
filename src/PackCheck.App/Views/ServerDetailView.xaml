@@ -1,0 +1,513 @@
+<UserControl x:Class="PackCheck.App.Views.ServerDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             xmlns:c="clr-namespace:PackCheck.App.Controls"
+             AutomationProperties.AutomationId="ServerDetail">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis" />
+        <l:NullToVisibility x:Key="NullVis" />
+        <l:StatusBrush x:Key="StatusBrush" />
+        <l:IndexToBool x:Key="IndexBool" />
+        <l:IndexToVisibility x:Key="IndexVis" />
+
+        <!-- Toggle chip used for console filters/options -->
+        <Style x:Key="Chip" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{DynamicResource ConsoleMutedBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd" CornerRadius="6" Padding="10,5" Background="Transparent" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="1">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ConsoleSelectBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ConsoleTextBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ConsoleMutedBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ConsoleButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource ConsoleTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" CornerRadius="6" Padding="10,5" Background="{DynamicResource ConsoleInputBrush}" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="1">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ConsoleMutedBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ConsoleInput" TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource ConsoleTextBrush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource ConsoleTextBrush}" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryBrush}" />
+            <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd" Background="{DynamicResource ConsoleInputBrush}" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="1" CornerRadius="7">
+                            <Grid>
+                                <TextBlock x:Name="Hint" Text="{TemplateBinding Tag}" Foreground="{DynamicResource ConsoleMutedBrush}" FontFamily="{StaticResource UiFont}" FontSize="12.5"
+                                           Margin="12,0" VerticalAlignment="Center" IsHitTestVisible="False" Visibility="Collapsed" />
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="10,8" VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Hint" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Command="{Binding StartCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="StartServer">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{StaticResource IconPlay}" Style="{StaticResource IconPath}" Width="11" Height="11" Fill="{DynamicResource OnPrimaryBrush}" Stroke="{DynamicResource OnPrimaryBrush}" />
+                        <TextBlock Text="{l:Loc Servers_Start}" Margin="8,0,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding StopCommand}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="StopServer">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{StaticResource IconStop}" Style="{StaticResource IconPath}" Width="10" Height="10" Fill="{DynamicResource TextBrush}" Stroke="{DynamicResource TextBrush}" />
+                        <TextBlock Text="{l:Loc Servers_Stop}" Margin="8,0,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding RestartCommand}" Content="{l:Loc Servers_Restart}" Margin="0,0,6,0" Visibility="{Binding IsRunning, Converter={StaticResource BoolVis}}" />
+                <Button Command="{Binding KillCommand}" Content="{l:Loc Servers_Kill}" Style="{StaticResource DangerButton}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+                <Button Command="{Binding ValidateServerCommand}" Content="{l:Loc Servers_Validate}" Margin="0,0,6,0" />
+                <Button Command="{Binding OpenFolderCommand}" Style="{StaticResource GhostButton}" ToolTip="{l:Loc Common_OpenFolder}" AutomationProperties.Name="{l:Loc Common_OpenFolder}">
+                    <Path Data="{StaticResource IconFolder}" Style="{StaticResource IconPath}" Stroke="{DynamicResource TextMutedBrush}" />
+                </Button>
+                <Button Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}" CommandParameter="{Binding}" Style="{StaticResource GhostButton}"
+                        ToolTip="{l:Loc Servers_Remove}" AutomationProperties.Name="{l:Loc Servers_Remove}">
+                    <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="13" Stroke="{DynamicResource TextMutedBrush}" />
+                </Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource H2}" FontSize="22" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Tabs -->
+        <StackPanel Grid.Row="1" Margin="0,8,0,12">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <Border CornerRadius="5" Padding="8,2" Background="{DynamicResource Surface2Brush}">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="7" Height="7" Fill="{Binding State, Converter={StaticResource StatusBrush}}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding StateText}" Margin="6,0,0,0" FontSize="12" FontWeight="SemiBold" Foreground="{Binding State, Converter={StaticResource StatusBrush}}" />
+                        </StackPanel>
+                    </Border>
+                    <Border CornerRadius="5" Padding="8,2" Margin="6,0,0,0" Background="{DynamicResource Surface2Brush}">
+                        <TextBlock Text="{Binding PlatformText}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" />
+                    </Border>
+                    <Border CornerRadius="5" Padding="8,2" Margin="6,0,0,0" Background="{DynamicResource Surface2Brush}">
+                        <TextBlock FontSize="12" Foreground="{DynamicResource TextMutedBrush}"><Run Text="localhost:" /><Run Text="{Binding Definition.Port, Mode=OneWay}" /></TextBlock>
+                    </Border>
+                </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Tab_Overview}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=0}" AutomationProperties.AutomationId="TabOverview" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" />
+            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}">
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{l:Loc Nav_Plugins}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UsesMods}" Value="True">
+                                    <Setter Property="Text" Value="{l:Loc Nav_Mods}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Backups}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=4}" />
+        </StackPanel>
+        </StackPanel>
+
+        <!-- Crash banner -->
+        <Border Grid.Row="2" VerticalAlignment="Top" Panel.ZIndex="2" Margin="0,0,0,0" Padding="14,10" CornerRadius="8" Background="{DynamicResource Surface2Brush}"
+                BorderBrush="{DynamicResource FailBrush}" BorderThickness="1" Visibility="{Binding IsCrashed, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="{l:Loc Console_OpenLog}" Command="{Binding OpenLatestLogCommand}" Padding="10,5" />
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Console_Crashed}" FontWeight="SemiBold" Foreground="{DynamicResource FailBrush}" />
+                    <TextBlock Text="{Binding CrashSummary}" Style="{StaticResource Muted}" FontSize="12.5" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Overview -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=0}">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Gauges}" AutomationProperties.AutomationId="Gauges">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><UniformGrid Columns="4" /></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Margin="0,0,12,12" Padding="14,16" ToolTip="{Binding UnavailableReason}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Label}" Margin="0,0,0,10" HorizontalAlignment="Center" />
+                                    <Grid Width="118" Height="118">
+                                        <c:ProgressRing Value="{Binding Fraction}" Thickness="9" Track="{DynamicResource Surface3Brush}" Fill="{Binding Health, Converter={x:Static l:HealthBrush.Instance}}" />
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Text}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" />
+                                            <TextBlock Text="{Binding Health, Converter={x:Static l:HealthText.Instance}}" FontSize="11.5" FontWeight="SemiBold" HorizontalAlignment="Center"
+                                                       Foreground="{Binding Health, Converter={x:Static l:HealthBrush.Instance}}" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <TextBlock Text="{Binding Detail}" Style="{StaticResource Muted}" FontSize="12" HorizontalAlignment="Center" Margin="0,10,0,0" TextTrimming="CharacterEllipsis" />
+                                    <l:Sparkline Values="{Binding History}" Stroke="{Binding Health, Converter={x:Static l:HealthBrush.Instance}}" Height="26" Margin="0,8,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <UniformGrid Columns="5">
+                    <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,12,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Card_Players}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding PlayersText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="20" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,12,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Card_Uptime}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding Uptime}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="20" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,12,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Card_Disk}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding DiskText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="20" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,12,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Card_World}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding WorldText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="20" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,12,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Card_Java}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding JavaText}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Console_Players}" Style="{StaticResource H2}" FontSize="15" />
+                        <TextBlock Text="{l:Loc Console_NoPlayers}" Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding Players.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding Players}" Margin="0,8,0,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="6" Padding="10,5" Margin="0,0,6,6" Background="{DynamicResource Surface2Brush}">
+                                        <TextBlock Text="{Binding}" FontWeight="SemiBold" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Console -->
+        <Grid Grid.Row="2" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=1}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="190" />
+            </Grid.ColumnDefinitions>
+            <Border CornerRadius="10" Background="{DynamicResource ConsoleBgBrush}" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="1" AutomationProperties.AutomationId="ConsolePanel">
+                <DockPanel>
+                    <!-- toolbar -->
+                    <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="0,0,0,1" Padding="10,8">
+                        <StackPanel>
+                            <WrapPanel>
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding ShowInfo}">
+                                    <TextBlock><Run Text="INFO " /><Run Text="{Binding InfoCount, Mode=OneWay}" /></TextBlock>
+                                </ToggleButton>
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding ShowWarn}">
+                                    <TextBlock Foreground="{DynamicResource ConsoleWarnBrush}"><Run Text="WARN " /><Run Text="{Binding WarnCount, Mode=OneWay}" /></TextBlock>
+                                </ToggleButton>
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding ShowError}">
+                                    <TextBlock Foreground="{DynamicResource ConsoleErrorBrush}"><Run Text="ERROR " /><Run Text="{Binding ErrorCount, Mode=OneWay}" /></TextBlock>
+                                </ToggleButton>
+                                <Rectangle Width="1" Height="18" Margin="4,0,10,0" Fill="{DynamicResource ConsoleLineBrush}" />
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding ShowTimestamps}" Content="{l:Loc Console_Time}" />
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding Wrap}" Content="{l:Loc Console_Wrap}" />
+                                <ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding Paused}" Content="{l:Loc Console_Pause}" />
+                            </WrapPanel>
+                            <DockPanel Margin="0,8,0,0">
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
+                                    <Button Style="{StaticResource ConsoleButton}" Command="{Binding CopyConsoleCommand}" Content="{l:Loc Console_Copy}" />
+                                    <Button Style="{StaticResource ConsoleButton}" Command="{Binding SaveLogCommand}" Content="{l:Loc Console_Save}" />
+                                    <Button Style="{StaticResource ConsoleButton}" Command="{Binding ClearConsoleCommand}" Content="{l:Loc Console_Clear}" Margin="0" />
+                                </StackPanel>
+                                <TextBlock DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource ConsoleMutedBrush}"
+                                           Text="{Binding MatchCount, StringFormat='{}{0} ✓'}" Visibility="{Binding MatchCount, Converter={StaticResource NullVis}}" />
+                                <TextBox Height="32" Style="{StaticResource ConsoleInput}" Tag="{l:Loc Console_Search}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                                         AutomationProperties.Name="{l:Loc Console_Search}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- input -->
+                    <Grid DockPanel.Dock="Bottom" Margin="10">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{l:Loc Console_Send}" Command="{Binding SendCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="ConsoleSend" />
+                            <TextBox x:Name="CommandBox" Height="38" Style="{StaticResource ConsoleInput}" Tag="{l:Loc Console_CommandHint}" Text="{Binding Command, UpdateSourceTrigger=PropertyChanged}"
+                                     PreviewKeyDown="OnCommandKey" AutomationProperties.Name="{l:Loc Console_CommandHint}" AutomationProperties.AutomationId="ConsoleInput" />
+                        </DockPanel>
+                        <Popup IsOpen="{Binding Suggestions.Count, Mode=OneWay, Converter={x:Static l:CountToBool.Instance}}" PlacementTarget="{Binding ElementName=CommandBox}" Placement="Top"
+                               AllowsTransparency="True" StaysOpen="True">
+                            <Border Background="{DynamicResource ConsoleInputBrush}" BorderBrush="{DynamicResource ConsoleLineBrush}" BorderThickness="1" CornerRadius="7" Padding="4" Margin="0,0,0,4">
+                                <ItemsControl ItemsSource="{Binding Suggestions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{StaticResource ConsoleButton}" Margin="0,1" HorizontalContentAlignment="Left" Content="{Binding}"
+                                                    Command="{Binding DataContext.AcceptSuggestionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </Popup>
+                    </Grid>
+
+                    <!-- output -->
+                    <Grid>
+                        <TextBlock Text="{l:Loc Console_Empty}" Foreground="{DynamicResource ConsoleMutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Visibility="{Binding Console.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ListBox x:Name="Output" ItemsSource="{Binding Console}" Background="Transparent" BorderThickness="0" Padding="10,8,4,0"
+                                 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel"
+                                 SelectionMode="Extended" AutomationProperties.AutomationId="ConsoleOutput">
+                            <ListBox.Style>
+                                <Style TargetType="ListBox">
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Wrap}" Value="False">
+                                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.Style>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="Bd" Background="Transparent" Padding="2,1"><ContentPresenter /></Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ConsoleSelectBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Time}" Width="64" FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{DynamicResource ConsoleMutedBrush}"
+                                                   Visibility="{Binding DataContext.ShowTimestamps, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource BoolVis}}" />
+                                        <TextBlock Text="{Binding Message}" FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{Binding Level, Converter={x:Static l:ConsoleBrush.Instance}}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding DataContext.Wrap, RelativeSource={RelativeSource AncestorType=ListBox}}" Value="False">
+                                                            <Setter Property="TextWrapping" Value="NoWrap" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </DockPanel>
+            </Border>
+
+            <!-- side panel: quick actions + players -->
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource Card}" Padding="12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Console_Quick}" Style="{StaticResource Label}" Margin="0,0,0,8" />
+                            <ItemsControl ItemsSource="{Binding QuickCommands}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding}" Command="{Binding DataContext.QuickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                                                Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" FontFamily="{StaticResource MonoFont}" FontSize="12" FontWeight="Normal" Padding="8,5" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Padding="12" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Label}" Margin="0,0,0,8"><Run Text="{l:Loc Console_Players}" /><Run Text=" · " /><Run Text="{Binding PlayersText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock Text="{l:Loc Console_NoPlayers}" Style="{StaticResource Muted}" FontSize="12" Visibility="{Binding Players.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                            <ItemsControl ItemsSource="{Binding Players}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Padding="8,5" Content="{Binding}" Click="OnPlayerClick" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Properties -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="0" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=2}">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Bottom" Margin="14">
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Common_Save}" Style="{StaticResource PrimaryButton}" Command="{Binding SavePropertiesCommand}" />
+                    <TextBlock Text="{l:Loc Servers_SaveWhileRunning}" Style="{StaticResource Muted}" VerticalAlignment="Center" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+                </DockPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14,14,14,0">
+                    <ItemsControl ItemsSource="{Binding Properties}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Key}" FontFamily="{StaticResource MonoFont}" FontSize="12.5" VerticalAlignment="Center" Foreground="{DynamicResource TextMutedBrush}" />
+                                    <TextBox Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" Padding="8,5" AutomationProperties.Name="{Binding Key}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- Plugins / mods -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=3}">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Plugins_AddFile}" Command="{Binding AddPluginFileCommand}" />
+                    <TextBlock Text="{l:Loc Plugins_Installed_List}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
+                </DockPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding PluginList}" l:Anim.Stagger="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,9">
+                                    <DockPanel>
+                                        <Button DockPanel.Dock="Right" Command="{Binding DataContext.TogglePluginCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Padding="12,6">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                                                    <Setter Property="Content" Value="{l:Loc Plugins_Disable}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Enabled}" Value="False">
+                                                            <Setter Property="Content" Value="{l:Loc Plugins_Enable}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold">
+                                                <Run Text="{Binding Name, Mode=OneWay, TargetNullValue='?'}" />
+                                                <Run Text="{Binding Version, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" FontWeight="Normal" />
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding File}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- Backups -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=4}">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Backups_Create}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateBackupCommand}" />
+                    <TextBlock Text="{l:Loc Servers_Backups}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
+                </DockPanel>
+                <Grid>
+                    <TextBlock Text="{l:Loc Backups_Empty}" Style="{StaticResource Muted}" Visibility="{Binding BackupList.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                    <ItemsControl ItemsSource="{Binding BackupList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                                    <DockPanel>
+                                        <Button DockPanel.Dock="Right" Content="{l:Loc Backups_Restore}" Padding="12,6"
+                                                Command="{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{Binding CreatedAt, Mode=OneWay, StringFormat=g}" />
+                                            <Run Text="{Binding Size, Mode=OneWay, Converter={x:Static l:Bytes.Instance}}" Foreground="{DynamicResource TextMutedBrush}" />
+                                        </TextBlock>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

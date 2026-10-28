@@ -141,6 +141,49 @@ Appliquer quand même ?</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck reste actif dans la zone de notification. Vos serveurs continuent de tourner.</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Exécution de l'installateur…</value></data>
+  <data name="Tab_Overview" xml:space="preserve"><value>Vue d'ensemble</value></data>
+  <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
+  <data name="Gauge_Cpu" xml:space="preserve"><value>CPU</value></data>
+  <data name="Gauge_Ram" xml:space="preserve"><value>RAM</value></data>
+  <data name="Gauge_Ping" xml:space="preserve"><value>Ping</value></data>
+  <data name="Gauge_Threads" xml:space="preserve"><value>{0} threads</value></data>
+  <data name="Gauge_PingNoReply" xml:space="preserve"><value>Le serveur n'a pas encore répondu à la requête d'état.</value></data>
+  <data name="Gauge_TpsUnsupported" xml:space="preserve"><value>{0} n'a pas de commande TPS. Installez le mod spark pour le mesurer.</value></data>
+  <data name="Health_0" xml:space="preserve"><value>Excellent</value></data>
+  <data name="Health_1" xml:space="preserve"><value>Bon</value></data>
+  <data name="Health_2" xml:space="preserve"><value>Moyen</value></data>
+  <data name="Health_3" xml:space="preserve"><value>Faible</value></data>
+  <data name="Health_4" xml:space="preserve"><value>Critique</value></data>
+  <data name="Card_Players" xml:space="preserve"><value>Joueurs</value></data>
+  <data name="Card_Disk" xml:space="preserve"><value>Espace disque</value></data>
+  <data name="Card_World" xml:space="preserve"><value>Mondes</value></data>
+  <data name="Card_Uptime" xml:space="preserve"><value>Disponibilité</value></data>
+  <data name="Card_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Card_Platform" xml:space="preserve"><value>Plateforme</value></data>
+  <data name="Console_Search" xml:space="preserve"><value>Rechercher…</value></data>
+  <data name="Console_CommandHint" xml:space="preserve"><value>Tapez une commande (sans /) puis Entrée · Tab complète</value></data>
+  <data name="Console_Send" xml:space="preserve"><value>Envoyer</value></data>
+  <data name="Console_Clear" xml:space="preserve"><value>Effacer</value></data>
+  <data name="Console_Copy" xml:space="preserve"><value>Copier</value></data>
+  <data name="Console_Save" xml:space="preserve"><value>Enregistrer</value></data>
+  <data name="Console_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Console_Wrap" xml:space="preserve"><value>Retour ligne</value></data>
+  <data name="Console_Time" xml:space="preserve"><value>Heure</value></data>
+  <data name="Console_Matches" xml:space="preserve"><value>{0} résultats</value></data>
+  <data name="Console_Quick" xml:space="preserve"><value>Actions rapides</value></data>
+  <data name="Console_Players" xml:space="preserve"><value>Joueurs en ligne</value></data>
+  <data name="Console_NoPlayers" xml:space="preserve"><value>Personne n'est en ligne.</value></data>
+  <data name="Console_Empty" xml:space="preserve"><value>Démarrez le serveur pour voir sa console ici.</value></data>
+  <data name="Console_NotRunning" xml:space="preserve"><value>Le serveur n'est pas démarré.</value></data>
+  <data name="Console_Copied" xml:space="preserve"><value>Console copiée.</value></data>
+  <data name="Console_Saved" xml:space="preserve"><value>Journal enregistré.</value></data>
+  <data name="Console_Crashed" xml:space="preserve"><value>Le serveur s'est arrêté de façon inattendue</value></data>
+  <data name="Console_CrashNoDetail" xml:space="preserve"><value>Aucune ligne d'erreur. Voir latest.log.</value></data>
+  <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
+  <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
+  <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>
+  <data name="Player_Ban" xml:space="preserve"><value>Bannir</value></data>
+  <data name="Player_Tp" xml:space="preserve"><value>Téléporter au spawn</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Paramètres</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Thème</value></data>
