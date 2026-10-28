@@ -72,7 +72,7 @@
                         </StackPanel>
                     </RadioButton>
                     <Grid>
-                        <RadioButton IsEnabled="{Binding PluginsEnabled}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavPlugins"
+                        <RadioButton IsEnabled="{Binding PluginsEnabled}" AutomationProperties.HelpText="{Binding PluginsDisabledReason}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavPlugins"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=2}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconPlugins}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
@@ -86,7 +86,7 @@
                         </Border>
                     </Grid>
                     <Grid>
-                        <RadioButton IsEnabled="{Binding ModsEnabled}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavMods"
+                        <RadioButton IsEnabled="{Binding ModsEnabled}" AutomationProperties.HelpText="{Binding ModsDisabledReason}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavMods"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=5}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconMods}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />

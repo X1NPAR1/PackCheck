@@ -4,6 +4,7 @@
 dotnet test tests/PackCheck.Tests --filter "Category!=Network&Category!=EndToEnd"   # unit + integration, what CI runs
 dotnet test tests/PackCheck.Tests --filter "Category=Network"                         # live APIs (PaperMC, Modrinth, Hangar, ...)
 $env:PACKCHECK_E2E_DIR = "D:\MCSERVER"; dotnet test tests/PackCheck.Tests --filter "Category=EndToEnd"   # real servers
+dotnet build src/PackCheck.App; dotnet test tests/PackCheck.UiTests                                  # UI (needs a desktop session)
 ```
 
 ## What is covered
@@ -18,7 +19,7 @@ $env:PACKCHECK_E2E_DIR = "D:\MCSERVER"; dotnet test tests/PackCheck.Tests --filt
 | Server creation, start, `list`, status ping, TPS, stop | Real servers, see below |
 | Proxy | Generated configs parsed as TOML/YAML; real Velocity in front of Paper |
 | Assistant | Tool loop against a stubbed OpenAI-compatible provider, approval gate, path confinement |
-| UI | Driven through Windows UI Automation (`tools/shoot.ps1`, `tools/record.ps1`) for screenshots and manual review |
+| UI | FlaUI tests in `tests/PackCheck.UiTests` (navigation, validation with findings and inventory, settings search, assistant providers, About), plus `tools/shoot.ps1` / `tools/record.ps1` for screenshots |
 
 ## End-to-end results (28 Oct 2026, Windows 10, Minecraft 26.3)
 
