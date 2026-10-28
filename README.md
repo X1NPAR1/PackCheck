@@ -24,13 +24,13 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 ## Screenshots
 
-| Validation | Servers |
+| Server dashboard | Files and code editor |
 |---|---|
-| ![Validation results](docs/media/validation.png) | ![Servers](docs/media/servers-empty.png) |
+| ![Server dashboard](docs/media/server-overview.png) | ![Files](docs/media/files.png) |
 
-| Settings | About |
+| Mods browser | Validation |
 |---|---|
-| ![Settings](docs/media/settings.png) | ![About](docs/media/about.png) |
+| ![Mods](docs/media/mods.png) | ![Validation results](docs/media/validation.png) |
 
 ## Features
 

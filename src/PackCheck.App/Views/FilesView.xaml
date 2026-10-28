@@ -106,9 +106,9 @@
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Right" Text="{Binding Modified, StringFormat='dd.MM.yy HH:mm'}" Style="{StaticResource Muted}" FontSize="11" Width="84" TextAlignment="Right" />
                                 <TextBlock DockPanel.Dock="Right" Text="{Binding SizeText}" Style="{StaticResource Muted}" FontSize="11" Width="58" TextAlignment="Right" />
-                                <Border DockPanel.Dock="Left" Width="30" Height="20" CornerRadius="4" Margin="0,0,8,0" Background="{DynamicResource Surface3Brush}">
-                                    <TextBlock Text="{Binding Kind}" FontSize="9.5" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
-                                </Border>
+                                <Path DockPanel.Dock="Left" Width="18" Height="18" Margin="0,0,10,0" Stretch="Uniform" StrokeThickness="1.4" StrokeLineJoin="Round"
+                                      Data="{Binding Kind, Converter={x:Static l:FileIcon.Geometry}}" Fill="{Binding Kind, Converter={x:Static l:FileIcon.Fill}}"
+                                      Stroke="{Binding Kind, Converter={x:Static l:FileIcon.Stroke}}" ToolTip="{Binding Kind}" />
                                 <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">

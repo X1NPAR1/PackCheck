@@ -178,12 +178,16 @@ public static partial class LogParser
 public static partial class TpsParser
 {
     // Paper/Spigot: "TPS from last 1m, 5m, 15m: 20.0, 20.0, 20.0" (may contain color codes / '*').
-    [GeneratedRegex(@"TPS from last 1m, 5m, 15m:\s*\*?(?<v>[0-9]+(?:[.,][0-9]+)?)")]
+    [GeneratedRegex(@"TPS from last [0-9a-z, ]+:\s*\*?(?<v>[0-9]+(?:[.,][0-9]+)?)")]
     private static partial Regex Paper();
 
-    // Forge/NeoForge: "Overall: Mean tick time: 2.345 ms. Mean TPS: 20.000"
-    [GeneratedRegex(@"Overall\s*:.*Mean TPS:\s*(?<v>[0-9]+(?:[.,][0-9]+)?)")]
+    // Forge: "... Mean tick time: 2.345 ms. Mean TPS: 20.000" (per dimension or Overall)
+    [GeneratedRegex(@"Mean TPS:\s*(?<v>[0-9]+(?:[.,][0-9]+)?)")]
     private static partial Regex Forge();
+
+    // NeoForge: "Overworld: 20,000 TPS (1,035 ms/tick)"
+    [GeneratedRegex(@":\s*(?<v>[0-9]+(?:[.,][0-9]+)?) TPS \(")]
+    private static partial Regex NeoForge();
 
     // spark: "TPS from last 5s, 10s, 1m, 5m, 15m:" followed by "20.0, 20.0, ..."
     [GeneratedRegex(@"^\s*\*?(?<v>[0-9]+(?:\.[0-9]+)?)\*?,\s*\*?[0-9]+(?:\.[0-9]+)?\*?,")]
@@ -195,7 +199,7 @@ public static partial class TpsParser
     public static double? TryParse(string line)
     {
         var clean = ColorCodes().Replace(line, string.Empty);
-        foreach (var r in new[] { Paper(), Forge(), Spark() })
+        foreach (var r in new[] { Paper(), Forge(), NeoForge(), Spark() })
         {
             var m = r.Match(clean);
             if (m.Success && double.TryParse(m.Groups["v"].Value.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out var tps))

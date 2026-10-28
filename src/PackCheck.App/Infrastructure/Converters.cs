@@ -396,3 +396,59 @@ public sealed class FormatKey : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
+
+/// <summary>Type icons for the file list, drawn as vector geometry (no image assets).</summary>
+public sealed class FileIcon : IValueConverter
+{
+    private const string Page = "M5,2 H14 L19,7 V22 H5 Z M14,2 V7 H19";
+    private static readonly Dictionary<string, (string Geometry, string Color)> Icons = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["folder"] = ("M2,6 H9 L11,8 H22 V20 H2 Z", "#D9B44A"),
+        ["json"] = (Page + " M9,11 C8,11 8,12 8,13 C8,14 7,14 7,14 C7,14 8,14 8,15 C8,16 8,17 9,17 M15,11 C16,11 16,12 16,13 C16,14 17,14 17,14 C17,14 16,14 16,15 C16,16 16,17 15,17", "#E1C27A"),
+        ["yml"] = (Page + " M8,11 H16 M8,14 H14 M8,17 H16", "#C77DDB"),
+        ["yaml"] = (Page + " M8,11 H16 M8,14 H14 M8,17 H16", "#C77DDB"),
+        ["toml"] = (Page + " M8,11 H16 M8,14 H14 M8,17 H16", "#7FB3AD"),
+        ["properties"] = (Page + " M8,12 H10 M12,12 H16 M8,16 H10 M12,16 H16", "#8FCB6B"),
+        ["cfg"] = (Page + " M8,12 H10 M12,12 H16 M8,16 H10 M12,16 H16", "#8FCB6B"),
+        ["conf"] = (Page + " M8,12 H10 M12,12 H16 M8,16 H10 M12,16 H16", "#8FCB6B"),
+        ["ini"] = (Page + " M8,12 H10 M12,12 H16 M8,16 H10 M12,16 H16", "#8FCB6B"),
+        ["jar"] = ("M6,7 H18 L17,21 H7 Z M6,7 C6,4 18,4 18,7 M9,11 V17 M12,11 V17 M15,11 V17", "#E0894F"),
+        ["zip"] = (Page + " M11,3 V5 M12,5 V7 M11,7 V9 M12,9 V11 M10,12 H13 V15 H10 Z", "#A9A8A0"),
+        ["gz"] = (Page + " M11,3 V5 M12,5 V7 M11,7 V9 M12,9 V11 M10,12 H13 V15 H10 Z", "#A9A8A0"),
+        ["log"] = (Page + " M8,11 H16 M8,14 H16 M8,17 H12", "#9C9D96"),
+        ["txt"] = (Page + " M8,11 H16 M8,14 H16 M8,17 H12", "#C9C9C2"),
+        ["md"] = (Page + " M8,11 H16 M8,14 H16 M8,17 H12", "#C9C9C2"),
+        ["png"] = (Page + " M8,17 L11,13 L13,15 L15,12 L17,17 Z M9.5,10.5 A1,1 0 1 1 9.49,10.5", "#6FAE8C"),
+        ["jpg"] = (Page + " M8,17 L11,13 L13,15 L15,12 L17,17 Z M9.5,10.5 A1,1 0 1 1 9.49,10.5", "#6FAE8C"),
+        ["dat"] = (Page + " M8,11 A4,1.5 0 1 0 16,11 A4,1.5 0 1 0 8,11 M8,11 V16 A4,1.5 0 0 0 16,16 V11", "#7F9FC8"),
+        ["mca"] = (Page + " M8,11 A4,1.5 0 1 0 16,11 A4,1.5 0 1 0 8,11 M8,11 V16 A4,1.5 0 0 0 16,16 V11", "#7F9FC8"),
+        ["bat"] = (Page + " M8,12 L10,14 L8,16 M12,16 H16", "#8FD46A"),
+        ["sh"] = (Page + " M8,12 L10,14 L8,16 M12,16 H16", "#8FD46A"),
+        ["js"] = (Page + " M8,12 L10,14 L8,16 M12,16 H16", "#E6C24D"),
+        ["xml"] = (Page + " M10,11 L8,14 L10,17 M14,11 L16,14 L14,17", "#E08A5A"),
+    };
+
+    private readonly int _part;
+
+    private FileIcon(int part) => _part = part;
+
+    public static FileIcon Geometry { get; } = new(0);
+
+    public static FileIcon Fill { get; } = new(1);
+
+    public static FileIcon Stroke { get; } = new(2);
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        var (geometry, color) = Icons.TryGetValue(value as string ?? string.Empty, out var icon) ? icon : (Page, "#9C9D96");
+        var brush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString(color)!;
+        return _part switch
+        {
+            0 => System.Windows.Media.Geometry.Parse(geometry),
+            1 => value as string == "folder" ? brush : null,
+            _ => brush,
+        };
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
