@@ -740,19 +740,65 @@ public sealed partial class ServerItemViewModel : ObservableObject
     }
 
     // ----- properties -----
+    public ObservableCollection<PropertyGroup> PropertyGroups { get; } = [];
+
+    [ObservableProperty]
+    private string _propertySearch = string.Empty;
+
+    [ObservableProperty]
+    private int _changedCount;
+
+    partial void OnPropertySearchChanged(string value) => GroupProperties();
+
+    /// <summary>Every known key is shown, even when the file does not contain it yet; unknown keys go to "Other".</summary>
     private void LoadProperties()
     {
         Properties.Clear();
         var file = Path.Combine(Definition.Directory, "server.properties");
-        if (!File.Exists(file))
+        var values = File.Exists(file) ? ServerProperties.Parse(File.ReadAllText(file)) : [];
+        foreach (var info in PropertyCatalog.All)
         {
-            return;
+            Properties.Add(new PropertyRow(info.Key, values.TryGetValue(info.Key, out var v) ? v : info.Default, values.ContainsKey(info.Key)));
         }
 
-        foreach (var (k, v) in ServerProperties.Parse(File.ReadAllText(file)).OrderBy(kv => kv.Key, StringComparer.Ordinal))
+        foreach (var (k, v) in values.Where(kv => PropertyCatalog.Find(kv.Key) is null).OrderBy(kv => kv.Key, StringComparer.Ordinal))
         {
-            Properties.Add(new PropertyRow(k, v));
+            Properties.Add(new PropertyRow(k, v, inFile: true));
         }
+
+        foreach (var row in Properties)
+        {
+            row.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(PropertyRow.Value))
+                {
+                    ChangedCount = Properties.Count(r => r.IsChanged);
+                }
+            };
+        }
+
+        ChangedCount = 0;
+        GroupProperties();
+    }
+
+    private void GroupProperties()
+    {
+        PropertyGroups.Clear();
+        foreach (var key in PropertyCatalog.Groups.Append("Other"))
+        {
+            var rows = Properties.Where(r => r.GroupKey == key && r.Matches(PropertySearch)).ToList();
+            if (rows.Count > 0)
+            {
+                PropertyGroups.Add(new PropertyGroup(key, new ObservableCollection<PropertyRow>(rows)));
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void EditRawProperties()
+    {
+        Tab = 5;
+        Files.OpenInEditor(Path.Combine(Definition.Directory, "server.properties"));
     }
 
     [RelayCommand]
@@ -764,9 +810,15 @@ public sealed partial class ServerItemViewModel : ObservableObject
             return;
         }
 
+        if (Properties.FirstOrDefault(p => p.Error is not null) is { } bad)
+        {
+            MainViewModel.Shell?.Toast($"{bad.Key}: {bad.Error}", isError: true);
+            return;
+        }
+
         var file = Path.Combine(Definition.Directory, "server.properties");
         var original = File.Exists(file) ? File.ReadAllText(file) : string.Empty;
-        File.WriteAllText(file, ServerProperties.Update(original, Properties.ToDictionary(p => p.Key, p => p.Value.Trim())));
+        File.WriteAllText(file, ServerProperties.Update(original, Properties.Where(p => p.ShouldWrite).ToDictionary(p => p.Key, p => p.Value.Trim())));
         if (Properties.FirstOrDefault(p => p.Key == "server-port") is { } port && int.TryParse(port.Value, out var n))
         {
             Definition = Definition with { Port = n };
@@ -774,6 +826,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             OnPropertyChanged(nameof(Subtitle));
         }
 
+        LoadProperties();
         MainViewModel.Shell?.Toast(Loc.T("Servers_Saved"));
     }
 

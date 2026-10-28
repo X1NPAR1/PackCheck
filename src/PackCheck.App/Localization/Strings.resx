@@ -266,6 +266,69 @@ The server may fail to read this file. Save anyway?</value></data>
   <data name="Files_Copied" xml:space="preserve"><value>{0} item(s) copied. Open a folder and press Paste.</value></data>
   <data name="Files_Cut" xml:space="preserve"><value>{0} item(s) cut. Open a folder and press Paste.</value></data>
   <data name="Files_Uploaded" xml:space="preserve"><value>{0} item(s) uploaded.</value></data>
+  <data name="Prop_motd" xml:space="preserve"><value>Message shown under the server name in the multiplayer list.</value></data>
+  <data name="Prop_gamemode" xml:space="preserve"><value>Game mode for new players.</value></data>
+  <data name="Prop_force-gamemode" xml:space="preserve"><value>Put players back into the default game mode every time they join.</value></data>
+  <data name="Prop_difficulty" xml:space="preserve"><value>World difficulty.</value></data>
+  <data name="Prop_hardcore" xml:space="preserve"><value>Players are banned when they die and difficulty is locked to hard.</value></data>
+  <data name="Prop_pvp" xml:space="preserve"><value>Players can damage each other.</value></data>
+  <data name="Prop_enable-command-block" xml:space="preserve"><value>Allow command blocks to run.</value></data>
+  <data name="Prop_allow-flight" xml:space="preserve"><value>Do not kick players who fly in survival (needed by some plugins/mods).</value></data>
+  <data name="Prop_spawn-protection" xml:space="preserve"><value>Radius around spawn that only operators can change. 0 disables it.</value></data>
+  <data name="Prop_level-name" xml:space="preserve"><value>Folder name of the world.</value></data>
+  <data name="Prop_level-seed" xml:space="preserve"><value>Seed for new worlds. Empty means random.</value></data>
+  <data name="Prop_level-type" xml:space="preserve"><value>World generator for new worlds.</value></data>
+  <data name="Prop_generate-structures" xml:space="preserve"><value>Generate villages, temples and other structures.</value></data>
+  <data name="Prop_allow-nether" xml:space="preserve"><value>Allow travel to the Nether.</value></data>
+  <data name="Prop_max-world-size" xml:space="preserve"><value>Maximum world border radius in blocks.</value></data>
+  <data name="Prop_generator-settings" xml:space="preserve"><value>JSON settings for flat or custom generators.</value></data>
+  <data name="Prop_max-players" xml:space="preserve"><value>Maximum number of players online at once.</value></data>
+  <data name="Prop_white-list" xml:space="preserve"><value>Only players on the whitelist can join.</value></data>
+  <data name="Prop_enforce-whitelist" xml:space="preserve"><value>Kick online players who are removed from the whitelist.</value></data>
+  <data name="Prop_op-permission-level" xml:space="preserve"><value>Default permission level for operators (4 = full).</value></data>
+  <data name="Prop_function-permission-level" xml:space="preserve"><value>Permission level used by functions (datapacks).</value></data>
+  <data name="Prop_player-idle-timeout" xml:space="preserve"><value>Minutes before idle players are kicked. 0 disables it.</value></data>
+  <data name="Prop_hide-online-players" xml:space="preserve"><value>Hide the player list in the server list ping.</value></data>
+  <data name="Prop_broadcast-console-to-ops" xml:space="preserve"><value>Show console command output to online operators.</value></data>
+  <data name="Prop_server-port" xml:space="preserve"><value>TCP port the server listens on.</value></data>
+  <data name="Prop_server-ip" xml:space="preserve"><value>Bind to one network address. Leave empty to listen on all.</value></data>
+  <data name="Prop_online-mode" xml:space="preserve"><value>Verify players with Mojang/Microsoft accounts. Turn off only behind an authenticating proxy.</value></data>
+  <data name="Prop_enable-status" xml:space="preserve"><value>Appear online in the server list.</value></data>
+  <data name="Prop_enable-query" xml:space="preserve"><value>Enable the GameSpy4 query protocol.</value></data>
+  <data name="Prop_query.port" xml:space="preserve"><value>UDP port for the query protocol.</value></data>
+  <data name="Prop_network-compression-threshold" xml:space="preserve"><value>Compress packets larger than this many bytes. -1 disables compression.</value></data>
+  <data name="Prop_rate-limit" xml:space="preserve"><value>Kick players who send more packets per second. 0 disables it.</value></data>
+  <data name="Prop_accepts-transfers" xml:space="preserve"><value>Accept players transferred from another server.</value></data>
+  <data name="Prop_resource-pack" xml:space="preserve"><value>URL of a resource pack players are offered.</value></data>
+  <data name="Prop_require-resource-pack" xml:space="preserve"><value>Kick players who decline the resource pack.</value></data>
+  <data name="Prop_view-distance" xml:space="preserve"><value>How many chunks are sent to players (2–32). Higher costs more RAM and CPU.</value></data>
+  <data name="Prop_simulation-distance" xml:space="preserve"><value>How many chunks around players are ticked (2–32).</value></data>
+  <data name="Prop_entity-broadcast-range-percentage" xml:space="preserve"><value>How far entities are sent to clients, in percent of the default.</value></data>
+  <data name="Prop_max-tick-time" xml:space="preserve"><value>Milliseconds a single tick may take before the watchdog stops the server. -1 disables it.</value></data>
+  <data name="Prop_sync-chunk-writes" xml:space="preserve"><value>Write chunks synchronously (safer, slightly slower).</value></data>
+  <data name="Prop_use-native-transport" xml:space="preserve"><value>Use optimized Linux networking when available.</value></data>
+  <data name="Prop_max-chained-neighbor-updates" xml:space="preserve"><value>Limit of chained block updates in one tick. Negative disables it.</value></data>
+  <data name="Prop_enforce-secure-profile" xml:space="preserve"><value>Require players to have a Mojang-signed public key for chat.</value></data>
+  <data name="Prop_prevent-proxy-connections" xml:space="preserve"><value>Kick players whose IP differs from the one Mojang saw (blocks VPNs/proxies).</value></data>
+  <data name="Prop_log-ips" xml:space="preserve"><value>Write player IP addresses to the log.</value></data>
+  <data name="Prop_enable-rcon" xml:space="preserve"><value>Allow remote console access. Keep it off unless you need it.</value></data>
+  <data name="Prop_rcon.port" xml:space="preserve"><value>TCP port for remote console.</value></data>
+  <data name="Prop_rcon.password" xml:space="preserve"><value>Password for remote console. Use a long random one.</value></data>
+  <data name="Prop_broadcast-rcon-to-ops" xml:space="preserve"><value>Show remote console output to online operators.</value></data>
+  <data name="PropGroup_General" xml:space="preserve"><value>General</value></data>
+  <data name="PropGroup_World" xml:space="preserve"><value>World</value></data>
+  <data name="PropGroup_Players" xml:space="preserve"><value>Players</value></data>
+  <data name="PropGroup_Network" xml:space="preserve"><value>Network</value></data>
+  <data name="PropGroup_Performance" xml:space="preserve"><value>Performance</value></data>
+  <data name="PropGroup_Security" xml:space="preserve"><value>Security</value></data>
+  <data name="PropGroup_Other" xml:space="preserve"><value>Other keys in the file</value></data>
+  <data name="Props_Search" xml:space="preserve"><value>Search settings…</value></data>
+  <data name="Props_Raw" xml:space="preserve"><value>Edit raw file</value></data>
+  <data name="Props_Reset" xml:space="preserve"><value>Reset to default</value></data>
+  <data name="Props_Default" xml:space="preserve"><value>Default: {0}</value></data>
+  <data name="Props_Modified" xml:space="preserve"><value>{0} changed</value></data>
+  <data name="Props_Range" xml:space="preserve"><value>Must be between {0} and {1}.</value></data>
+  <data name="Validate_TargetHint" xml:space="preserve"><value>Server folder or .zip pack</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

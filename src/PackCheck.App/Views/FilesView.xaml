@@ -68,7 +68,7 @@
                     <CheckBox DockPanel.Dock="Left" Content="{l:Loc Validate_Filter_All}" Command="{Binding SelectAllCommand}" VerticalAlignment="Center" Margin="2,0,10,0" />
                     <TextBlock DockPanel.Dock="Right" Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0"
                                Text="{Binding SelectedCount, StringFormat='{}{0} ✓'}" Visibility="{Binding SelectedCount, Converter={StaticResource NullVis}}" />
-                    <TextBox Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Delay=150}" Padding="8,5" ToolTip="{l:Loc Files_Filter}" AutomationProperties.Name="{l:Loc Files_Filter}" />
+                    <TextBox Tag="{l:Loc Files_Filter}" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Delay=150}" Padding="8,5" ToolTip="{l:Loc Files_Filter}" AutomationProperties.Name="{l:Loc Files_Filter}" />
                 </DockPanel>
 
                 <TextBlock DockPanel.Dock="Bottom" Text="{l:Loc Files_DropHint}" Style="{StaticResource Muted}" FontSize="11.5" Margin="0,8,0,0" />

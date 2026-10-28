@@ -106,14 +106,6 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
     }
 }
 
-public sealed partial class PropertyRow(string key, string value) : ObservableObject
-{
-    public string Key { get; } = key;
-
-    [ObservableProperty]
-    private string _value = value;
-}
-
 /// <summary>Runs validation around a change: snapshot → apply → validate → offer rollback if new problems appear.</summary>
 public static class Preflight
 {

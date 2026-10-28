@@ -266,6 +266,69 @@ Sunucu bu dosyayı okuyamayabilir. Yine de kaydedilsin mi?</value></data>
   <data name="Files_Copied" xml:space="preserve"><value>{0} öğe kopyalandı. Bir klasör açıp Yapıştır'a bas.</value></data>
   <data name="Files_Cut" xml:space="preserve"><value>{0} öğe kesildi. Bir klasör açıp Yapıştır'a bas.</value></data>
   <data name="Files_Uploaded" xml:space="preserve"><value>{0} öğe yüklendi.</value></data>
+  <data name="Prop_motd" xml:space="preserve"><value>Çok oyunculu listesinde sunucu adının altında görünen mesaj.</value></data>
+  <data name="Prop_gamemode" xml:space="preserve"><value>Yeni oyuncuların oyun modu.</value></data>
+  <data name="Prop_force-gamemode" xml:space="preserve"><value>Oyuncular her girişte varsayılan oyun moduna döner.</value></data>
+  <data name="Prop_difficulty" xml:space="preserve"><value>Dünya zorluğu.</value></data>
+  <data name="Prop_hardcore" xml:space="preserve"><value>Ölen oyuncular yasaklanır ve zorluk zor olarak kilitlenir.</value></data>
+  <data name="Prop_pvp" xml:space="preserve"><value>Oyuncular birbirine hasar verebilir.</value></data>
+  <data name="Prop_enable-command-block" xml:space="preserve"><value>Komut bloklarının çalışmasına izin ver.</value></data>
+  <data name="Prop_allow-flight" xml:space="preserve"><value>Hayatta kalmada uçan oyuncuları atma (bazı eklenti/modlar için gerekli).</value></data>
+  <data name="Prop_spawn-protection" xml:space="preserve"><value>Doğuş noktası çevresinde sadece yetkililerin değiştirebildiği yarıçap. 0 kapatır.</value></data>
+  <data name="Prop_level-name" xml:space="preserve"><value>Dünya klasörünün adı.</value></data>
+  <data name="Prop_level-seed" xml:space="preserve"><value>Yeni dünyalar için tohum. Boş = rastgele.</value></data>
+  <data name="Prop_level-type" xml:space="preserve"><value>Yeni dünyalar için dünya üreticisi.</value></data>
+  <data name="Prop_generate-structures" xml:space="preserve"><value>Köyler, tapınaklar ve diğer yapılar üretilsin.</value></data>
+  <data name="Prop_allow-nether" xml:space="preserve"><value>Nether'a gidişe izin ver.</value></data>
+  <data name="Prop_max-world-size" xml:space="preserve"><value>Blok cinsinden en büyük dünya sınırı yarıçapı.</value></data>
+  <data name="Prop_generator-settings" xml:space="preserve"><value>Düz veya özel üreticiler için JSON ayarları.</value></data>
+  <data name="Prop_max-players" xml:space="preserve"><value>Aynı anda çevrimiçi olabilecek en fazla oyuncu.</value></data>
+  <data name="Prop_white-list" xml:space="preserve"><value>Sadece beyaz listedeki oyuncular girebilir.</value></data>
+  <data name="Prop_enforce-whitelist" xml:space="preserve"><value>Beyaz listeden çıkarılan çevrimiçi oyuncuları at.</value></data>
+  <data name="Prop_op-permission-level" xml:space="preserve"><value>Yetkililerin varsayılan izin seviyesi (4 = tam).</value></data>
+  <data name="Prop_function-permission-level" xml:space="preserve"><value>Fonksiyonların (veri paketleri) izin seviyesi.</value></data>
+  <data name="Prop_player-idle-timeout" xml:space="preserve"><value>Hareketsiz oyuncular kaç dakika sonra atılsın. 0 kapatır.</value></data>
+  <data name="Prop_hide-online-players" xml:space="preserve"><value>Sunucu listesinde oyuncu listesini gizle.</value></data>
+  <data name="Prop_broadcast-console-to-ops" xml:space="preserve"><value>Konsol komut çıktısını çevrimiçi yetkililere göster.</value></data>
+  <data name="Prop_server-port" xml:space="preserve"><value>Sunucunun dinlediği TCP portu.</value></data>
+  <data name="Prop_server-ip" xml:space="preserve"><value>Tek bir ağ adresine bağlan. Hepsini dinlemek için boş bırak.</value></data>
+  <data name="Prop_online-mode" xml:space="preserve"><value>Oyuncuları Mojang/Microsoft hesabıyla doğrula. Sadece doğrulama yapan bir proxy arkasında kapat.</value></data>
+  <data name="Prop_enable-status" xml:space="preserve"><value>Sunucu listesinde çevrimiçi görün.</value></data>
+  <data name="Prop_enable-query" xml:space="preserve"><value>GameSpy4 sorgu protokolünü aç.</value></data>
+  <data name="Prop_query.port" xml:space="preserve"><value>Sorgu protokolünün UDP portu.</value></data>
+  <data name="Prop_network-compression-threshold" xml:space="preserve"><value>Bu boyuttan büyük paketleri sıkıştır. -1 kapatır.</value></data>
+  <data name="Prop_rate-limit" xml:space="preserve"><value>Saniyede daha fazla paket gönderen oyuncuları at. 0 kapatır.</value></data>
+  <data name="Prop_accepts-transfers" xml:space="preserve"><value>Başka sunucudan aktarılan oyuncuları kabul et.</value></data>
+  <data name="Prop_resource-pack" xml:space="preserve"><value>Oyunculara sunulan kaynak paketinin adresi.</value></data>
+  <data name="Prop_require-resource-pack" xml:space="preserve"><value>Kaynak paketini reddeden oyuncuları at.</value></data>
+  <data name="Prop_view-distance" xml:space="preserve"><value>Oyunculara kaç chunk gönderilir (2–32). Yüksek değer daha çok RAM ve CPU ister.</value></data>
+  <data name="Prop_simulation-distance" xml:space="preserve"><value>Oyuncuların çevresinde kaç chunk işlenir (2–32).</value></data>
+  <data name="Prop_entity-broadcast-range-percentage" xml:space="preserve"><value>Varlıkların istemcilere ne kadar uzaktan gönderileceği (varsayılanın yüzdesi).</value></data>
+  <data name="Prop_max-tick-time" xml:space="preserve"><value>Tek bir tick'in sunucu durdurulmadan önce sürebileceği milisaniye. -1 kapatır.</value></data>
+  <data name="Prop_sync-chunk-writes" xml:space="preserve"><value>Chunk'ları eşzamanlı yaz (daha güvenli, biraz yavaş).</value></data>
+  <data name="Prop_use-native-transport" xml:space="preserve"><value>Mümkünse optimize Linux ağ katmanını kullan.</value></data>
+  <data name="Prop_max-chained-neighbor-updates" xml:space="preserve"><value>Bir tick'teki zincirleme blok güncellemesi sınırı. Negatif kapatır.</value></data>
+  <data name="Prop_enforce-secure-profile" xml:space="preserve"><value>Sohbet için oyuncuların Mojang imzalı anahtara sahip olmasını şart koş.</value></data>
+  <data name="Prop_prevent-proxy-connections" xml:space="preserve"><value>IP adresi Mojang'ın gördüğünden farklı olan oyuncuları at (VPN/proxy'leri engeller).</value></data>
+  <data name="Prop_log-ips" xml:space="preserve"><value>Oyuncu IP adreslerini günlüğe yaz.</value></data>
+  <data name="Prop_enable-rcon" xml:space="preserve"><value>Uzak konsol erişimine izin ver. Gerekmedikçe kapalı tut.</value></data>
+  <data name="Prop_rcon.port" xml:space="preserve"><value>Uzak konsolun TCP portu.</value></data>
+  <data name="Prop_rcon.password" xml:space="preserve"><value>Uzak konsol şifresi. Uzun ve rastgele kullan.</value></data>
+  <data name="Prop_broadcast-rcon-to-ops" xml:space="preserve"><value>Uzak konsol çıktısını çevrimiçi yetkililere göster.</value></data>
+  <data name="PropGroup_General" xml:space="preserve"><value>Genel</value></data>
+  <data name="PropGroup_World" xml:space="preserve"><value>Dünya</value></data>
+  <data name="PropGroup_Players" xml:space="preserve"><value>Oyuncular</value></data>
+  <data name="PropGroup_Network" xml:space="preserve"><value>Ağ</value></data>
+  <data name="PropGroup_Performance" xml:space="preserve"><value>Performans</value></data>
+  <data name="PropGroup_Security" xml:space="preserve"><value>Güvenlik</value></data>
+  <data name="PropGroup_Other" xml:space="preserve"><value>Dosyadaki diğer anahtarlar</value></data>
+  <data name="Props_Search" xml:space="preserve"><value>Ayarlarda ara…</value></data>
+  <data name="Props_Raw" xml:space="preserve"><value>Ham dosyayı düzenle</value></data>
+  <data name="Props_Reset" xml:space="preserve"><value>Varsayılana dön</value></data>
+  <data name="Props_Default" xml:space="preserve"><value>Varsayılan: {0}</value></data>
+  <data name="Props_Modified" xml:space="preserve"><value>{0} değişti</value></data>
+  <data name="Props_Range" xml:space="preserve"><value>{0} ile {1} arasında olmalı.</value></data>
+  <data name="Validate_TargetHint" xml:space="preserve"><value>Sunucu klasörü veya .zip paketi</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

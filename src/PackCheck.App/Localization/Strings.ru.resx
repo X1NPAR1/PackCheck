@@ -266,6 +266,69 @@
   <data name="Files_Copied" xml:space="preserve"><value>Скопировано: {0}. Откройте папку и нажмите «Вставить».</value></data>
   <data name="Files_Cut" xml:space="preserve"><value>Вырезано: {0}.</value></data>
   <data name="Files_Uploaded" xml:space="preserve"><value>Загружено: {0}.</value></data>
+  <data name="Prop_motd" xml:space="preserve"><value>Сообщение под названием сервера в списке.</value></data>
+  <data name="Prop_gamemode" xml:space="preserve"><value>Режим игры для новых игроков.</value></data>
+  <data name="Prop_force-gamemode" xml:space="preserve"><value>Возвращать игроков в режим по умолчанию при каждом входе.</value></data>
+  <data name="Prop_difficulty" xml:space="preserve"><value>Сложность мира.</value></data>
+  <data name="Prop_hardcore" xml:space="preserve"><value>Игроков банит после смерти, сложность — «сложно».</value></data>
+  <data name="Prop_pvp" xml:space="preserve"><value>Игроки могут наносить урон друг другу.</value></data>
+  <data name="Prop_enable-command-block" xml:space="preserve"><value>Разрешить командные блоки.</value></data>
+  <data name="Prop_allow-flight" xml:space="preserve"><value>Не кикать летающих игроков в выживании (нужно некоторым плагинам/модам).</value></data>
+  <data name="Prop_spawn-protection" xml:space="preserve"><value>Радиус вокруг спавна, доступный только операторам. 0 — выкл.</value></data>
+  <data name="Prop_level-name" xml:space="preserve"><value>Имя папки мира.</value></data>
+  <data name="Prop_level-seed" xml:space="preserve"><value>Сид новых миров. Пусто — случайный.</value></data>
+  <data name="Prop_level-type" xml:space="preserve"><value>Генератор новых миров.</value></data>
+  <data name="Prop_generate-structures" xml:space="preserve"><value>Генерировать деревни, храмы и другие строения.</value></data>
+  <data name="Prop_allow-nether" xml:space="preserve"><value>Разрешить Незер.</value></data>
+  <data name="Prop_max-world-size" xml:space="preserve"><value>Максимальный радиус границы мира в блоках.</value></data>
+  <data name="Prop_generator-settings" xml:space="preserve"><value>JSON-настройки плоского/особого генератора.</value></data>
+  <data name="Prop_max-players" xml:space="preserve"><value>Максимум игроков одновременно.</value></data>
+  <data name="Prop_white-list" xml:space="preserve"><value>Входить могут только игроки из белого списка.</value></data>
+  <data name="Prop_enforce-whitelist" xml:space="preserve"><value>Кикать игроков, удалённых из белого списка.</value></data>
+  <data name="Prop_op-permission-level" xml:space="preserve"><value>Уровень прав операторов по умолчанию (4 — полный).</value></data>
+  <data name="Prop_function-permission-level" xml:space="preserve"><value>Уровень прав функций (датапаков).</value></data>
+  <data name="Prop_player-idle-timeout" xml:space="preserve"><value>Минут до кика неактивных игроков. 0 — выкл.</value></data>
+  <data name="Prop_hide-online-players" xml:space="preserve"><value>Скрыть список игроков в списке серверов.</value></data>
+  <data name="Prop_broadcast-console-to-ops" xml:space="preserve"><value>Показывать вывод консоли операторам.</value></data>
+  <data name="Prop_server-port" xml:space="preserve"><value>TCP-порт сервера.</value></data>
+  <data name="Prop_server-ip" xml:space="preserve"><value>Привязка к адресу. Пусто — все.</value></data>
+  <data name="Prop_online-mode" xml:space="preserve"><value>Проверять игроков через аккаунт Microsoft. Выключать только за проксирующим сервером с проверкой.</value></data>
+  <data name="Prop_enable-status" xml:space="preserve"><value>Отображаться онлайн в списке серверов.</value></data>
+  <data name="Prop_enable-query" xml:space="preserve"><value>Включить протокол запросов GameSpy4.</value></data>
+  <data name="Prop_query.port" xml:space="preserve"><value>UDP-порт протокола запросов.</value></data>
+  <data name="Prop_network-compression-threshold" xml:space="preserve"><value>Сжимать пакеты больше этого размера. -1 — выкл.</value></data>
+  <data name="Prop_rate-limit" xml:space="preserve"><value>Кикать за превышение пакетов в секунду. 0 — выкл.</value></data>
+  <data name="Prop_accepts-transfers" xml:space="preserve"><value>Принимать игроков, переданных с другого сервера.</value></data>
+  <data name="Prop_resource-pack" xml:space="preserve"><value>URL пакета ресурсов.</value></data>
+  <data name="Prop_require-resource-pack" xml:space="preserve"><value>Кикать отказавшихся от пакета.</value></data>
+  <data name="Prop_view-distance" xml:space="preserve"><value>Сколько чанков отправлять (2–32). Больше — выше нагрузка.</value></data>
+  <data name="Prop_simulation-distance" xml:space="preserve"><value>Сколько чанков вокруг игроков симулируется (2–32).</value></data>
+  <data name="Prop_entity-broadcast-range-percentage" xml:space="preserve"><value>Дальность отправки сущностей (% от стандарта).</value></data>
+  <data name="Prop_max-tick-time" xml:space="preserve"><value>Максимум мс на тик до остановки сторожем. -1 — выкл.</value></data>
+  <data name="Prop_sync-chunk-writes" xml:space="preserve"><value>Синхронная запись чанков (надёжнее, чуть медленнее).</value></data>
+  <data name="Prop_use-native-transport" xml:space="preserve"><value>Использовать оптимизированную сеть Linux, если доступна.</value></data>
+  <data name="Prop_max-chained-neighbor-updates" xml:space="preserve"><value>Лимит цепных обновлений блоков за тик. Отрицательное — выкл.</value></data>
+  <data name="Prop_enforce-secure-profile" xml:space="preserve"><value>Требовать подписанный ключ для чата.</value></data>
+  <data name="Prop_prevent-proxy-connections" xml:space="preserve"><value>Кикать при несовпадении IP (блокирует VPN/прокси).</value></data>
+  <data name="Prop_log-ips" xml:space="preserve"><value>Записывать IP игроков в журнал.</value></data>
+  <data name="Prop_enable-rcon" xml:space="preserve"><value>Разрешить удалённую консоль. Включайте только при необходимости.</value></data>
+  <data name="Prop_rcon.port" xml:space="preserve"><value>TCP-порт удалённой консоли.</value></data>
+  <data name="Prop_rcon.password" xml:space="preserve"><value>Пароль удалённой консоли. Длинный и случайный.</value></data>
+  <data name="Prop_broadcast-rcon-to-ops" xml:space="preserve"><value>Показывать вывод RCON операторам.</value></data>
+  <data name="PropGroup_General" xml:space="preserve"><value>Общие</value></data>
+  <data name="PropGroup_World" xml:space="preserve"><value>Мир</value></data>
+  <data name="PropGroup_Players" xml:space="preserve"><value>Игроки</value></data>
+  <data name="PropGroup_Network" xml:space="preserve"><value>Сеть</value></data>
+  <data name="PropGroup_Performance" xml:space="preserve"><value>Производительность</value></data>
+  <data name="PropGroup_Security" xml:space="preserve"><value>Безопасность</value></data>
+  <data name="PropGroup_Other" xml:space="preserve"><value>Прочие ключи файла</value></data>
+  <data name="Props_Search" xml:space="preserve"><value>Поиск настроек…</value></data>
+  <data name="Props_Raw" xml:space="preserve"><value>Редактировать файл</value></data>
+  <data name="Props_Reset" xml:space="preserve"><value>Сбросить</value></data>
+  <data name="Props_Default" xml:space="preserve"><value>По умолчанию: {0}</value></data>
+  <data name="Props_Modified" xml:space="preserve"><value>Изменено: {0}</value></data>
+  <data name="Props_Range" xml:space="preserve"><value>Должно быть от {0} до {1}.</value></data>
+  <data name="Validate_TargetHint" xml:space="preserve"><value>Папка сервера или .zip</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

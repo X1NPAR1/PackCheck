@@ -31,7 +31,7 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Right" Content="{l:Loc Validate_PickZip}" Command="{Binding PickZipCommand}" Margin="8,0,0,0" />
                     <Button DockPanel.Dock="Right" Content="{l:Loc Validate_PickFolder}" Command="{Binding PickFolderCommand}" Margin="8,0,0,0" />
-                    <TextBox Text="{Binding Target, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" AutomationProperties.AutomationId="ValidateTarget" />
+                    <TextBox Tag="{l:Loc Validate_TargetHint}" Text="{Binding Target, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" AutomationProperties.AutomationId="ValidateTarget" />
                 </DockPanel>
                 <DockPanel Margin="0,12,0,0">
                     <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Command="{Binding RunCommand}" AutomationProperties.AutomationId="RunValidation">
@@ -41,7 +41,7 @@
                         </StackPanel>
                     </Button>
                     <TextBlock Text="{l:Loc Validate_McVersion}" VerticalAlignment="Center" Style="{StaticResource Muted}" />
-                    <TextBox Text="{Binding MinecraftVersion}" Width="90" Margin="10,0,16,0" HorizontalAlignment="Left" />
+                    <TextBox Tag="1.21.4" Text="{Binding MinecraftVersion}" Width="90" Margin="10,0,16,0" HorizontalAlignment="Left" />
                     <CheckBox IsChecked="{Binding RuntimeTest}" VerticalAlignment="Center" AutomationProperties.AutomationId="RuntimeOptIn">
                         <TextBlock Text="{l:Loc Validate_Runtime}" TextWrapping="Wrap" />
                     </CheckBox>

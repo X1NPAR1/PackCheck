@@ -55,7 +55,7 @@
                             <DataTemplate><TextBlock Text="{Binding}" /></DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" ToolTip="{l:Loc Plugins_Search}" AutomationProperties.Name="{l:Loc Plugins_Search}" AutomationProperties.AutomationId="BrowseQuery" />
+                    <TextBox Tag="{l:Loc Plugins_Search}" Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" ToolTip="{l:Loc Plugins_Search}" AutomationProperties.Name="{l:Loc Plugins_Search}" AutomationProperties.AutomationId="BrowseQuery" />
                 </DockPanel>
                 <DockPanel Margin="0,12,0,0">
                     <TextBlock DockPanel.Dock="Right" Text="{Binding ResultsText}" Style="{StaticResource Muted}" VerticalAlignment="Center" />

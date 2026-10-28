@@ -115,7 +115,7 @@
                 <StackPanel>
                     <TextBlock Text="{l:Loc Online_DomainTitle}" Style="{StaticResource H2}" FontSize="15" />
                     <TextBlock Text="{l:Loc Online_DomainHint}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10" />
-                    <TextBox Text="{Binding Domain, UpdateSourceTrigger=PropertyChanged, Delay=300}" Width="360" HorizontalAlignment="Left" AutomationProperties.Name="{l:Loc Online_DomainTitle}" />
+                    <TextBox Tag="play.example.com" Text="{Binding Domain, UpdateSourceTrigger=PropertyChanged, Delay=300}" Width="360" HorizontalAlignment="Left" AutomationProperties.Name="{l:Loc Online_DomainTitle}" />
                     <StackPanel Visibility="{Binding ARecord, Converter={StaticResource NullVis}}" Margin="0,12,0,0">
                         <DockPanel Margin="0,0,0,6">
                             <Button DockPanel.Dock="Right" Content="{l:Loc Console_Copy}" Command="{Binding CopyRecordCommand}" CommandParameter="{Binding ARecord}" Padding="10,5" />
@@ -136,7 +136,7 @@
                     <TextBlock Text="{l:Loc Online_DuckTitle}" Style="{StaticResource H2}" FontSize="15" />
                     <TextBlock Text="{l:Loc Online_DuckHint}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding DuckDomain}" Width="220" ToolTip="myserver.duckdns.org" AutomationProperties.Name="DuckDNS" />
+                        <TextBox Tag="myserver.duckdns.org" Text="{Binding DuckDomain}" Width="220" ToolTip="myserver.duckdns.org" AutomationProperties.Name="DuckDNS" />
                         <PasswordBox x:Name="Token" Width="260" Margin="8,0,0,0" Padding="10,8" PasswordChanged="OnTokenChanged" AutomationProperties.Name="DuckDNS token"
                                      Background="{DynamicResource Surface2Brush}" Foreground="{DynamicResource TextBrush}" BorderBrush="{DynamicResource LineBrush}" />
                         <Button Content="{l:Loc Online_DuckUpdate}" Command="{Binding UpdateDuckCommand}" Margin="8,0,0,0" />
