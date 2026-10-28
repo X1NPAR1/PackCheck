@@ -221,6 +221,40 @@ Yine de uygulansın mı?</value></data>
   <data name="Category_transportation" xml:space="preserve"><value>Ulaşım</value></data>
   <data name="Category_utility" xml:space="preserve"><value>Araçlar</value></data>
   <data name="Category_worldgen" xml:space="preserve"><value>Dünya üretimi</value></data>
+  <data name="Validate_TabFindings" xml:space="preserve"><value>Bulgular</value></data>
+  <data name="Validate_TabInventory" xml:space="preserve"><value>Envanter</value></data>
+  <data name="Validate_GroupBy" xml:space="preserve"><value>Grupla</value></data>
+  <data name="Validate_GroupStatus" xml:space="preserve"><value>Önem derecesi</value></data>
+  <data name="Validate_GroupCategory" xml:space="preserve"><value>Kategori</value></data>
+  <data name="Validate_GroupFile" xml:space="preserve"><value>Dosya</value></data>
+  <data name="Validate_ExpandAll" xml:space="preserve"><value>Tümünü aç</value></data>
+  <data name="Validate_CollapseAll" xml:space="preserve"><value>Tümünü kapat</value></data>
+  <data name="Validate_SearchFindings" xml:space="preserve"><value>Bulgu, kod veya dosya ara…</value></data>
+  <data name="Validate_ClearFilter" xml:space="preserve"><value>Tümünü göster</value></data>
+  <data name="Validate_FilteredTo" xml:space="preserve"><value>Sadece şu yoldaki bulgular:</value></data>
+  <data name="Validate_PackWide" xml:space="preserve"><value>Paketin geneli</value></data>
+  <data name="Validate_GroupCount" xml:space="preserve"><value>{0} kontrol · {1} sorun</value></data>
+  <data name="Validate_Technical" xml:space="preserve"><value>{0} kontrol · {1} jar · {2} sn · PackCheck {3} · rapor şeması {4} · {5}</value></data>
+  <data name="Validate_Files" xml:space="preserve"><value>Bulgu olan dosyalar</value></data>
+  <data name="Validate_FilesHint" xml:space="preserve"><value>Sadece onun bulgularını görmek için bir dosyaya veya klasöre tıkla.</value></data>
+  <data name="Validate_OpenTarget" xml:space="preserve"><value>Klasörü aç</value></data>
+  <data name="Validate_ColName" xml:space="preserve"><value>Ad</value></data>
+  <data name="Validate_ColVersion" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="Validate_ColFile" xml:space="preserve"><value>Dosya</value></data>
+  <data name="Validate_ColSize" xml:space="preserve"><value>Boyut</value></data>
+  <data name="Validate_ColMeta" xml:space="preserve"><value>Meta veri</value></data>
+  <data name="Validate_ColDepends" xml:space="preserve"><value>Bağımlılıklar</value></data>
+  <data name="Confidence_Low" xml:space="preserve"><value>düşük</value></data>
+  <data name="Confidence_Medium" xml:space="preserve"><value>orta</value></data>
+  <data name="Confidence_High" xml:space="preserve"><value>yüksek</value></data>
+  <data name="CheckCat_Inventory" xml:space="preserve"><value>Envanter</value></data>
+  <data name="CheckCat_Config" xml:space="preserve"><value>Sunucu ayarları</value></data>
+  <data name="CheckCat_Integrity" xml:space="preserve"><value>Dosya bütünlüğü</value></data>
+  <data name="CheckCat_Duplicates" xml:space="preserve"><value>Kopyalar</value></data>
+  <data name="CheckCat_Dependencies" xml:space="preserve"><value>Bağımlılıklar</value></data>
+  <data name="CheckCat_Versions" xml:space="preserve"><value>Sürüm uyumu</value></data>
+  <data name="CheckCat_Runtime" xml:space="preserve"><value>Çalıştırma testi</value></data>
+  <data name="CheckCat_Other" xml:space="preserve"><value>Diğer</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

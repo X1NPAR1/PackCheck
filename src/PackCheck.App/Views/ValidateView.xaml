@@ -7,6 +7,8 @@
         <BooleanToVisibilityConverter x:Key="BoolVis" />
         <l:NullToVisibility x:Key="NullVis" />
         <l:StatusBrush x:Key="StatusBrush" />
+        <l:IndexToBool x:Key="IndexBool" />
+        <l:IndexToVisibility x:Key="IndexVis" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -55,106 +57,224 @@
         </Border>
 
         <!-- Summary -->
-        <Grid Grid.Row="2" Margin="0,16,0,10" Visibility="{Binding HasReport, Converter={StaticResource BoolVis}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <Border CornerRadius="9" Padding="16,10" Background="{DynamicResource Surface2Brush}" BorderThickness="2" BorderBrush="{Binding Overall, Converter={StaticResource StatusBrush}}" l:Anim.PopIn="True" VerticalAlignment="Stretch">
+        <StackPanel Grid.Row="2" Margin="0,16,0,6" Visibility="{Binding HasReport, Converter={StaticResource BoolVis}}">
+            <WrapPanel>
+                <Border CornerRadius="9" Padding="16,10" Background="{DynamicResource Surface2Brush}" BorderThickness="2" BorderBrush="{Binding Overall, Converter={StaticResource StatusBrush}}" l:Anim.PopIn="True" VerticalAlignment="Stretch" Margin="0,0,0,8">
                     <TextBlock Text="{Binding OverallText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
                                Foreground="{Binding Overall, Converter={StaticResource StatusBrush}}" AutomationProperties.AutomationId="OverallResult" />
                 </Border>
-                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,8" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
                     <StackPanel>
                         <TextBlock Text="{Binding PassCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource PassBrush}" />
                         <TextBlock Text="{l:Loc Status_Pass}" Style="{StaticResource Muted}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
-                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,8" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
                     <StackPanel>
                         <TextBlock Text="{Binding WarnCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource WarnBrush}" />
                         <TextBlock Text="{l:Loc Status_Warn}" Style="{StaticResource Muted}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
-                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,8" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
                     <StackPanel>
                         <TextBlock Text="{Binding FailCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource FailBrush}" />
                         <TextBlock Text="{l:Loc Status_Fail}" Style="{StaticResource Muted}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
-                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
+                <Border CornerRadius="9" Padding="14,8" Margin="8,0,0,8" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" MinWidth="86">
                     <StackPanel>
                         <TextBlock Text="{Binding SkipCount}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource SkipBrush}" />
                         <TextBlock Text="{l:Loc Status_Skip}" Style="{StaticResource Muted}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
-            </StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            </WrapPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <CheckBox IsChecked="{Binding ProblemsOnly}" Content="{l:Loc Validate_Filter_Problems}" VerticalAlignment="Center" Margin="0,0,14,0" />
                 <Button Content="JSON" Command="{Binding ExportCommand}" CommandParameter="json" Margin="0,0,6,0" />
-                <Button Content="HTML" Command="{Binding ExportCommand}" CommandParameter="html" />
+                <Button Content="HTML" Command="{Binding ExportCommand}" CommandParameter="html" Margin="0,0,6,0" />
+                <Button Content="{l:Loc Validate_OpenTarget}" Command="{Binding OpenTargetCommand}" />
             </StackPanel>
-        </Grid>
+        </StackPanel>
 
         <!-- Results -->
-        <Grid Grid.Row="3">
-            <TextBlock Text="{l:Loc Validate_Empty}" Style="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Visibility="{Binding Checks.Count, Converter={x:Static l:Inverse.Visibility}}" />
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Checks}" l:Anim.Stagger="True" AutomationProperties.AutomationId="CheckList">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="9" Margin="0,0,0,8">
-                                <Grid>
-                                    <Border Width="4" HorizontalAlignment="Left" CornerRadius="9,0,0,9" Background="{Binding Status, Converter={StaticResource StatusBrush}}" />
-                                    <StackPanel Margin="18,12,14,12">
-                                        <ToggleButton IsChecked="{Binding IsExpanded}" Cursor="Hand" Focusable="True">
-                                            <ToggleButton.Template>
-                                                <ControlTemplate TargetType="ToggleButton">
-                                                    <Border Background="Transparent"><ContentPresenter /></Border>
-                                                </ControlTemplate>
-                                            </ToggleButton.Template>
-                                            <DockPanel>
-                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Result.Id}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
-                                                <TextBlock DockPanel.Dock="Left" Text="{Binding StatusText}" Width="110" FontWeight="SemiBold" FontSize="12" Foreground="{Binding Status, Converter={StaticResource StatusBrush}}" VerticalAlignment="Center" />
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Result.Name}" FontWeight="SemiBold" />
-                                                    <TextBlock Text="{Binding Result.Description}" Style="{StaticResource Muted}" FontSize="13" />
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </ToggleButton>
-                                        <StackPanel Margin="110,10,0,0" Visibility="{Binding IsExpanded, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
-                                            <TextBlock Visibility="{Binding Result.AffectedFile, Converter={StaticResource NullVis}}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" Text="{Binding Result.AffectedFile}" />
-                                            <StackPanel Visibility="{Binding HasEvidence, Converter={StaticResource BoolVis}}">
-                                                <TextBlock Text="{l:Loc Validate_Evidence}" Style="{StaticResource Label}" Margin="0,8,0,4" />
-                                                <Border Background="{DynamicResource ConsoleBgBrush}" CornerRadius="6" Padding="10,8">
-                                                    <TextBlock Text="{Binding EvidenceText}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="#D8D6CE" TextWrapping="Wrap" />
+        <DockPanel Grid.Row="3" Visibility="{Binding HasReport, Converter={StaticResource BoolVis}}">
+            <TextBlock DockPanel.Dock="Top" Text="{Binding TechnicalText}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Margin="2,0,0,10"
+                       TextWrapping="Wrap" AutomationProperties.AutomationId="ValidateTechnical" />
+            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                    <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Validate_TabFindings}" IsChecked="{Binding ResultsTab, Converter={StaticResource IndexBool}, ConverterParameter=0}" />
+                    <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding ResultsTab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="ValidateInventoryTab">
+                        <TextBlock><Run Text="{l:Loc Validate_TabInventory}" /><Run Text=" · " /><Run Text="{Binding Inventory.Count, Mode=OneWay}" /></TextBlock>
+                    </RadioButton>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Visibility="{Binding ResultsTab, Converter={StaticResource IndexVis}, ConverterParameter=0}">
+                    <TextBlock Text="{l:Loc Validate_GroupBy}" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox Width="150" SelectedIndex="{Binding GroupMode}" AutomationProperties.AutomationId="ValidateGroupBy" AutomationProperties.Name="{l:Loc Validate_GroupBy}">
+                        <ComboBoxItem Content="{l:Loc Validate_GroupStatus}" />
+                        <ComboBoxItem Content="{l:Loc Validate_GroupCategory}" />
+                        <ComboBoxItem Content="{l:Loc Validate_GroupFile}" />
+                    </ComboBox>
+                    <Button Style="{StaticResource GhostButton}" Content="{l:Loc Validate_ExpandAll}" Command="{Binding ExpandAllCommand}" CommandParameter="true" Margin="8,0,0,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="{l:Loc Validate_CollapseAll}" Command="{Binding ExpandAllCommand}" CommandParameter="false" />
+                </StackPanel>
+                <Border />
+            </DockPanel>
+            <TextBox DockPanel.Dock="Top" Margin="0,0,0,10" Tag="{l:Loc Validate_SearchFindings}" Text="{Binding FindingSearch, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                     AutomationProperties.Name="{l:Loc Validate_SearchFindings}" Visibility="{Binding ResultsTab, Converter={StaticResource IndexVis}, ConverterParameter=0}" />
+            <Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="12,8" CornerRadius="7" Background="{DynamicResource PrimarySoftBrush}" Visibility="{Binding HasFileFilter, Converter={StaticResource BoolVis}}">
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc Validate_ClearFilter}" Command="{Binding ClearFileFilterCommand}" Padding="8,2" />
+                    <TextBlock VerticalAlignment="Center"><Run Text="{l:Loc Validate_FilteredTo}" /><Run Text=" " /><Run Text="{Binding FileFilter, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" /></TextBlock>
+                </DockPanel>
+            </Border>
+
+            <Grid>
+                <!-- Findings -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding ResultsTab, Converter={StaticResource IndexVis}, ConverterParameter=0}">
+                    <ItemsControl ItemsSource="{Binding Groups}" l:Anim.Stagger="True" AutomationProperties.AutomationId="CheckList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,12">
+                                    <ToggleButton IsChecked="{Binding IsOpen}" Cursor="Hand" Margin="0,0,0,6">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton"><Border Background="Transparent"><ContentPresenter /></Border></ControlTemplate>
+                                        </ToggleButton.Template>
+                                        <DockPanel>
+                                            <Ellipse Width="9" Height="9" Margin="2,0,10,0" Fill="{Binding Status, Converter={StaticResource StatusBrush}}" VerticalAlignment="Center" />
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding CountText}" Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14" TextTrimming="CharacterEllipsis" />
+                                        </DockPanel>
+                                    </ToggleButton>
+                                    <ItemsControl ItemsSource="{Binding Items}" Visibility="{Binding IsOpen, Converter={StaticResource BoolVis}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="9" Margin="0,0,0,6">
+                                                    <Grid>
+                                                        <Border Width="4" HorizontalAlignment="Left" CornerRadius="9,0,0,9" Background="{Binding Status, Converter={StaticResource StatusBrush}}" />
+                                                        <StackPanel Margin="18,10,14,10">
+                                                            <ToggleButton IsChecked="{Binding IsExpanded}" Cursor="Hand" Focusable="True">
+                                                                <ToggleButton.Template>
+                                                                    <ControlTemplate TargetType="ToggleButton"><Border Background="Transparent"><ContentPresenter /></Border></ControlTemplate>
+                                                                </ToggleButton.Template>
+                                                                <DockPanel>
+                                                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                                                                        <Border CornerRadius="5" Padding="7,2" Background="{DynamicResource Surface2Brush}" Margin="6,0,0,0">
+                                                                            <TextBlock Text="{Binding CategoryText}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" />
+                                                                        </Border>
+                                                                        <Border CornerRadius="5" Padding="7,2" Background="{DynamicResource Surface2Brush}" Margin="6,0,0,0">
+                                                                            <TextBlock Text="{Binding Result.Id}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" />
+                                                                        </Border>
+                                                                    </StackPanel>
+                                                                    <TextBlock DockPanel.Dock="Left" Text="{Binding StatusText}" Width="100" FontWeight="SemiBold" FontSize="12" Foreground="{Binding Status, Converter={StaticResource StatusBrush}}" VerticalAlignment="Top" Margin="0,1,0,0" />
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{Binding Result.Name}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                                                        <TextBlock Text="{Binding Result.Description}" Style="{StaticResource Muted}" FontSize="13" TextWrapping="Wrap" />
+                                                                        <TextBlock Text="{Binding Location}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{DynamicResource TextFaintBrush}" Margin="0,2,0,0"
+                                                                                   Visibility="{Binding Location, Converter={StaticResource NullVis}}" TextTrimming="CharacterEllipsis" />
+                                                                    </StackPanel>
+                                                                </DockPanel>
+                                                            </ToggleButton>
+                                                            <StackPanel Margin="100,8,0,0" Visibility="{Binding IsExpanded, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
+                                                                <StackPanel Visibility="{Binding HasEvidence, Converter={StaticResource BoolVis}}">
+                                                                    <TextBlock Text="{l:Loc Validate_Evidence}" Style="{StaticResource Label}" Margin="0,4,0,4" />
+                                                                    <Border Background="{DynamicResource ConsoleBgBrush}" CornerRadius="6" Padding="10,8">
+                                                                        <TextBlock Text="{Binding EvidenceText}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{DynamicResource ConsoleTextBrush}" TextWrapping="Wrap" />
+                                                                    </Border>
+                                                                </StackPanel>
+                                                                <StackPanel Visibility="{Binding FixLabel, Converter={StaticResource NullVis}}">
+                                                                    <TextBlock Text="{Binding FixLabel}" Style="{StaticResource Label}" Margin="0,8,0,4" />
+                                                                    <TextBlock Text="{Binding Result.Fix.Text}" TextWrapping="Wrap" />
+                                                                </StackPanel>
+                                                                <StackPanel Visibility="{Binding Result.NotRunReason, Converter={StaticResource NullVis}}">
+                                                                    <TextBlock Text="{l:Loc Validate_NotRun}" Style="{StaticResource Label}" Margin="0,8,0,4" />
+                                                                    <TextBlock Text="{Binding Result.NotRunReason}" TextWrapping="Wrap" />
+                                                                </StackPanel>
+                                                                <DockPanel Margin="0,10,0,0">
+                                                                    <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc Console_AskAi}" Padding="8,3"
+                                                                            Visibility="{Binding IsProblem, Converter={StaticResource BoolVis}}"
+                                                                            Command="{Binding DataContext.AskAiCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                                                    <TextBlock Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center">
+                                                                        <Run Text="{l:Loc Validate_Confidence}" /><Run Text=": " /><Run Text="{Binding ConfidenceText, Mode=OneWay}" />
+                                                                    </TextBlock>
+                                                                </DockPanel>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Grid>
                                                 </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Inventory -->
+                <Border Style="{StaticResource Card}" Padding="0" Visibility="{Binding ResultsTab, Converter={StaticResource IndexVis}, ConverterParameter=1}">
+                    <ListView ItemsSource="{Binding Inventory}" BorderThickness="0" Background="Transparent" AutomationProperties.AutomationId="ValidateInventory">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{l:Loc Validate_ColName}" Width="170">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Width="7" Height="7" Margin="0,0,8,0" Fill="{DynamicResource FailBrush}" Visibility="{Binding IsCorrupt, Converter={StaticResource BoolVis}}" />
+                                                <TextBlock Text="{Binding Name, TargetNullValue='–'}" FontWeight="SemiBold" />
                                             </StackPanel>
-                                            <StackPanel Visibility="{Binding FixLabel, Converter={StaticResource NullVis}}">
-                                                <TextBlock Text="{Binding FixLabel}" Style="{StaticResource Label}" Margin="0,8,0,4" />
-                                                <TextBlock Text="{Binding Result.Fix.Text}" TextWrapping="Wrap" />
-                                            </StackPanel>
-                                            <StackPanel Visibility="{Binding Result.NotRunReason, Converter={StaticResource NullVis}}">
-                                                <TextBlock Text="{l:Loc Validate_NotRun}" Style="{StaticResource Label}" Margin="0,8,0,4" />
-                                                <TextBlock Text="{Binding Result.NotRunReason}" TextWrapping="Wrap" />
-                                            </StackPanel>
-                                            <TextBlock Margin="0,8,0,0" Style="{StaticResource Muted}" FontSize="12">
-                                                <Run Text="{l:Loc Validate_Confidence}" /><Run Text=": " /><Run Text="{Binding Result.Confidence, Mode=OneWay}" />
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{l:Loc Validate_ColVersion}" Width="100" DisplayMemberBinding="{Binding Version, TargetNullValue='–'}" />
+                                <GridViewColumn Header="API" Width="60" DisplayMemberBinding="{Binding ApiVersion, TargetNullValue='–'}" />
+                                <GridViewColumn Header="{l:Loc Validate_ColFile}" Width="200" DisplayMemberBinding="{Binding FileName}" />
+                                <GridViewColumn Header="{l:Loc Validate_ColSize}" Width="80" DisplayMemberBinding="{Binding Size, Converter={x:Static l:Bytes.Instance}}" />
+                                <GridViewColumn Header="{l:Loc Validate_ColMeta}" Width="120" DisplayMemberBinding="{Binding MetadataSource}" />
+                                <GridViewColumn Header="{l:Loc Validate_ColDepends}" Width="160" DisplayMemberBinding="{Binding Depends, Converter={x:Static l:JoinList.Instance}}" />
+                                <GridViewColumn Header="SHA-256" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Sha256}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding Sha256}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
+            </Grid>
+        </DockPanel>
+        <TextBlock Grid.Row="3" Text="{l:Loc Validate_Empty}" Style="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Visibility="{Binding HasReport, Converter={x:Static l:Inverse.Visibility}}" />
 
         <!-- History + diff -->
         <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
+            <Border Style="{StaticResource Card}" Margin="0,0,0,12" Visibility="{Binding FileTree.Count, Converter={StaticResource NullVis}}">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Validate_Files}" Style="{StaticResource H2}" FontSize="15" />
+                    <TextBlock Text="{l:Loc Validate_FilesHint}" Style="{StaticResource Muted}" FontSize="12" Margin="0,2,0,8" TextWrapping="Wrap" />
+                    <TreeView ItemsSource="{Binding FileTree}" BorderThickness="0" Background="Transparent" MaxHeight="320" AutomationProperties.AutomationId="ValidateFileTree">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="True" />
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <Button Style="{StaticResource GhostButton}" Padding="4,2" FontWeight="Normal" HorizontalContentAlignment="Left"
+                                        Command="{Binding DataContext.FilterFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="7" Height="7" Margin="0,0,7,0" Fill="{Binding Status, Converter={StaticResource StatusBrush}}" />
+                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
+                                        <TextBlock Text="{Binding Problems}" Margin="6,0,0,0" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Visibility="{Binding Problems, Converter={StaticResource NullVis}}" />
+                                    </StackPanel>
+                                </Button>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </StackPanel>
+            </Border>
             <Border Style="{StaticResource Card}">
                 <StackPanel>
                     <TextBlock Text="{l:Loc Validate_Diff}" Style="{StaticResource H2}" FontSize="15" />

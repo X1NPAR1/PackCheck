@@ -462,3 +462,14 @@ public sealed class CountToVisibility : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
+
+/// <summary>"a, b, c" for a string list; "–" when empty.</summary>
+public sealed class JoinList : IValueConverter
+{
+    public static JoinList Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is IEnumerable<string> list && list.Any() ? string.Join(", ", list) : "–";
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}

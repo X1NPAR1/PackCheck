@@ -221,6 +221,40 @@ Appliquer quand même ?</value></data>
   <data name="Category_transportation" xml:space="preserve"><value>Transport</value></data>
   <data name="Category_utility" xml:space="preserve"><value>Utilitaires</value></data>
   <data name="Category_worldgen" xml:space="preserve"><value>Génération</value></data>
+  <data name="Validate_TabFindings" xml:space="preserve"><value>Résultats</value></data>
+  <data name="Validate_TabInventory" xml:space="preserve"><value>Inventaire</value></data>
+  <data name="Validate_GroupBy" xml:space="preserve"><value>Grouper par</value></data>
+  <data name="Validate_GroupStatus" xml:space="preserve"><value>Gravité</value></data>
+  <data name="Validate_GroupCategory" xml:space="preserve"><value>Catégorie</value></data>
+  <data name="Validate_GroupFile" xml:space="preserve"><value>Fichier</value></data>
+  <data name="Validate_ExpandAll" xml:space="preserve"><value>Tout déplier</value></data>
+  <data name="Validate_CollapseAll" xml:space="preserve"><value>Tout replier</value></data>
+  <data name="Validate_SearchFindings" xml:space="preserve"><value>Rechercher résultats, codes, fichiers…</value></data>
+  <data name="Validate_ClearFilter" xml:space="preserve"><value>Tout afficher</value></data>
+  <data name="Validate_FilteredTo" xml:space="preserve"><value>Seulement les résultats dans</value></data>
+  <data name="Validate_PackWide" xml:space="preserve"><value>Pack entier</value></data>
+  <data name="Validate_GroupCount" xml:space="preserve"><value>{0} contrôles · {1} problèmes</value></data>
+  <data name="Validate_Technical" xml:space="preserve"><value>{0} contrôles · {1} JAR · {2} s · PackCheck {3} · schéma {4} · {5}</value></data>
+  <data name="Validate_Files" xml:space="preserve"><value>Fichiers concernés</value></data>
+  <data name="Validate_FilesHint" xml:space="preserve"><value>Cliquez sur un fichier ou dossier pour filtrer.</value></data>
+  <data name="Validate_OpenTarget" xml:space="preserve"><value>Ouvrir le dossier</value></data>
+  <data name="Validate_ColName" xml:space="preserve"><value>Nom</value></data>
+  <data name="Validate_ColVersion" xml:space="preserve"><value>Version</value></data>
+  <data name="Validate_ColFile" xml:space="preserve"><value>Fichier</value></data>
+  <data name="Validate_ColSize" xml:space="preserve"><value>Taille</value></data>
+  <data name="Validate_ColMeta" xml:space="preserve"><value>Métadonnées</value></data>
+  <data name="Validate_ColDepends" xml:space="preserve"><value>Dépend de</value></data>
+  <data name="Confidence_Low" xml:space="preserve"><value>faible</value></data>
+  <data name="Confidence_Medium" xml:space="preserve"><value>moyenne</value></data>
+  <data name="Confidence_High" xml:space="preserve"><value>élevée</value></data>
+  <data name="CheckCat_Inventory" xml:space="preserve"><value>Inventaire</value></data>
+  <data name="CheckCat_Config" xml:space="preserve"><value>Configuration serveur</value></data>
+  <data name="CheckCat_Integrity" xml:space="preserve"><value>Intégrité des fichiers</value></data>
+  <data name="CheckCat_Duplicates" xml:space="preserve"><value>Doublons</value></data>
+  <data name="CheckCat_Dependencies" xml:space="preserve"><value>Dépendances</value></data>
+  <data name="CheckCat_Versions" xml:space="preserve"><value>Compatibilité des versions</value></data>
+  <data name="CheckCat_Runtime" xml:space="preserve"><value>Test d'exécution</value></data>
+  <data name="CheckCat_Other" xml:space="preserve"><value>Autre</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

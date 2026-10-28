@@ -221,6 +221,40 @@
   <data name="Category_transportation" xml:space="preserve"><value>Транспорт</value></data>
   <data name="Category_utility" xml:space="preserve"><value>Утилиты</value></data>
   <data name="Category_worldgen" xml:space="preserve"><value>Генерация мира</value></data>
+  <data name="Validate_TabFindings" xml:space="preserve"><value>Результаты</value></data>
+  <data name="Validate_TabInventory" xml:space="preserve"><value>Инвентарь</value></data>
+  <data name="Validate_GroupBy" xml:space="preserve"><value>Группировать</value></data>
+  <data name="Validate_GroupStatus" xml:space="preserve"><value>Важность</value></data>
+  <data name="Validate_GroupCategory" xml:space="preserve"><value>Категория</value></data>
+  <data name="Validate_GroupFile" xml:space="preserve"><value>Файл</value></data>
+  <data name="Validate_ExpandAll" xml:space="preserve"><value>Развернуть всё</value></data>
+  <data name="Validate_CollapseAll" xml:space="preserve"><value>Свернуть всё</value></data>
+  <data name="Validate_SearchFindings" xml:space="preserve"><value>Поиск по результатам, кодам, файлам…</value></data>
+  <data name="Validate_ClearFilter" xml:space="preserve"><value>Показать всё</value></data>
+  <data name="Validate_FilteredTo" xml:space="preserve"><value>Только результаты в</value></data>
+  <data name="Validate_PackWide" xml:space="preserve"><value>Весь пакет</value></data>
+  <data name="Validate_GroupCount" xml:space="preserve"><value>Проверок: {0} · проблем: {1}</value></data>
+  <data name="Validate_Technical" xml:space="preserve"><value>Проверок: {0} · JAR: {1} · {2} с · PackCheck {3} · схема {4} · {5}</value></data>
+  <data name="Validate_Files" xml:space="preserve"><value>Файлы с результатами</value></data>
+  <data name="Validate_FilesHint" xml:space="preserve"><value>Нажмите на файл или папку, чтобы отфильтровать.</value></data>
+  <data name="Validate_OpenTarget" xml:space="preserve"><value>Открыть папку</value></data>
+  <data name="Validate_ColName" xml:space="preserve"><value>Имя</value></data>
+  <data name="Validate_ColVersion" xml:space="preserve"><value>Версия</value></data>
+  <data name="Validate_ColFile" xml:space="preserve"><value>Файл</value></data>
+  <data name="Validate_ColSize" xml:space="preserve"><value>Размер</value></data>
+  <data name="Validate_ColMeta" xml:space="preserve"><value>Метаданные</value></data>
+  <data name="Validate_ColDepends" xml:space="preserve"><value>Зависит от</value></data>
+  <data name="Confidence_Low" xml:space="preserve"><value>низкая</value></data>
+  <data name="Confidence_Medium" xml:space="preserve"><value>средняя</value></data>
+  <data name="Confidence_High" xml:space="preserve"><value>высокая</value></data>
+  <data name="CheckCat_Inventory" xml:space="preserve"><value>Инвентарь</value></data>
+  <data name="CheckCat_Config" xml:space="preserve"><value>Настройки сервера</value></data>
+  <data name="CheckCat_Integrity" xml:space="preserve"><value>Целостность файлов</value></data>
+  <data name="CheckCat_Duplicates" xml:space="preserve"><value>Дубликаты</value></data>
+  <data name="CheckCat_Dependencies" xml:space="preserve"><value>Зависимости</value></data>
+  <data name="CheckCat_Versions" xml:space="preserve"><value>Совместимость версий</value></data>
+  <data name="CheckCat_Runtime" xml:space="preserve"><value>Тест запуска</value></data>
+  <data name="CheckCat_Other" xml:space="preserve"><value>Прочее</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

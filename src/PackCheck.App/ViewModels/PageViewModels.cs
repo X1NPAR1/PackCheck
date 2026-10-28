@@ -219,8 +219,70 @@ public sealed partial class CheckItemViewModel(CheckResult result) : ObservableO
 
     public string? FixLabel => Result.Fix is null ? null : Loc.T(Result.Fix.IsCertain ? "Validate_Fix" : "Validate_FixEstimated");
 
+    public string Category => CategoryOf(Result.Id);
+
+    public string CategoryText => Loc.T("CheckCat_" + Category);
+
+    /// <summary>File or plugin the finding is about; "" for pack-wide checks.</summary>
+    public string Location => (Result.AffectedFile ?? Result.AffectedPlugin ?? string.Empty).Replace('\\', '/');
+
+    public bool IsProblem => Result.Status is not CheckStatus.Pass;
+
+    public string ConfidenceText => Loc.T("Confidence_" + Result.Confidence);
+
     [ObservableProperty]
     private bool _isExpanded;
+
+    /// <summary>Rule families by id range (see docs/rule-authoring.md).</summary>
+    public static string CategoryOf(string id) => id switch
+    {
+        _ when id.StartsWith("RT", StringComparison.Ordinal) => "Runtime",
+        "PC060" or "PC061" or "PC062" => "Integrity",
+        "PC063" => "Duplicates",
+        "PC064" => "Dependencies",
+        "PC065" or "PC066" => "Versions",
+        _ when id.StartsWith("PC00", StringComparison.Ordinal) => "Inventory",
+        _ when id.StartsWith("PC01", StringComparison.Ordinal) => "Config",
+        _ when id.StartsWith("PC02", StringComparison.Ordinal) => "Integrity",
+        _ when id.StartsWith("PC03", StringComparison.Ordinal) => "Duplicates",
+        _ when id.StartsWith("PC04", StringComparison.Ordinal) => "Dependencies",
+        _ when id.StartsWith("PC05", StringComparison.Ordinal) => "Versions",
+        _ => "Other",
+    };
+
+    public static int Rank(CheckStatus s) => s switch { CheckStatus.Fail => 0, CheckStatus.Error => 1, CheckStatus.Warn => 2, CheckStatus.Skip => 3, _ => 4 };
+}
+
+/// <summary>A group of findings (by status, category or file).</summary>
+public sealed partial class CheckGroup(string title, string status, IReadOnlyList<CheckItemViewModel> items) : ObservableObject
+{
+    public string Title { get; } = title;
+
+    /// <summary>Worst status in the group, for the color strip.</summary>
+    public string Status { get; } = status;
+
+    public IReadOnlyList<CheckItemViewModel> Items { get; } = items;
+
+    public string CountText => Loc.F("Validate_GroupCount", Items.Count, Items.Count(i => i.IsProblem));
+
+    [ObservableProperty]
+    private bool _isOpen = true;
+}
+
+/// <summary>Folder or file in the findings tree.</summary>
+public sealed class FileNode(string name, string path, bool isFolder)
+{
+    public string Name { get; } = name;
+
+    public string Path { get; } = path;
+
+    public bool IsFolder { get; } = isFolder;
+
+    public List<FileNode> Children { get; } = [];
+
+    public string Status { get; set; } = "Pass";
+
+    public int Problems { get; set; }
 }
 
 public sealed record HistoryEntry(string File, DateTimeOffset At, OverallStatus Overall)
@@ -233,6 +295,84 @@ public sealed partial class ValidateViewModel(PackValidator validator, RuntimeTe
     private ValidationReport? _report;
 
     public ObservableCollection<CheckItemViewModel> Checks { get; } = [];
+
+    public ObservableCollection<CheckGroup> Groups { get; } = [];
+
+    public ObservableCollection<FileNode> FileTree { get; } = [];
+
+    public ObservableCollection<PluginInfo> Inventory { get; } = [];
+
+    /// <summary>0 = by status, 1 = by category, 2 = by file.</summary>
+    [ObservableProperty]
+    private int _groupMode;
+
+    /// <summary>0 = findings, 1 = inventory.</summary>
+    [ObservableProperty]
+    private int _resultsTab;
+
+    [ObservableProperty]
+    private string _findingSearch = string.Empty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasFileFilter))]
+    private string? _fileFilter;
+
+    [ObservableProperty]
+    private string? _technicalText;
+
+    public bool HasFileFilter => FileFilter is not null;
+
+    partial void OnGroupModeChanged(int value) => Rebuild();
+
+    partial void OnFindingSearchChanged(string value) => Rebuild();
+
+    partial void OnFileFilterChanged(string? value) => Rebuild();
+
+    [RelayCommand]
+    private void FilterFile(FileNode? node) => FileFilter = node?.Path;
+
+    [RelayCommand]
+    private void ClearFileFilter() => FileFilter = null;
+
+    [RelayCommand]
+    private void ExpandAll(string? open)
+    {
+        var value = open != "false";
+        foreach (var g in Groups)
+        {
+            g.IsOpen = value;
+            foreach (var i in g.Items)
+            {
+                i.IsExpanded = value && i.IsProblem;
+            }
+        }
+    }
+
+    /// <summary>Hands one finding to the assistant with its evidence.</summary>
+    [RelayCommand]
+    private void AskAi(CheckItemViewModel? item)
+    {
+        if (item is null)
+        {
+            return;
+        }
+
+        var r = item.Result;
+        MainViewModel.Shell?.Assistant.Ask(
+            $"PackCheck reported {r.Status} for {r.Id} \"{r.Name}\" in {Target}.\n{r.Description}\n"
+            + (item.Location.Length > 0 ? $"File: {item.Location}\n" : string.Empty)
+            + (r.Evidence.Count > 0 ? $"Evidence:\n```\n{string.Join("\n", r.Evidence)}\n```\n" : string.Empty)
+            + "Explain the cause and how to fix it.");
+    }
+
+    [RelayCommand]
+    private void OpenTarget()
+    {
+        if (Target is { } t && (Directory.Exists(t) || File.Exists(t)))
+        {
+            Shell32.Open(Directory.Exists(t) ? t : Path.GetDirectoryName(t)!);
+        }
+    }
 
     public ObservableCollection<string> Diff { get; } = [];
 
@@ -315,6 +455,11 @@ public sealed partial class ValidateViewModel(PackValidator validator, RuntimeTe
     {
         IsRunning = true;
         Checks.Clear();
+        Groups.Clear();
+        FileTree.Clear();
+        Inventory.Clear();
+        FileFilter = null;
+        TechnicalText = null;
         Diff.Clear();
         _report = null;
         OnPropertyChanged(nameof(HasReport));
@@ -357,12 +502,20 @@ public sealed partial class ValidateViewModel(PackValidator validator, RuntimeTe
             FailCount = report.Count(CheckStatus.Fail);
             SkipCount = report.Count(CheckStatus.Skip) + report.Count(CheckStatus.Error);
             OnPropertyChanged(nameof(HasReport));
-
-            // Reveal results one by one.
-            foreach (var c in Ordered(report))
+            TechnicalText = Loc.F("Validate_Technical", report.Checks.Count, report.Plugins.Count, report.Duration.TotalSeconds.ToString("0.00", Loc.Instance.Culture),
+                report.ToolVersion, report.Schema, report.StartedAt.LocalDateTime.ToString("G", Loc.Instance.Culture));
+            foreach (var plugin in report.Plugins.OrderBy(x => x.Name ?? x.FileName, StringComparer.OrdinalIgnoreCase))
             {
-                Checks.Add(new CheckItemViewModel(c) { IsExpanded = c.Status is CheckStatus.Fail or CheckStatus.Error });
-                await Task.Delay(Motion.Enabled ? 60 : 0).ConfigureAwait(true);
+                Inventory.Add(plugin);
+            }
+
+            BuildTree(report);
+
+            // Reveal groups one by one.
+            foreach (var g in BuildGroups(report))
+            {
+                Groups.Add(g);
+                await Task.Delay(Motion.Enabled ? 70 : 0).ConfigureAwait(true);
             }
         }
         finally
@@ -373,7 +526,30 @@ public sealed partial class ValidateViewModel(PackValidator validator, RuntimeTe
 
     private IEnumerable<CheckResult> Ordered(ValidationReport r) =>
         r.Checks.Where(c => !ProblemsOnly || c.Status is not CheckStatus.Pass)
-            .OrderBy(c => c.Status switch { CheckStatus.Fail => 0, CheckStatus.Error => 1, CheckStatus.Warn => 2, CheckStatus.Skip => 3, _ => 4 });
+            .Where(c => FileFilter is null || (c.AffectedFile ?? c.AffectedPlugin ?? string.Empty).Replace('\\', '/').StartsWith(FileFilter, StringComparison.OrdinalIgnoreCase))
+            .Where(c => FindingSearch.Length == 0 || $"{c.Id} {c.Name} {c.Description} {c.AffectedFile} {c.AffectedPlugin} {string.Join(' ', c.Evidence)}".Contains(FindingSearch, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(c => CheckItemViewModel.Rank(c.Status)).ThenBy(c => c.Id, StringComparer.Ordinal);
+
+    private List<CheckGroup> BuildGroups(ValidationReport r)
+    {
+        Checks.Clear();
+        foreach (var c in Ordered(r))
+        {
+            Checks.Add(new CheckItemViewModel(c) { IsExpanded = c.Status is CheckStatus.Fail or CheckStatus.Error });
+        }
+
+        Func<CheckItemViewModel, string> key = GroupMode switch
+        {
+            1 => i => i.CategoryText,
+            2 => i => i.Location.Length == 0 ? Loc.T("Validate_PackWide") : i.Location,
+            _ => i => i.StatusText,
+        };
+        return Checks.GroupBy(key)
+            .Select(g => (Group: g, Worst: g.Min(i => CheckItemViewModel.Rank(i.Result.Status))))
+            .OrderBy(x => GroupMode == 0 ? x.Worst : 0).ThenBy(x => x.Worst).ThenBy(x => x.Group.Key, StringComparer.CurrentCulture)
+            .Select(x => new CheckGroup(x.Group.Key, x.Group.OrderBy(i => CheckItemViewModel.Rank(i.Result.Status)).First().Status, x.Group.ToList()))
+            .ToList();
+    }
 
     private void Rebuild()
     {
@@ -382,10 +558,62 @@ public sealed partial class ValidateViewModel(PackValidator validator, RuntimeTe
             return;
         }
 
-        Checks.Clear();
-        foreach (var c in Ordered(_report))
+        Groups.Clear();
+        foreach (var g in BuildGroups(_report))
         {
-            Checks.Add(new CheckItemViewModel(c) { IsExpanded = c.Status is CheckStatus.Fail or CheckStatus.Error });
+            Groups.Add(g);
+        }
+    }
+
+    /// <summary>Folder tree of every file that has a finding, with the worst status and problem count rolled up.</summary>
+    private void BuildTree(ValidationReport r)
+    {
+        FileTree.Clear();
+        var root = new FileNode(string.Empty, string.Empty, true);
+        foreach (var c in r.Checks)
+        {
+            var loc = (c.AffectedFile ?? c.AffectedPlugin)?.Replace('\\', '/');
+            if (string.IsNullOrEmpty(loc))
+            {
+                continue;
+            }
+
+            var node = root;
+            var parts = loc.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < parts.Length; i++)
+            {
+                var path = string.Join('/', parts.Take(i + 1));
+                var child = node.Children.FirstOrDefault(n => n.Name.Equals(parts[i], StringComparison.OrdinalIgnoreCase));
+                if (child is null)
+                {
+                    child = new FileNode(parts[i], path, i < parts.Length - 1);
+                    node.Children.Add(child);
+                }
+
+                if (CheckItemViewModel.Rank(c.Status) < CheckItemViewModel.Rank(Enum.Parse<CheckStatus>(child.Status)))
+                {
+                    child.Status = c.Status.ToString();
+                }
+
+                if (c.Status is not CheckStatus.Pass)
+                {
+                    child.Problems++;
+                }
+
+                node = child;
+            }
+        }
+
+        static void Sort(FileNode n)
+        {
+            n.Children.Sort((a, b) => a.IsFolder != b.IsFolder ? (a.IsFolder ? -1 : 1) : string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            n.Children.ForEach(Sort);
+        }
+
+        Sort(root);
+        foreach (var n in root.Children)
+        {
+            FileTree.Add(n);
         }
     }
 
