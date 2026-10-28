@@ -24,6 +24,10 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 ## Screenshots
 
+| Startup | Navigation |
+|---|---|
+| ![Startup](docs/media/splash.gif) | ![Navigation](docs/media/navigation.gif) |
+
 | Server dashboard | Files and code editor |
 |---|---|
 | ![Server dashboard](docs/media/server-overview.png) | ![Files](docs/media/files.png) |
@@ -35,7 +39,7 @@ Static checks never execute plugin code. A real startup test is available, but y
 ## Features
 
 **Servers**
-- 16 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer and Arclight. Version lists come from each project's own API, so only versions with a real download appear.
+- 18 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer, Arclight, and the proxies Velocity and BungeeCord. Version lists come from each project's own API, so only versions with a real download appear.
 - Downloads are hash-verified wherever the source publishes a hash; Forge, NeoForge, Quilt and BuildTools run automatically.
 - The right Java (8, 17, 21 or 25) is installed automatically from Eclipse Temurin before a server starts.
 - Explicit EULA consent: nothing is accepted on your behalf.
@@ -52,6 +56,15 @@ Static checks never execute plugin code. A real startup test is available, but y
 - Modrinth `.mrpack` modpacks are installed file by file with SHA-512 checks; CurseForge server packs are extracted safely.
 - The sidebar only enables Plugins or Mods when the selected server can use them.
 
+**Proxy networks**
+- Connect Velocity or BungeeCord to backend servers; PackCheck writes `velocity.toml` / `config.yml`, a forwarding secret, and secures every backend (offline mode behind the proxy, bound to 127.0.0.1).
+- Setup check for secret mismatches, unsafe backends and port clashes; start and stop the whole network in order.
+
+**AI assistant**
+- Choose a provider (Anthropic, OpenAI, Gemini, OpenRouter, Ollama, LM Studio) and pick one of its models from a list; the key is stored encrypted with Windows DPAPI.
+- It reads the console, files and validation results, and can edit configs, translate plugin message files, send commands or create several servers at once.
+- Every change waits for your approval with a preview; it cannot leave the server folder and has no shell.
+
 **Online**
 - Open a server to the internet: a firewall rule (after you approve the Windows prompt) and UPnP forwarding on the router.
 - Copy the public address, get A and SRV records for your own domain, optionally keep a DuckDNS name up to date.
@@ -61,6 +74,7 @@ Static checks never execute plugin code. A real startup test is available, but y
 - Pack structure, `server.properties` values, corrupt or unreadable JARs, oversized files.
 - Reads `plugin.yml` and `paper-plugin.yml` metadata; compatibility is never guessed from file names.
 - Required and optional dependencies, duplicates, `api-version` vs. server version, Java vs. Minecraft version.
+- Mods: Fabric, Quilt, Forge and NeoForge metadata, missing dependencies, Minecraft version ranges, client-only mods, duplicates and mixed loaders.
 - Results are `PASS`, `WARN`, `FAIL`, `SKIP` or `ERROR`. "Failed" and "could not run" are never the same thing.
 - Pre-flight checks before plugin changes, run history with diff, JSON (with a [schema](docs/schema/report.schema.json)) and self-contained HTML reports.
 
@@ -144,6 +158,10 @@ Result: FAIL  (pass 2, warn 1, fail 5, skip 1, error 0)
 
 Adding a check means adding one class that implements `IAnalyzer`. See [docs/rule-authoring.md](docs/rule-authoring.md).
 
+## Testing
+
+See [docs/testing.md](docs/testing.md) for what is tested and the latest end-to-end results with real servers.
+
 ## Build from source
 
 ```powershell
@@ -169,7 +187,6 @@ Requires the .NET 10 SDK on Windows.
 ## Known limitations
 
 - Windows only.
-- Proxies (Velocity, BungeeCord) are not supported yet. Pack validation focuses on Bukkit/Paper plugins; mods are not analyzed yet.
 - Pufferfish is not offered because its build server was not reachable; Magma, Glowstone and Waterfall are no longer maintained.
 - PackCheck cannot test from outside whether your server is reachable over the internet; ask a friend to try.
 - CurseForge needs your own API key (Settings), because CurseForge does not allow anonymous access.

@@ -78,7 +78,7 @@ public static class AiProviders
             : new OpenAiCompatibleConversation(BaseUrl(kind), apiKey, model, system, tools, http);
 }
 
-/// <summary>Claude through the official SDK. Assistant turns are echoed back block by block (thinking signatures kept).</summary>
+/// <summary>Anthropic models through the official SDK. Assistant turns are echoed back block by block (thinking signatures kept).</summary>
 internal sealed class AnthropicConversation(string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools) : IAiConversation
 {
     private readonly AnthropicClient _client = new() { ApiKey = apiKey };

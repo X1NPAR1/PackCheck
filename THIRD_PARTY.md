@@ -8,6 +8,7 @@
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MIT | MVVM helpers |
 | [Microsoft.Extensions.Hosting](https://github.com/dotnet/runtime) | MIT | Dependency injection, hosting |
 | [Serilog](https://github.com/serilog/serilog) + Extensions.Hosting + Sinks.File | Apache-2.0 | Logging |
+| [Anthropic C# SDK](https://github.com/anthropics/anthropic-sdk-csharp) 13.3 | MIT | Anthropic provider of the assistant |
 | [AvalonEdit](https://github.com/icsharpcode/AvalonEdit) 6.3 | MIT | Code editor in the Files tab |
 | [Tomlyn](https://github.com/xoofx/Tomlyn) 2.10 | BSD-2-Clause | TOML syntax check before saving |
 | [YamlDotNet](https://github.com/aaubry/YamlDotNet) | MIT | Plugin metadata parsing |
