@@ -5,6 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Tomlyn" Version="2.10.1" />
     <PackageReference Include="YamlDotNet" Version="18.1.0" />
   </ItemGroup>
 

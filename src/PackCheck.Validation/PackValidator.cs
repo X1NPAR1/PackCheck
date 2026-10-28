@@ -18,6 +18,7 @@ public sealed class PackValidator(IEnumerable<IAnalyzer>? analyzers = null)
     [
         new StructureAnalyzer(), new ServerPropertiesAnalyzer(), new JarIntegrityAnalyzer(),
         new DuplicateAnalyzer(), new DependencyAnalyzer(), new VersionAnalyzer(),
+        new ModIntegrityAnalyzer(), new ModDuplicateAnalyzer(), new ModDependencyAnalyzer(), new ModCompatibilityAnalyzer(),
     ];
 
     private readonly IReadOnlyList<IAnalyzer> _analyzers = analyzers?.ToList() is { Count: > 0 } list ? list : DefaultAnalyzers;
@@ -75,6 +76,20 @@ public sealed class PackValidator(IEnumerable<IAnalyzer>? analyzers = null)
                 }
             }
 
+            var mods = new List<ModInfo>();
+            var modsDir = Path.Combine(root, "mods");
+            if (Directory.Exists(modsDir))
+            {
+                foreach (var jar in Directory.EnumerateFiles(modsDir, "*.jar").Order(StringComparer.OrdinalIgnoreCase))
+                {
+                    ct.ThrowIfCancellationRequested();
+                    if (new FileInfo(jar).Length <= options.MaxFileBytes)
+                    {
+                        mods.Add(await ModMetadataReader.ReadAsync(jar, ct).ConfigureAwait(false));
+                    }
+                }
+            }
+
             var propsPath = Path.Combine(root, "server.properties");
             var hasProps = File.Exists(propsPath);
             var props = hasProps ? ServerProperties.Parse(await File.ReadAllTextAsync(propsPath, ct).ConfigureAwait(false)) : [];
@@ -84,6 +99,7 @@ public sealed class PackValidator(IEnumerable<IAnalyzer>? analyzers = null)
             {
                 Root = root,
                 Plugins = plugins,
+                Mods = mods,
                 ServerProperties = props,
                 ServerPropertiesExists = hasProps,
                 ServerJar = serverJar,

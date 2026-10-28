@@ -8,13 +8,13 @@ public sealed class StructureAnalyzer : IAnalyzer
 
     public IEnumerable<CheckResult> Analyze(PackContext context)
     {
-        var hasPlugins = Directory.Exists(Path.Combine(context.Root, "plugins"));
+        var hasPlugins = Directory.Exists(Path.Combine(context.Root, "plugins")) || Directory.Exists(Path.Combine(context.Root, "mods"));
         yield return new CheckResult
         {
             Id = Id,
             Name = "Pack structure",
             Status = hasPlugins ? CheckStatus.Pass : CheckStatus.Warn,
-            Description = hasPlugins ? "A plugins directory is present." : "No plugins directory was found.",
+            Description = hasPlugins ? "A plugins or mods directory is present." : "No plugins or mods directory was found.",
             Fix = hasPlugins ? null : new SuggestedFix("Create a 'plugins' folder next to the server JAR if this pack should run plugins.", false),
         };
 

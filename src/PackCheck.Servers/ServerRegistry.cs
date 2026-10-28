@@ -215,7 +215,7 @@ public sealed partial class ServerCreator
             ?? throw new InvalidOperationException("BuildTools finished but produced no server jar.");
         try
         {
-            Directory.Delete(build, true);
+            Core.FileSystem.DeleteDirectory(build);
         }
         catch (IOException)
         {

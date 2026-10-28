@@ -41,10 +41,7 @@ public class EndToEndServerTests(ITestOutputHelper output)
         var runtime = await java.EnsureAsync(mc.RequiredJava(), await java.DetectAsync(CancellationToken.None), null, CancellationToken.None);
         var name = $"pc-e2e-{platform.ToString().ToLowerInvariant()}";
         var dir = Path.Combine(root, name);
-        if (Directory.Exists(dir))
-        {
-            Directory.Delete(dir, true);
-        }
+        PackCheck.Core.FileSystem.DeleteDirectory(dir);
 
         var started = DateTime.Now;
         try
@@ -132,20 +129,13 @@ public class EndToEndServerTests(ITestOutputHelper output)
         }
         finally
         {
-            for (var i = 0; i < 10 && Directory.Exists(dir); i++)
+            try
             {
-                try
-                {
-                    Directory.Delete(dir, true);
-                }
-                catch (IOException)
-                {
-                    await Task.Delay(1000);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    await Task.Delay(1000);
-                }
+                PackCheck.Core.FileSystem.DeleteDirectory(dir);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                output.WriteLine($"{platform}: cleanup failed: {ex.Message}");
             }
 
             output.WriteLine($"{platform}: folder removed: {!Directory.Exists(dir)}");

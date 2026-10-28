@@ -7,6 +7,7 @@ public sealed class PackContext
 {
     public required string Root { get; init; }
     public required IReadOnlyList<PluginInfo> Plugins { get; init; }
+    public IReadOnlyList<ModInfo> Mods { get; init; } = [];
     public MinecraftVersion? ServerVersion { get; init; }
     public int? JavaVersion { get; init; }
     public IReadOnlyDictionary<string, string> ServerProperties { get; init; } = new Dictionary<string, string>();
