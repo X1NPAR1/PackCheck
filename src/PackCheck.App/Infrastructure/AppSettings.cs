@@ -30,6 +30,10 @@ public sealed class AppSettings
     public int BackupsToKeep { get; set; } = 5;
     public bool MinimizeToTray { get; set; } = true;
     public bool FirstRunDone { get; set; }
+    public List<int> OnlinePorts { get; set; } = [];
+    public string? OnlineDomain { get; set; }
+    public string? DuckDnsDomain { get; set; }
+    public string? DuckDnsToken { get; set; }
     public string? CurseForgeApiKey { get; set; }
     public string DefaultServerFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PackCheck Servers");
 

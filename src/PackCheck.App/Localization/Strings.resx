@@ -207,6 +207,37 @@ Apply anyway?</value></data>
   <data name="Splash_InstallJava" xml:space="preserve"><value>First start: installing Java 21… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>Start PackCheck with Windows (opens in the tray)</value></data>
   <data name="Wizard_Supports" xml:space="preserve"><value>Supports {0} – {1} ({2} versions)</value></data>
+  <data name="Nav_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="Online_Title" xml:space="preserve"><value>Play over the internet</value></data>
+  <data name="Online_Subtitle" xml:space="preserve"><value>Open the server port so friends can join with your IP or your own domain. Close it again any time.</value></data>
+  <data name="Online_Open" xml:space="preserve"><value>Open to the internet</value></data>
+  <data name="Online_Close" xml:space="preserve"><value>Close (local only)</value></data>
+  <data name="Online_StateLocal" xml:space="preserve"><value>Local only</value></data>
+  <data name="Online_StatePublic" xml:space="preserve"><value>Open to the internet</value></data>
+  <data name="Online_StepFirewall" xml:space="preserve"><value>Asking Windows for permission to allow the port in the firewall…</value></data>
+  <data name="Online_StepUpnp" xml:space="preserve"><value>Forwarding the port on the router (UPnP)…</value></data>
+  <data name="Online_StepAddress" xml:space="preserve"><value>Checking the public address…</value></data>
+  <data name="Online_Done" xml:space="preserve"><value>Done.</value></data>
+  <data name="Online_UacDeclined" xml:space="preserve"><value>Administrator permission was not granted, so nothing was changed.</value></data>
+  <data name="Online_Cgnat" xml:space="preserve"><value>Your router's internet address ({0}) is not your public address. Your provider uses CGNAT, so people outside cannot reach you through port forwarding. Ask your provider for a public IP or use a tunnel service.</value></data>
+  <data name="Online_UpnpManual" xml:space="preserve"><value>The router did not accept automatic forwarding (UPnP is off or unsupported). Forward TCP and UDP port {0} to {1} in your router's settings.</value></data>
+  <data name="Online_NowLocal" xml:space="preserve"><value>The port is closed. The server is only reachable on this network.</value></data>
+  <data name="Online_ShareAddress" xml:space="preserve"><value>Share this address</value></data>
+  <data name="Online_Copied" xml:space="preserve"><value>Copied.</value></data>
+  <data name="Online_PublicIp" xml:space="preserve"><value>Public IP</value></data>
+  <data name="Online_LocalIp" xml:space="preserve"><value>Local address</value></data>
+  <data name="Online_Firewall" xml:space="preserve"><value>Firewall</value></data>
+  <data name="Online_Allowed" xml:space="preserve"><value>Allowed</value></data>
+  <data name="Online_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Players on the same network can always join with the local address. PackCheck cannot test reachability from outside; ask a friend to try.</value></data>
+  <data name="Online_DomainTitle" xml:space="preserve"><value>Your own domain</value></data>
+  <data name="Online_DomainHint" xml:space="preserve"><value>Enter a domain you own (e.g. play.example.com). Create these records at your DNS provider.</value></data>
+  <data name="Online_SrvHint" xml:space="preserve"><value>With the SRV record players can join with just the domain, without a port.</value></data>
+  <data name="Online_DuckTitle" xml:space="preserve"><value>Free dynamic DNS (DuckDNS)</value></data>
+  <data name="Online_DuckHint" xml:space="preserve"><value>Keeps yourname.duckdns.org pointing at your IP when it changes. The token is stored encrypted for your Windows user.</value></data>
+  <data name="Online_DuckUpdate" xml:space="preserve"><value>Save and update</value></data>
+  <data name="Online_DuckOk" xml:space="preserve"><value>{0} now points to your IP.</value></data>
+  <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS rejected the update. Check the subdomain and token.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

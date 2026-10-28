@@ -207,6 +207,37 @@
   <data name="Splash_InstallJava" xml:space="preserve"><value>Первый запуск: установка Java 21… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>Запускать PackCheck вместе с Windows (в трее)</value></data>
   <data name="Wizard_Supports" xml:space="preserve"><value>Поддерживает {0} – {1} (версий: {2})</value></data>
+  <data name="Nav_Online" xml:space="preserve"><value>Онлайн</value></data>
+  <data name="Online_Title" xml:space="preserve"><value>Игра через интернет</value></data>
+  <data name="Online_Subtitle" xml:space="preserve"><value>Откройте порт сервера, чтобы друзья подключались по вашему IP или домену. Закрыть можно в любой момент.</value></data>
+  <data name="Online_Open" xml:space="preserve"><value>Открыть для интернета</value></data>
+  <data name="Online_Close" xml:space="preserve"><value>Закрыть (только локально)</value></data>
+  <data name="Online_StateLocal" xml:space="preserve"><value>Только локально</value></data>
+  <data name="Online_StatePublic" xml:space="preserve"><value>Открыт для интернета</value></data>
+  <data name="Online_StepFirewall" xml:space="preserve"><value>Запрос разрешения Windows для брандмауэра…</value></data>
+  <data name="Online_StepUpnp" xml:space="preserve"><value>Проброс порта на роутере (UPnP)…</value></data>
+  <data name="Online_StepAddress" xml:space="preserve"><value>Проверка внешнего адреса…</value></data>
+  <data name="Online_Done" xml:space="preserve"><value>Готово.</value></data>
+  <data name="Online_UacDeclined" xml:space="preserve"><value>Права администратора не предоставлены, ничего не изменено.</value></data>
+  <data name="Online_Cgnat" xml:space="preserve"><value>Внешний адрес роутера ({0}) не совпадает с публичным. Провайдер использует CGNAT, проброс портов не сработает. Попросите публичный IP или используйте туннель.</value></data>
+  <data name="Online_UpnpManual" xml:space="preserve"><value>Роутер не принял автоматический проброс (UPnP выключен). Пробросьте TCP и UDP порт {0} на {1} в настройках роутера.</value></data>
+  <data name="Online_NowLocal" xml:space="preserve"><value>Порт закрыт. Сервер доступен только в локальной сети.</value></data>
+  <data name="Online_ShareAddress" xml:space="preserve"><value>Поделитесь этим адресом</value></data>
+  <data name="Online_Copied" xml:space="preserve"><value>Скопировано.</value></data>
+  <data name="Online_PublicIp" xml:space="preserve"><value>Внешний IP</value></data>
+  <data name="Online_LocalIp" xml:space="preserve"><value>Локальный адрес</value></data>
+  <data name="Online_Firewall" xml:space="preserve"><value>Брандмауэр</value></data>
+  <data name="Online_Allowed" xml:space="preserve"><value>Разрешено</value></data>
+  <data name="Online_Closed" xml:space="preserve"><value>Закрыто</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Игроки из той же сети всегда могут подключиться по локальному адресу. PackCheck не может проверить доступ снаружи.</value></data>
+  <data name="Online_DomainTitle" xml:space="preserve"><value>Свой домен</value></data>
+  <data name="Online_DomainHint" xml:space="preserve"><value>Введите свой домен (например play.example.com) и создайте эти записи у DNS-провайдера.</value></data>
+  <data name="Online_SrvHint" xml:space="preserve"><value>С записью SRV достаточно домена, без порта.</value></data>
+  <data name="Online_DuckTitle" xml:space="preserve"><value>Бесплатный динамический DNS (DuckDNS)</value></data>
+  <data name="Online_DuckHint" xml:space="preserve"><value>Держит имя.duckdns.org на вашем IP при его смене. Токен хранится в зашифрованном виде.</value></data>
+  <data name="Online_DuckUpdate" xml:space="preserve"><value>Сохранить и обновить</value></data>
+  <data name="Online_DuckOk" xml:space="preserve"><value>{0} теперь указывает на ваш IP.</value></data>
+  <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS отклонил обновление. Проверьте поддомен и токен.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

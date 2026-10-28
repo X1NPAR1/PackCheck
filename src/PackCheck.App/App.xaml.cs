@@ -45,6 +45,13 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Elevated helper mode: "PackCheck.exe --firewall add|remove <port>" (started via UAC by the Online page).
+        if (e.Args is ["--firewall", var op and ("add" or "remove"), var portText] && int.TryParse(portText, out var fwPort) && fwPort is > 0 and < 65536)
+        {
+            Shutdown(Firewall.RunElevatedCommands(fwPort, op == "add"));
+            return;
+        }
         DispatcherUnhandledException += OnUnhandled;
 
         Directory.CreateDirectory(AppPaths.Logs);
@@ -92,6 +99,7 @@ public partial class App : Application
                 s.AddSingleton<ValidateViewModel>();
                 s.AddSingleton<PluginsViewModel>();
                 s.AddSingleton<SettingsViewModel>();
+                s.AddSingleton<OnlineViewModel>();
                 s.AddSingleton<AboutViewModel>();
             })
             .Build();

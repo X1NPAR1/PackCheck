@@ -11,12 +11,13 @@ public sealed partial class MainViewModel : ObservableObject
     private readonly UpdateService _updates;
     private CancellationTokenSource? _toastCts;
 
-    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, ModsViewModel mods, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
+    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, ModsViewModel mods, OnlineViewModel online, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
     {
         Servers = servers;
         Validate = validate;
         Plugins = plugins;
         Mods = mods;
+        Online = online;
         Settings = settings;
         About = about;
         _updates = updates;
@@ -67,6 +68,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ValidateViewModel Validate { get; }
     public PluginsViewModel Plugins { get; }
     public ModsViewModel Mods { get; }
+    public OnlineViewModel Online { get; }
     public SettingsViewModel Settings { get; }
     public AboutViewModel About { get; }
 
@@ -114,6 +116,7 @@ public sealed partial class MainViewModel : ObservableObject
         3 => Settings,
         4 => About,
         5 => RefreshMods(),
+        6 => ActivateOnline(),
         _ => Servers,
     };
 
@@ -121,6 +124,12 @@ public sealed partial class MainViewModel : ObservableObject
     {
         Mods.Activate();
         return Mods;
+    }
+
+    private OnlineViewModel ActivateOnline()
+    {
+        Online.Activate();
+        return Online;
     }
 
     private PluginsViewModel ActivatePlugins()
@@ -138,6 +147,7 @@ public sealed partial class MainViewModel : ObservableObject
             SettingsViewModel => 3,
             AboutViewModel => 4,
             ModsViewModel => 5,
+            OnlineViewModel => 6,
             _ => 0,
         };
     }

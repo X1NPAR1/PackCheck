@@ -207,6 +207,37 @@ Appliquer quand même ?</value></data>
   <data name="Splash_InstallJava" xml:space="preserve"><value>Premier démarrage : installation de Java 21… {0}</value></data>
   <data name="Settings_StartWithWindows" xml:space="preserve"><value>Démarrer PackCheck avec Windows (zone de notification)</value></data>
   <data name="Wizard_Supports" xml:space="preserve"><value>Prend en charge {0} – {1} ({2} versions)</value></data>
+  <data name="Nav_Online" xml:space="preserve"><value>En ligne</value></data>
+  <data name="Online_Title" xml:space="preserve"><value>Jouer via Internet</value></data>
+  <data name="Online_Subtitle" xml:space="preserve"><value>Ouvrez le port du serveur pour que vos amis rejoignent via votre IP ou votre domaine. Refermez-le quand vous voulez.</value></data>
+  <data name="Online_Open" xml:space="preserve"><value>Ouvrir à Internet</value></data>
+  <data name="Online_Close" xml:space="preserve"><value>Fermer (local uniquement)</value></data>
+  <data name="Online_StateLocal" xml:space="preserve"><value>Local uniquement</value></data>
+  <data name="Online_StatePublic" xml:space="preserve"><value>Ouvert sur Internet</value></data>
+  <data name="Online_StepFirewall" xml:space="preserve"><value>Demande d'autorisation à Windows pour le pare-feu…</value></data>
+  <data name="Online_StepUpnp" xml:space="preserve"><value>Redirection du port sur la box (UPnP)…</value></data>
+  <data name="Online_StepAddress" xml:space="preserve"><value>Vérification de l'adresse publique…</value></data>
+  <data name="Online_Done" xml:space="preserve"><value>Terminé.</value></data>
+  <data name="Online_UacDeclined" xml:space="preserve"><value>L'autorisation administrateur n'a pas été accordée ; rien n'a changé.</value></data>
+  <data name="Online_Cgnat" xml:space="preserve"><value>L'adresse Internet de votre box ({0}) n'est pas votre adresse publique. Votre FAI utilise du CGNAT : la redirection de port ne fonctionnera pas. Demandez une IP publique ou utilisez un tunnel.</value></data>
+  <data name="Online_UpnpManual" xml:space="preserve"><value>La box a refusé la redirection automatique (UPnP désactivé). Redirigez les ports TCP et UDP {0} vers {1} dans ses réglages.</value></data>
+  <data name="Online_NowLocal" xml:space="preserve"><value>Le port est fermé. Le serveur n'est accessible que localement.</value></data>
+  <data name="Online_ShareAddress" xml:space="preserve"><value>Partagez cette adresse</value></data>
+  <data name="Online_Copied" xml:space="preserve"><value>Copié.</value></data>
+  <data name="Online_PublicIp" xml:space="preserve"><value>IP publique</value></data>
+  <data name="Online_LocalIp" xml:space="preserve"><value>Adresse locale</value></data>
+  <data name="Online_Firewall" xml:space="preserve"><value>Pare-feu</value></data>
+  <data name="Online_Allowed" xml:space="preserve"><value>Autorisé</value></data>
+  <data name="Online_Closed" xml:space="preserve"><value>Fermé</value></data>
+  <data name="Online_Note" xml:space="preserve"><value>Les joueurs du même réseau peuvent toujours utiliser l'adresse locale. PackCheck ne peut pas tester l'accès depuis l'extérieur.</value></data>
+  <data name="Online_DomainTitle" xml:space="preserve"><value>Votre domaine</value></data>
+  <data name="Online_DomainHint" xml:space="preserve"><value>Saisissez votre domaine (ex. play.example.com) et créez ces enregistrements chez votre fournisseur DNS.</value></data>
+  <data name="Online_SrvHint" xml:space="preserve"><value>Avec l'enregistrement SRV, le domaine suffit, sans port.</value></data>
+  <data name="Online_DuckTitle" xml:space="preserve"><value>DNS dynamique gratuit (DuckDNS)</value></data>
+  <data name="Online_DuckHint" xml:space="preserve"><value>Garde votrenom.duckdns.org pointé sur votre IP. Le jeton est stocké chiffré.</value></data>
+  <data name="Online_DuckUpdate" xml:space="preserve"><value>Enregistrer et mettre à jour</value></data>
+  <data name="Online_DuckOk" xml:space="preserve"><value>{0} pointe maintenant vers votre IP.</value></data>
+  <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS a refusé la mise à jour. Vérifiez le sous-domaine et le jeton.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Paramètres</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Thème</value></data>
