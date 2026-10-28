@@ -129,7 +129,7 @@ Apply anyway?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Apply anyway</value></data>
   <data name="Nav_Mods" xml:space="preserve"><value>Mods</value></data>
   <data name="Mods_Title" xml:space="preserve"><value>Mods and modpacks</value></data>
-  <data name="Mods_Subtitle" xml:space="preserve"><value>Only results that match the server's Minecraft version and loader are shown. Files are hash-verified.</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Everything is listed; items that do not fit the selected server's version or loader cannot be installed. Downloads are hash-verified.</value></data>
   <data name="Mods_Search" xml:space="preserve"><value>Search mods…</value></data>
   <data name="Mods_KindMods" xml:space="preserve"><value>Mods</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
@@ -184,6 +184,24 @@ Apply anyway?</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>
   <data name="Player_Ban" xml:space="preserve"><value>Ban</value></data>
   <data name="Player_Tp" xml:space="preserve"><value>Teleport to spawn</value></data>
+  <data name="Browse_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Browse_Sort_Downloads" xml:space="preserve"><value>Most downloaded</value></data>
+  <data name="Browse_Sort_Updated" xml:space="preserve"><value>Recently updated</value></data>
+  <data name="Browse_Sort_Newest" xml:space="preserve"><value>Newest</value></data>
+  <data name="Browse_Sort_Relevance" xml:space="preserve"><value>Relevance</value></data>
+  <data name="Browse_CompatibleOnly" xml:space="preserve"><value>Only compatible</value></data>
+  <data name="Browse_Installed" xml:space="preserve"><value>Installed</value></data>
+  <data name="Browse_IncompatibleVersion" xml:space="preserve"><value>Not compatible with Minecraft {0}. Supports: {1}</value></data>
+  <data name="Browse_IncompatibleLoader" xml:space="preserve"><value>Not made for {0}. Made for: {1}</value></data>
+  <data name="Browse_NoServerTitle" xml:space="preserve"><value>Select a server first</value></data>
+  <data name="Browse_NoServerPlugins" xml:space="preserve"><value>Plugins are installed into a Paper or Purpur server. Create one or select it on the Servers page.</value></data>
+  <data name="Browse_NoServerMods" xml:space="preserve"><value>Mods are installed into a Fabric, Forge or NeoForge server. Create one or select it on the Servers page.</value></data>
+  <data name="Browse_Results" xml:space="preserve"><value>{0:N0} results</value></data>
+  <data name="Browse_Empty" xml:space="preserve"><value>Nothing found.</value></data>
+  <data name="Nav_NeedServer" xml:space="preserve"><value>Create or select a server first.</value></data>
+  <data name="Nav_VanillaNoContent" xml:space="preserve"><value>{0} servers run neither plugins nor mods.</value></data>
+  <data name="Nav_PluginsOff" xml:space="preserve"><value>The selected server ({0}) uses mods, not plugins.</value></data>
+  <data name="Nav_ModsOff" xml:space="preserve"><value>The selected server ({0}) uses plugins, not mods.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

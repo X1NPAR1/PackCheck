@@ -82,6 +82,9 @@ public partial class App : Application
                 s.AddSingleton<IPluginProvider>(sp => new HangarProvider(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<IModProvider>(sp => new ModrinthMods(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<IModProvider>(sp => new CurseForgeMods(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey));
+                s.AddSingleton<ICatalog>(sp => new ModrinthCatalog(sp.GetRequiredService<HttpClient>()));
+                s.AddSingleton<ICatalog>(sp => new HangarCatalog(sp.GetRequiredService<HttpClient>()));
+                s.AddSingleton<ICatalog>(sp => new CurseForgeCatalog(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey));
                 s.AddSingleton<ModsViewModel>();
                 s.AddSingleton<AppState>();
                 s.AddSingleton<MainViewModel>();

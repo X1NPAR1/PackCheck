@@ -317,3 +317,72 @@ public sealed class CountToBool : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
+
+/// <summary>Localizes a resource key held by the bound value.</summary>
+public sealed class LocKey : IValueConverter
+{
+    public static LocKey Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string k ? Loc.T(k) : string.Empty;
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+public sealed class PageTitle : IValueConverter
+{
+    public static PageTitle Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Loc.T(value is true ? "Mods_Title" : "Plugins_Title");
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+public sealed class NoServerText : IValueConverter
+{
+    public static NoServerText Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Loc.T(value is true ? "Browse_NoServerMods" : "Browse_NoServerPlugins");
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}
+
+/// <summary>Remote icon to an image; cached, decoded small, failures (e.g. unsupported formats) yield no image.</summary>
+public sealed class UriToImage : IValueConverter
+{
+    private static readonly Dictionary<Uri, System.Windows.Media.ImageSource?> Cache = [];
+
+    public static UriToImage Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is not Uri uri || uri.Scheme != Uri.UriSchemeHttps)
+        {
+            return null;
+        }
+
+        if (Cache.TryGetValue(uri, out var cached))
+        {
+            return cached;
+        }
+
+        try
+        {
+            var img = new System.Windows.Media.Imaging.BitmapImage();
+            img.BeginInit();
+            img.UriSource = uri;
+            img.DecodePixelWidth = 96;
+            img.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+            img.EndInit();
+            img.DownloadFailed += (_, _) => Cache[uri] = null;
+            Cache[uri] = img;
+            return img;
+        }
+        catch (Exception ex) when (ex is NotSupportedException or System.IO.IOException or InvalidOperationException)
+        {
+            Cache[uri] = null;
+            return null;
+        }
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+}

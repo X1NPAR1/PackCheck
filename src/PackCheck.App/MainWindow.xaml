@@ -15,7 +15,7 @@
         <DataTemplate DataType="{x:Type vm:ServersViewModel}"><v:ServersView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:ValidateViewModel}"><v:ValidateView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:PluginsViewModel}"><v:PluginsView /></DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ModsViewModel}"><v:ModsView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ModsViewModel}"><v:PluginsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><v:SettingsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:AboutViewModel}"><v:AboutView /></DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -68,20 +68,34 @@
                             <TextBlock Text="{l:Loc Nav_Validate}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavPlugins"
+                    <Grid>
+                        <RadioButton IsEnabled="{Binding PluginsEnabled}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavPlugins"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=2}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconPlugins}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                             <TextBlock Text="{l:Loc Nav_Plugins}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavMods"
+                        <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="22" Height="22" CornerRadius="11" Background="Transparent" Cursor="Help"
+                                ToolTip="{Binding PluginsDisabledReason}" ToolTipService.InitialShowDelay="100" AutomationProperties.Name="{Binding PluginsDisabledReason}"
+                                Visibility="{Binding PluginsEnabled, Converter={x:Static l:Inverse.Visibility}}">
+                            <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="9" Height="9" Stroke="{DynamicResource FailBrush}" />
+                        </Border>
+                    </Grid>
+                    <Grid>
+                        <RadioButton IsEnabled="{Binding ModsEnabled}" Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavMods"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=5}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconMods}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                             <TextBlock Text="{l:Loc Nav_Mods}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                         </StackPanel>
                     </RadioButton>
+                        <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="22" Height="22" CornerRadius="11" Background="Transparent" Cursor="Help"
+                                ToolTip="{Binding ModsDisabledReason}" ToolTipService.InitialShowDelay="100" AutomationProperties.Name="{Binding ModsDisabledReason}"
+                                Visibility="{Binding ModsEnabled, Converter={x:Static l:Inverse.Visibility}}">
+                            <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="9" Height="9" Stroke="{DynamicResource FailBrush}" />
+                        </Border>
+                    </Grid>
                     <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavSettings"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=3}">
                         <StackPanel Orientation="Horizontal">

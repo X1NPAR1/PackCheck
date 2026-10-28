@@ -129,7 +129,7 @@
   <data name="Preflight_Apply" xml:space="preserve"><value>Всё равно применить</value></data>
   <data name="Nav_Mods" xml:space="preserve"><value>Моды</value></data>
   <data name="Mods_Title" xml:space="preserve"><value>Моды и сборки</value></data>
-  <data name="Mods_Subtitle" xml:space="preserve"><value>Показываются только результаты для версии Minecraft и загрузчика сервера. Файлы проверяются по хешу.</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Показано всё; то, что не подходит к версии или загрузчику сервера, установить нельзя. Загрузки проверяются по хешу.</value></data>
   <data name="Mods_Search" xml:space="preserve"><value>Поиск модов…</value></data>
   <data name="Mods_KindMods" xml:space="preserve"><value>Моды</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Сборки</value></data>
@@ -184,6 +184,24 @@
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>
   <data name="Player_Ban" xml:space="preserve"><value>Забанить</value></data>
   <data name="Player_Tp" xml:space="preserve"><value>Телепорт на спавн</value></data>
+  <data name="Browse_Search" xml:space="preserve"><value>Найти</value></data>
+  <data name="Browse_Sort_Downloads" xml:space="preserve"><value>Популярные</value></data>
+  <data name="Browse_Sort_Updated" xml:space="preserve"><value>Недавно обновлённые</value></data>
+  <data name="Browse_Sort_Newest" xml:space="preserve"><value>Новые</value></data>
+  <data name="Browse_Sort_Relevance" xml:space="preserve"><value>По релевантности</value></data>
+  <data name="Browse_CompatibleOnly" xml:space="preserve"><value>Только совместимые</value></data>
+  <data name="Browse_Installed" xml:space="preserve"><value>Установлено</value></data>
+  <data name="Browse_IncompatibleVersion" xml:space="preserve"><value>Несовместимо с Minecraft {0}. Поддерживает: {1}</value></data>
+  <data name="Browse_IncompatibleLoader" xml:space="preserve"><value>Не для {0}. Для: {1}</value></data>
+  <data name="Browse_NoServerTitle" xml:space="preserve"><value>Сначала выберите сервер</value></data>
+  <data name="Browse_NoServerPlugins" xml:space="preserve"><value>Плагины ставятся на сервер Paper или Purpur. Создайте его или выберите на странице серверов.</value></data>
+  <data name="Browse_NoServerMods" xml:space="preserve"><value>Моды ставятся на сервер Fabric, Forge или NeoForge. Создайте его или выберите.</value></data>
+  <data name="Browse_Results" xml:space="preserve"><value>Результатов: {0:N0}</value></data>
+  <data name="Browse_Empty" xml:space="preserve"><value>Ничего не найдено.</value></data>
+  <data name="Nav_NeedServer" xml:space="preserve"><value>Сначала создайте или выберите сервер.</value></data>
+  <data name="Nav_VanillaNoContent" xml:space="preserve"><value>Серверы {0} не поддерживают ни плагины, ни моды.</value></data>
+  <data name="Nav_PluginsOff" xml:space="preserve"><value>Выбранный сервер ({0}) использует моды, а не плагины.</value></data>
+  <data name="Nav_ModsOff" xml:space="preserve"><value>Выбранный сервер ({0}) использует плагины, а не моды.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

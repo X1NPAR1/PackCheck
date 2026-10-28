@@ -185,6 +185,10 @@
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2Brush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFaintBrush}" />
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimarySoftBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />

@@ -22,6 +22,43 @@ public sealed partial class MainViewModel : ObservableObject
         _updates = updates;
         _currentPage = servers;
         Shell = this;
+        servers.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(ServersViewModel.Selected) or nameof(ServersViewModel.IsEmpty))
+            {
+                UpdateNavRules();
+            }
+        };
+        UpdateNavRules();
+    }
+
+    [ObservableProperty]
+    private bool _pluginsEnabled;
+
+    [ObservableProperty]
+    private bool _modsEnabled;
+
+    [ObservableProperty]
+    private string? _pluginsDisabledReason;
+
+    [ObservableProperty]
+    private string? _modsDisabledReason;
+
+    /// <summary>Plugins/Mods pages follow the selected server's platform; disabled items explain why.</summary>
+    public void UpdateNavRules()
+    {
+        var s = Servers.Selected;
+        PluginsEnabled = s?.UsesPlugins == true;
+        ModsEnabled = s?.UsesMods == true;
+        string Reason(bool forMods) => s is null ? Loc.T("Nav_NeedServer")
+            : !s.UsesPlugins && !s.UsesMods ? Loc.F("Nav_VanillaNoContent", s.Definition.Platform)
+            : forMods ? Loc.F("Nav_ModsOff", s.Definition.Platform) : Loc.F("Nav_PluginsOff", s.Definition.Platform);
+        PluginsDisabledReason = PluginsEnabled ? null : Reason(false);
+        ModsDisabledReason = ModsEnabled ? null : Reason(true);
+        if ((NavIndex == 2 && !PluginsEnabled) || (NavIndex == 5 && !ModsEnabled))
+        {
+            NavIndex = 0;
+        }
     }
 
     public static MainViewModel? Shell { get; private set; }
@@ -73,7 +110,7 @@ public sealed partial class MainViewModel : ObservableObject
     partial void OnNavIndexChanged(int value) => CurrentPage = value switch
     {
         1 => Validate,
-        2 => Plugins,
+        2 => ActivatePlugins(),
         3 => Settings,
         4 => About,
         5 => RefreshMods(),
@@ -82,8 +119,14 @@ public sealed partial class MainViewModel : ObservableObject
 
     private ModsViewModel RefreshMods()
     {
-        Mods.Refresh();
+        Mods.Activate();
         return Mods;
+    }
+
+    private PluginsViewModel ActivatePlugins()
+    {
+        Plugins.Activate();
+        return Plugins;
     }
 
     public void Navigate(object page)

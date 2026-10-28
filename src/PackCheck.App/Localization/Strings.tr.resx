@@ -129,7 +129,7 @@ Yine de uygulansın mı?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Yine de uygula</value></data>
   <data name="Nav_Mods" xml:space="preserve"><value>Modlar</value></data>
   <data name="Mods_Title" xml:space="preserve"><value>Modlar ve mod paketleri</value></data>
-  <data name="Mods_Subtitle" xml:space="preserve"><value>Yalnızca sunucunun Minecraft sürümü ve loader'ıyla uyumlu sonuçlar gösterilir. Dosyalar hash ile doğrulanır.</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Her şey listelenir; seçili sunucunun sürümüne veya loader'ına uymayanlar kurulamaz. İndirmeler hash ile doğrulanır.</value></data>
   <data name="Mods_Search" xml:space="preserve"><value>Mod ara…</value></data>
   <data name="Mods_KindMods" xml:space="preserve"><value>Modlar</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Mod paketleri</value></data>
@@ -184,6 +184,24 @@ Yine de uygulansın mı?</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>
   <data name="Player_Ban" xml:space="preserve"><value>Yasakla</value></data>
   <data name="Player_Tp" xml:space="preserve"><value>Doğuş noktasına ışınla</value></data>
+  <data name="Browse_Search" xml:space="preserve"><value>Ara</value></data>
+  <data name="Browse_Sort_Downloads" xml:space="preserve"><value>En çok indirilen</value></data>
+  <data name="Browse_Sort_Updated" xml:space="preserve"><value>Son güncellenen</value></data>
+  <data name="Browse_Sort_Newest" xml:space="preserve"><value>En yeni</value></data>
+  <data name="Browse_Sort_Relevance" xml:space="preserve"><value>En alakalı</value></data>
+  <data name="Browse_CompatibleOnly" xml:space="preserve"><value>Sadece uyumlu olanlar</value></data>
+  <data name="Browse_Installed" xml:space="preserve"><value>Kurulu</value></data>
+  <data name="Browse_IncompatibleVersion" xml:space="preserve"><value>Minecraft {0} ile uyumsuz. Desteklediği sürümler: {1}</value></data>
+  <data name="Browse_IncompatibleLoader" xml:space="preserve"><value>{0} için yapılmamış. Şunlar için: {1}</value></data>
+  <data name="Browse_NoServerTitle" xml:space="preserve"><value>Lütfen önce bir sunucu seçin</value></data>
+  <data name="Browse_NoServerPlugins" xml:space="preserve"><value>Eklentiler bir Paper veya Purpur sunucusuna kurulur. Bir tane oluştur veya Sunucular sayfasından seç.</value></data>
+  <data name="Browse_NoServerMods" xml:space="preserve"><value>Modlar bir Fabric, Forge veya NeoForge sunucusuna kurulur. Bir tane oluştur veya Sunucular sayfasından seç.</value></data>
+  <data name="Browse_Results" xml:space="preserve"><value>{0:N0} sonuç</value></data>
+  <data name="Browse_Empty" xml:space="preserve"><value>Hiçbir şey bulunamadı.</value></data>
+  <data name="Nav_NeedServer" xml:space="preserve"><value>Önce bir sunucu oluştur veya seç.</value></data>
+  <data name="Nav_VanillaNoContent" xml:space="preserve"><value>{0} sunucuları eklenti veya mod çalıştırmaz.</value></data>
+  <data name="Nav_PluginsOff" xml:space="preserve"><value>Seçili sunucu ({0}) eklenti değil mod kullanır.</value></data>
+  <data name="Nav_ModsOff" xml:space="preserve"><value>Seçili sunucu ({0}) mod değil eklenti kullanır.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

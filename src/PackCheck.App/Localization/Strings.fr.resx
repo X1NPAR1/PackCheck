@@ -129,7 +129,7 @@ Appliquer quand même ?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Appliquer quand même</value></data>
   <data name="Nav_Mods" xml:space="preserve"><value>Mods</value></data>
   <data name="Mods_Title" xml:space="preserve"><value>Mods et modpacks</value></data>
-  <data name="Mods_Subtitle" xml:space="preserve"><value>Seuls les résultats compatibles avec la version de Minecraft et le loader du serveur sont affichés. Les fichiers sont vérifiés par hash.</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Tout est listé ; ce qui ne correspond pas à la version ou au loader du serveur ne peut pas être installé. Les téléchargements sont vérifiés.</value></data>
   <data name="Mods_Search" xml:space="preserve"><value>Rechercher des mods…</value></data>
   <data name="Mods_KindMods" xml:space="preserve"><value>Mods</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
@@ -184,6 +184,24 @@ Appliquer quand même ?</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>
   <data name="Player_Ban" xml:space="preserve"><value>Bannir</value></data>
   <data name="Player_Tp" xml:space="preserve"><value>Téléporter au spawn</value></data>
+  <data name="Browse_Search" xml:space="preserve"><value>Rechercher</value></data>
+  <data name="Browse_Sort_Downloads" xml:space="preserve"><value>Plus téléchargés</value></data>
+  <data name="Browse_Sort_Updated" xml:space="preserve"><value>Récemment mis à jour</value></data>
+  <data name="Browse_Sort_Newest" xml:space="preserve"><value>Plus récents</value></data>
+  <data name="Browse_Sort_Relevance" xml:space="preserve"><value>Pertinence</value></data>
+  <data name="Browse_CompatibleOnly" xml:space="preserve"><value>Compatibles uniquement</value></data>
+  <data name="Browse_Installed" xml:space="preserve"><value>Installé</value></data>
+  <data name="Browse_IncompatibleVersion" xml:space="preserve"><value>Incompatible avec Minecraft {0}. Prend en charge : {1}</value></data>
+  <data name="Browse_IncompatibleLoader" xml:space="preserve"><value>Pas conçu pour {0}. Conçu pour : {1}</value></data>
+  <data name="Browse_NoServerTitle" xml:space="preserve"><value>Choisissez d'abord un serveur</value></data>
+  <data name="Browse_NoServerPlugins" xml:space="preserve"><value>Les plugins s'installent sur un serveur Paper ou Purpur. Créez-en un ou sélectionnez-le.</value></data>
+  <data name="Browse_NoServerMods" xml:space="preserve"><value>Les mods s'installent sur un serveur Fabric, Forge ou NeoForge. Créez-en un ou sélectionnez-le.</value></data>
+  <data name="Browse_Results" xml:space="preserve"><value>{0:N0} résultats</value></data>
+  <data name="Browse_Empty" xml:space="preserve"><value>Aucun résultat.</value></data>
+  <data name="Nav_NeedServer" xml:space="preserve"><value>Créez ou sélectionnez d'abord un serveur.</value></data>
+  <data name="Nav_VanillaNoContent" xml:space="preserve"><value>Les serveurs {0} n'exécutent ni plugins ni mods.</value></data>
+  <data name="Nav_PluginsOff" xml:space="preserve"><value>Le serveur sélectionné ({0}) utilise des mods, pas des plugins.</value></data>
+  <data name="Nav_ModsOff" xml:space="preserve"><value>Le serveur sélectionné ({0}) utilise des plugins, pas des mods.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Paramètres</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Thème</value></data>
