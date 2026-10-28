@@ -8,10 +8,41 @@ namespace PackCheck.Servers;
 public enum ServerPlatform
 {
     Paper,
+    Purpur,
     Vanilla,
+    Fabric,
+    Forge,
+    NeoForge,
 }
 
-public sealed record ServerDownload(string FileName, Uri Url, string Hash, HashAlgorithmName Algorithm, long Size);
+/// <summary>A file to fetch. Installers (Forge/NeoForge) are run with --installServer after download.</summary>
+public sealed record ServerDownload(string FileName, Uri Url, string? Hash, HashAlgorithmName Algorithm, long Size, bool IsInstaller = false);
+
+public static class PlatformInfo
+{
+    public static bool UsesPlugins(ServerPlatform p) => p is ServerPlatform.Paper or ServerPlatform.Purpur;
+
+    public static bool UsesMods(ServerPlatform p) => p is ServerPlatform.Fabric or ServerPlatform.Forge or ServerPlatform.NeoForge;
+
+    public static string Loader(ServerPlatform p) => p.ToString().ToLowerInvariant();
+
+    /// <summary>NeoForge "21.1.77" -> "1.21.1", "21.0.5" -> "1.21", "26.1.2.123" -> "26.1.2".</summary>
+    public static string? NeoForgeToMinecraft(string neo)
+    {
+        var parts = neo.Split('.', '-');
+        if (parts.Length < 3 || !int.TryParse(parts[0], out var a) || !int.TryParse(parts[1], out var b))
+        {
+            return null;
+        }
+
+        if (a >= 25)
+        {
+            return parts[2] == "0" ? $"{a}.{b}" : $"{a}.{b}.{parts[2]}";
+        }
+
+        return b == 0 ? $"1.{a}" : $"1.{a}.{b}";
+    }
+}
 
 /// <summary>Resolves server JARs from official sources only (PaperMC Fill API, Mojang piston-meta).</summary>
 public sealed class ServerSources(HttpClient http)
@@ -19,8 +50,41 @@ public sealed class ServerSources(HttpClient http)
     private static readonly Uri PaperVersions = new("https://fill.papermc.io/v3/projects/paper");
     private static readonly Uri MojangManifest = new("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json");
 
+    private static readonly Uri PurpurVersions = new("https://api.purpurmc.org/v2/purpur");
+    private static readonly Uri FabricGame = new("https://meta.fabricmc.net/v2/versions/game");
+    private static readonly Uri ForgePromotions = new("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json");
+    private static readonly Uri NeoForgeMetadata = new("https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml");
+
+    private static List<string> Newest(IEnumerable<string> versions) =>
+        versions.Where(v => MinecraftVersion.TryParse(v, out _)).Distinct()
+            .OrderByDescending(v => MinecraftVersion.TryParse(v, out var mv) ? mv : default).ToList();
+
     public async Task<IReadOnlyList<string>> GetVersionsAsync(ServerPlatform platform, CancellationToken ct)
     {
+        switch (platform)
+        {
+            case ServerPlatform.Purpur:
+            {
+                using var doc = await GetJsonAsync(PurpurVersions, ct).ConfigureAwait(false);
+                return Newest(doc.RootElement.GetProperty("versions").EnumerateArray().Select(v => v.GetString()!));
+            }
+
+            case ServerPlatform.Fabric:
+            {
+                using var doc = await GetJsonAsync(FabricGame, ct).ConfigureAwait(false);
+                return Newest(doc.RootElement.EnumerateArray().Where(v => v.GetProperty("stable").GetBoolean()).Select(v => v.GetProperty("version").GetString()!));
+            }
+
+            case ServerPlatform.Forge:
+            {
+                using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
+                return Newest(doc.RootElement.GetProperty("promos").EnumerateObject().Select(p => p.Name[..p.Name.LastIndexOf('-')]));
+            }
+
+            case ServerPlatform.NeoForge:
+                return Newest((await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Select(PlatformInfo.NeoForgeToMinecraft).OfType<string>());
+        }
+
         if (platform == ServerPlatform.Paper)
         {
             using var doc = await GetJsonAsync(PaperVersions, ct).ConfigureAwait(false);
@@ -40,8 +104,59 @@ public sealed class ServerSources(HttpClient http)
             .ToList();
     }
 
+    private async Task<List<string>> NeoForgeVersionsAsync(CancellationToken ct)
+    {
+        var xml = await http.GetStringAsync(NeoForgeMetadata, ct).ConfigureAwait(false);
+        return System.Xml.Linq.XDocument.Parse(xml).Descendants("version").Select(v => v.Value).ToList();
+    }
+
+    private async Task<string> Sha1Async(Uri file, CancellationToken ct) =>
+        (await http.GetStringAsync(new Uri(file + ".sha1"), ct).ConfigureAwait(false)).Trim().Split(' ')[0];
+
     public async Task<ServerDownload> ResolveAsync(ServerPlatform platform, string version, CancellationToken ct)
     {
+        var v = Uri.EscapeDataString(version);
+        switch (platform)
+        {
+            case ServerPlatform.Purpur:
+            {
+                using var doc = await GetJsonAsync(new Uri($"https://api.purpurmc.org/v2/purpur/{v}/latest"), ct).ConfigureAwait(false);
+                var build = doc.RootElement.GetProperty("build").GetString()!;
+                var md5 = doc.RootElement.TryGetProperty("md5", out var m) ? m.GetString() : null;
+                return new ServerDownload("purpur.jar", new Uri($"https://api.purpurmc.org/v2/purpur/{v}/{build}/download"), md5, HashAlgorithmName.MD5, 0);
+            }
+
+            case ServerPlatform.Fabric:
+            {
+                using var loaders = await GetJsonAsync(new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}"), ct).ConfigureAwait(false);
+                var loader = loaders.RootElement.EnumerateArray().First(l => l.GetProperty("loader").GetProperty("stable").GetBoolean()).GetProperty("loader").GetProperty("version").GetString();
+                using var installers = await GetJsonAsync(new Uri("https://meta.fabricmc.net/v2/versions/installer"), ct).ConfigureAwait(false);
+                var installer = installers.RootElement.EnumerateArray().First(i => i.GetProperty("stable").GetBoolean()).GetProperty("version").GetString();
+
+                // The Fabric meta server builds a ready-to-run server launcher and publishes no checksum for it.
+                return new ServerDownload("fabric-server-launch.jar", new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}/{loader}/{installer}/server/jar"), null, HashAlgorithmName.SHA256, 0);
+            }
+
+            case ServerPlatform.Forge:
+            {
+                using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
+                var promos = doc.RootElement.GetProperty("promos");
+                var forge = (promos.TryGetProperty($"{version}-recommended", out var r) ? r : promos.GetProperty($"{version}-latest")).GetString()!;
+                var full = $"{version}-{forge}";
+                var url = new Uri($"https://maven.minecraftforge.net/net/minecraftforge/forge/{full}/forge-{full}-installer.jar");
+                return new ServerDownload($"forge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+            }
+
+            case ServerPlatform.NeoForge:
+            {
+                var matching = (await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Where(n => PlatformInfo.NeoForgeToMinecraft(n) == version).ToList();
+                var neo = matching.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? matching.LastOrDefault()
+                    ?? throw new InvalidOperationException($"No NeoForge build for Minecraft {version}.");
+                var url = new Uri($"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neo}/neoforge-{neo}-installer.jar");
+                return new ServerDownload($"neoforge-{neo}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+            }
+        }
+
         if (platform == ServerPlatform.Paper)
         {
             using var doc = await GetJsonAsync(new Uri($"https://fill.papermc.io/v3/projects/paper/versions/{Uri.EscapeDataString(version)}/builds/latest"), ct).ConfigureAwait(false);
@@ -81,7 +196,7 @@ public sealed class ServerSources(HttpClient http)
 /// <summary>HTTPS-only download with size limit and hash verification. The file only appears once verified.</summary>
 public static class VerifiedDownloader
 {
-    public static async Task DownloadAsync(HttpClient http, Uri url, string destination, string expectedHash, HashAlgorithmName algorithm, long maxBytes, IProgress<double>? progress, CancellationToken ct)
+    public static async Task DownloadAsync(HttpClient http, Uri url, string destination, string? expectedHash, HashAlgorithmName algorithm, long maxBytes, IProgress<double>? progress, CancellationToken ct)
     {
         if (url.Scheme != Uri.UriSchemeHttps)
         {
@@ -123,7 +238,7 @@ public static class VerifiedDownloader
             }
 
             var actual = Convert.ToHexStringLower(hasher.GetHashAndReset());
-            if (!string.Equals(actual, expectedHash.Trim(), StringComparison.OrdinalIgnoreCase))
+            if (expectedHash is not null && !string.Equals(actual, expectedHash.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 File.Delete(temp);
                 throw new InvalidOperationException($"Checksum mismatch for {Path.GetFileName(destination)}.");

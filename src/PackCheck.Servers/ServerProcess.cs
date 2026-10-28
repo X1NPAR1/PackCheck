@@ -46,7 +46,16 @@ public sealed class ServerProcess : IAsyncDisposable
             ]);
         }
 
-        args.AddRange(["-jar", def.JarFile, "--nogui"]);
+        if (def.ArgsFile is not null)
+        {
+            // Modern Forge / NeoForge: java [jvm args] @libraries/.../win_args.txt nogui
+            args.Add("@" + def.ArgsFile);
+            args.Add("nogui");
+        }
+        else
+        {
+            args.AddRange(["-jar", def.JarFile, PlatformInfo.UsesMods(def.Platform) ? "nogui" : "--nogui"]);
+        }
         return args;
     }
 

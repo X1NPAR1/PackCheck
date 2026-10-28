@@ -19,7 +19,7 @@ jobs:
       - name: Build
         run: dotnet build PackCheck.sln -c Release
       - name: Test
-        run: dotnet test tests/PackCheck.Tests -c Release --no-build --logger "trx;LogFileName=results.trx"
+        run: dotnet test tests/PackCheck.Tests -c Release --no-build --filter "Category!=Network"
       - name: CLI smoke test
         shell: pwsh
         run: |

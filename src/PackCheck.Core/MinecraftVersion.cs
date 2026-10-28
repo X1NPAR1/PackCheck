@@ -54,6 +54,7 @@ public readonly record struct MinecraftVersion(int Major, int Minor, int Patch) 
     /// <summary>Minimum Java feature version required to run a given Minecraft server version.</summary>
     public int RequiredJava() => this switch
     {
+        _ when this >= new MinecraftVersion(26, 0, 0) => 25,
         _ when this >= new MinecraftVersion(1, 20, 5) => 21,
         _ when this >= new MinecraftVersion(1, 18, 0) => 17,
         _ when this >= new MinecraftVersion(1, 17, 0) => 16,

@@ -12,6 +12,9 @@ public sealed record ServerDefinition
     public required ServerPlatform Platform { get; init; }
     public required string MinecraftVersion { get; init; }
     public required string JarFile { get; init; }
+
+    /// <summary>Modern Forge/NeoForge start with "@libraries/.../win_args.txt" instead of -jar.</summary>
+    public string? ArgsFile { get; init; }
     public required string JavaPath { get; init; }
     public int MinMemoryMb { get; init; } = 1024;
     public int MaxMemoryMb { get; init; } = 4096;
@@ -120,8 +123,60 @@ public static class Backups
     }
 }
 
+public sealed partial class ServerCreator
+{
+    /// <summary>Runs a Forge/NeoForge installer and returns how the server must be launched.</summary>
+    public static async Task<(string Jar, string? ArgsFile)> RunInstallerAsync(string javaPath, string dir, string installer, CancellationToken ct)
+    {
+        var psi = new System.Diagnostics.ProcessStartInfo(javaPath)
+        {
+            WorkingDirectory = dir,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+        };
+        psi.ArgumentList.Add("-jar");
+        psi.ArgumentList.Add(installer);
+        psi.ArgumentList.Add("--installServer");
+        using var p = System.Diagnostics.Process.Start(psi)!;
+        var output = p.StandardOutput.ReadToEndAsync(ct);
+        var error = p.StandardError.ReadToEndAsync(ct);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        timeout.CancelAfter(TimeSpan.FromMinutes(30));
+        await p.WaitForExitAsync(timeout.Token).ConfigureAwait(false);
+        var log = await output.ConfigureAwait(false) + await error.ConfigureAwait(false);
+        await File.WriteAllTextAsync(Path.Combine(dir, "installer-output.log"), log, CancellationToken.None).ConfigureAwait(false);
+        if (p.ExitCode != 0)
+        {
+            throw new InvalidOperationException("The platform installer failed. See installer-output.log in the server folder.");
+        }
+
+        foreach (var junk in new[] { installer, installer + ".log", "run.sh" })
+        {
+            var f = Path.Combine(dir, junk);
+            if (File.Exists(f))
+            {
+                File.Delete(f);
+            }
+        }
+
+        var libs = Path.Combine(dir, "libraries");
+        var args = Directory.Exists(libs) ? Directory.EnumerateFiles(libs, "win_args.txt", SearchOption.AllDirectories).FirstOrDefault() : null;
+        if (args is not null)
+        {
+            return ("run.bat", Path.GetRelativePath(dir, args).Replace('\\', '/'));
+        }
+
+        // Older Forge (before 1.17) produces a runnable forge-*.jar next to the installer.
+        var runnable = Directory.EnumerateFiles(dir, "*.jar").Select(Path.GetFileName).OfType<string>()
+            .FirstOrDefault(n => n.StartsWith("forge", StringComparison.OrdinalIgnoreCase) || n.StartsWith("neoforge", StringComparison.OrdinalIgnoreCase));
+        return (runnable ?? throw new InvalidOperationException("The installer did not produce a server."), null);
+    }
+}
+
 /// <summary>Creates a ready-to-run server folder: verified JAR, eula.txt (only after explicit consent), server.properties.</summary>
-public sealed class ServerCreator(ServerSources sources, HttpClient http)
+public sealed partial class ServerCreator(ServerSources sources, HttpClient http)
 {
     public sealed record Request(string Name, string ParentFolder, ServerPlatform Platform, string Version, string JavaPath, int MaxMemoryMb, int Port, string? Seed, bool AcceptEula);
 
@@ -145,13 +200,26 @@ public sealed class ServerCreator(ServerSources sources, HttpClient http)
         }
 
         Directory.CreateDirectory(dir);
-        Directory.CreateDirectory(Path.Combine(dir, "plugins"));
+        Directory.CreateDirectory(Path.Combine(dir, PlatformInfo.UsesMods(r.Platform) ? "mods" : "plugins"));
 
         progress?.Report((0.05, "resolve"));
         var dl = await sources.ResolveAsync(r.Platform, r.Version, ct).ConfigureAwait(false);
-        var jar = r.Platform == ServerPlatform.Paper ? "paper.jar" : "server.jar";
+        var jar = dl.IsInstaller ? dl.FileName : r.Platform switch
+        {
+            ServerPlatform.Paper => "paper.jar",
+            ServerPlatform.Purpur => "purpur.jar",
+            ServerPlatform.Fabric => "fabric-server-launch.jar",
+            _ => "server.jar",
+        };
         await VerifiedDownloader.DownloadAsync(http, dl.Url, Path.Combine(dir, jar), dl.Hash, dl.Algorithm, 300L * 1024 * 1024,
-            new Progress<double>(p => progress?.Report((0.1 + (p * 0.8), "download"))), ct).ConfigureAwait(false);
+            new Progress<double>(p => progress?.Report((0.1 + (p * 0.6), "download"))), ct).ConfigureAwait(false);
+
+        string? argsFile = null;
+        if (dl.IsInstaller)
+        {
+            progress?.Report((0.72, "install"));
+            (jar, argsFile) = await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false);
+        }
 
         progress?.Report((0.92, "configure"));
         await File.WriteAllTextAsync(Path.Combine(dir, "eula.txt"),
@@ -174,6 +242,7 @@ public sealed class ServerCreator(ServerSources sources, HttpClient http)
             Platform = r.Platform,
             MinecraftVersion = r.Version,
             JarFile = jar,
+            ArgsFile = argsFile,
             JavaPath = r.JavaPath,
             MaxMemoryMb = r.MaxMemoryMb,
             MinMemoryMb = Math.Min(1024, r.MaxMemoryMb),

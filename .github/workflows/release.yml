@@ -16,7 +16,7 @@ jobs:
         with:
           dotnet-version: 10.0.x
       - name: Test
-        run: dotnet test tests/PackCheck.Tests -c Release
+        run: dotnet test tests/PackCheck.Tests -c Release --filter "Category!=Network"
       - name: Publish
         shell: pwsh
         run: |

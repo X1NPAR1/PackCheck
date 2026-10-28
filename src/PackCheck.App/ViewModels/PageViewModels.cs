@@ -43,7 +43,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         _ = LoadVersionsAsync();
     }
 
-    public IReadOnlyList<ServerPlatform> Platforms { get; } = [ServerPlatform.Paper, ServerPlatform.Vanilla];
+    public IReadOnlyList<ServerPlatform> Platforms { get; } = Enum.GetValues<ServerPlatform>();
 
     public ObservableCollection<string> Versions { get; } = [];
 
