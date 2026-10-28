@@ -31,6 +31,8 @@ public abstract class ProviderBase(HttpClient http, TimeSpan? timeout = null)
 
     public static TimeSpan CacheLifetime { get; } = TimeSpan.FromMinutes(10);
 
+    protected HttpClient Http { get; } = http;
+
     protected async Task<ProviderResult<JsonDocument>> GetAsync(Uri uri, CancellationToken ct)
     {
         if (_cache.TryGetValue(uri, out var hit) && DateTimeOffset.Now - hit.At < CacheLifetime)
@@ -45,7 +47,7 @@ public abstract class ProviderBase(HttpClient http, TimeSpan? timeout = null)
             using var req = new HttpRequestMessage(HttpMethod.Get, uri);
             req.Headers.UserAgent.Add(new ProductInfoHeaderValue("PackCheck", "1.0"));
             req.Headers.UserAgent.Add(new ProductInfoHeaderValue("(+https://github.com/X1NPAR1/PackCheck)"));
-            using var res = await http.SendAsync(req, cts.Token).ConfigureAwait(false);
+            using var res = await Http.SendAsync(req, cts.Token).ConfigureAwait(false);
             if (!res.IsSuccessStatusCode)
             {
                 return new(null, $"HTTP {(int)res.StatusCode}");

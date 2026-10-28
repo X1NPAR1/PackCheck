@@ -183,6 +183,44 @@ Apply anyway?</value></data>
   <data name="Console_PrevMatch" xml:space="preserve"><value>Previous match (Shift+Enter)</value></data>
   <data name="Console_NextMatch" xml:space="preserve"><value>Next match (Enter)</value></data>
   <data name="Console_FilterOnly" xml:space="preserve"><value>Only matches</value></data>
+  <data name="Browse_AllCategories" xml:space="preserve"><value>All categories</value></data>
+  <data name="Browse_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Browse_Update" xml:space="preserve"><value>Update</value></data>
+  <data name="Browse_Updated" xml:space="preserve"><value>{0} updated</value></data>
+  <data name="Browse_OpenPage" xml:space="preserve"><value>Open project page</value></data>
+  <data name="Browse_ClickForDetails" xml:space="preserve"><value>Click for details</value></data>
+  <data name="Browse_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Browse_DownloadsLabel" xml:space="preserve"><value>Downloads</value></data>
+  <data name="Browse_Versions" xml:space="preserve"><value>Minecraft</value></data>
+  <data name="Browse_Loaders" xml:space="preserve"><value>Platforms</value></data>
+  <data name="Browse_InstalledFile" xml:space="preserve"><value>Installed file</value></data>
+  <data name="Category_admin_tools" xml:space="preserve"><value>Admin tools</value></data>
+  <data name="Category_chat" xml:space="preserve"><value>Chat</value></data>
+  <data name="Category_dev_tools" xml:space="preserve"><value>Developer tools</value></data>
+  <data name="Category_economy" xml:space="preserve"><value>Economy</value></data>
+  <data name="Category_gameplay" xml:space="preserve"><value>Gameplay</value></data>
+  <data name="Category_games" xml:space="preserve"><value>Minigames</value></data>
+  <data name="Category_minigame" xml:space="preserve"><value>Minigames</value></data>
+  <data name="Category_protection" xml:space="preserve"><value>Protection</value></data>
+  <data name="Category_role_playing" xml:space="preserve"><value>Role playing</value></data>
+  <data name="Category_world_management" xml:space="preserve"><value>World management</value></data>
+  <data name="Category_misc" xml:space="preserve"><value>Other</value></data>
+  <data name="Category_adventure" xml:space="preserve"><value>Adventure</value></data>
+  <data name="Category_decoration" xml:space="preserve"><value>Decoration</value></data>
+  <data name="Category_equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Category_food" xml:space="preserve"><value>Food</value></data>
+  <data name="Category_game-mechanics" xml:space="preserve"><value>Game mechanics</value></data>
+  <data name="Category_library" xml:space="preserve"><value>Library</value></data>
+  <data name="Category_magic" xml:space="preserve"><value>Magic</value></data>
+  <data name="Category_management" xml:space="preserve"><value>Management</value></data>
+  <data name="Category_mobs" xml:space="preserve"><value>Mobs</value></data>
+  <data name="Category_optimization" xml:space="preserve"><value>Optimization</value></data>
+  <data name="Category_social" xml:space="preserve"><value>Social</value></data>
+  <data name="Category_storage" xml:space="preserve"><value>Storage</value></data>
+  <data name="Category_technology" xml:space="preserve"><value>Technology</value></data>
+  <data name="Category_transportation" xml:space="preserve"><value>Transport</value></data>
+  <data name="Category_utility" xml:space="preserve"><value>Utility</value></data>
+  <data name="Category_worldgen" xml:space="preserve"><value>World generation</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

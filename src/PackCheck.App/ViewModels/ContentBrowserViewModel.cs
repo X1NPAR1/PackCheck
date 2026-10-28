@@ -12,8 +12,22 @@ using PackCheck.Validation;
 namespace PackCheck.App.ViewModels;
 
 /// <summary>One row of the browse list with its install state for the target server.</summary>
-public sealed partial class CatalogRow(CatalogItem item, bool compatible, string? reason, bool installed) : ObservableObject
+public sealed partial class CatalogRow(CatalogItem item, bool compatible, string? reason, string? installedFile) : ObservableObject
 {
+    /// <summary>The jar in plugins/ or mods/ that belongs to this project, when it is installed.</summary>
+    public string? InstalledFile { get; set; } = installedFile;
+
+    public string Loaders => string.Join(", ", Item.Loaders);
+
+    public bool CanUpdate => HasUpdate && !IsInstalling;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanUpdate))]
+    private bool _hasUpdate;
+
+    [ObservableProperty]
+    private string? _latestFile;
+
     public CatalogItem Item { get; } = item;
 
     public bool Compatible { get; } = compatible;
@@ -28,10 +42,10 @@ public sealed partial class CatalogRow(CatalogItem item, bool compatible, string
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanInstall))]
-    private bool _installed = installed;
+    private bool _installed = installedFile is not null;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanInstall))]
+    [NotifyPropertyChangedFor(nameof(CanInstall), nameof(CanUpdate))]
     private bool _isInstalling;
 }
 
@@ -121,6 +135,72 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
     [ObservableProperty]
     private double _installProgress;
 
+    /// <summary>Category filter of the current source; "" means all.</summary>
+    [ObservableProperty]
+    private string _category = string.Empty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSelection))]
+    private CatalogRow? _selectedRow;
+
+    [ObservableProperty]
+    private string? _description;
+
+    [ObservableProperty]
+    private bool _isDescribing;
+
+    private CancellationTokenSource? _describeCts;
+
+    public bool HasSelection => SelectedRow is not null;
+
+    public IReadOnlyList<CategoryOption> Categories =>
+        [new(string.Empty, Loc.T("Browse_AllCategories")), .. CurrentCatalog.Categories(Kind).Select(c => new CategoryOption(c, CategoryOption.Label(c)))];
+
+    private ICatalog CurrentCatalog => _catalogs.FirstOrDefault(c => c.Name == Source && c.Supports(Kind)) ?? _catalogs.First(c => c.Supports(Kind));
+
+    partial void OnCategoryChanged(string value) => Reload();
+
+    partial void OnSelectedRowChanged(CatalogRow? value) => _ = DescribeAsync(value);
+
+    private async Task DescribeAsync(CatalogRow? row)
+    {
+        _describeCts?.Cancel();
+        Description = null;
+        if (row is null)
+        {
+            return;
+        }
+
+        _describeCts = new CancellationTokenSource();
+        var ct = _describeCts.Token;
+        IsDescribing = true;
+        try
+        {
+            var catalog = _catalogs.FirstOrDefault(c => c.Name == row.Item.Provider);
+            var text = catalog is null ? null : await catalog.DescribeAsync(row.Item, ct).ConfigureAwait(true);
+            if (!ct.IsCancellationRequested)
+            {
+                Description = string.IsNullOrWhiteSpace(text) ? row.Item.Description : text.Length > 6000 ? text[..6000] + " …" : text;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            if (!ct.IsCancellationRequested)
+            {
+                IsDescribing = false;
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void CloseDetail() => SelectedRow = null;
+
+    [RelayCommand]
+    private void Select(CatalogRow? row) => SelectedRow = row;
+
     /// <summary>Called when the page is shown: preselect a target and load page 1 without a search.</summary>
     public void Activate()
     {
@@ -151,13 +231,24 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
         }
     }
 
-    partial void OnSourceChanged(string value) => Reload();
+    partial void OnSourceChanged(string value)
+    {
+        OnPropertyChanged(nameof(Categories));
+        if (Category.Length > 0)
+        {
+            Category = string.Empty; // reloads
+            return;
+        }
+
+        Reload();
+    }
 
     partial void OnSortIndexChanged(int value) => Reload();
 
     partial void OnShowModpacksChanged(bool value)
     {
         OnPropertyChanged(nameof(Sources));
+        OnPropertyChanged(nameof(Categories));
         Reload();
     }
 
@@ -233,7 +324,8 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
                 sort = CatalogSort.Downloads;
             }
 
-            var result = await catalog.BrowseAsync(Kind, Query.Trim(), sort, Page, PageSize, ct).ConfigureAwait(true);
+            var category = catalog.Categories(Kind).Contains(Category) ? Category : null;
+            var result = await catalog.BrowseAsync(Kind, Query.Trim(), sort, Page, PageSize, ct, category).ConfigureAwait(true);
             if (ct.IsCancellationRequested)
             {
                 return;
@@ -246,7 +338,6 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
 
             var mc = server.Definition.MinecraftVersion;
             var loader = PlatformInfo.Loader(server.Definition.Platform);
-            var installed = server.PluginList.Select(p => (p.Name ?? string.Empty).ToUpperInvariant()).Concat(server.PluginList.Select(p => p.File.ToUpperInvariant())).ToList();
 
             Rows.Clear();
             foreach (var item in result.Items)
@@ -257,14 +348,16 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
                     continue;
                 }
 
-                var isInstalled = Kind != CatalogKind.Modpack && installed.Any(n => n.Length > 0 && (n.Equals(item.Title, StringComparison.OrdinalIgnoreCase) || n.Contains(item.Slug, StringComparison.OrdinalIgnoreCase)));
-                Rows.Add(new CatalogRow(item, ok, Explain(reason, mc, loader), isInstalled));
+                var file = Kind == CatalogKind.Modpack ? null : server.PluginList.FirstOrDefault(p =>
+                    (p.Name ?? string.Empty).Equals(item.Title, StringComparison.OrdinalIgnoreCase) || p.File.Contains(item.Slug, StringComparison.OrdinalIgnoreCase))?.File;
+                Rows.Add(new CatalogRow(item, ok, Explain(reason, mc, loader), file));
             }
 
             Total = result.Total;
             PageCount = Math.Max(1, (int)Math.Ceiling(result.Total / (double)PageSize));
             BuildPages();
             OnPropertyChanged(nameof(HasRows));
+            _ = CheckUpdatesAsync(Rows.Where(r => r.InstalledFile is not null).ToList(), server.Definition, ct);
         }
         finally
         {
@@ -320,10 +413,58 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private async Task InstallAsync(CatalogRow? row)
+    private async Task<((string FileName, Uri Url, string? Hash, HashAlgorithmName Alg)? File, string? Error)> ResolveAsync(CatalogItem item, ServerDefinition def, CancellationToken ct)
     {
-        if (row is null || TargetServer is not { } server || !row.CanInstall)
+        var loader = PlatformInfo.Loader(def.Platform);
+        if (Kind == CatalogKind.Plugin && _pluginProviders.FirstOrDefault(p => p.Name == item.Provider) is { } pp)
+        {
+            var r = await pp.GetLatestFileAsync(item.Id, def.MinecraftVersion, ct).ConfigureAwait(true);
+            return (r.Ok ? (r.Value!.FileName, r.Value.Url, r.Value.Hash, r.Value.Algorithm) : null, r.Error);
+        }
+
+        if (_modProviders.FirstOrDefault(p => p.Name == item.Provider) is { } mp)
+        {
+            var r = await mp.GetFileAsync(item.Id, Kind == CatalogKind.Modpack ? ModKind.Modpack : ModKind.Mod, def.MinecraftVersion, Kind == CatalogKind.Plugin ? "paper" : loader, ct).ConfigureAwait(true);
+            return (r.Ok ? (r.Value!.FileName, r.Value.Url, r.Value.Hash, r.Value.Algorithm) : null, r.Error);
+        }
+
+        return (null, "no provider");
+    }
+
+    /// <summary>An installed project has an update when the newest compatible file has a different name than the jar on disk.</summary>
+    private async Task CheckUpdatesAsync(IReadOnlyList<CatalogRow> rows, ServerDefinition def, CancellationToken ct)
+    {
+        foreach (var row in rows)
+        {
+            try
+            {
+                var (file, _) = await ResolveAsync(row.Item, def, ct).ConfigureAwait(true);
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (file is { } f && !string.Equals(Path.GetFileName(f.FileName), row.InstalledFile, StringComparison.OrdinalIgnoreCase))
+                {
+                    row.LatestFile = Path.GetFileName(f.FileName);
+                    row.HasUpdate = true;
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or OperationCanceledException or InvalidOperationException)
+            {
+            }
+        }
+    }
+
+    [RelayCommand]
+    private Task UpdateAsync(CatalogRow? row) => row is { CanUpdate: true } ? InstallCoreAsync(row, replace: true) : Task.CompletedTask;
+
+    [RelayCommand]
+    private Task InstallAsync(CatalogRow? row) => row is { CanInstall: true } ? InstallCoreAsync(row, replace: false) : Task.CompletedTask;
+
+    private async Task InstallCoreAsync(CatalogRow row, bool replace)
+    {
+        if (TargetServer is not { } server)
         {
             return;
         }
@@ -339,26 +480,7 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
         try
         {
             var def = server.Definition;
-            var loader = PlatformInfo.Loader(def.Platform);
-            (string FileName, Uri Url, string? Hash, HashAlgorithmName Alg)? file;
-            string? error;
-            if (Kind == CatalogKind.Plugin && _pluginProviders.FirstOrDefault(p => p.Name == row.Item.Provider) is { } pp)
-            {
-                var r = await pp.GetLatestFileAsync(row.Item.Id, def.MinecraftVersion, CancellationToken.None).ConfigureAwait(true);
-                file = r.Ok ? (r.Value!.FileName, r.Value.Url, r.Value.Hash, r.Value.Algorithm) : null;
-                error = r.Error;
-            }
-            else if (_modProviders.FirstOrDefault(p => p.Name == row.Item.Provider) is { } mp)
-            {
-                var r = await mp.GetFileAsync(row.Item.Id, Kind == CatalogKind.Modpack ? ModKind.Modpack : ModKind.Mod, def.MinecraftVersion, Kind == CatalogKind.Plugin ? "paper" : loader, CancellationToken.None).ConfigureAwait(true);
-                file = r.Ok ? (r.Value!.FileName, r.Value.Url, r.Value.Hash, r.Value.Algorithm) : null;
-                error = r.Error;
-            }
-            else
-            {
-                file = null;
-                error = "no provider";
-            }
+            var (file, error) = await ResolveAsync(row.Item, def, CancellationToken.None).ConfigureAwait(true);
 
             if (file is not { } f)
             {
@@ -380,14 +502,43 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
                     var folder = Kind == CatalogKind.Plugin ? server.PluginsDir : server.ModsDir;
                     Directory.CreateDirectory(folder);
                     var dest = Path.Combine(folder, Path.GetFileName(f.FileName));
-                    ok = await Preflight.ConfirmChangeAsync(def, () => File.Copy(temp, dest, overwrite: false), () => File.Delete(dest)).ConfigureAwait(true);
+                    var old = replace && row.InstalledFile is { } installed ? Path.Combine(folder, installed) : null;
+                    var parked = old is null ? null : old + ".packcheck-old";
+                    ok = await Preflight.ConfirmChangeAsync(def,
+                        () =>
+                        {
+                            if (old is not null && File.Exists(old))
+                            {
+                                File.Move(old, parked!, overwrite: true);
+                            }
+
+                            File.Copy(temp, dest, overwrite: replace);
+                        },
+                        () =>
+                        {
+                            File.Delete(dest);
+                            if (parked is not null && File.Exists(parked))
+                            {
+                                File.Move(parked, old!);
+                            }
+                        }).ConfigureAwait(true);
+                    if (ok && parked is not null && File.Exists(parked))
+                    {
+                        File.Delete(parked);
+                    }
+
+                    if (ok)
+                    {
+                        row.InstalledFile = Path.GetFileName(f.FileName);
+                        row.HasUpdate = false;
+                    }
                 }
 
                 if (ok)
                 {
                     row.Installed = true;
                     server.RefreshPlugins();
-                    MainViewModel.Shell?.Toast(Loc.F("Plugins_Installed", row.Item.Title));
+                    MainViewModel.Shell?.Toast(Loc.F(replace ? "Browse_Updated" : "Plugins_Installed", row.Item.Title));
                 }
             }
             finally
@@ -442,4 +593,11 @@ public sealed class ModsViewModel(IEnumerable<ICatalog> catalogs, IEnumerable<IP
     : ContentBrowserViewModel(catalogs, plugins, mods, servers, settings, http)
 {
     public override bool IsModPage => true;
+}
+
+/// <summary>An entry of the category filter.</summary>
+public sealed record CategoryOption(string Key, string Text)
+{
+    public static string Label(string key) =>
+        Loc.Instance.Has("Category_" + key) ? Loc.T("Category_" + key) : System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(key.Replace('_', ' ').Replace('-', ' '));
 }

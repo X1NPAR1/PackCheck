@@ -46,6 +46,8 @@ public sealed class Loc : INotifyPropertyChanged
 
     public static string T(string key) => Instance[key];
 
+    public bool Has(string key) => Resources.GetString(key, _culture) is not null;
+
     public static string F(string key, params object[] args) => string.Format(Instance._culture, Instance[key], args);
 }
 

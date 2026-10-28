@@ -183,6 +183,44 @@
   <data name="Console_PrevMatch" xml:space="preserve"><value>Предыдущее совпадение (Shift+Enter)</value></data>
   <data name="Console_NextMatch" xml:space="preserve"><value>Следующее совпадение (Enter)</value></data>
   <data name="Console_FilterOnly" xml:space="preserve"><value>Только совпадения</value></data>
+  <data name="Browse_AllCategories" xml:space="preserve"><value>Все категории</value></data>
+  <data name="Browse_Category" xml:space="preserve"><value>Категория</value></data>
+  <data name="Browse_Update" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Browse_Updated" xml:space="preserve"><value>{0} обновлён</value></data>
+  <data name="Browse_OpenPage" xml:space="preserve"><value>Открыть страницу проекта</value></data>
+  <data name="Browse_ClickForDetails" xml:space="preserve"><value>Нажмите для подробностей</value></data>
+  <data name="Browse_Source" xml:space="preserve"><value>Источник</value></data>
+  <data name="Browse_DownloadsLabel" xml:space="preserve"><value>Загрузки</value></data>
+  <data name="Browse_Versions" xml:space="preserve"><value>Minecraft</value></data>
+  <data name="Browse_Loaders" xml:space="preserve"><value>Платформы</value></data>
+  <data name="Browse_InstalledFile" xml:space="preserve"><value>Установленный файл</value></data>
+  <data name="Category_admin_tools" xml:space="preserve"><value>Инструменты админа</value></data>
+  <data name="Category_chat" xml:space="preserve"><value>Чат</value></data>
+  <data name="Category_dev_tools" xml:space="preserve"><value>Инструменты разработчика</value></data>
+  <data name="Category_economy" xml:space="preserve"><value>Экономика</value></data>
+  <data name="Category_gameplay" xml:space="preserve"><value>Геймплей</value></data>
+  <data name="Category_games" xml:space="preserve"><value>Мини-игры</value></data>
+  <data name="Category_minigame" xml:space="preserve"><value>Мини-игры</value></data>
+  <data name="Category_protection" xml:space="preserve"><value>Защита</value></data>
+  <data name="Category_role_playing" xml:space="preserve"><value>Ролевые</value></data>
+  <data name="Category_world_management" xml:space="preserve"><value>Управление мирами</value></data>
+  <data name="Category_misc" xml:space="preserve"><value>Прочее</value></data>
+  <data name="Category_adventure" xml:space="preserve"><value>Приключения</value></data>
+  <data name="Category_decoration" xml:space="preserve"><value>Декор</value></data>
+  <data name="Category_equipment" xml:space="preserve"><value>Снаряжение</value></data>
+  <data name="Category_food" xml:space="preserve"><value>Еда</value></data>
+  <data name="Category_game-mechanics" xml:space="preserve"><value>Механики</value></data>
+  <data name="Category_library" xml:space="preserve"><value>Библиотека</value></data>
+  <data name="Category_magic" xml:space="preserve"><value>Магия</value></data>
+  <data name="Category_management" xml:space="preserve"><value>Управление</value></data>
+  <data name="Category_mobs" xml:space="preserve"><value>Мобы</value></data>
+  <data name="Category_optimization" xml:space="preserve"><value>Оптимизация</value></data>
+  <data name="Category_social" xml:space="preserve"><value>Социальное</value></data>
+  <data name="Category_storage" xml:space="preserve"><value>Хранение</value></data>
+  <data name="Category_technology" xml:space="preserve"><value>Технологии</value></data>
+  <data name="Category_transportation" xml:space="preserve"><value>Транспорт</value></data>
+  <data name="Category_utility" xml:space="preserve"><value>Утилиты</value></data>
+  <data name="Category_worldgen" xml:space="preserve"><value>Генерация мира</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

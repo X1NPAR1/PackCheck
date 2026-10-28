@@ -64,7 +64,10 @@
                                      IsChecked="{Binding ShowModpacks, Converter={x:Static l:Inverse.Bool}}" />
                         <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Mods_KindPacks}" Visibility="{Binding IsModPage, Converter={StaticResource BoolVis}}"
                                      IsChecked="{Binding ShowModpacks}" />
-                        <CheckBox Content="{l:Loc Browse_CompatibleOnly}" IsChecked="{Binding CompatibleOnly}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                        <ComboBox Width="190" Margin="8,0,0,0" ItemsSource="{Binding Categories}" SelectedValuePath="Key" DisplayMemberPath="Text" SelectedValue="{Binding Category}"
+                                  ToolTip="{l:Loc Browse_Category}" AutomationProperties.Name="{l:Loc Browse_Category}" AutomationProperties.AutomationId="BrowseCategory"
+                                  Visibility="{Binding Categories.Count, Converter={x:Static l:CountToVisibility.MoreThanOne}}" />
+                        <CheckBox Content="{l:Loc Browse_CompatibleOnly}" IsChecked="{Binding CompatibleOnly}" VerticalAlignment="Center" Margin="12,0,0,0" />
                     </StackPanel>
                 </DockPanel>
                 <TextBlock Text="{Binding Error}" Foreground="{DynamicResource WarnBrush}" Margin="0,10,0,0" TextWrapping="Wrap" Visibility="{Binding Error, Converter={StaticResource NullVis}}" />
@@ -87,12 +90,89 @@
 
         <!-- Results -->
         <Grid Grid.Row="2" Margin="0,14,0,0" Visibility="{Binding HasTarget, Converter={StaticResource BoolVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Detail panel -->
+            <Border Grid.Column="1" Width="380" Margin="12,8,0,0" Style="{StaticResource Card}" Padding="18" Visibility="{Binding HasSelection, Converter={StaticResource BoolVis}}"
+                    l:Anim.PopIn="True" AutomationProperties.AutomationId="BrowseDetail">
+                <DockPanel DataContext="{Binding SelectedRow}">
+                    <DockPanel DockPanel.Dock="Top">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Padding="6" VerticalAlignment="Top" AutomationProperties.Name="{l:Loc Common_Close}"
+                                Command="{Binding DataContext.CloseDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                            <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="10" Height="10" />
+                        </Button>
+                        <Border DockPanel.Dock="Left" Width="56" Height="56" CornerRadius="10" Background="{DynamicResource Surface2Brush}" Margin="0,0,12,0" ClipToBounds="True">
+                            <Image Source="{Binding Item.Icon, Converter={x:Static l:UriToImage.Instance}}" Stretch="UniformToFill" />
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Item.Title}" Style="{StaticResource H2}" FontSize="16" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Item.Author}" Style="{StaticResource Muted}" FontSize="12.5" />
+                        </StackPanel>
+                    </DockPanel>
+                    <Grid DockPanel.Dock="Top" Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                                <Setter Property="FontSize" Value="12.5" />
+                                <Setter Property="Margin" Value="0,0,12,4" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Text="{l:Loc Browse_Source}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Item.Provider}" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Grid.Row="1" Text="{l:Loc Browse_DownloadsLabel}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Downloads}" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Grid.Row="2" Text="{l:Loc Browse_Versions}" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding VersionRange}" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Grid.Row="3" Text="{l:Loc Browse_Loaders}" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Loaders}" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Grid.Row="4" Text="{l:Loc Browse_InstalledFile}" Visibility="{Binding InstalledFile, Converter={StaticResource NullVis}}" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Visibility="{Binding InstalledFile, Converter={StaticResource NullVis}}" Foreground="{DynamicResource TextBrush}" FontFamily="{StaticResource MonoFont}">
+                            <Run Text="{Binding InstalledFile, Mode=OneWay}" /><Run Text="{Binding LatestFile, Mode=OneWay, StringFormat=' → {0}'}" Foreground="{DynamicResource WarnBrush}" />
+                        </TextBlock>
+                    </Grid>
+                    <TextBlock DockPanel.Dock="Top" Text="{Binding IncompatibleReason}" Foreground="{DynamicResource FailBrush}" TextWrapping="Wrap" Margin="0,8,0,0"
+                               Visibility="{Binding IncompatibleReason, Converter={StaticResource NullVis}}" />
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Content="{l:Loc Plugins_Install}" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding CanInstall}" Margin="0,0,8,0"
+                                Visibility="{Binding Installed, Converter={x:Static l:Inverse.Visibility}}"
+                                Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                        <Button Content="{l:Loc Browse_Update}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Visibility="{Binding CanUpdate, Converter={StaticResource BoolVis}}"
+                                Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                        <Button Content="{l:Loc Browse_OpenPage}" Command="{Binding DataContext.OpenPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                    </StackPanel>
+                    <Grid Margin="0,12,0,0">
+                        <ProgressBar IsIndeterminate="True" VerticalAlignment="Top" Visibility="{Binding DataContext.IsDescribing, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolVis}}" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding DataContext.Description, RelativeSource={RelativeSource AncestorType=UserControl}}" TextWrapping="Wrap" FontSize="13" LineHeight="20"
+                                       Foreground="{DynamicResource TextBrush}" AutomationProperties.AutomationId="BrowseDescription" />
+                        </ScrollViewer>
+                    </Grid>
+                </DockPanel>
+            </Border>
+
             <ProgressBar IsIndeterminate="True" VerticalAlignment="Top" Visibility="{Binding IsLoading, Converter={StaticResource BoolVis}}" />
             <ScrollViewer x:Name="ResultsScroll" VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
                 <ItemsControl ItemsSource="{Binding Rows}" l:Anim.Stagger="True" AutomationProperties.AutomationId="BrowseResults">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,0,8">
+                            <Border Style="{StaticResource Card}" Padding="14,12" Margin="0,0,0,8" Cursor="Hand" ToolTip="{l:Loc Browse_ClickForDetails}">
+                                <Border.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                </Border.InputBindings>
                                 <DockPanel>
                                     <Border DockPanel.Dock="Left" Width="48" Height="48" CornerRadius="9" Background="{DynamicResource Surface2Brush}" Margin="0,0,14,0" ClipToBounds="True">
                                         <Image Source="{Binding Item.Icon, Converter={x:Static l:UriToImage.Instance}}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" />
@@ -100,6 +180,9 @@
 
                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
                                         <Button Style="{StaticResource GhostButton}" Content="↗" ToolTip="{Binding Item.Page}" Command="{Binding DataContext.OpenPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Margin="0,0,6,0" />
+                                        <Button Content="{l:Loc Browse_Update}" Style="{StaticResource PrimaryButton}" Visibility="{Binding CanUpdate, Converter={StaticResource BoolVis}}"
+                                                ToolTip="{Binding LatestFile}" Margin="0,0,6,0" AutomationProperties.AutomationId="BrowseUpdate"
+                                                Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
                                         <Border CornerRadius="7" Padding="12,8" Background="{DynamicResource PrimarySoftBrush}" Visibility="{Binding Installed, Converter={StaticResource BoolVis}}">
                                             <TextBlock Text="{l:Loc Browse_Installed}" FontWeight="SemiBold" Foreground="{DynamicResource PassBrush}" />
                                         </Border>
