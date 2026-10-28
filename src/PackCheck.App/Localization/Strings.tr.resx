@@ -288,6 +288,7 @@ Evet: şimdi kapat (güvenlik duvarı kuralı ve modem yönlendirmesi kaldırıl
 Hayır: açık bırakıp çık.
 İptal: PackCheck'te kal.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Bazı portlar kapatılamadı (yönetici izni verilmedi). Bir dahaki sefere Online sayfasından kapatabilirsin.</value></data>
+  <data name="Assistant_EulaNotice" xml:space="preserve"><value>Onaylamak bu sunucular için Minecraft EULA'sını (aka.ms/MinecraftEULA) da kabul etmek demektir.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

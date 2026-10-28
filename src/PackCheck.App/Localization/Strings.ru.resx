@@ -288,6 +288,7 @@
 Нет: выйти, оставив открытым.
 Отмена: остаться в PackCheck.</value></data>
   <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Некоторые порты не удалось закрыть (запрос администратора отклонён). Закройте их на странице «Онлайн» в следующий раз.</value></data>
+  <data name="Assistant_EulaNotice" xml:space="preserve"><value>Подтверждая, вы также принимаете EULA Minecraft (aka.ms/MinecraftEULA) для этих серверов.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

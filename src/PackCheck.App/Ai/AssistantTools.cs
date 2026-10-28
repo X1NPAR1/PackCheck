@@ -1,3 +1,4 @@
+using PackCheck.App.Infrastructure;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -201,6 +202,7 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
             table.Append(CultureInfo.InvariantCulture, $"{s.Name} | {s.Platform} | {s.Version} | {s.Memory} MB | {(s.Port == 0 ? "auto" : s.Port)}\n");
         }
 
+        table.Append('\n').Append(Loc.T("Assistant_EulaNotice"));
         return new PendingAction($"create {plan.Count} server(s)", table.ToString(), async () =>
         {
             var sources = (ServerSources)App.Services.GetService(typeof(ServerSources))!;
