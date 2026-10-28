@@ -211,6 +211,49 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
         }
     }
 
+    /// <summary>On exit: removes the router mappings and firewall rules of every port PackCheck opened.</summary>
+    public async Task<bool> CloseAllAsync()
+    {
+        var ok = true;
+        var upnp = false;
+        try
+        {
+            upnp = await _upnp.DiscoverAsync(CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or System.Net.Sockets.SocketException or TaskCanceledException)
+        {
+        }
+
+        foreach (var port in settings.OnlinePorts.ToList())
+        {
+            try
+            {
+                if (upnp)
+                {
+                    await _upnp.UnmapAsync(port, "TCP", CancellationToken.None).ConfigureAwait(true);
+                    await _upnp.UnmapAsync(port, "UDP", CancellationToken.None).ConfigureAwait(true);
+                }
+
+                if (await Firewall.ChangeElevatedAsync(port, add: false).ConfigureAwait(true) || !Firewall.RuleExists(port))
+                {
+                    settings.OnlinePorts.Remove(port);
+                }
+                else
+                {
+                    ok = false;
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or System.Net.Sockets.SocketException or TaskCanceledException)
+            {
+                ok = false;
+            }
+        }
+
+        settings.Save();
+        IsOnline = false;
+        return ok;
+    }
+
     [RelayCommand]
     private void CopyAddress()
     {

@@ -282,6 +282,12 @@ Apply anyway?</value></data>
   <data name="About_DataFolder" xml:space="preserve"><value>Data folder</value></data>
   <data name="About_OpenData" xml:space="preserve"><value>Data folder</value></data>
   <data name="About_OpenLogs" xml:space="preserve"><value>Logs</value></data>
+  <data name="Online_ExitAsk" xml:space="preserve"><value>Port {0} is still open to the internet.
+
+Yes: close it now (firewall rule and router mapping are removed).
+No: quit and keep it open.
+Cancel: stay in PackCheck.</value></data>
+  <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Some ports could not be closed (the administrator prompt was declined). You can close them on the Online page next time.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

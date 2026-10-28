@@ -282,6 +282,12 @@ Appliquer quand même ?</value></data>
   <data name="About_DataFolder" xml:space="preserve"><value>Dossier des données</value></data>
   <data name="About_OpenData" xml:space="preserve"><value>Données</value></data>
   <data name="About_OpenLogs" xml:space="preserve"><value>Journaux</value></data>
+  <data name="Online_ExitAsk" xml:space="preserve"><value>Le port {0} est toujours ouvert sur Internet.
+
+Oui : le fermer (règle de pare-feu et redirection supprimées).
+Non : quitter en le laissant ouvert.
+Annuler : rester dans PackCheck.</value></data>
+  <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Certains ports n'ont pas pu être fermés (invite administrateur refusée). Vous pourrez les fermer depuis la page En ligne.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

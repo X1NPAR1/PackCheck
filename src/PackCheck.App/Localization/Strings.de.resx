@@ -282,6 +282,12 @@ Trotzdem anwenden?</value></data>
   <data name="About_DataFolder" xml:space="preserve"><value>Datenordner</value></data>
   <data name="About_OpenData" xml:space="preserve"><value>Datenordner</value></data>
   <data name="About_OpenLogs" xml:space="preserve"><value>Protokolle</value></data>
+  <data name="Online_ExitAsk" xml:space="preserve"><value>Port {0} ist noch aus dem Internet erreichbar.
+
+Ja: jetzt schließen (Firewallregel und Router-Weiterleitung werden entfernt).
+Nein: beenden und offen lassen.
+Abbrechen: in PackCheck bleiben.</value></data>
+  <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Einige Ports konnten nicht geschlossen werden (Administratorabfrage abgelehnt). Du kannst sie beim nächsten Mal auf der Seite Online schließen.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

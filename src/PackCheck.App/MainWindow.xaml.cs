@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Windows;
+using MessageBox = System.Windows.MessageBox;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using PackCheck.App.Infrastructure;
@@ -58,7 +59,38 @@ public partial class MainWindow : Window
             e.Cancel = true;
             Hide();
             App.Tray.ShowHiddenHint();
+            return;
         }
+
+        // Really quitting while servers are open to the internet: offer to close them first.
+        if (!_portsChecked && App.Settings?.OnlinePorts.Count > 0)
+        {
+            e.Cancel = true;
+            _ = AskAboutOpenPortsAsync();
+        }
+    }
+
+    private bool _portsChecked;
+
+    private async Task AskAboutOpenPortsAsync()
+    {
+        Show();
+        Activate();
+        var ports = string.Join(", ", App.Settings!.OnlinePorts);
+        var answer = MessageBox.Show(this, Loc.F("Online_ExitAsk", ports), "PackCheck", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
+        if (answer == MessageBoxResult.Cancel)
+        {
+            return;
+        }
+
+        if (answer == MessageBoxResult.Yes && DataContext is MainViewModel vm && !await vm.Online.CloseAllAsync().ConfigureAwait(true))
+        {
+            MessageBox.Show(this, Loc.T("Online_ExitCloseFailed"), "PackCheck", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        _portsChecked = true;
+        AllowClose = true;
+        Close();
     }
 
     protected override void OnClosed(EventArgs e)

@@ -282,6 +282,12 @@
   <data name="About_DataFolder" xml:space="preserve"><value>Папка данных</value></data>
   <data name="About_OpenData" xml:space="preserve"><value>Данные</value></data>
   <data name="About_OpenLogs" xml:space="preserve"><value>Журналы</value></data>
+  <data name="Online_ExitAsk" xml:space="preserve"><value>Порт {0} всё ещё открыт в интернет.
+
+Да: закрыть сейчас (правило брандмауэра и проброс на роутере удаляются).
+Нет: выйти, оставив открытым.
+Отмена: остаться в PackCheck.</value></data>
+  <data name="Online_ExitCloseFailed" xml:space="preserve"><value>Некоторые порты не удалось закрыть (запрос администратора отклонён). Закройте их на странице «Онлайн» в следующий раз.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>
