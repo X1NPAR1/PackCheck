@@ -52,7 +52,11 @@
                                                 <Setter.Value>
                                                     <DataTemplate>
                                                         <Border Margin="0,0,80,10" Padding="14,10" CornerRadius="10" Background="{DynamicResource Surface2Brush}" HorizontalAlignment="Left">
-                                                            <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Padding="0" MinHeight="0" />
+                                                            <StackPanel>
+                                                                <RichTextBox l:Markdown.Source="{Binding Text}" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0" Background="Transparent"
+                                                                             Padding="0" MinHeight="0" FontSize="13.5" VerticalScrollBarVisibility="Disabled" AutomationProperties.AutomationId="AssistantAnswer" />
+                                                                <TextBlock Text="▍" Foreground="{DynamicResource PrimaryBrush}" Visibility="{Binding IsStreaming, Converter={StaticResource BoolVis}}" />
+                                                            </StackPanel>
                                                         </Border>
                                                     </DataTemplate>
                                                 </Setter.Value>

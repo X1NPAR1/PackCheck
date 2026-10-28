@@ -129,6 +129,38 @@ public class AssistantTests
         Assert.Equal("http://localhost:1234/v1/chat/completions", handler.Requests[0].RequestUri!.ToString());
     }
 
+    /// <summary>Server-sent chunks: text arrives piece by piece, tool call arguments are split across chunks.</summary>
+    [Fact]
+    public async Task OpenAiCompatible_StreamIsRebuilt()
+    {
+        var sse = string.Join("\n",
+            """data: {"choices":[{"delta":{"role":"assistant","content":"Hel"}}]}""",
+            """data: {"choices":[{"delta":{"content":"lo"}}]}""",
+            """data: {"choices":[{"delta":{"tool_calls":[{"index":0,"id":"c9","function":{"name":"read_file","arguments":"{\"pa"}}]}}]}""",
+            """data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"arguments":"th\":\"a.yml\"}"}}]},"finish_reason":"tool_calls"}]}""",
+            """data: {"choices":[],"usage":{"prompt_tokens":7,"completion_tokens":3}}""",
+            "data: [DONE]", "");
+        using var http = new HttpClient(new StubHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(sse, System.Text.Encoding.UTF8, "text/event-stream"),
+        }));
+        var convo = AiProviders.Start(AiProviderKind.Grok, "k", "grok-4", "s", AssistantTools.Specs, http);
+        var pieces = new List<string>();
+        convo.TextDelta = pieces.Add;
+
+        var step = await convo.SendAsync("hi", CancellationToken.None);
+
+        Assert.Equal(["Hel", "lo"], pieces);
+        Assert.Equal("Hello", step.Text);
+        var call = Assert.Single(step.ToolCalls);
+        Assert.Equal(("c9", "read_file", "a.yml"), (call.Id, call.Name, call.Arguments["path"]!.GetValue<string>()));
+        Assert.Equal(10, step.InputTokens + step.OutputTokens);
+        Assert.Equal("https://api.x.ai/v1/chat/completions", ((StubHandler)GetHandler(http)).Requests[0].RequestUri!.ToString());
+    }
+
+    private static HttpMessageHandler GetHandler(HttpClient c) =>
+        (HttpMessageHandler)typeof(HttpMessageInvoker).GetField("_handler", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(c)!;
+
     [Fact]
     public async Task ProviderError_IsReported()
     {

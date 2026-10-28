@@ -35,6 +35,9 @@ public sealed record AiStep(string Text, IReadOnlyList<AiToolCall> ToolCalls, in
 /// <summary>One chat with its native history; tool results are fed back with <see cref="ContinueAsync"/>.</summary>
 public interface IAiConversation
 {
+    /// <summary>Receives answer text as it streams in.</summary>
+    Action<string>? TextDelta { get; set; }
+
     Task<AiStep> SendAsync(string userText, CancellationToken ct);
 
     Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct);
@@ -145,6 +148,8 @@ public static class AiProviders
 /// <summary>Anthropic models through the official SDK. Assistant turns are echoed back block by block (thinking signatures kept).</summary>
 internal sealed class AnthropicConversation(string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools) : IAiConversation
 {
+    public Action<string>? TextDelta { get; set; }
+
     private readonly AnthropicClient _client = new() { ApiKey = apiKey };
     private readonly List<MessageParam> _messages = [];
 
@@ -179,14 +184,15 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
 
     private async Task<AiStep> RunAsync(CancellationToken ct)
     {
-        var response = await _client.Messages.Create(new MessageCreateParams
+        var stream = _client.Messages.CreateStreaming(new MessageCreateParams
         {
             Model = model,
             MaxTokens = 16000,
             System = system,
             Tools = _tools,
             Messages = [.. _messages],
-        }, ct).ConfigureAwait(false);
+        }, ct);
+        var response = await Tee(stream, TextDelta).Aggregate().ConfigureAwait(false);
 
         List<ContentBlockParam> echo = [];
         var text = new StringBuilder();
@@ -223,6 +229,20 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
 
         return new AiStep(text.ToString(), calls, (int)response.Usage.InputTokens, (int)response.Usage.OutputTokens, stop);
     }
+
+    /// <summary>Passes text deltas to the UI while the SDK's aggregator builds the full message.</summary>
+    private static async IAsyncEnumerable<RawMessageStreamEvent> Tee(IAsyncEnumerable<RawMessageStreamEvent> source, Action<string>? onText)
+    {
+        await foreach (var e in source.ConfigureAwait(false))
+        {
+            if (onText is not null && e.TryPickContentBlockDelta(out var d) && d.Delta.TryPickText(out var t))
+            {
+                onText(t.Text);
+            }
+
+            yield return e;
+        }
+    }
 }
 
 /// <summary>OpenAI chat completions with function tools (OpenAI, Gemini, OpenRouter, Ollama, LM Studio).</summary>
@@ -234,6 +254,8 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
     private readonly HttpClient _http;
     private readonly JsonArray _messages = [];
     private readonly JsonArray _tools = [];
+
+    public Action<string>? TextDelta { get; set; }
 
     public OpenAiCompatibleConversation(string baseUrl, string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools, HttpClient http)
     {
@@ -270,7 +292,7 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
 
     private async Task<AiStep> RunAsync(CancellationToken ct)
     {
-        var body = new JsonObject { ["model"] = _model, ["messages"] = _messages.DeepClone(), ["tools"] = _tools.DeepClone() };
+        var body = new JsonObject { ["model"] = _model, ["messages"] = _messages.DeepClone(), ["tools"] = _tools.DeepClone(), ["stream"] = true };
         using var req = new HttpRequestMessage(HttpMethod.Post, new Uri(_baseUrl + "/chat/completions"))
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
@@ -280,14 +302,16 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
             req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
-        using var res = await _http.SendAsync(req, ct).ConfigureAwait(false);
-        var json = await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+        using var res = await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
         if (!res.IsSuccessStatusCode)
         {
-            throw new HttpRequestException($"HTTP {(int)res.StatusCode}: {json[..Math.Min(json.Length, 300)]}");
+            var err = await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+            throw new HttpRequestException($"HTTP {(int)res.StatusCode}: {err[..Math.Min(err.Length, 300)]}");
         }
 
-        var root = JsonNode.Parse(json)!;
+        var root = res.Content.Headers.ContentType?.MediaType == "text/event-stream"
+            ? await ReadStreamAsync(await res.Content.ReadAsStreamAsync(ct).ConfigureAwait(false), TextDelta, ct).ConfigureAwait(false)
+            : JsonNode.Parse(await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false))!;
         var message = root["choices"]![0]!["message"]!;
         var text = message["content"]?.GetValue<string>() ?? string.Empty;
         var calls = new List<AiToolCall>();
@@ -305,5 +329,81 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         _messages.Add(message.DeepClone());
         var usage = root["usage"];
         return new AiStep(text, calls, usage?["prompt_tokens"]?.GetValue<int>() ?? 0, usage?["completion_tokens"]?.GetValue<int>() ?? 0, root["choices"]![0]!["finish_reason"]?.GetValue<string>());
+    }
+
+    /// <summary>
+    /// Rebuilds a non-streaming response from server-sent chunks: content deltas are joined (and shown live),
+    /// tool call pieces are merged by index.
+    /// </summary>
+    internal static async Task<JsonNode> ReadStreamAsync(System.IO.Stream stream, Action<string>? onText, CancellationToken ct)
+    {
+        var text = new StringBuilder();
+        var calls = new SortedDictionary<int, (string? Id, string? Name, StringBuilder Args)>();
+        string? finish = null;
+        JsonNode? usage = null;
+        using var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+        while (await reader.ReadLineAsync(ct).ConfigureAwait(false) is { } line)
+        {
+            if (!line.StartsWith("data:", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            var data = line[5..].Trim();
+            if (data == "[DONE]")
+            {
+                break;
+            }
+
+            var chunk = JsonNode.Parse(data);
+            if (chunk?["usage"] is JsonObject u)
+            {
+                usage = u.DeepClone();
+            }
+
+            if (chunk?["choices"] is not JsonArray { Count: > 0 } choices)
+            {
+                continue;
+            }
+
+            var choice = choices[0]!;
+            finish = choice["finish_reason"]?.GetValue<string>() ?? finish;
+            var delta = choice["delta"];
+            if (delta?["content"] is JsonValue c && c.GetValue<string>() is { Length: > 0 } piece)
+            {
+                text.Append(piece);
+                onText?.Invoke(piece);
+            }
+
+            if (delta?["tool_calls"] is JsonArray tcs)
+            {
+                foreach (var tc in tcs)
+                {
+                    var index = tc!["index"]?.GetValue<int>() ?? calls.Count;
+                    var entry = calls.TryGetValue(index, out var e) ? e : (null, null, new StringBuilder());
+                    entry.Id ??= tc["id"]?.GetValue<string>();
+                    entry.Name ??= tc["function"]?["name"]?.GetValue<string>();
+                    entry.Args.Append(tc["function"]?["arguments"]?.GetValue<string>());
+                    calls[index] = entry;
+                }
+            }
+        }
+
+        var message = new JsonObject { ["role"] = "assistant", ["content"] = text.Length > 0 ? text.ToString() : null };
+        if (calls.Count > 0)
+        {
+            message["tool_calls"] = new JsonArray(calls.Values.Select(c => (JsonNode)new JsonObject
+            {
+                ["id"] = c.Id ?? Guid.NewGuid().ToString("N"),
+                ["type"] = "function",
+                ["function"] = new JsonObject { ["name"] = c.Name, ["arguments"] = c.Args.Length > 0 ? c.Args.ToString() : "{}" },
+            }).ToArray());
+        }
+
+        return new JsonObject
+        {
+            ["choices"] = new JsonArray(new JsonObject { ["message"] = message, ["finish_reason"] = finish }),
+            ["usage"] = usage,
+        };
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PackCheck.App.Ai;
@@ -23,7 +25,13 @@ public sealed partial class ChatItem(string role, string text) : ObservableObjec
     public bool IsWaiting => Pending is not null && Approved is null;
 
     public TaskCompletionSource<bool>? Decision { get; init; }
+
+    [ObservableProperty]
+    private bool _isStreaming;
 }
+
+/// <summary>What is kept on disk per server: user, assistant and status lines (pending approvals are not restored).</summary>
+public sealed record SavedChatLine(string Role, string Text);
 
 /// <summary>Chat with the chosen model; tool calls run through <see cref="AssistantTools"/> with approval for every change.</summary>
 public sealed partial class AssistantViewModel(ServersViewModel servers, AppSettings settings, HttpClient http) : ObservableObject
@@ -40,6 +48,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     private readonly AssistantTools _tools = new(servers, () => servers.Selected);
     private IAiConversation? _conversation;
     private CancellationTokenSource? _cts;
+    private string? _historyKey;
 
     public ObservableCollection<ChatItem> Messages { get; } = [];
 
@@ -64,6 +73,61 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         OnPropertyChanged(nameof(IsConfigured));
         OnPropertyChanged(nameof(ModelText));
         OnPropertyChanged(nameof(ServerText));
+        LoadHistory();
+    }
+
+    // ----- history (one file per server, "general" without a server) -----
+    private static string HistoryDir => Path.Combine(Core.AppPaths.DataRoot, "assistant");
+
+    private string CurrentKey => servers.Selected?.Definition.Id ?? "general";
+
+    private void LoadHistory()
+    {
+        if (_historyKey == CurrentKey || IsBusy)
+        {
+            return;
+        }
+
+        _historyKey = CurrentKey;
+        _conversation = null;
+        Messages.Clear();
+        Tokens = 0;
+        try
+        {
+            var file = Path.Combine(HistoryDir, _historyKey + ".json");
+            if (File.Exists(file) && JsonSerializer.Deserialize<List<SavedChatLine>>(File.ReadAllText(file)) is { } lines)
+            {
+                foreach (var l in lines)
+                {
+                    Messages.Add(new ChatItem(l.Role, l.Text));
+                }
+            }
+        }
+        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
+        {
+        }
+    }
+
+    private void SaveHistory()
+    {
+        try
+        {
+            Directory.CreateDirectory(HistoryDir);
+            var lines = Messages.Where(m => m.Role is "user" or "assistant" or "system").TakeLast(200).Select(m => new SavedChatLine(m.Role, m.Text)).ToList();
+            File.WriteAllText(Path.Combine(HistoryDir, (_historyKey ?? CurrentKey) + ".json"), JsonSerializer.Serialize(lines));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+        }
+    }
+
+    /// <summary>A new model conversation after a restart still knows what was said before.</summary>
+    private string EarlierTranscript()
+    {
+        var earlier = Messages.Where(m => m.Role is "user" or "assistant").TakeLast(20).ToList();
+        return earlier.Count == 0
+            ? string.Empty
+            : "\nEarlier conversation with this user (for context):\n" + string.Join("\n", earlier.Select(m => $"{m.Role}: {(m.Text.Length > 1500 ? m.Text[..1500] + " …" : m.Text)}"));
     }
 
     /// <summary>Opens the assistant with a prepared question (crash banner, validation) and sends it when a model is set up.</summary>
@@ -84,6 +148,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         _conversation = null;
         Messages.Clear();
         Tokens = 0;
+        SaveHistory();
     }
 
     [RelayCommand]
@@ -119,19 +184,45 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             return;
         }
 
+        LoadHistory();
         Input = string.Empty;
-        Messages.Add(new ChatItem("user", text));
         IsBusy = true;
         _cts = new CancellationTokenSource();
+        ChatItem? live = null;
         try
         {
-            _conversation ??= AiProviders.Start(settings.AiProvider, Secrets.Unprotect(settings.AiKey), settings.AiModel!,
-                SystemPrompt + $"\nSelected server: {ServerText}.", AssistantTools.Specs, http);
+            if (_conversation is null)
+            {
+                _conversation = AiProviders.Start(settings.AiProvider, Secrets.Unprotect(settings.AiKey), settings.AiModel!,
+                    SystemPrompt + $"\nSelected server: {ServerText}." + EarlierTranscript(), AssistantTools.Specs, http);
+                var dispatcher = System.Windows.Application.Current.Dispatcher;
+                _conversation.TextDelta = piece => dispatcher.BeginInvoke(() =>
+                {
+                    if (live is null)
+                    {
+                        live = new ChatItem("assistant", string.Empty) { IsStreaming = true };
+                        Messages.Add(live);
+                    }
+
+                    live.Text += piece;
+                });
+            }
+
+            Messages.Add(new ChatItem("user", text));
             var step = await _conversation.SendAsync(text, _cts.Token).ConfigureAwait(true);
             for (var round = 0; round < 12; round++)
             {
                 Tokens += step.InputTokens + step.OutputTokens;
-                if (step.Text.Length > 0)
+
+                // Let queued deltas land, then make the streamed bubble the final text.
+                await System.Windows.Application.Current.Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Background);
+                if (live is not null)
+                {
+                    live.Text = step.Text;
+                    live.IsStreaming = false;
+                    live = null;
+                }
+                else if (step.Text.Length > 0)
                 {
                     Messages.Add(new ChatItem("assistant", step.Text));
                 }
@@ -160,7 +251,13 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         }
         finally
         {
+            if (live is not null)
+            {
+                live.IsStreaming = false;
+            }
+
             IsBusy = false;
+            SaveHistory();
         }
     }
 
