@@ -7,12 +7,15 @@ using PackCheck.Core;
 namespace PackCheck.Updater;
 
 /// <summary>Checks GitHub, stores the grace-period state and installs verified releases.</summary>
-public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, string? stateFile = null)
+public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, string? stateFile = null, TimeProvider? clock = null)
 {
     public const long MaxPackageBytes = 512L * 1024 * 1024;
     public const string HelperName = "PackCheck.UpdateHelper.exe";
 
     private readonly string _stateFile = stateFile ?? AppPaths.UpdateStateFile;
+    private readonly TimeProvider _clock = clock ?? TimeProvider.System;
+
+    private DateOnly Today => DateOnly.FromDateTime(_clock.GetLocalNow().DateTime);
 
     public static Version CurrentVersion { get; } =
         ReleaseInfo.TryParseTag(Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0", out var v)
@@ -39,12 +42,12 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
             latest = null;
         }
 
-        LastDecision = UpdatePolicy.Decide(CurrentVersion, latest, state, autoUpdate, DateOnly.FromDateTime(DateTime.Now));
+        LastDecision = UpdatePolicy.Decide(CurrentVersion, latest, state, autoUpdate, Today);
         return LastDecision;
     }
 
     public void MarkPrompted(ReleaseInfo release) =>
-        SaveState(UpdatePolicy.AfterPrompt(LoadState(), release, DateOnly.FromDateTime(DateTime.Now)));
+        SaveState(UpdatePolicy.AfterPrompt(LoadState(), release, Today));
 
     public UpdateState LoadState()
     {
