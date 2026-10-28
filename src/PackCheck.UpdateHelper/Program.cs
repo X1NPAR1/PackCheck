@@ -1,16 +1,31 @@
 ﻿using System.Diagnostics;
 
-// Usage: PackCheck.UpdateHelper <pid> <stagingDir> <installDir> <exeToRestart>
-// Waits for the app to exit, replaces the install folder contents and restarts the app.
-if (args.Length != 4 || !int.TryParse(args[0], out var pid))
+// Usage:
+//   PackCheck.UpdateHelper <pid> <stagingDir> <installDir> <exeToRestart>                 (portable zip; also the v1.x call)
+//   PackCheck.UpdateHelper <pid> exe|msi <installerPath> <installDir> <exeToRestart>      (setup packages)
+// Waits for the app to exit, installs the update and restarts the app.
+var legacy = args.Length == 4;
+if ((!legacy && args.Length != 5) || !int.TryParse(args[0], out var pid))
 {
     return 64;
 }
 
-var (staging, installDir, restart) = (args[1], args[2], args[3]);
+var mode = legacy ? "zip" : args[1];
+var payload = legacy ? args[1] : args[2];
+var installDir = legacy ? args[2] : args[3];
+var restart = legacy ? args[3] : args[4];
+
 var log = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PackCheck", "logs", "update.log");
 Directory.CreateDirectory(Path.GetDirectoryName(log)!);
 void Log(string m) => File.AppendAllText(log, $"{DateTime.Now:u} {m}{Environment.NewLine}");
+
+void Restart()
+{
+    if (File.Exists(restart))
+    {
+        Process.Start(new ProcessStartInfo(restart) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(restart)! });
+    }
+}
 
 try
 {
@@ -28,17 +43,39 @@ try
         // already exited
     }
 
-    var backup = installDir + ".old";
-    if (Directory.Exists(backup))
+    switch (mode)
     {
-        Directory.Delete(backup, true);
+        case "zip":
+            CopyOver(payload, installDir);
+            break;
+        case "exe":
+            RunInstaller(payload, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS", "/SP-"]);
+            break;
+        case "msi":
+            RunInstaller(Path.Combine(Environment.SystemDirectory, "msiexec.exe"), ["/i", payload, "/qn", "/norestart"]);
+            break;
+        default:
+            Log("Unknown mode " + mode);
+            return 64;
     }
 
+    Log($"Installed update ({mode}) from {payload}");
+    Restart();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log("Update failed: " + ex);
+    Restart();
+    return 1;
+}
+
+void CopyOver(string staging, string target)
+{
     // Copy new files over the old ones with retries (antivirus / indexers may hold handles briefly).
     foreach (var file in Directory.EnumerateFiles(staging, "*", SearchOption.AllDirectories))
     {
-        var rel = Path.GetRelativePath(staging, file);
-        var dest = Path.Combine(installDir, rel);
+        var dest = Path.Combine(target, Path.GetRelativePath(staging, file));
         Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
         for (var attempt = 1; ; attempt++)
         {
@@ -53,18 +90,25 @@ try
             }
         }
     }
-
-    Log($"Installed update from {staging}");
-    Process.Start(new ProcessStartInfo(restart) { UseShellExecute = false, WorkingDirectory = installDir });
-    return 0;
 }
-catch (Exception ex)
+
+void RunInstaller(string file, string[] arguments)
 {
-    Log("Update failed: " + ex);
-    if (File.Exists(restart))
+    var psi = new ProcessStartInfo(file) { UseShellExecute = false, CreateNoWindow = true };
+    foreach (var a in arguments)
     {
-        Process.Start(new ProcessStartInfo(restart) { UseShellExecute = false, WorkingDirectory = installDir });
+        psi.ArgumentList.Add(a);
     }
 
-    return 1;
+    using var p = Process.Start(psi)!;
+    if (!p.WaitForExit(TimeSpan.FromMinutes(10)))
+    {
+        throw new TimeoutException("The installer did not finish within 10 minutes.");
+    }
+
+    // 3010 = success, restart required (never for a per-user install, but not a failure).
+    if (p.ExitCode is not 0 and not 3010)
+    {
+        throw new InvalidOperationException($"Installer exited with code {p.ExitCode}.");
+    }
 }

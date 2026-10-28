@@ -117,6 +117,12 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
             throw new InvalidOperationException("Checksum mismatch: the downloaded update was rejected.");
         }
 
+        // Installers are handed to the helper as-is; a portable zip is extracted first.
+        if (!zipPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+        {
+            return zipPath;
+        }
+
         var staging = Path.Combine(dir, "files");
         ZipFile.ExtractToDirectory(zipPath, staging);
         if (!File.Exists(Path.Combine(staging, "PackCheck.exe")))
@@ -135,16 +141,25 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
     {
         var installDir = AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
         var helperSource = Path.Combine(staging, HelperName);
-        if (!File.Exists(helperSource))
+        if (!Directory.Exists(staging) || !File.Exists(helperSource))
         {
             helperSource = Path.Combine(installDir, HelperName);
         }
+
+        var mode = staging.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? "exe"
+            : staging.EndsWith(".msi", StringComparison.OrdinalIgnoreCase) ? "msi"
+            : "zip";
 
         var helper = Path.Combine(Path.GetTempPath(), "PackCheck.UpdateHelper-" + Guid.NewGuid().ToString("N") + ".exe");
         File.Copy(helperSource, helper);
 
         var psi = new ProcessStartInfo(helper) { UseShellExecute = false };
         psi.ArgumentList.Add(Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        if (mode != "zip")
+        {
+            psi.ArgumentList.Add(mode);
+        }
+
         psi.ArgumentList.Add(staging);
         psi.ArgumentList.Add(installDir);
         psi.ArgumentList.Add(Path.Combine(installDir, "PackCheck.exe"));

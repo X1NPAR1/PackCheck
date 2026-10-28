@@ -29,11 +29,39 @@ public sealed record ReleaseInfo(string Tag, Version Version, string Title, stri
 }
 
 /// <summary>Reads the latest published (non-draft, non-prerelease) release from the GitHub REST API.</summary>
+/// <summary>How this copy of PackCheck was installed; decides which release asset updates it.</summary>
+public enum InstallKind
+{
+    Portable,
+    SetupExe,
+    Msi,
+}
+
 public sealed class GitHubReleaseClient(HttpClient http, string owner = GitHubReleaseClient.DefaultOwner, string repo = GitHubReleaseClient.DefaultRepo)
 {
     public const string DefaultOwner = "X1NPAR1";
     public const string DefaultRepo = "PackCheck";
     public const string AssetName = "PackCheck-win-x64.zip";
+
+    /// <summary>The installers write install-type.txt ("exe" or "msi") next to the app.</summary>
+    public static InstallKind DetectInstallKind(string? appDir = null)
+    {
+        var marker = Path.Combine(appDir ?? AppContext.BaseDirectory, "install-type.txt");
+        var text = File.Exists(marker) ? File.ReadAllText(marker).Trim() : string.Empty;
+        return text switch
+        {
+            "exe" => InstallKind.SetupExe,
+            "msi" => InstallKind.Msi,
+            _ => InstallKind.Portable,
+        };
+    }
+
+    public static bool Matches(string assetName, InstallKind kind) => kind switch
+    {
+        InstallKind.SetupExe => assetName.StartsWith("PackCheck-Setup-", StringComparison.OrdinalIgnoreCase) && assetName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase),
+        InstallKind.Msi => assetName.StartsWith("PackCheck-", StringComparison.OrdinalIgnoreCase) && assetName.EndsWith(".msi", StringComparison.OrdinalIgnoreCase),
+        _ => assetName.Equals(AssetName, StringComparison.OrdinalIgnoreCase),
+    };
 
     public async Task<ReleaseInfo?> GetLatestAsync(CancellationToken ct)
     {
@@ -48,10 +76,10 @@ public sealed class GitHubReleaseClient(HttpClient http, string owner = GitHubRe
 
         await using var stream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
         using var doc = await JsonDocument.ParseAsync(stream, cancellationToken: ct).ConfigureAwait(false);
-        return Parse(doc.RootElement);
+        return Parse(doc.RootElement, DetectInstallKind());
     }
 
-    public static ReleaseInfo? Parse(JsonElement root)
+    public static ReleaseInfo? Parse(JsonElement root, InstallKind kind = InstallKind.Portable)
     {
         var tag = root.GetProperty("tag_name").GetString() ?? string.Empty;
         if (!ReleaseInfo.TryParseTag(tag, out var version))
@@ -59,29 +87,21 @@ public sealed class GitHubReleaseClient(HttpClient http, string owner = GitHubRe
             return null;
         }
 
-        ReleaseAsset? zip = null, sum = null;
+        var all = new List<ReleaseAsset>();
         if (root.TryGetProperty("assets", out var assets))
         {
             foreach (var a in assets.EnumerateArray())
             {
-                var name = a.GetProperty("name").GetString() ?? string.Empty;
                 var url = new Uri(a.GetProperty("browser_download_url").GetString()!);
-                if (url.Scheme != Uri.UriSchemeHttps || !url.Host.EndsWith("github.com", StringComparison.OrdinalIgnoreCase))
+                if (url.Scheme == Uri.UriSchemeHttps && url.Host.EndsWith("github.com", StringComparison.OrdinalIgnoreCase))
                 {
-                    continue;
-                }
-
-                var asset = new ReleaseAsset(name, url, a.GetProperty("size").GetInt64());
-                if (name.Equals(AssetName, StringComparison.OrdinalIgnoreCase))
-                {
-                    zip = asset;
-                }
-                else if (name.Equals(AssetName + ".sha256", StringComparison.OrdinalIgnoreCase))
-                {
-                    sum = asset;
+                    all.Add(new ReleaseAsset(a.GetProperty("name").GetString() ?? string.Empty, url, a.GetProperty("size").GetInt64()));
                 }
             }
         }
+
+        var zip = all.FirstOrDefault(a => Matches(a.Name, kind));
+        var sum = zip is null ? null : all.FirstOrDefault(a => a.Name.Equals(zip.Name + ".sha256", StringComparison.OrdinalIgnoreCase));
 
         var published = root.TryGetProperty("published_at", out var p) && p.ValueKind == JsonValueKind.String
             ? DateTimeOffset.Parse(p.GetString()!, CultureInfo.InvariantCulture)

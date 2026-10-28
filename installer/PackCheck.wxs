@@ -1,0 +1,43 @@
+<!-- PackCheck MSI (WiX v5). Build: wix build PackCheck.wxs -ext WixToolset.UI.wixext -d Version=2.0.0 -d SourceDir=..\publish\PackCheck -o ..\artifacts\PackCheck-2.0.0.msi -->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package Name="PackCheck" Manufacturer="X1NPAR1" Version="$(Version)" UpgradeCode="5B0C2E77-3A1D-4C6F-8E9B-2D7A4F1C6E35"
+           Scope="perUser" Compressed="yes" Language="1033">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of PackCheck is already installed." AllowSameVersionUpgrades="yes" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Icon Id="AppIcon" SourceFile="..\src\PackCheck.App\Assets\app.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/X1NPAR1/PackCheck" />
+    <Property Id="ARPHELPLINK" Value="https://github.com/X1NPAR1/PackCheck/issues" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="wix-banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="wix-dialog.bmp" />
+    <ui:WixUI Id="WixUI_Minimal" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ProgramsDir" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="PackCheck" />
+      </Directory>
+    </StandardDirectory>
+
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(SourceDir)\**" />
+      <Component Id="InstallType" Guid="8F3B6D1A-2C4E-4B7F-9A0D-1E5C7B2A9F48">
+        <File Id="InstallTypeTxt" Source="install-type-msi.txt" Name="install-type.txt" />
+      </Component>
+    </ComponentGroup>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="StartMenuShortcut" Guid="3D9E2B7C-6A1F-4E8D-B5C2-7F0A4D3E1B96">
+        <Shortcut Id="AppShortcut" Name="PackCheck" Target="[INSTALLFOLDER]PackCheck.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+        <RegistryValue Root="HKCU" Key="Software\PackCheck" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="PackCheck">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcut" />
+    </Feature>
+  </Package>
+</Wix>

@@ -152,6 +152,37 @@ public class UpdatePolicyTests
         Assert.Null(r.Checksum);
     }
 
+    [Theory]
+    [InlineData(InstallKind.SetupExe, "PackCheck-Setup-2.0.0.exe")]
+    [InlineData(InstallKind.Msi, "PackCheck-2.0.0.msi")]
+    [InlineData(InstallKind.Portable, "PackCheck-win-x64.zip")]
+    public void InstallKind_PicksMatchingAsset(InstallKind kind, string expected)
+    {
+        const string json = """
+            {"tag_name":"v2.0.0","html_url":"https://github.com/X1NPAR1/PackCheck/releases/tag/v2.0.0","assets":[
+              {"name":"PackCheck-Setup-2.0.0.exe","browser_download_url":"https://github.com/x/PackCheck-Setup-2.0.0.exe","size":1},
+              {"name":"PackCheck-Setup-2.0.0.exe.sha256","browser_download_url":"https://github.com/x/PackCheck-Setup-2.0.0.exe.sha256","size":1},
+              {"name":"PackCheck-2.0.0.msi","browser_download_url":"https://github.com/x/PackCheck-2.0.0.msi","size":1},
+              {"name":"PackCheck-2.0.0.msi.sha256","browser_download_url":"https://github.com/x/PackCheck-2.0.0.msi.sha256","size":1},
+              {"name":"PackCheck-win-x64.zip","browser_download_url":"https://github.com/x/PackCheck-win-x64.zip","size":1},
+              {"name":"PackCheck-win-x64.zip.sha256","browser_download_url":"https://github.com/x/PackCheck-win-x64.zip.sha256","size":1}]}
+            """;
+        using var doc = JsonDocument.Parse(json);
+        var r = GitHubReleaseClient.Parse(doc.RootElement, kind)!;
+        Assert.Equal(expected, r.Asset!.Name);
+        Assert.Equal(expected + ".sha256", r.Checksum!.Name);
+    }
+
+    [Fact]
+    public void InstallKind_ReadsMarkerFile()
+    {
+        var dir = Directory.CreateTempSubdirectory().FullName;
+        Assert.Equal(InstallKind.Portable, GitHubReleaseClient.DetectInstallKind(dir));
+        File.WriteAllText(Path.Combine(dir, "install-type.txt"), "msi");
+        Assert.Equal(InstallKind.Msi, GitHubReleaseClient.DetectInstallKind(dir));
+        Directory.Delete(dir, true);
+    }
+
     [Fact]
     public async Task Offline_CheckReportsNone()
     {
