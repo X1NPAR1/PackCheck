@@ -3,16 +3,87 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
              AutomationProperties.AutomationId="AboutPage">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="620">
-            <Image x:Name="Wordmark" Width="460" RenderOptions.BitmapScalingMode="HighQuality" l:Anim.PopIn="True" />
-            <TextBlock Text="{Binding Version}" Style="{StaticResource Muted}" HorizontalAlignment="Center" Margin="0,18,0,0" />
-            <TextBlock Text="{l:Loc About_Body}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,14,0,0" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
-                <Button Content="{l:Loc About_Repo}" Style="{StaticResource PrimaryButton}" Command="{Binding OpenRepoCommand}" Margin="0,0,8,0" />
-                <Button Content="{l:Loc About_Licenses}" Command="{Binding OpenLicensesCommand}" />
-            </StackPanel>
-            <TextBlock Text="{l:Loc About_Disclaimer}" Style="{StaticResource Muted}" FontSize="12" TextAlignment="Center" Margin="0,28,0,0" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="900">
+            <!-- Hero -->
+            <Border Style="{StaticResource Card}" Padding="28,24">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+                        <Button Content="{l:Loc About_Repo}" Style="{StaticResource PrimaryButton}" Command="{Binding OpenRepoCommand}" Margin="0,0,0,8" />
+                        <Button Content="{l:Loc About_Releases}" Command="{Binding OpenReleasesCommand}" Margin="0,0,0,8" />
+                        <Button Content="{l:Loc About_Issue}" Command="{Binding ReportIssueCommand}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,0,24,0">
+                        <Image x:Name="Wordmark" Width="380" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" l:Anim.PopIn="True" />
+                        <TextBlock Text="{Binding Version}" Style="{StaticResource Muted}" Margin="0,12,0,0" FontFamily="{StaticResource MonoFont}" />
+                        <TextBlock Text="{l:Loc About_Body}" TextWrapping="Wrap" Margin="0,10,0,0" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <Grid Margin="0,14,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <!-- What it does -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc About_Features}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,10" />
+                        <ItemsControl>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,0,0,8">
+                                        <Ellipse DockPanel.Dock="Left" Width="7" Height="7" Fill="{DynamicResource PrimaryBrush}" Margin="0,6,10,0" VerticalAlignment="Top" />
+                                        <TextBlock Text="{Binding Converter={x:Static l:LocKey.Instance}}" TextWrapping="Wrap" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.Items>
+                                <x:Static Member="l:AboutKeys.F1" />
+                                <x:Static Member="l:AboutKeys.F2" />
+                                <x:Static Member="l:AboutKeys.F3" />
+                                <x:Static Member="l:AboutKeys.F4" />
+                                <x:Static Member="l:AboutKeys.F5" />
+                                <x:Static Member="l:AboutKeys.F6" />
+                            </ItemsControl.Items>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- System info -->
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,10">
+                            <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc About_Copy}" Command="{Binding CopyInfoCommand}" Padding="8,3" />
+                            <TextBlock Text="{l:Loc About_System}" Style="{StaticResource H2}" FontSize="15" />
+                        </DockPanel>
+                        <ItemsControl ItemsSource="{Binding SystemInfo}" AutomationProperties.AutomationId="AboutSystemInfo">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,7">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Key}" Style="{StaticResource Muted}" FontSize="12.5" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Value}" FontFamily="{StaticResource MonoFont}" FontSize="12" TextWrapping="Wrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Content="{l:Loc About_OpenData}" Command="{Binding OpenDataCommand}" Margin="0,0,8,0" />
+                            <Button Content="{l:Loc About_OpenLogs}" Command="{Binding OpenLogsCommand}" Margin="0,0,8,0" />
+                            <Button Content="{l:Loc About_Licenses}" Command="{Binding OpenLicensesCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <TextBlock Text="{l:Loc About_Disclaimer}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="4,16,4,0" />
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

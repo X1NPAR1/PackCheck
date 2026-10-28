@@ -262,6 +262,26 @@ Yine de uygulansın mı?</value></data>
   <data name="Settings_SecAppearance" xml:space="preserve"><value>Dil ve görünüm</value></data>
   <data name="Settings_SecServers" xml:space="preserve"><value>Sunucular ve başlangıç</value></data>
   <data name="Settings_SecIntegrations" xml:space="preserve"><value>İndirmeler ve gizlilik</value></data>
+  <data name="About_Releases" xml:space="preserve"><value>Sürüm notları</value></data>
+  <data name="About_Issue" xml:space="preserve"><value>Sorun bildir</value></data>
+  <data name="About_Features" xml:space="preserve"><value>PackCheck neler yapar</value></data>
+  <data name="About_F1" xml:space="preserve"><value>18 platformda doğrulanmış indirmeler ve doğru Java ile sunucu kurar.</value></data>
+  <data name="About_F2" xml:space="preserve"><value>Canlı konsol, sağlık göstergeleri, yedekler ve dosya düzenleyiciyle çalıştırır.</value></data>
+  <data name="About_F3" xml:space="preserve"><value>Eklenti ve mod paketlerini sunucuyu bozmadan önce statik olarak denetler.</value></data>
+  <data name="About_F4" xml:space="preserve"><value>Modrinth, Hangar ve CurseForge'dan eklenti ve mod kurar, günceller.</value></data>
+  <data name="About_F5" xml:space="preserve"><value>Sunucuları internete açar ve proxy'leri güvenle bağlar.</value></data>
+  <data name="About_F6" xml:space="preserve"><value>Yalnızca sen onayladıktan sonra değişiklik yapan bir yapay zeka asistanı.</value></data>
+  <data name="About_System" xml:space="preserve"><value>Sistem</value></data>
+  <data name="About_Copy" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="About_Copied" xml:space="preserve"><value>Sistem bilgisi kopyalandı</value></data>
+  <data name="About_AppVersion" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="About_Install" xml:space="preserve"><value>Kurulum</value></data>
+  <data name="About_Portable" xml:space="preserve"><value>Taşınabilir</value></data>
+  <data name="About_Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="About_AppFolder" xml:space="preserve"><value>Uygulama klasörü</value></data>
+  <data name="About_DataFolder" xml:space="preserve"><value>Veri klasörü</value></data>
+  <data name="About_OpenData" xml:space="preserve"><value>Veri klasörü</value></data>
+  <data name="About_OpenLogs" xml:space="preserve"><value>Günlükler</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

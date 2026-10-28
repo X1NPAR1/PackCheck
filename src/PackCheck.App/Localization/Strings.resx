@@ -262,6 +262,26 @@ Apply anyway?</value></data>
   <data name="Settings_SecAppearance" xml:space="preserve"><value>Language and appearance</value></data>
   <data name="Settings_SecServers" xml:space="preserve"><value>Servers and startup</value></data>
   <data name="Settings_SecIntegrations" xml:space="preserve"><value>Downloads and privacy</value></data>
+  <data name="About_Releases" xml:space="preserve"><value>Release notes</value></data>
+  <data name="About_Issue" xml:space="preserve"><value>Report a problem</value></data>
+  <data name="About_Features" xml:space="preserve"><value>What PackCheck does</value></data>
+  <data name="About_F1" xml:space="preserve"><value>Creates servers on 18 platforms with verified downloads and the right Java.</value></data>
+  <data name="About_F2" xml:space="preserve"><value>Runs them with a live console, health gauges, backups and a file editor.</value></data>
+  <data name="About_F3" xml:space="preserve"><value>Checks plugin and mod packs statically before they break a server.</value></data>
+  <data name="About_F4" xml:space="preserve"><value>Installs and updates plugins and mods from Modrinth, Hangar and CurseForge.</value></data>
+  <data name="About_F5" xml:space="preserve"><value>Opens servers to the internet and connects proxies safely.</value></data>
+  <data name="About_F6" xml:space="preserve"><value>An AI assistant that only changes things after you approve.</value></data>
+  <data name="About_System" xml:space="preserve"><value>System</value></data>
+  <data name="About_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="About_Copied" xml:space="preserve"><value>System info copied</value></data>
+  <data name="About_AppVersion" xml:space="preserve"><value>Version</value></data>
+  <data name="About_Install" xml:space="preserve"><value>Installed with</value></data>
+  <data name="About_Portable" xml:space="preserve"><value>Portable</value></data>
+  <data name="About_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="About_AppFolder" xml:space="preserve"><value>App folder</value></data>
+  <data name="About_DataFolder" xml:space="preserve"><value>Data folder</value></data>
+  <data name="About_OpenData" xml:space="preserve"><value>Data folder</value></data>
+  <data name="About_OpenLogs" xml:space="preserve"><value>Logs</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

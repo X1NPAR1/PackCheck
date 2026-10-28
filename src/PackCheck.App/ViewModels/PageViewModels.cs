@@ -946,4 +946,46 @@ public sealed partial class AboutViewModel : ObservableObject
 
     [RelayCommand]
     private static void OpenLicenses() => Shell32.Open(Path.Combine(AppContext.BaseDirectory, "licenses"));
+
+    [RelayCommand]
+    private static void OpenReleases() => Shell32.Open("https://github.com/X1NPAR1/PackCheck/releases");
+
+    [RelayCommand]
+    private static void ReportIssue() => Shell32.Open("https://github.com/X1NPAR1/PackCheck/issues/new");
+
+    [RelayCommand]
+    private static void OpenData() => Shell32.Open(AppPaths.DataRoot);
+
+    [RelayCommand]
+    private static void OpenLogs()
+    {
+        Directory.CreateDirectory(AppPaths.Logs);
+        Shell32.Open(AppPaths.Logs);
+    }
+
+    /// <summary>Technical facts shown on the page and copied for bug reports.</summary>
+    public IReadOnlyList<KeyValuePair<string, string>> SystemInfo { get; } = BuildInfo();
+
+    private static List<KeyValuePair<string, string>> BuildInfo()
+    {
+        var marker = Path.Combine(AppContext.BaseDirectory, "install-type.txt");
+        var install = File.Exists(marker) ? File.ReadAllText(marker).Trim().ToUpperInvariant() switch { "MSI" => "MSI", "EXE" => "Setup (EXE)", var o => o } : Loc.T("About_Portable");
+        return
+        [
+            new(Loc.T("About_AppVersion"), UpdateService.CurrentVersion.ToString(3)),
+            new(Loc.T("About_Install"), install),
+            new("Windows", $"{Environment.OSVersion.Version} ({(Environment.Is64BitOperatingSystem ? "x64" : "x86")})"),
+            new(".NET", System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription),
+            new(Loc.T("About_Language"), Loc.Instance.Culture.Name),
+            new(Loc.T("About_AppFolder"), AppContext.BaseDirectory.TrimEnd('\\')),
+            new(Loc.T("About_DataFolder"), AppPaths.DataRoot),
+        ];
+    }
+
+    [RelayCommand]
+    private void CopyInfo()
+    {
+        System.Windows.Clipboard.SetText(string.Join(Environment.NewLine, SystemInfo.Select(kv => $"{kv.Key}: {kv.Value}")));
+        MainViewModel.Shell?.Toast(Loc.T("About_Copied"));
+    }
 }

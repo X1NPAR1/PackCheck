@@ -262,6 +262,26 @@
   <data name="Settings_SecAppearance" xml:space="preserve"><value>Язык и внешний вид</value></data>
   <data name="Settings_SecServers" xml:space="preserve"><value>Серверы и запуск</value></data>
   <data name="Settings_SecIntegrations" xml:space="preserve"><value>Загрузки и приватность</value></data>
+  <data name="About_Releases" xml:space="preserve"><value>Список изменений</value></data>
+  <data name="About_Issue" xml:space="preserve"><value>Сообщить о проблеме</value></data>
+  <data name="About_Features" xml:space="preserve"><value>Что умеет PackCheck</value></data>
+  <data name="About_F1" xml:space="preserve"><value>Создаёт серверы на 18 платформах с проверенными загрузками и нужной Java.</value></data>
+  <data name="About_F2" xml:space="preserve"><value>Запускает их с консолью, индикаторами, бэкапами и редактором файлов.</value></data>
+  <data name="About_F3" xml:space="preserve"><value>Статически проверяет наборы плагинов и модов до поломки сервера.</value></data>
+  <data name="About_F4" xml:space="preserve"><value>Устанавливает и обновляет плагины и моды из Modrinth, Hangar и CurseForge.</value></data>
+  <data name="About_F5" xml:space="preserve"><value>Открывает серверы в интернет и безопасно подключает прокси.</value></data>
+  <data name="About_F6" xml:space="preserve"><value>ИИ-ассистент, который меняет что-либо только после вашего одобрения.</value></data>
+  <data name="About_System" xml:space="preserve"><value>Система</value></data>
+  <data name="About_Copy" xml:space="preserve"><value>Копировать</value></data>
+  <data name="About_Copied" xml:space="preserve"><value>Сведения скопированы</value></data>
+  <data name="About_AppVersion" xml:space="preserve"><value>Версия</value></data>
+  <data name="About_Install" xml:space="preserve"><value>Установка</value></data>
+  <data name="About_Portable" xml:space="preserve"><value>Портативная</value></data>
+  <data name="About_Language" xml:space="preserve"><value>Язык</value></data>
+  <data name="About_AppFolder" xml:space="preserve"><value>Папка программы</value></data>
+  <data name="About_DataFolder" xml:space="preserve"><value>Папка данных</value></data>
+  <data name="About_OpenData" xml:space="preserve"><value>Данные</value></data>
+  <data name="About_OpenLogs" xml:space="preserve"><value>Журналы</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

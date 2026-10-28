@@ -483,3 +483,14 @@ public sealed class AiProviderName : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
+
+/// <summary>String keys for the About page feature list (XAML needs static members).</summary>
+public static class AboutKeys
+{
+    public const string F1 = "About_F1";
+    public const string F2 = "About_F2";
+    public const string F3 = "About_F3";
+    public const string F4 = "About_F4";
+    public const string F5 = "About_F5";
+    public const string F6 = "About_F6";
+}
