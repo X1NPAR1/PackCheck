@@ -15,6 +15,7 @@
         <DataTemplate DataType="{x:Type vm:ServersViewModel}"><v:ServersView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:ValidateViewModel}"><v:ValidateView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:PluginsViewModel}"><v:PluginsView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ModsViewModel}"><v:ModsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><v:SettingsView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:AboutViewModel}"><v:AboutView /></DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -72,6 +73,13 @@
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconPlugins}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                             <TextBlock Text="{l:Loc Nav_Plugins}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavMods"
+                                 IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=5}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconMods}" Style="{StaticResource IconPath}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                            <TextBlock Text="{l:Loc Nav_Mods}" Margin="12,0,0,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavSettings"

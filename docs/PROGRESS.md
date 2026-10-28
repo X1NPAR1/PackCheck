@@ -9,3 +9,8 @@
 | WPF pages: servers, wizard, validate, plugins, settings, about, update dialog | in progress |
 | Docs, README, media | todo |
 | CI + release workflow, v1.0.0 release | todo |
+
+## In progress (after v1.0.0)
+- Mods page (Modrinth + CurseForge, modpacks) - providers done, UI pending
+- Tray mode - pending
+- v1.1.0 release + end-to-end update test - pending

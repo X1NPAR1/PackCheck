@@ -11,11 +11,12 @@ public sealed partial class MainViewModel : ObservableObject
     private readonly UpdateService _updates;
     private CancellationTokenSource? _toastCts;
 
-    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
+    public MainViewModel(ServersViewModel servers, ValidateViewModel validate, PluginsViewModel plugins, ModsViewModel mods, SettingsViewModel settings, AboutViewModel about, UpdateService updates)
     {
         Servers = servers;
         Validate = validate;
         Plugins = plugins;
+        Mods = mods;
         Settings = settings;
         About = about;
         _updates = updates;
@@ -28,6 +29,7 @@ public sealed partial class MainViewModel : ObservableObject
     public ServersViewModel Servers { get; }
     public ValidateViewModel Validate { get; }
     public PluginsViewModel Plugins { get; }
+    public ModsViewModel Mods { get; }
     public SettingsViewModel Settings { get; }
     public AboutViewModel About { get; }
 
@@ -74,8 +76,15 @@ public sealed partial class MainViewModel : ObservableObject
         2 => Plugins,
         3 => Settings,
         4 => About,
+        5 => RefreshMods(),
         _ => Servers,
     };
+
+    private ModsViewModel RefreshMods()
+    {
+        Mods.Refresh();
+        return Mods;
+    }
 
     public void Navigate(object page)
     {
@@ -85,6 +94,7 @@ public sealed partial class MainViewModel : ObservableObject
             PluginsViewModel => 2,
             SettingsViewModel => 3,
             AboutViewModel => 4,
+            ModsViewModel => 5,
             _ => 0,
         };
     }
@@ -179,7 +189,7 @@ public sealed partial class MainViewModel : ObservableObject
             var staging = await _updates.DownloadAndStageAsync(PendingRelease, progress, CancellationToken.None).ConfigureAwait(true);
             await Servers.StopAllAsync().ConfigureAwait(true);
             UpdateService.LaunchInstaller(staging);
-            Application.Current.Shutdown();
+            App.Quit();
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {

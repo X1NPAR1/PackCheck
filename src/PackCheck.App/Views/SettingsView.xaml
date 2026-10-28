@@ -63,6 +63,11 @@
                         <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseFolderCommand}" Margin="8,0,0,0" />
                         <TextBox Text="{Binding ServerFolder}" IsReadOnly="True" />
                     </DockPanel>
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding MinimizeToTray}" Margin="0,18,0,0">
+                        <TextBlock Text="{l:Loc Settings_Tray}" TextWrapping="Wrap" />
+                    </CheckBox>
+                    <TextBlock Text="{l:Loc Settings_CurseForge}" Style="{StaticResource Label}" Margin="0,18,0,6" />
+                    <TextBox Text="{Binding CurseForgeKey, UpdateSourceTrigger=LostFocus}" FontFamily="{StaticResource MonoFont}" AutomationProperties.Name="{l:Loc Settings_CurseForge}" />
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AllowNetwork}" Margin="0,18,0,0">
                         <TextBlock Text="{l:Loc Settings_Network}" TextWrapping="Wrap" />
                     </CheckBox>

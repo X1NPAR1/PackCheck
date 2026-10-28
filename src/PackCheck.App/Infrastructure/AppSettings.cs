@@ -28,6 +28,8 @@ public sealed class AppSettings
     public bool AutoUpdate { get; set; }
     public bool AllowNetworkProviders { get; set; } = true;
     public int BackupsToKeep { get; set; } = 5;
+    public bool MinimizeToTray { get; set; } = true;
+    public string? CurseForgeApiKey { get; set; }
     public string DefaultServerFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PackCheck Servers");
 
     public static AppSettings Load()

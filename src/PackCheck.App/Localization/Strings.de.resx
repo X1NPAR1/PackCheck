@@ -127,6 +127,20 @@
 
 Trotzdem anwenden?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Trotzdem anwenden</value></data>
+  <data name="Nav_Mods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_Title" xml:space="preserve"><value>Mods und Modpacks</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Es werden nur Ergebnisse angezeigt, die zur Minecraft-Version und zum Loader des Servers passen. Dateien werden per Hash geprüft.</value></data>
+  <data name="Mods_Search" xml:space="preserve"><value>Mods suchen…</value></data>
+  <data name="Mods_KindMods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
+  <data name="Mods_NeedServer" xml:space="preserve"><value>Erstelle zuerst einen Fabric-, Forge- oder NeoForge-Server; Mods werden dort installiert.</value></data>
+  <data name="Mods_CurseForgeKey" xml:space="preserve"><value>CurseForge-API-Schlüssel in den Einstellungen hinterlegen</value></data>
+  <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge-API-Schlüssel (optional, console.curseforge.com)</value></data>
+  <data name="Settings_Tray" xml:space="preserve"><value>Beim Schließen des Fensters im Infobereich weiterlaufen</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>PackCheck öffnen</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Beenden</value></data>
+  <data name="Tray_Running" xml:space="preserve"><value>PackCheck läuft im Infobereich weiter. Deine Server laufen weiter.</value></data>
+  <data name="Wizard_Step_install" xml:space="preserve"><value>Plattform-Installer läuft…</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Einstellungen</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>

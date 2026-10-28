@@ -127,6 +127,20 @@
 
 Yine de uygulansın mı?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Yine de uygula</value></data>
+  <data name="Nav_Mods" xml:space="preserve"><value>Modlar</value></data>
+  <data name="Mods_Title" xml:space="preserve"><value>Modlar ve mod paketleri</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Yalnızca sunucunun Minecraft sürümü ve loader'ıyla uyumlu sonuçlar gösterilir. Dosyalar hash ile doğrulanır.</value></data>
+  <data name="Mods_Search" xml:space="preserve"><value>Mod ara…</value></data>
+  <data name="Mods_KindMods" xml:space="preserve"><value>Modlar</value></data>
+  <data name="Mods_KindPacks" xml:space="preserve"><value>Mod paketleri</value></data>
+  <data name="Mods_NeedServer" xml:space="preserve"><value>Önce bir Fabric, Forge veya NeoForge sunucusu oluştur; modlar onun içine kurulur.</value></data>
+  <data name="Mods_CurseForgeKey" xml:space="preserve"><value>Ayarlar'a CurseForge API anahtarını ekle</value></data>
+  <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge API anahtarı (isteğe bağlı, console.curseforge.com)</value></data>
+  <data name="Settings_Tray" xml:space="preserve"><value>Pencere kapatılınca sistem tepsisinde çalışmaya devam et</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>PackCheck'i aç</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Çıkış</value></data>
+  <data name="Tray_Running" xml:space="preserve"><value>PackCheck tepside çalışmaya devam ediyor. Sunucuların çalışmayı sürdürüyor.</value></data>
+  <data name="Wizard_Step_install" xml:space="preserve"><value>Platform kurulumu çalışıyor…</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

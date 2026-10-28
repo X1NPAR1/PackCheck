@@ -17,7 +17,7 @@
 
 PackCheck is a Windows desktop app (WPF, .NET 10) for people who run Paper servers. It does two jobs:
 
-- **Server studio.** Create a Paper or Vanilla server from official sources, start and stop it, watch the live console, edit `server.properties`, manage plugins and take backups.
+- **Server studio.** Create a Paper, Purpur, Vanilla, Fabric, Forge or NeoForge server from official sources, start and stop it, watch the live console, edit `server.properties`, manage plugins and take backups.
 - **Pack validation.** Before you add or update plugins, PackCheck reads every JAR and config file and tells you what will break: missing dependencies, duplicate plugins, corrupt downloads, plugins built for a newer Minecraft version, invalid settings. Each finding comes with evidence and a suggested fix.
 
 Static checks never execute plugin code. A real startup test is available, but you have to turn it on yourself, and it runs on a throw-away copy of the pack.
@@ -35,14 +35,16 @@ Static checks never execute plugin code. A real startup test is available, but y
 ## Features
 
 **Servers**
-- Paper (PaperMC Fill API) and Vanilla (Mojang piston-meta) downloads, verified with SHA-256 / SHA-1 before use
+- Paper, Purpur, Vanilla, Fabric, Forge and NeoForge, resolved from each project's official API. Downloads are hash-verified wherever the source publishes a hash; Forge and NeoForge installers run automatically
 - Detects installed Java runtimes and installs Eclipse Temurin from the Adoptium API (checksum verified)
 - Explicit EULA consent: nothing is accepted on your behalf
 - Live console with command history (↑/↓), log filter and colored warnings and errors; RAM and CPU readout with a memory sparkline
 - The whole server process tree runs inside a Windows Job Object, so nothing keeps running after a crash or when you force-stop
 - `server.properties` editor that keeps your comments and key order
 - Plugin manager: enable or disable plugins, add JARs, search and install from Modrinth and Hangar
+- Mods and modpacks from Modrinth and CurseForge, filtered to the server's Minecraft version and loader; Modrinth `.mrpack` files are installed file by file with SHA-512 checks
 - Zip backups with retention, and restore with confirmation
+- Keeps running in the system tray when the window is closed, so servers stay up
 
 **Validation**
 - Pack structure, `server.properties` values, corrupt or unreadable JARs, oversized files
@@ -158,7 +160,9 @@ Requires the .NET 10 SDK on Windows.
 ## Known limitations
 
 - Windows only.
-- Paper and Vanilla only. Fabric, Forge and proxies are not supported yet.
+- Proxies (Velocity, BungeeCord) are not supported yet. Pack validation focuses on Bukkit/Paper plugins; mods are not analyzed yet.
+- CurseForge needs your own API key (Settings), because CurseForge does not allow anonymous access.
+- Fabric's server launcher has no published checksum, so it is verified only by HTTPS.
 - The runtime test isolates files, ports and memory, but plugin code still runs with your user account's rights. Read [docs/security.md](docs/security.md) before you use it on plugins you don't trust.
 - Version checks rely on what plugins declare. A plugin that declares nothing gets a warning, not a guess.
 

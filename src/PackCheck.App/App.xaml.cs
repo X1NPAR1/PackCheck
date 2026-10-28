@@ -24,6 +24,24 @@ public partial class App : Application
 
     public static IServiceProvider Services { get; private set; } = null!;
 
+    public static TrayIcon? Tray { get; private set; }
+
+    public static AppSettings? Settings { get; private set; }
+
+    /// <summary>Quits for real (tray "Exit", updates): closes the window instead of hiding it.</summary>
+    public static void Quit()
+    {
+        if (Current.MainWindow is MainWindow w)
+        {
+            w.AllowClose = true;
+            w.Close();
+        }
+        else
+        {
+            Current.Shutdown();
+        }
+    }
+
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -37,6 +55,7 @@ public partial class App : Application
 
         // Step 1: settings (needed before anything is drawn, so the splash uses the right theme/language)
         var settings = AppSettings.Load();
+        Settings = settings;
         Motion.Level = settings.Animations;
         Loc.Instance.Culture = CultureInfo.GetCultureInfo(settings.Language);
         ThemeManager.Apply(settings.Theme);
@@ -61,6 +80,9 @@ public partial class App : Application
                 s.AddSingleton<RuntimeTestRunner>();
                 s.AddSingleton<IPluginProvider>(sp => new ModrinthProvider(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<IPluginProvider>(sp => new HangarProvider(sp.GetRequiredService<HttpClient>()));
+                s.AddSingleton<IModProvider>(sp => new ModrinthMods(sp.GetRequiredService<HttpClient>()));
+                s.AddSingleton<IModProvider>(sp => new CurseForgeMods(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey));
+                s.AddSingleton<ModsViewModel>();
                 s.AddSingleton<AppState>();
                 s.AddSingleton<MainViewModel>();
                 s.AddSingleton<ServersViewModel>();
@@ -113,6 +135,7 @@ public partial class App : Application
         await splash.FadeOutAsync().ConfigureAwait(true);
         splash.Close();
         main.FadeIn();
+        Tray = new TrayIcon(main.ShowFromTray, Quit);
 
         await Services.GetRequiredService<MainViewModel>().HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
     }
@@ -129,6 +152,7 @@ public partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        Tray?.Dispose();
         if (Services?.GetService<ServersViewModel>() is { } servers)
         {
             await servers.StopAllAsync().ConfigureAwait(true);

@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>PackCheck</AssemblyName>
     <RootNamespace>PackCheck.App</RootNamespace>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>

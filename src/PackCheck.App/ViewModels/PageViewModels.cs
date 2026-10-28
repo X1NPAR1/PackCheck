@@ -549,6 +549,26 @@ public sealed partial class SettingsViewModel : ObservableObject
         _autoUpdate = settings.AutoUpdate;
         _allowNetwork = settings.AllowNetworkProviders;
         _serverFolder = settings.DefaultServerFolder;
+        _minimizeToTray = settings.MinimizeToTray;
+        _curseForgeKey = settings.CurseForgeApiKey ?? string.Empty;
+    }
+
+    [ObservableProperty]
+    private bool _minimizeToTray;
+
+    [ObservableProperty]
+    private string _curseForgeKey;
+
+    partial void OnMinimizeToTrayChanged(bool value)
+    {
+        _settings.MinimizeToTray = value;
+        _settings.Save();
+    }
+
+    partial void OnCurseForgeKeyChanged(string value)
+    {
+        _settings.CurseForgeApiKey = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        _settings.Save();
     }
 
     public IReadOnlyList<LanguageOption> Languages { get; } = Loc.Languages.Select(l => new LanguageOption(l.Code, l.NativeName)).ToList();

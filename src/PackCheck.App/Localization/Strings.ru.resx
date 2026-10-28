@@ -127,6 +127,20 @@
 
 Всё равно применить?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Всё равно применить</value></data>
+  <data name="Nav_Mods" xml:space="preserve"><value>Моды</value></data>
+  <data name="Mods_Title" xml:space="preserve"><value>Моды и сборки</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Показываются только результаты для версии Minecraft и загрузчика сервера. Файлы проверяются по хешу.</value></data>
+  <data name="Mods_Search" xml:space="preserve"><value>Поиск модов…</value></data>
+  <data name="Mods_KindMods" xml:space="preserve"><value>Моды</value></data>
+  <data name="Mods_KindPacks" xml:space="preserve"><value>Сборки</value></data>
+  <data name="Mods_NeedServer" xml:space="preserve"><value>Сначала создайте сервер Fabric, Forge или NeoForge — моды устанавливаются в него.</value></data>
+  <data name="Mods_CurseForgeKey" xml:space="preserve"><value>добавьте ключ API CurseForge в настройках</value></data>
+  <data name="Settings_CurseForge" xml:space="preserve"><value>Ключ API CurseForge (необязательно, console.curseforge.com)</value></data>
+  <data name="Settings_Tray" xml:space="preserve"><value>Продолжать работу в трее при закрытии окна</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>Открыть PackCheck</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Выход</value></data>
+  <data name="Tray_Running" xml:space="preserve"><value>PackCheck продолжает работать в трее. Ваши серверы продолжают работу.</value></data>
+  <data name="Wizard_Step_install" xml:space="preserve"><value>Запуск установщика платформы…</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

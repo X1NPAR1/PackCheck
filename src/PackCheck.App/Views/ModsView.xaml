@@ -1,0 +1,70 @@
+<UserControl x:Class="PackCheck.App.Views.ModsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
+             AutomationProperties.AutomationId="ModsPage">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis" />
+        <l:IndexToBool x:Key="IndexBool" />
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,18">
+            <TextBlock Text="{l:Loc Mods_Title}" Style="{StaticResource H1}" />
+            <TextBlock Text="{l:Loc Mods_Subtitle}" Style="{StaticResource Muted}" Margin="0,4,0,0" />
+        </StackPanel>
+        <Border DockPanel.Dock="Top" Style="{StaticResource Card}">
+            <StackPanel>
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Common_Next}" Style="{StaticResource PrimaryButton}" Command="{Binding SearchCommand}" Margin="8,0,0,0" IsDefault="True" />
+                    <ComboBox DockPanel.Dock="Right" Width="200" Margin="8,0,0,0" ItemsSource="{Binding ModdedServers}" SelectedItem="{Binding TargetServer}" ToolTip="{l:Loc Plugins_Target}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate><TextBlock Text="{Binding Name}" /></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" ToolTip="{l:Loc Mods_Search}" AutomationProperties.Name="{l:Loc Mods_Search}" AutomationProperties.AutomationId="ModSearch" />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                    <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Mods_KindMods}" IsChecked="{Binding KindIndex, Converter={StaticResource IndexBool}, ConverterParameter=0}" />
+                    <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Mods_KindPacks}" IsChecked="{Binding KindIndex, Converter={StaticResource IndexBool}, ConverterParameter=1}" />
+                </StackPanel>
+                <TextBlock Text="{l:Loc Mods_NeedServer}" Foreground="{DynamicResource WarnBrush}" Margin="0,10,0,0" Visibility="{Binding HasModdedServer, Converter={x:Static l:Inverse.Visibility}}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" Margin="0,8,0,0" />
+                <ProgressBar Margin="0,8,0,0" Maximum="1" Value="{Binding Progress}" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+                <ItemsControl ItemsSource="{Binding Errors}" Margin="0,6,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding}" Foreground="{DynamicResource WarnBrush}" FontSize="12.5" /></DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+            </StackPanel>
+        </Border>
+        <ScrollViewer Margin="0,14,0,0" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Results}" l:Anim.Stagger="True">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" Margin="0,0,10,10" Padding="16">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" VerticalAlignment="Top" Content="{l:Loc Plugins_Install}" Padding="12,6"
+                                        Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                <StackPanel Margin="0,0,10,0">
+                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Style="{StaticResource Muted}" FontSize="12">
+                                        <Run Text="{Binding Provider, Mode=OneWay}" Foreground="{DynamicResource PrimaryBrush}" />
+                                        <Run Text="·" />
+                                        <Run Text="{Binding Author, Mode=OneWay}" />
+                                        <Run Text="·" />
+                                        <Run Text="{Binding Downloads, Mode=OneWay, StringFormat=N0}" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,6,0,0" MaxHeight="54" TextTrimming="WordEllipsis" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

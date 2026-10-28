@@ -127,6 +127,20 @@
 
 Appliquer quand même ?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Appliquer quand même</value></data>
+  <data name="Nav_Mods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_Title" xml:space="preserve"><value>Mods et modpacks</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Seuls les résultats compatibles avec la version de Minecraft et le loader du serveur sont affichés. Les fichiers sont vérifiés par hash.</value></data>
+  <data name="Mods_Search" xml:space="preserve"><value>Rechercher des mods…</value></data>
+  <data name="Mods_KindMods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
+  <data name="Mods_NeedServer" xml:space="preserve"><value>Créez d'abord un serveur Fabric, Forge ou NeoForge ; les mods y sont installés.</value></data>
+  <data name="Mods_CurseForgeKey" xml:space="preserve"><value>ajoutez votre clé API CurseForge dans les paramètres</value></data>
+  <data name="Settings_CurseForge" xml:space="preserve"><value>Clé API CurseForge (facultatif, console.curseforge.com)</value></data>
+  <data name="Settings_Tray" xml:space="preserve"><value>Continuer dans la zone de notification à la fermeture</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>Ouvrir PackCheck</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
+  <data name="Tray_Running" xml:space="preserve"><value>PackCheck reste actif dans la zone de notification. Vos serveurs continuent de tourner.</value></data>
+  <data name="Wizard_Step_install" xml:space="preserve"><value>Exécution de l'installateur…</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Paramètres</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Thème</value></data>

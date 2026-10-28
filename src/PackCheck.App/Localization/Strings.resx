@@ -127,6 +127,20 @@
 
 Apply anyway?</value></data>
   <data name="Preflight_Apply" xml:space="preserve"><value>Apply anyway</value></data>
+  <data name="Nav_Mods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_Title" xml:space="preserve"><value>Mods and modpacks</value></data>
+  <data name="Mods_Subtitle" xml:space="preserve"><value>Only results that match the server's Minecraft version and loader are shown. Files are hash-verified.</value></data>
+  <data name="Mods_Search" xml:space="preserve"><value>Search mods…</value></data>
+  <data name="Mods_KindMods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
+  <data name="Mods_NeedServer" xml:space="preserve"><value>Create a Fabric, Forge or NeoForge server first; mods are installed into it.</value></data>
+  <data name="Mods_CurseForgeKey" xml:space="preserve"><value>add your CurseForge API key in Settings</value></data>
+  <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge API key (optional, from console.curseforge.com)</value></data>
+  <data name="Settings_Tray" xml:space="preserve"><value>Keep running in the system tray when the window is closed</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>Open PackCheck</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Exit</value></data>
+  <data name="Tray_Running" xml:space="preserve"><value>PackCheck is still running in the tray. Your servers keep running.</value></data>
+  <data name="Wizard_Step_install" xml:space="preserve"><value>Running the platform installer…</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

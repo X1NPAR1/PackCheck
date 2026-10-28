@@ -47,9 +47,34 @@ public partial class MainWindow : Window
 
     private void OnClose(object sender, RoutedEventArgs e) => Close();
 
+    /// <summary>Set when the user really quits (tray menu, update), so closing is not turned into hiding.</summary>
+    public bool AllowClose { get; set; }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        base.OnClosing(e);
+        if (!AllowClose && App.Tray is not null && App.Settings?.MinimizeToTray == true)
+        {
+            e.Cancel = true;
+            Hide();
+            App.Tray.ShowHiddenHint();
+        }
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
         Application.Current.Shutdown();
+    }
+
+    public void ShowFromTray()
+    {
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
     }
 }
