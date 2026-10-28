@@ -15,3 +15,6 @@ global using Clipboard = System.Windows.Clipboard;
 global using Button = System.Windows.Controls.Button;
 global using ContextMenu = System.Windows.Controls.ContextMenu;
 global using MenuItem = System.Windows.Controls.MenuItem;
+global using DragEventArgs = System.Windows.DragEventArgs;
+global using DataFormats = System.Windows.DataFormats;
+global using DragDropEffects = System.Windows.DragDropEffects;

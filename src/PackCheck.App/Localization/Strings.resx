@@ -238,6 +238,34 @@ Apply anyway?</value></data>
   <data name="Online_DuckUpdate" xml:space="preserve"><value>Save and update</value></data>
   <data name="Online_DuckOk" xml:space="preserve"><value>{0} now points to your IP.</value></data>
   <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS rejected the update. Check the subdomain and token.</value></data>
+  <data name="Files_Tab" xml:space="preserve"><value>Files</value></data>
+  <data name="Files_Upload" xml:space="preserve"><value>Upload…</value></data>
+  <data name="Files_NewFile" xml:space="preserve"><value>New file</value></data>
+  <data name="Files_NewFolder" xml:space="preserve"><value>New folder</value></data>
+  <data name="Files_Rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="Files_CutBtn" xml:space="preserve"><value>Cut</value></data>
+  <data name="Files_Paste" xml:space="preserve"><value>Paste</value></data>
+  <data name="Files_Unzip" xml:space="preserve"><value>Unzip</value></data>
+  <data name="Files_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="Files_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Files_DeleteTitle" xml:space="preserve"><value>Move {0} item(s) to the Recycle Bin?</value></data>
+  <data name="Files_Filter" xml:space="preserve"><value>Filter files…</value></data>
+  <data name="Files_DropHint" xml:space="preserve"><value>Drag files from Explorer here to upload them. Double-click to open; Ctrl+S saves.</value></data>
+  <data name="Files_EditorEmpty" xml:space="preserve"><value>Double-click a text file (yml, json, toml, properties, txt, log…) to edit it here.</value></data>
+  <data name="Files_NotText" xml:space="preserve"><value>This file is not a text file and cannot be edited here.</value></data>
+  <data name="Files_LargeReadOnly" xml:space="preserve"><value>Large file: opened read-only (first 5 MB).</value></data>
+  <data name="Files_Unsaved" xml:space="preserve"><value>Unsaved changes</value></data>
+  <data name="Files_Discard" xml:space="preserve"><value>Close without saving</value></data>
+  <data name="Files_SyntaxError" xml:space="preserve"><value>Syntax error</value></data>
+  <data name="Files_SyntaxErrorBody" xml:space="preserve"><value>Line {0}: {1}
+
+The server may fail to read this file. Save anyway?</value></data>
+  <data name="Files_SaveAnyway" xml:space="preserve"><value>Save anyway</value></data>
+  <data name="Files_Saved" xml:space="preserve"><value>{0} saved (backup kept in .packcheck/edits).</value></data>
+  <data name="Files_LockedRunning" xml:space="preserve"><value>Stop the server before changing worlds, libraries or jar files.</value></data>
+  <data name="Files_Copied" xml:space="preserve"><value>{0} item(s) copied. Open a folder and press Paste.</value></data>
+  <data name="Files_Cut" xml:space="preserve"><value>{0} item(s) cut. Open a folder and press Paste.</value></data>
+  <data name="Files_Uploaded" xml:space="preserve"><value>{0} item(s) uploaded.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>

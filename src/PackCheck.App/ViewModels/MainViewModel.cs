@@ -177,6 +177,23 @@ public sealed partial class MainViewModel : ObservableObject
         return req.Result.Task.ContinueWith(t => { Confirm = null; return t.Result; }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
+    [ObservableProperty]
+    private PromptRequest? _prompt;
+
+    /// <summary>Asks for a short text (new file name, rename). Returns null when cancelled.</summary>
+    public Task<string?> PromptAsync(string title, string initial)
+    {
+        var req = new PromptRequest(title) { Text = initial };
+        Prompt = req;
+        return req.Result.Task.ContinueWith(t => { Prompt = null; return t.Result; }, TaskScheduler.FromCurrentSynchronizationContext());
+    }
+
+    [RelayCommand]
+    private void PromptOk() => Prompt?.Result.TrySetResult(string.IsNullOrWhiteSpace(Prompt.Text) ? null : Prompt.Text.Trim());
+
+    [RelayCommand]
+    private void PromptCancel() => Prompt?.Result.TrySetResult(null);
+
     [RelayCommand]
     private void ConfirmYes() => Confirm?.Result.TrySetResult(true);
 
@@ -261,6 +278,16 @@ public sealed partial class MainViewModel : ObservableObject
             Shell32.Open(PendingRelease.PageUrl.ToString());
         }
     }
+}
+
+public sealed partial class PromptRequest(string title) : ObservableObject
+{
+    public string Title { get; } = title;
+
+    public TaskCompletionSource<string?> Result { get; } = new();
+
+    [ObservableProperty]
+    private string _text = string.Empty;
 }
 
 public sealed record ConfirmRequest(string Title, string Body, string ConfirmText, bool Danger)

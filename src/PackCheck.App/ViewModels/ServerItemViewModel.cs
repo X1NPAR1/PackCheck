@@ -128,6 +128,11 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     public bool IsHybrid => PlatformInfo.IsHybrid(Definition.Platform);
 
+    private FilesViewModel? _files;
+
+    /// <summary>File manager, created the first time the Files tab is opened.</summary>
+    public FilesViewModel Files => _files ??= new FilesViewModel(this);
+
     public string ContentTabKey => UsesMods ? "Nav_Mods" : "Nav_Plugins";
 
     // ----- console -----

@@ -238,6 +238,34 @@ Trotzdem anwenden?</value></data>
   <data name="Online_DuckUpdate" xml:space="preserve"><value>Speichern und aktualisieren</value></data>
   <data name="Online_DuckOk" xml:space="preserve"><value>{0} zeigt jetzt auf deine IP.</value></data>
   <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS hat die Aktualisierung abgelehnt. Prüfe Subdomain und Token.</value></data>
+  <data name="Files_Tab" xml:space="preserve"><value>Dateien</value></data>
+  <data name="Files_Upload" xml:space="preserve"><value>Hochladen…</value></data>
+  <data name="Files_NewFile" xml:space="preserve"><value>Neue Datei</value></data>
+  <data name="Files_NewFolder" xml:space="preserve"><value>Neuer Ordner</value></data>
+  <data name="Files_Rename" xml:space="preserve"><value>Umbenennen</value></data>
+  <data name="Files_CutBtn" xml:space="preserve"><value>Ausschneiden</value></data>
+  <data name="Files_Paste" xml:space="preserve"><value>Einfügen</value></data>
+  <data name="Files_Unzip" xml:space="preserve"><value>Entpacken</value></data>
+  <data name="Files_Export" xml:space="preserve"><value>Exportieren…</value></data>
+  <data name="Files_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Files_DeleteTitle" xml:space="preserve"><value>{0} Element(e) in den Papierkorb verschieben?</value></data>
+  <data name="Files_Filter" xml:space="preserve"><value>Dateien filtern…</value></data>
+  <data name="Files_DropHint" xml:space="preserve"><value>Dateien aus dem Explorer hierher ziehen zum Hochladen. Doppelklick öffnet; Strg+S speichert.</value></data>
+  <data name="Files_EditorEmpty" xml:space="preserve"><value>Doppelklicke auf eine Textdatei (yml, json, toml, properties, txt, log…), um sie hier zu bearbeiten.</value></data>
+  <data name="Files_NotText" xml:space="preserve"><value>Diese Datei ist keine Textdatei.</value></data>
+  <data name="Files_LargeReadOnly" xml:space="preserve"><value>Große Datei: schreibgeschützt geöffnet (erste 5 MB).</value></data>
+  <data name="Files_Unsaved" xml:space="preserve"><value>Ungespeicherte Änderungen</value></data>
+  <data name="Files_Discard" xml:space="preserve"><value>Ohne Speichern schließen</value></data>
+  <data name="Files_SyntaxError" xml:space="preserve"><value>Syntaxfehler</value></data>
+  <data name="Files_SyntaxErrorBody" xml:space="preserve"><value>Zeile {0}: {1}
+
+Der Server kann die Datei evtl. nicht lesen. Trotzdem speichern?</value></data>
+  <data name="Files_SaveAnyway" xml:space="preserve"><value>Trotzdem speichern</value></data>
+  <data name="Files_Saved" xml:space="preserve"><value>{0} gespeichert (Sicherung in .packcheck/edits).</value></data>
+  <data name="Files_LockedRunning" xml:space="preserve"><value>Stoppe den Server, bevor du Welten, Bibliotheken oder JARs änderst.</value></data>
+  <data name="Files_Copied" xml:space="preserve"><value>{0} Element(e) kopiert. Ordner öffnen und Einfügen drücken.</value></data>
+  <data name="Files_Cut" xml:space="preserve"><value>{0} Element(e) ausgeschnitten.</value></data>
+  <data name="Files_Uploaded" xml:space="preserve"><value>{0} Element(e) hochgeladen.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Einstellungen</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>

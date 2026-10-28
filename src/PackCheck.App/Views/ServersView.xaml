@@ -42,7 +42,7 @@
 
         <Grid Grid.Row="1" Visibility="{Binding IsEmpty, Converter={x:Static l:Inverse.Visibility}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="230" />
+                <ColumnDefinition Width="210" />
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>

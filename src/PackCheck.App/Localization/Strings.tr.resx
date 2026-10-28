@@ -238,6 +238,34 @@ Yine de uygulansın mı?</value></data>
   <data name="Online_DuckUpdate" xml:space="preserve"><value>Kaydet ve güncelle</value></data>
   <data name="Online_DuckOk" xml:space="preserve"><value>{0} artık IP adresini gösteriyor.</value></data>
   <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS güncellemeyi reddetti. Alt alan adını ve token'ı kontrol et.</value></data>
+  <data name="Files_Tab" xml:space="preserve"><value>Dosyalar</value></data>
+  <data name="Files_Upload" xml:space="preserve"><value>Yükle…</value></data>
+  <data name="Files_NewFile" xml:space="preserve"><value>Yeni dosya</value></data>
+  <data name="Files_NewFolder" xml:space="preserve"><value>Yeni klasör</value></data>
+  <data name="Files_Rename" xml:space="preserve"><value>Yeniden adlandır</value></data>
+  <data name="Files_CutBtn" xml:space="preserve"><value>Kes</value></data>
+  <data name="Files_Paste" xml:space="preserve"><value>Yapıştır</value></data>
+  <data name="Files_Unzip" xml:space="preserve"><value>Zip'i aç</value></data>
+  <data name="Files_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="Files_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Files_DeleteTitle" xml:space="preserve"><value>{0} öğe Geri Dönüşüm Kutusu'na taşınsın mı?</value></data>
+  <data name="Files_Filter" xml:space="preserve"><value>Dosyaları filtrele…</value></data>
+  <data name="Files_DropHint" xml:space="preserve"><value>Yüklemek için Explorer'dan dosyaları buraya sürükle. Açmak için çift tıkla; Ctrl+S kaydeder.</value></data>
+  <data name="Files_EditorEmpty" xml:space="preserve"><value>Burada düzenlemek için bir metin dosyasına (yml, json, toml, properties, txt, log…) çift tıkla.</value></data>
+  <data name="Files_NotText" xml:space="preserve"><value>Bu dosya metin dosyası değil, burada düzenlenemez.</value></data>
+  <data name="Files_LargeReadOnly" xml:space="preserve"><value>Büyük dosya: salt okunur açıldı (ilk 5 MB).</value></data>
+  <data name="Files_Unsaved" xml:space="preserve"><value>Kaydedilmemiş değişiklikler</value></data>
+  <data name="Files_Discard" xml:space="preserve"><value>Kaydetmeden kapat</value></data>
+  <data name="Files_SyntaxError" xml:space="preserve"><value>Sözdizimi hatası</value></data>
+  <data name="Files_SyntaxErrorBody" xml:space="preserve"><value>Satır {0}: {1}
+
+Sunucu bu dosyayı okuyamayabilir. Yine de kaydedilsin mi?</value></data>
+  <data name="Files_SaveAnyway" xml:space="preserve"><value>Yine de kaydet</value></data>
+  <data name="Files_Saved" xml:space="preserve"><value>{0} kaydedildi (yedeği .packcheck/edits içinde).</value></data>
+  <data name="Files_LockedRunning" xml:space="preserve"><value>Dünyaları, kütüphaneleri veya jar dosyalarını değiştirmeden önce sunucuyu durdur.</value></data>
+  <data name="Files_Copied" xml:space="preserve"><value>{0} öğe kopyalandı. Bir klasör açıp Yapıştır'a bas.</value></data>
+  <data name="Files_Cut" xml:space="preserve"><value>{0} öğe kesildi. Bir klasör açıp Yapıştır'a bas.</value></data>
+  <data name="Files_Uploaded" xml:space="preserve"><value>{0} öğe yüklendi.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>

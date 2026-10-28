@@ -189,6 +189,20 @@
             </Border>
         </Grid>
 
+        <!-- Text prompt -->
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource OverlayBrush}" Visibility="{Binding Prompt, Converter={StaticResource NullVis}}">
+            <Border Style="{StaticResource Card}" Width="440" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="24" l:Anim.PopIn="True">
+                <StackPanel>
+                    <TextBlock Text="{Binding Prompt.Title}" Style="{StaticResource H2}" />
+                    <TextBox Text="{Binding Prompt.Text, UpdateSourceTrigger=PropertyChanged}" Margin="0,14,0,0" FontFamily="{StaticResource MonoFont}" AutomationProperties.AutomationId="PromptText" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                        <Button Content="{l:Loc Common_Cancel}" Command="{Binding PromptCancelCommand}" Margin="0,0,8,0" IsCancel="True" />
+                        <Button Content="{l:Loc Common_Confirm}" Style="{StaticResource PrimaryButton}" Command="{Binding PromptOkCommand}" IsDefault="True" AutomationProperties.AutomationId="PromptOk" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <!-- Confirmation dialog -->
         <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource OverlayBrush}" Visibility="{Binding Confirm, Converter={StaticResource NullVis}}">
             <Border Style="{StaticResource Card}" Width="480" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="24" l:Anim.PopIn="True">

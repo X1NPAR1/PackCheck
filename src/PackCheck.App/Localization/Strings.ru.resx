@@ -238,6 +238,34 @@
   <data name="Online_DuckUpdate" xml:space="preserve"><value>Сохранить и обновить</value></data>
   <data name="Online_DuckOk" xml:space="preserve"><value>{0} теперь указывает на ваш IP.</value></data>
   <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS отклонил обновление. Проверьте поддомен и токен.</value></data>
+  <data name="Files_Tab" xml:space="preserve"><value>Файлы</value></data>
+  <data name="Files_Upload" xml:space="preserve"><value>Загрузить…</value></data>
+  <data name="Files_NewFile" xml:space="preserve"><value>Новый файл</value></data>
+  <data name="Files_NewFolder" xml:space="preserve"><value>Новая папка</value></data>
+  <data name="Files_Rename" xml:space="preserve"><value>Переименовать</value></data>
+  <data name="Files_CutBtn" xml:space="preserve"><value>Вырезать</value></data>
+  <data name="Files_Paste" xml:space="preserve"><value>Вставить</value></data>
+  <data name="Files_Unzip" xml:space="preserve"><value>Распаковать</value></data>
+  <data name="Files_Export" xml:space="preserve"><value>Экспорт…</value></data>
+  <data name="Files_Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Files_DeleteTitle" xml:space="preserve"><value>Переместить {0} элем. в корзину?</value></data>
+  <data name="Files_Filter" xml:space="preserve"><value>Фильтр файлов…</value></data>
+  <data name="Files_DropHint" xml:space="preserve"><value>Перетащите файлы из Проводника для загрузки. Двойной щелчок — открыть; Ctrl+S — сохранить.</value></data>
+  <data name="Files_EditorEmpty" xml:space="preserve"><value>Дважды щёлкните текстовый файл (yml, json, toml, properties, txt, log…), чтобы редактировать его.</value></data>
+  <data name="Files_NotText" xml:space="preserve"><value>Это не текстовый файл.</value></data>
+  <data name="Files_LargeReadOnly" xml:space="preserve"><value>Большой файл: открыт только для чтения (первые 5 МБ).</value></data>
+  <data name="Files_Unsaved" xml:space="preserve"><value>Несохранённые изменения</value></data>
+  <data name="Files_Discard" xml:space="preserve"><value>Закрыть без сохранения</value></data>
+  <data name="Files_SyntaxError" xml:space="preserve"><value>Синтаксическая ошибка</value></data>
+  <data name="Files_SyntaxErrorBody" xml:space="preserve"><value>Строка {0}: {1}
+
+Сервер может не прочитать файл. Всё равно сохранить?</value></data>
+  <data name="Files_SaveAnyway" xml:space="preserve"><value>Всё равно сохранить</value></data>
+  <data name="Files_Saved" xml:space="preserve"><value>{0} сохранён (копия в .packcheck/edits).</value></data>
+  <data name="Files_LockedRunning" xml:space="preserve"><value>Остановите сервер перед изменением миров, библиотек или jar-файлов.</value></data>
+  <data name="Files_Copied" xml:space="preserve"><value>Скопировано: {0}. Откройте папку и нажмите «Вставить».</value></data>
+  <data name="Files_Cut" xml:space="preserve"><value>Вырезано: {0}.</value></data>
+  <data name="Files_Uploaded" xml:space="preserve"><value>Загружено: {0}.</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>

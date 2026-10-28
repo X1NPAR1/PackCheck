@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
              xmlns:c="clr-namespace:PackCheck.App.Controls"
+             xmlns:v="clr-namespace:PackCheck.App.Views"
              AutomationProperties.AutomationId="ServerDetail">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -148,6 +149,7 @@
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Tab_Overview}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=0}" AutomationProperties.AutomationId="TabOverview" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Files_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=5}" AutomationProperties.AutomationId="TabFiles" />
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}">
                 <TextBlock>
                     <TextBlock.Style>
@@ -413,6 +415,26 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+
+        <!-- Files -->
+        <ContentControl Grid.Row="2" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=5}" Content="{Binding Files}">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate><v:FilesView /></DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Tab}" Value="0"><Setter Property="Content" Value="{x:Null}" /></DataTrigger>
+                        <DataTrigger Binding="{Binding Tab}" Value="1"><Setter Property="Content" Value="{x:Null}" /></DataTrigger>
+                        <DataTrigger Binding="{Binding Tab}" Value="2"><Setter Property="Content" Value="{x:Null}" /></DataTrigger>
+                        <DataTrigger Binding="{Binding Tab}" Value="3"><Setter Property="Content" Value="{x:Null}" /></DataTrigger>
+                        <DataTrigger Binding="{Binding Tab}" Value="4"><Setter Property="Content" Value="{x:Null}" /></DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
         <!-- Properties -->
         <Border Grid.Row="2" Style="{StaticResource Card}" Padding="0" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=2}">

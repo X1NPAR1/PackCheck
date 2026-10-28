@@ -238,6 +238,34 @@ Appliquer quand même ?</value></data>
   <data name="Online_DuckUpdate" xml:space="preserve"><value>Enregistrer et mettre à jour</value></data>
   <data name="Online_DuckOk" xml:space="preserve"><value>{0} pointe maintenant vers votre IP.</value></data>
   <data name="Online_DuckFail" xml:space="preserve"><value>DuckDNS a refusé la mise à jour. Vérifiez le sous-domaine et le jeton.</value></data>
+  <data name="Files_Tab" xml:space="preserve"><value>Fichiers</value></data>
+  <data name="Files_Upload" xml:space="preserve"><value>Importer…</value></data>
+  <data name="Files_NewFile" xml:space="preserve"><value>Nouveau fichier</value></data>
+  <data name="Files_NewFolder" xml:space="preserve"><value>Nouveau dossier</value></data>
+  <data name="Files_Rename" xml:space="preserve"><value>Renommer</value></data>
+  <data name="Files_CutBtn" xml:space="preserve"><value>Couper</value></data>
+  <data name="Files_Paste" xml:space="preserve"><value>Coller</value></data>
+  <data name="Files_Unzip" xml:space="preserve"><value>Extraire</value></data>
+  <data name="Files_Export" xml:space="preserve"><value>Exporter…</value></data>
+  <data name="Files_Delete" xml:space="preserve"><value>Supprimer</value></data>
+  <data name="Files_DeleteTitle" xml:space="preserve"><value>Déplacer {0} élément(s) dans la corbeille ?</value></data>
+  <data name="Files_Filter" xml:space="preserve"><value>Filtrer…</value></data>
+  <data name="Files_DropHint" xml:space="preserve"><value>Glissez des fichiers depuis l'Explorateur pour les importer. Double-clic pour ouvrir ; Ctrl+S enregistre.</value></data>
+  <data name="Files_EditorEmpty" xml:space="preserve"><value>Double-cliquez sur un fichier texte (yml, json, toml, properties, txt, log…) pour l'éditer ici.</value></data>
+  <data name="Files_NotText" xml:space="preserve"><value>Ce fichier n'est pas un fichier texte.</value></data>
+  <data name="Files_LargeReadOnly" xml:space="preserve"><value>Fichier volumineux : ouvert en lecture seule (5 premiers Mo).</value></data>
+  <data name="Files_Unsaved" xml:space="preserve"><value>Modifications non enregistrées</value></data>
+  <data name="Files_Discard" xml:space="preserve"><value>Fermer sans enregistrer</value></data>
+  <data name="Files_SyntaxError" xml:space="preserve"><value>Erreur de syntaxe</value></data>
+  <data name="Files_SyntaxErrorBody" xml:space="preserve"><value>Ligne {0} : {1}
+
+Le serveur risque de ne pas lire ce fichier. Enregistrer quand même ?</value></data>
+  <data name="Files_SaveAnyway" xml:space="preserve"><value>Enregistrer quand même</value></data>
+  <data name="Files_Saved" xml:space="preserve"><value>{0} enregistré (sauvegarde dans .packcheck/edits).</value></data>
+  <data name="Files_LockedRunning" xml:space="preserve"><value>Arrêtez le serveur avant de modifier mondes, bibliothèques ou jars.</value></data>
+  <data name="Files_Copied" xml:space="preserve"><value>{0} élément(s) copié(s). Ouvrez un dossier puis Coller.</value></data>
+  <data name="Files_Cut" xml:space="preserve"><value>{0} élément(s) coupé(s).</value></data>
+  <data name="Files_Uploaded" xml:space="preserve"><value>{0} élément(s) importé(s).</value></data>
   <data name="Settings_Title" xml:space="preserve"><value>Paramètres</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Thème</value></data>
