@@ -428,6 +428,17 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Backups_DeleteTitle" xml:space="preserve"><value>Supprimer cette sauvegarde ?</value></data>
   <data name="Backups_DeleteBody" xml:space="preserve"><value>La sauvegarde du {0} ({1}) sera supprimée définitivement. Le serveur n'est pas modifié.</value></data>
   <data name="Backups_Deleted" xml:space="preserve"><value>Sauvegarde supprimée.</value></data>
+  <data name="Tool_ListServers" xml:space="preserve"><value>A consulté vos serveurs</value></data>
+  <data name="Tool_ReadConsole" xml:space="preserve"><value>A lu la console</value></data>
+  <data name="Tool_ListFiles" xml:space="preserve"><value>A listé les fichiers de {0}</value></data>
+  <data name="Tool_ReadFile" xml:space="preserve"><value>A lu {0}</value></data>
+  <data name="Tool_ListAddons" xml:space="preserve"><value>A listé les plugins et mods</value></data>
+  <data name="Tool_Validate" xml:space="preserve"><value>A lancé une validation</value></data>
+  <data name="Tool_Input" xml:space="preserve"><value>Entrée</value></data>
+  <data name="Tool_Output" xml:space="preserve"><value>Résultat</value></data>
+  <data name="Tool_Empty" xml:space="preserve"><value>(vide)</value></data>
+  <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} jetons</value></data>
+  <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} jetons</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

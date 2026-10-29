@@ -428,6 +428,17 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Backups_DeleteTitle" xml:space="preserve"><value>Dieses Backup löschen?</value></data>
   <data name="Backups_DeleteBody" xml:space="preserve"><value>Das Backup vom {0} ({1}) wird endgültig gelöscht. Der Server bleibt unverändert.</value></data>
   <data name="Backups_Deleted" xml:space="preserve"><value>Backup gelöscht.</value></data>
+  <data name="Tool_ListServers" xml:space="preserve"><value>Server angesehen</value></data>
+  <data name="Tool_ReadConsole" xml:space="preserve"><value>Konsole gelesen</value></data>
+  <data name="Tool_ListFiles" xml:space="preserve"><value>Dateien in {0} aufgelistet</value></data>
+  <data name="Tool_ReadFile" xml:space="preserve"><value>{0} gelesen</value></data>
+  <data name="Tool_ListAddons" xml:space="preserve"><value>Installierte Plugins und Mods aufgelistet</value></data>
+  <data name="Tool_Validate" xml:space="preserve"><value>Prüfung ausgeführt</value></data>
+  <data name="Tool_Input" xml:space="preserve"><value>Eingabe</value></data>
+  <data name="Tool_Output" xml:space="preserve"><value>Ergebnis</value></data>
+  <data name="Tool_Empty" xml:space="preserve"><value>(leer)</value></data>
+  <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} Tokens</value></data>
+  <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} Tokens</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

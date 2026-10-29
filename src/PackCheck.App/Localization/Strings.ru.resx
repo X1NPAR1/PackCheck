@@ -428,6 +428,17 @@
   <data name="Backups_DeleteTitle" xml:space="preserve"><value>Удалить эту копию?</value></data>
   <data name="Backups_DeleteBody" xml:space="preserve"><value>Копия от {0} ({1}) будет удалена навсегда. Сервер не изменится.</value></data>
   <data name="Backups_Deleted" xml:space="preserve"><value>Копия удалена.</value></data>
+  <data name="Tool_ListServers" xml:space="preserve"><value>Просмотрел серверы</value></data>
+  <data name="Tool_ReadConsole" xml:space="preserve"><value>Прочитал консоль</value></data>
+  <data name="Tool_ListFiles" xml:space="preserve"><value>Список файлов в {0}</value></data>
+  <data name="Tool_ReadFile" xml:space="preserve"><value>Прочитал {0}</value></data>
+  <data name="Tool_ListAddons" xml:space="preserve"><value>Список плагинов и модов</value></data>
+  <data name="Tool_Validate" xml:space="preserve"><value>Запустил проверку</value></data>
+  <data name="Tool_Input" xml:space="preserve"><value>Ввод</value></data>
+  <data name="Tool_Output" xml:space="preserve"><value>Результат</value></data>
+  <data name="Tool_Empty" xml:space="preserve"><value>(пусто)</value></data>
+  <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} токенов</value></data>
+  <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} токенов</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

@@ -428,6 +428,17 @@ Hayır: açık bırakıp çık.
   <data name="Backups_DeleteTitle" xml:space="preserve"><value>Bu yedek silinsin mi?</value></data>
   <data name="Backups_DeleteBody" xml:space="preserve"><value>{0} tarihli yedek ({1}) kalıcı olarak silinecek. Sunucu değişmez.</value></data>
   <data name="Backups_Deleted" xml:space="preserve"><value>Yedek silindi.</value></data>
+  <data name="Tool_ListServers" xml:space="preserve"><value>Sunucularına baktı</value></data>
+  <data name="Tool_ReadConsole" xml:space="preserve"><value>Konsolu okudu</value></data>
+  <data name="Tool_ListFiles" xml:space="preserve"><value>{0} klasöründeki dosyaları listeledi</value></data>
+  <data name="Tool_ReadFile" xml:space="preserve"><value>{0} dosyasını okudu</value></data>
+  <data name="Tool_ListAddons" xml:space="preserve"><value>Kurulu eklenti ve modları listeledi</value></data>
+  <data name="Tool_Validate" xml:space="preserve"><value>Doğrulama çalıştırdı</value></data>
+  <data name="Tool_Input" xml:space="preserve"><value>Giriş</value></data>
+  <data name="Tool_Output" xml:space="preserve"><value>Sonuç</value></data>
+  <data name="Tool_Empty" xml:space="preserve"><value>(boş)</value></data>
+  <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} token</value></data>
+  <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} token</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

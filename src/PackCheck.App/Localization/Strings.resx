@@ -428,6 +428,17 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Backups_DeleteTitle" xml:space="preserve"><value>Delete this backup?</value></data>
   <data name="Backups_DeleteBody" xml:space="preserve"><value>The backup from {0} ({1}) will be deleted permanently. The server is not changed.</value></data>
   <data name="Backups_Deleted" xml:space="preserve"><value>Backup deleted.</value></data>
+  <data name="Tool_ListServers" xml:space="preserve"><value>Looked at your servers</value></data>
+  <data name="Tool_ReadConsole" xml:space="preserve"><value>Read the console</value></data>
+  <data name="Tool_ListFiles" xml:space="preserve"><value>Listed files in {0}</value></data>
+  <data name="Tool_ReadFile" xml:space="preserve"><value>Read {0}</value></data>
+  <data name="Tool_ListAddons" xml:space="preserve"><value>Listed installed plugins and mods</value></data>
+  <data name="Tool_Validate" xml:space="preserve"><value>Ran a validation</value></data>
+  <data name="Tool_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Tool_Output" xml:space="preserve"><value>Result</value></data>
+  <data name="Tool_Empty" xml:space="preserve"><value>(empty)</value></data>
+  <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} tokens</value></data>
+  <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} tokens</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

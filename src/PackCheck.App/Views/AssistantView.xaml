@@ -17,7 +17,7 @@
         <DockPanel Margin="0,0,0,14">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" Margin="0,0,12,0">
-                    <Run Text="{Binding ModelText, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding Tokens, Mode=OneWay, StringFormat='{}{0:N0} tokens'}" />
+                    <Run Text="{Binding ModelText, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding TokensText, Mode=OneWay}" />
                 </TextBlock>
                 <Button Content="{l:Loc Assistant_New}" Command="{Binding NewChatCommand}" />
             </StackPanel>
@@ -77,7 +77,43 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBlock Text="{Binding Text}" Style="{StaticResource Muted}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Margin="4,0,0,8" />
+                                                                <StackPanel Margin="0,0,80,6">
+                                                                    <Button Command="{Binding ToggleCommand}" Cursor="Hand" HorizontalAlignment="Left" AutomationProperties.Name="{Binding Text}">
+                                                                        <Button.Template>
+                                                                            <ControlTemplate TargetType="Button">
+                                                                                <Border x:Name="Bd" Background="Transparent" CornerRadius="6" Padding="6,3"><ContentPresenter /></Border>
+                                                                                <ControlTemplate.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2Brush}" /></Trigger>
+                                                                                </ControlTemplate.Triggers>
+                                                                            </ControlTemplate>
+                                                                        </Button.Template>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <TextBlock Text="▸" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,7,0" RenderTransformOrigin="0.5,0.5">
+                                                                                <TextBlock.Style>
+                                                                                    <Style TargetType="TextBlock">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding IsOpen}" Value="True">
+                                                                                                <Setter Property="RenderTransform"><Setter.Value><RotateTransform Angle="90" /></Setter.Value></Setter>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBlock.Style>
+                                                                            </TextBlock>
+                                                                            <Path Data="{StaticResource IconValidate}" Style="{StaticResource IconPath}" Width="12" Height="12" Stroke="{DynamicResource PassBrush}" Margin="0,0,7,0" />
+                                                                            <TextBlock Text="{Binding Text}" FontSize="12.5" Foreground="{DynamicResource TextMutedBrush}" />
+                                                                        </StackPanel>
+                                                                    </Button>
+                                                                    <Border Visibility="{Binding IsOpen, Converter={StaticResource BoolVis}}" Margin="22,4,0,4" CornerRadius="8" Background="{DynamicResource ConsoleBgBrush}" Padding="12,10" l:Anim.PopIn="True">
+                                                                        <StackPanel>
+                                                                            <TextBlock Text="{l:Loc Tool_Input}" FontSize="11" Foreground="{DynamicResource ConsoleMutedBrush}" Visibility="{Binding Arguments, Converter={StaticResource NullVis}}" />
+                                                                            <TextBox Text="{Binding Arguments, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource ConsoleTextBrush}" Padding="0" MinHeight="0"
+                                                                                     FontFamily="{StaticResource MonoFont}" FontSize="11.5" TextWrapping="Wrap" Margin="0,2,0,8" Visibility="{Binding Arguments, Converter={StaticResource NullVis}}" />
+                                                                            <TextBlock Text="{l:Loc Tool_Output}" FontSize="11" Foreground="{DynamicResource ConsoleMutedBrush}" />
+                                                                            <TextBox Text="{Binding Result, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource ConsoleTextBrush}" Padding="0" MinHeight="0"
+                                                                                     FontFamily="{StaticResource MonoFont}" FontSize="11.5" TextWrapping="NoWrap" MaxHeight="320" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,2,0,0" />
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </StackPanel>
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>

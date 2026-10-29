@@ -290,9 +290,17 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         return RunAsync(ct);
     }
 
-    private async Task<AiStep> RunAsync(CancellationToken ct)
+    /// <summary>Set when the provider rejects "stream_options"; usage is then estimated by the caller.</summary>
+    private bool _noUsageOption;
+
+    private async Task<HttpResponseMessage> PostAsync(CancellationToken ct)
     {
         var body = new JsonObject { ["model"] = _model, ["messages"] = _messages.DeepClone(), ["tools"] = _tools.DeepClone(), ["stream"] = true };
+        if (!_noUsageOption)
+        {
+            body["stream_options"] = new JsonObject { ["include_usage"] = true }; // token counts in the last chunk
+        }
+
         using var req = new HttpRequestMessage(HttpMethod.Post, new Uri(_baseUrl + "/chat/completions"))
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
@@ -302,7 +310,29 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
             req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
-        using var res = await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
+        return await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
+    }
+
+    private async Task<AiStep> RunAsync(CancellationToken ct)
+    {
+        var res = await PostAsync(ct).ConfigureAwait(false);
+        if (!res.IsSuccessStatusCode && !_noUsageOption)
+        {
+            var first = await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+            if (first.Contains("stream_options", StringComparison.OrdinalIgnoreCase))
+            {
+                res.Dispose();
+                _noUsageOption = true;
+                res = await PostAsync(ct).ConfigureAwait(false);
+            }
+            else
+            {
+                res.Dispose();
+                throw new HttpRequestException($"HTTP {(int)res.StatusCode}: {first[..Math.Min(first.Length, 300)]}");
+            }
+        }
+
+        using var _ = res;
         if (!res.IsSuccessStatusCode)
         {
             var err = await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false);

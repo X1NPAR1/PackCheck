@@ -28,6 +28,17 @@ public sealed partial class ChatItem(string role, string text) : ObservableObjec
 
     [ObservableProperty]
     private bool _isStreaming;
+
+    /// <summary>Tool rows: what was asked (arguments) and what came back, shown when the row is expanded.</summary>
+    public string? Arguments { get; init; }
+
+    public string? Result { get; init; }
+
+    [ObservableProperty]
+    private bool _isOpen;
+
+    [RelayCommand]
+    private void Toggle() => IsOpen = !IsOpen;
 }
 
 /// <summary>What is kept on disk per server: user, assistant and status lines (pending approvals are not restored).</summary>
@@ -66,7 +77,14 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     private bool _isBusy;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TokensText))]
     private int _tokens;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TokensText))]
+    private bool _tokensEstimated;
+
+    public string TokensText => Loc.F(TokensEstimated ? "Assistant_TokensApprox" : "Assistant_Tokens", Tokens);
 
     public void Activate()
     {
@@ -212,7 +230,11 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             var step = await _conversation.SendAsync(text, _cts.Token).ConfigureAwait(true);
             for (var round = 0; round < 12; round++)
             {
-                Tokens += step.InputTokens + step.OutputTokens;
+                // Some OpenAI-compatible providers send no usage while streaming; estimate (~4 characters per token) instead of showing 0.
+                Tokens += step.InputTokens + step.OutputTokens > 0
+                    ? step.InputTokens + step.OutputTokens
+                    : (text.Length + step.Text.Length + step.ToolCalls.Sum(c => c.Arguments.ToJsonString().Length)) / 4;
+                TokensEstimated |= step.InputTokens + step.OutputTokens == 0;
 
                 // Let queued deltas land, then make the streamed bubble the final text.
                 await System.Windows.Application.Current.Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Background);
@@ -268,7 +290,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             var (result, pending) = await _tools.RunAsync(call).ConfigureAwait(true);
             if (pending is null)
             {
-                Messages.Add(new ChatItem("tool", "· " + call.Name));
+                Messages.Add(ToolRow(call, result ?? string.Empty));
                 return (call, result ?? string.Empty, false);
             }
 
@@ -288,6 +310,29 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         {
             return (call, "Error: " + ex.Message, true);
         }
+    }
+
+    /// <summary>A readable title for a tool call ("Read plugins/Skin/config.yml") plus its details.</summary>
+    private static ChatItem ToolRow(AiToolCall call, string result)
+    {
+        string Arg(string name) => call.Arguments[name]?.ToString() ?? string.Empty;
+        var title = call.Name switch
+        {
+            "list_servers" => Loc.T("Tool_ListServers"),
+            "read_console" => Loc.T("Tool_ReadConsole"),
+            "list_files" => Loc.F("Tool_ListFiles", Arg("path") is { Length: > 0 } p ? p : "/"),
+            "read_file" => Loc.F("Tool_ReadFile", Arg("path")),
+            "list_addons" => Loc.T("Tool_ListAddons"),
+            "run_validation" => Loc.T("Tool_Validate"),
+            _ => call.Name,
+        };
+        var lines = result.Split('\n');
+        var shown = lines.Length > 400 ? string.Join('\n', lines.Take(400)) + $"\n… ({lines.Length - 400} more lines)" : result;
+        return new ChatItem("tool", title)
+        {
+            Arguments = call.Arguments.Count == 0 ? null : call.Arguments.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = true }),
+            Result = shown.Length > 0 ? shown : Loc.T("Tool_Empty"),
+        };
     }
 
     [RelayCommand]
