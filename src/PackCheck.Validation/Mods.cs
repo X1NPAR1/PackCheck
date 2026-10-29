@@ -113,8 +113,13 @@ public static class ModMetadataReader
 
             return basic with
             {
-                Id = S("id"), Name = S("name") ?? S("id"), Version = S("version"), Loader = "fabric",
-                Environment = S("environment") ?? "*", MinecraftRange = mc, Dependencies = deps,
+                Id = S("id"),
+                Name = S("name") ?? S("id"),
+                Version = S("version"),
+                Loader = "fabric",
+                Environment = S("environment") ?? "*",
+                MinecraftRange = mc,
+                Dependencies = deps,
             };
         }
         catch (JsonException)
@@ -151,9 +156,13 @@ public static class ModMetadataReader
             var env = doc.RootElement.TryGetProperty("minecraft", out var mcObj) && mcObj.TryGetProperty("environment", out var en) ? en.GetString() ?? "*" : "*";
             return basic with
             {
-                Id = loader.GetProperty("id").GetString(), Version = loader.TryGetProperty("version", out var ver) ? ver.GetString() : null,
+                Id = loader.GetProperty("id").GetString(),
+                Version = loader.TryGetProperty("version", out var ver) ? ver.GetString() : null,
                 Name = meta.ValueKind == JsonValueKind.Object && meta.TryGetProperty("name", out var n) ? n.GetString() : null,
-                Loader = "quilt", MinecraftRange = mc, Environment = env == "dedicated_server" ? "server" : env, Dependencies = deps,
+                Loader = "quilt",
+                MinecraftRange = mc,
+                Environment = env == "dedicated_server" ? "server" : env,
+                Dependencies = deps,
             };
         }
         catch (Exception ex) when (ex is JsonException or KeyNotFoundException or InvalidOperationException)

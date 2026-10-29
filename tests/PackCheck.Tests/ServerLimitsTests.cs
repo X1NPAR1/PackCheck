@@ -6,7 +6,14 @@ public class ServerLimitsTests
 {
     private static ServerDefinition Def(int cores) => new()
     {
-        Id = "x", Name = "x", Directory = "x", Platform = ServerPlatform.Paper, MinecraftVersion = "1.21.1", JarFile = "paper.jar", JavaPath = "java", CpuCores = cores,
+        Id = "x",
+        Name = "x",
+        Directory = "x",
+        Platform = ServerPlatform.Paper,
+        MinecraftVersion = "1.21.1",
+        JarFile = "paper.jar",
+        JavaPath = "java",
+        CpuCores = cores,
     };
 
     [Fact]

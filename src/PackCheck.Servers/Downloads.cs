@@ -102,25 +102,25 @@ public sealed class ServerSources(HttpClient http)
         switch (platform)
         {
             case ServerPlatform.Purpur:
-            {
-                using var doc = await GetJsonAsync(PurpurVersions, ct).ConfigureAwait(false);
-                return Newest(doc.RootElement.GetProperty("versions").EnumerateArray().Select(v => v.GetString()!));
-            }
+                {
+                    using var doc = await GetJsonAsync(PurpurVersions, ct).ConfigureAwait(false);
+                    return Newest(doc.RootElement.GetProperty("versions").EnumerateArray().Select(v => v.GetString()!));
+                }
 
             case ServerPlatform.Fabric:
-            {
-                using var doc = await GetJsonAsync(FabricGame, ct).ConfigureAwait(false);
-                return Newest(doc.RootElement.EnumerateArray().Where(v => v.GetProperty("stable").GetBoolean()).Select(v => v.GetProperty("version").GetString()!));
-            }
+                {
+                    using var doc = await GetJsonAsync(FabricGame, ct).ConfigureAwait(false);
+                    return Newest(doc.RootElement.EnumerateArray().Where(v => v.GetProperty("stable").GetBoolean()).Select(v => v.GetProperty("version").GetString()!));
+                }
 
             case ServerPlatform.Forge:
-            {
-                using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
-                // Forge ships an installer from Minecraft 1.5.2 on; older builds cannot be installed as a server.
-                var minimum = new MinecraftVersion(1, 5, 2);
-                return Newest(doc.RootElement.GetProperty("promos").EnumerateObject().Select(p => p.Name[..p.Name.LastIndexOf('-')])
-                    .Where(v => MinecraftVersion.TryParse(v, out var mv) && mv >= minimum));
-            }
+                {
+                    using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
+                    // Forge ships an installer from Minecraft 1.5.2 on; older builds cannot be installed as a server.
+                    var minimum = new MinecraftVersion(1, 5, 2);
+                    return Newest(doc.RootElement.GetProperty("promos").EnumerateObject().Select(p => p.Name[..p.Name.LastIndexOf('-')])
+                        .Where(v => MinecraftVersion.TryParse(v, out var mv) && mv >= minimum));
+                }
 
             case ServerPlatform.NeoForge:
                 return Newest((await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Select(PlatformInfo.NeoForgeToMinecraft).OfType<string>());
@@ -169,42 +169,42 @@ public sealed class ServerSources(HttpClient http)
         switch (platform)
         {
             case ServerPlatform.Purpur:
-            {
-                using var doc = await GetJsonAsync(new Uri($"https://api.purpurmc.org/v2/purpur/{v}/latest"), ct).ConfigureAwait(false);
-                var build = doc.RootElement.GetProperty("build").GetString()!;
-                var md5 = doc.RootElement.TryGetProperty("md5", out var m) ? m.GetString() : null;
-                return new ServerDownload("purpur.jar", new Uri($"https://api.purpurmc.org/v2/purpur/{v}/{build}/download"), md5, HashAlgorithmName.MD5, 0);
-            }
+                {
+                    using var doc = await GetJsonAsync(new Uri($"https://api.purpurmc.org/v2/purpur/{v}/latest"), ct).ConfigureAwait(false);
+                    var build = doc.RootElement.GetProperty("build").GetString()!;
+                    var md5 = doc.RootElement.TryGetProperty("md5", out var m) ? m.GetString() : null;
+                    return new ServerDownload("purpur.jar", new Uri($"https://api.purpurmc.org/v2/purpur/{v}/{build}/download"), md5, HashAlgorithmName.MD5, 0);
+                }
 
             case ServerPlatform.Fabric:
-            {
-                using var loaders = await GetJsonAsync(new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}"), ct).ConfigureAwait(false);
-                var loader = loaders.RootElement.EnumerateArray().First(l => l.GetProperty("loader").GetProperty("stable").GetBoolean()).GetProperty("loader").GetProperty("version").GetString();
-                using var installers = await GetJsonAsync(new Uri("https://meta.fabricmc.net/v2/versions/installer"), ct).ConfigureAwait(false);
-                var installer = installers.RootElement.EnumerateArray().First(i => i.GetProperty("stable").GetBoolean()).GetProperty("version").GetString();
+                {
+                    using var loaders = await GetJsonAsync(new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}"), ct).ConfigureAwait(false);
+                    var loader = loaders.RootElement.EnumerateArray().First(l => l.GetProperty("loader").GetProperty("stable").GetBoolean()).GetProperty("loader").GetProperty("version").GetString();
+                    using var installers = await GetJsonAsync(new Uri("https://meta.fabricmc.net/v2/versions/installer"), ct).ConfigureAwait(false);
+                    var installer = installers.RootElement.EnumerateArray().First(i => i.GetProperty("stable").GetBoolean()).GetProperty("version").GetString();
 
-                // The Fabric meta server builds a ready-to-run server launcher and publishes no checksum for it.
-                return new ServerDownload("fabric-server-launch.jar", new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}/{loader}/{installer}/server/jar"), null, HashAlgorithmName.SHA256, 0);
-            }
+                    // The Fabric meta server builds a ready-to-run server launcher and publishes no checksum for it.
+                    return new ServerDownload("fabric-server-launch.jar", new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}/{loader}/{installer}/server/jar"), null, HashAlgorithmName.SHA256, 0);
+                }
 
             case ServerPlatform.Forge:
-            {
-                using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
-                var promos = doc.RootElement.GetProperty("promos");
-                var forge = (promos.TryGetProperty($"{version}-recommended", out var r) ? r : promos.GetProperty($"{version}-latest")).GetString()!;
-                var full = $"{version}-{forge}";
-                var url = new Uri($"https://maven.minecraftforge.net/net/minecraftforge/forge/{full}/forge-{full}-installer.jar");
-                return new ServerDownload($"forge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
-            }
+                {
+                    using var doc = await GetJsonAsync(ForgePromotions, ct).ConfigureAwait(false);
+                    var promos = doc.RootElement.GetProperty("promos");
+                    var forge = (promos.TryGetProperty($"{version}-recommended", out var r) ? r : promos.GetProperty($"{version}-latest")).GetString()!;
+                    var full = $"{version}-{forge}";
+                    var url = new Uri($"https://maven.minecraftforge.net/net/minecraftforge/forge/{full}/forge-{full}-installer.jar");
+                    return new ServerDownload($"forge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+                }
 
             case ServerPlatform.NeoForge:
-            {
-                var matching = (await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Where(n => PlatformInfo.NeoForgeToMinecraft(n) == version).ToList();
-                var neo = matching.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? matching.LastOrDefault()
-                    ?? throw new InvalidOperationException($"No NeoForge build for Minecraft {version}.");
-                var url = new Uri($"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neo}/neoforge-{neo}-installer.jar");
-                return new ServerDownload($"neoforge-{neo}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
-            }
+                {
+                    var matching = (await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Where(n => PlatformInfo.NeoForgeToMinecraft(n) == version).ToList();
+                    var neo = matching.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? matching.LastOrDefault()
+                        ?? throw new InvalidOperationException($"No NeoForge build for Minecraft {version}.");
+                    var url = new Uri($"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neo}/neoforge-{neo}-installer.jar");
+                    return new ServerDownload($"neoforge-{neo}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+                }
         }
 
         if (platform == ServerPlatform.Paper)

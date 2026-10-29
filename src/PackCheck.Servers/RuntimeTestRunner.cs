@@ -118,7 +118,9 @@ public sealed partial class RuntimeTestRunner
             {
                 results.Add(new CheckResult
                 {
-                    Id = "RT001", Name = "Server startup", Status = CheckStatus.Pass,
+                    Id = "RT001",
+                    Name = "Server startup",
+                    Status = CheckStatus.Pass,
                     Description = $"The server finished starting in {done.Task.Result:0.0}s (wall clock {sw.Elapsed.TotalSeconds:0.0}s).",
                 });
                 await p.StandardInput.WriteLineAsync("stop").ConfigureAwait(false);
@@ -128,7 +130,9 @@ public sealed partial class RuntimeTestRunner
             {
                 results.Add(new CheckResult
                 {
-                    Id = "RT001", Name = "Server startup", Status = CheckStatus.Fail,
+                    Id = "RT001",
+                    Name = "Server startup",
+                    Status = CheckStatus.Fail,
                     Description = $"The server process exited with code {p.ExitCode} before finishing startup.",
                     Evidence = Tail(lines, 15),
                 });
@@ -137,7 +141,9 @@ public sealed partial class RuntimeTestRunner
             {
                 results.Add(new CheckResult
                 {
-                    Id = "RT001", Name = "Server startup", Status = CheckStatus.Fail,
+                    Id = "RT001",
+                    Name = "Server startup",
+                    Status = CheckStatus.Fail,
                     Description = $"The server did not finish starting within {options.Timeout.TotalSeconds:0}s.",
                     Evidence = Tail(lines, 15),
                     Fix = new SuggestedFix("Check the log for a plugin that hangs during enable, or raise the timeout for large worlds.", false),
@@ -155,7 +161,9 @@ public sealed partial class RuntimeTestRunner
             var pluginErrors = snapshot.Where(l => PluginErrorLine().IsMatch(l)).ToList();
             results.Add(new CheckResult
             {
-                Id = "RT002", Name = "Plugin enable", Status = pluginErrors.Count == 0 ? CheckStatus.Pass : CheckStatus.Fail,
+                Id = "RT002",
+                Name = "Plugin enable",
+                Status = pluginErrors.Count == 0 ? CheckStatus.Pass : CheckStatus.Fail,
                 Description = pluginErrors.Count == 0
                     ? $"{snapshot.Count(l => EnablingLine().IsMatch(l))} plugin(s) enabled without reported errors."
                     : $"{pluginErrors.Count} plugin load/enable error(s) in the log.",

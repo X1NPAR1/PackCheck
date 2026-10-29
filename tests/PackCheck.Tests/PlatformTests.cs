@@ -17,11 +17,19 @@ public class PlatformTests
     {
         var def = new ServerDefinition
         {
-            Id = "x", Name = "x", Directory = ".", Platform = ServerPlatform.NeoForge, MinecraftVersion = "1.21.1",
-            JarFile = "run.bat", ArgsFile = "libraries/net/neoforged/neoforge/21.1.77/win_args.txt", JavaPath = "java", UseAikarFlags = false,
+            Id = "x",
+            Name = "x",
+            Directory = ".",
+            Platform = ServerPlatform.NeoForge,
+            MinecraftVersion = "1.21.1",
+            JarFile = "run.bat",
+            ArgsFile = "libraries/net/neoforged/neoforge/21.1.77/win_args.txt",
+            JavaPath = "java",
+            UseAikarFlags = false,
         };
         var args = ServerProcess.BuildArguments(def);
-        Assert.Equal(["-Xms1024M", "-Xmx4096M", "@libraries/net/neoforged/neoforge/21.1.77/win_args.txt", "nogui"], args);
+        Assert.Equal(["-Xms1024M", "-Xmx4096M", "-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8", "-Dterminal.jline=false",
+            "@libraries/net/neoforged/neoforge/21.1.77/win_args.txt", "nogui"], args);
     }
 
     /// <summary>Hits the real APIs. Excluded in CI with --filter Category!=Network.</summary>

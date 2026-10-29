@@ -85,87 +85,87 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
                 return (string.Join("\n", servers.Items.Select(s => $"- {s.Name}: {s.Definition.Platform} {s.Definition.MinecraftVersion}, port {s.Definition.Port}, {s.State}{(s == current() ? " (selected)" : string.Empty)}")), null);
 
             case "read_console":
-            {
-                var n = Math.Clamp(int.TryParse(S(a, "lines"), out var l) ? l : 80, 1, 400);
-                var lines = Server.Console.Skip(Math.Max(0, Server.Console.Count - n)).Select(e => e.Raw);
-                return ($"State: {Server.State}\n" + string.Join("\n", lines), null);
-            }
-
-            case "list_files":
-            {
-                var dir = Confine(S(a, "path"));
-                var entries = new DirectoryInfo(dir).EnumerateFileSystemInfos().OrderBy(e => e.Name, StringComparer.OrdinalIgnoreCase).Take(300)
-                    .Select(e => e is DirectoryInfo ? e.Name + "/" : $"{e.Name} ({((FileInfo)e).Length} bytes)");
-                return (string.Join("\n", entries), null);
-            }
-
-            case "read_file":
-            {
-                var file = Confine(S(a, "path"));
-                if (!FilesViewModel.IsText(file))
                 {
-                    return ("This is not a text file.", null);
+                    var n = Math.Clamp(int.TryParse(S(a, "lines"), out var l) ? l : 80, 1, 400);
+                    var lines = Server.Console.Skip(Math.Max(0, Server.Console.Count - n)).Select(e => e.Raw);
+                    return ($"State: {Server.State}\n" + string.Join("\n", lines), null);
                 }
 
-                var text = await File.ReadAllTextAsync(file).ConfigureAwait(true);
-                return (text.Length > MaxRead ? text[..MaxRead] + "\n[truncated]" : text, null);
-            }
+            case "list_files":
+                {
+                    var dir = Confine(S(a, "path"));
+                    var entries = new DirectoryInfo(dir).EnumerateFileSystemInfos().OrderBy(e => e.Name, StringComparer.OrdinalIgnoreCase).Take(300)
+                        .Select(e => e is DirectoryInfo ? e.Name + "/" : $"{e.Name} ({((FileInfo)e).Length} bytes)");
+                    return (string.Join("\n", entries), null);
+                }
+
+            case "read_file":
+                {
+                    var file = Confine(S(a, "path"));
+                    if (!FilesViewModel.IsText(file))
+                    {
+                        return ("This is not a text file.", null);
+                    }
+
+                    var text = await File.ReadAllTextAsync(file).ConfigureAwait(true);
+                    return (text.Length > MaxRead ? text[..MaxRead] + "\n[truncated]" : text, null);
+                }
 
             case "list_addons":
                 Server.RefreshPlugins();
                 return (Server.PluginList.Count == 0 ? "No plugins or mods installed." : string.Join("\n", Server.PluginList.Select(p => $"- {p.Name ?? "?"} {p.Version} ({p.File}){(p.Enabled ? string.Empty : " [disabled]")}")), null);
 
             case "run_validation":
-            {
-                var mc = Core.MinecraftVersion.TryParse(Server.Definition.MinecraftVersion, out var v) ? v : (Core.MinecraftVersion?)null;
-                var report = await new PackValidator().ValidateAsync(Server.Definition.Directory, new ValidationOptions { MinecraftVersion = mc }).ConfigureAwait(true);
-                var sb = new StringBuilder($"Overall: {HtmlReporter.Label(report.Overall)}\n");
-                foreach (var c in report.Checks.Where(c => c.Status != Core.CheckStatus.Pass))
                 {
-                    sb.Append(CultureInfo.InvariantCulture, $"- [{c.Status}] {c.Id} {c.Name}: {c.Description}");
-                    if (c.Fix is not null)
+                    var mc = Core.MinecraftVersion.TryParse(Server.Definition.MinecraftVersion, out var v) ? v : (Core.MinecraftVersion?)null;
+                    var report = await new PackValidator().ValidateAsync(Server.Definition.Directory, new ValidationOptions { MinecraftVersion = mc }).ConfigureAwait(true);
+                    var sb = new StringBuilder($"Overall: {HtmlReporter.Label(report.Overall)}\n");
+                    foreach (var c in report.Checks.Where(c => c.Status != Core.CheckStatus.Pass))
                     {
-                        sb.Append(" Fix: ").Append(c.Fix.Text);
+                        sb.Append(CultureInfo.InvariantCulture, $"- [{c.Status}] {c.Id} {c.Name}: {c.Description}");
+                        if (c.Fix is not null)
+                        {
+                            sb.Append(" Fix: ").Append(c.Fix.Text);
+                        }
+
+                        sb.Append('\n');
                     }
 
-                    sb.Append('\n');
+                    return (sb.ToString(), null);
                 }
 
-                return (sb.ToString(), null);
-            }
-
             case "write_file":
-            {
-                var path = S(a, "path");
-                var full = Confine(path);
-                var content = S(a, "content");
-                var old = File.Exists(full) ? await File.ReadAllTextAsync(full).ConfigureAwait(true) : string.Empty;
-                return (null, new PendingAction($"write {path}", Diff(old, content), async () =>
                 {
-                    if (File.Exists(full))
+                    var path = S(a, "path");
+                    var full = Confine(path);
+                    var content = S(a, "content");
+                    var old = File.Exists(full) ? await File.ReadAllTextAsync(full).ConfigureAwait(true) : string.Empty;
+                    return (null, new PendingAction($"write {path}", Diff(old, content), async () =>
                     {
-                        var backup = Path.Combine(Server.Definition.Directory, ".packcheck", "edits", DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
-                        Directory.CreateDirectory(backup);
-                        File.Copy(full, Path.Combine(backup, $"{DateTime.Now:HHmmss}-{Path.GetFileName(full)}"), overwrite: true);
-                    }
+                        if (File.Exists(full))
+                        {
+                            var backup = Path.Combine(Server.Definition.Directory, ".packcheck", "edits", DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
+                            Directory.CreateDirectory(backup);
+                            File.Copy(full, Path.Combine(backup, $"{DateTime.Now:HHmmss}-{Path.GetFileName(full)}"), overwrite: true);
+                        }
 
-                    Directory.CreateDirectory(Path.GetDirectoryName(full)!);
-                    await File.WriteAllTextAsync(full, content, new UTF8Encoding(false)).ConfigureAwait(true);
-                    return $"Wrote {path} ({content.Length} characters). A backup of the previous version is in .packcheck/edits.";
-                }));
-            }
+                        Directory.CreateDirectory(Path.GetDirectoryName(full)!);
+                        await File.WriteAllTextAsync(full, content, new UTF8Encoding(false)).ConfigureAwait(true);
+                        return $"Wrote {path} ({content.Length} characters). A backup of the previous version is in .packcheck/edits.";
+                    }));
+                }
 
             case "send_command":
-            {
-                var cmd = S(a, "command").Trim().TrimStart('/');
-                return (null, new PendingAction($"console: {cmd}", "> " + cmd, async () =>
                 {
-                    Server.Command = cmd;
-                    await Server.SendCommand.ExecuteAsync(null).ConfigureAwait(true);
-                    await Task.Delay(1500).ConfigureAwait(true);
-                    return "Sent. Recent output:\n" + string.Join("\n", Server.Console.Skip(Math.Max(0, Server.Console.Count - 15)).Select(e => e.Raw));
-                }));
-            }
+                    var cmd = S(a, "command").Trim().TrimStart('/');
+                    return (null, new PendingAction($"console: {cmd}", "> " + cmd, async () =>
+                    {
+                        Server.Command = cmd;
+                        await Server.SendCommand.ExecuteAsync(null).ConfigureAwait(true);
+                        await Task.Delay(1500).ConfigureAwait(true);
+                        return "Sent. Recent output:\n" + string.Join("\n", Server.Console.Skip(Math.Max(0, Server.Console.Count - 15)).Select(e => e.Raw));
+                    }));
+                }
 
             case "start_server":
                 return (null, new PendingAction($"start {Server.Name}", Server.Name, async () =>

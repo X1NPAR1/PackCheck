@@ -18,8 +18,12 @@ public sealed class ModIntegrityAnalyzer : IAnalyzer
         {
             yield return new CheckResult
             {
-                Id = Id, Name = "Corrupt mod", Status = CheckStatus.Fail, AffectedFile = "mods/" + m.FileName,
-                Description = "The file could not be read as a JAR archive.", Evidence = [$"sha256 {m.Sha256}"],
+                Id = Id,
+                Name = "Corrupt mod",
+                Status = CheckStatus.Fail,
+                AffectedFile = "mods/" + m.FileName,
+                Description = "The file could not be read as a JAR archive.",
+                Evidence = [$"sha256 {m.Sha256}"],
                 Fix = new SuggestedFix("Download the mod again from its official page.", true),
             };
         }
@@ -28,7 +32,11 @@ public sealed class ModIntegrityAnalyzer : IAnalyzer
         {
             yield return new CheckResult
             {
-                Id = "PC061", Name = "Unknown mod metadata", Status = CheckStatus.Warn, Confidence = Confidence.Medium, AffectedFile = "mods/" + m.FileName,
+                Id = "PC061",
+                Name = "Unknown mod metadata",
+                Status = CheckStatus.Warn,
+                Confidence = Confidence.Medium,
+                AffectedFile = "mods/" + m.FileName,
                 Description = "No fabric.mod.json, quilt.mod.json or mods.toml was found. PackCheck cannot tell what this jar needs.",
             };
         }
@@ -38,7 +46,9 @@ public sealed class ModIntegrityAnalyzer : IAnalyzer
         {
             yield return new CheckResult
             {
-                Id = "PC062", Name = "Mixed mod loaders", Status = CheckStatus.Fail,
+                Id = "PC062",
+                Name = "Mixed mod loaders",
+                Status = CheckStatus.Fail,
                 Description = $"Mods for different loaders are installed together: {string.Join(", ", loaders)}. A server runs mods for one loader only.",
                 Evidence = context.Mods.Where(m => m.Id is not null).GroupBy(m => m.Loader).Select(g => $"{g.Key}: {string.Join(", ", g.Take(5).Select(m => m.FileName))}").ToList(),
                 Fix = new SuggestedFix("Remove the mods made for the other loader.", true),
@@ -61,7 +71,10 @@ public sealed class ModDuplicateAnalyzer : IAnalyzer
         {
             yield return new CheckResult
             {
-                Id = Id, Name = "Duplicate mod", Status = CheckStatus.Fail, AffectedPlugin = g.Key,
+                Id = Id,
+                Name = "Duplicate mod",
+                Status = CheckStatus.Fail,
+                AffectedPlugin = g.Key,
                 Description = $"Mod '{g.Key}' is installed {g.Count()} times; the loader refuses to start with duplicates.",
                 Evidence = g.Select(m => $"{m.FileName} ({m.Version ?? "?"})").ToList(),
                 Fix = new SuggestedFix("Keep one copy, usually the newest.", true),
@@ -90,7 +103,11 @@ public sealed class ModDependencyAnalyzer : IAnalyzer
                 missing++;
                 yield return new CheckResult
                 {
-                    Id = Id, Name = "Missing mod dependency", Status = CheckStatus.Fail, AffectedPlugin = m.Id, AffectedFile = "mods/" + m.FileName,
+                    Id = Id,
+                    Name = "Missing mod dependency",
+                    Status = CheckStatus.Fail,
+                    AffectedPlugin = m.Id,
+                    AffectedFile = "mods/" + m.FileName,
                     Description = $"'{m.Name ?? m.Id}' requires '{d.Id}'{(d.VersionRange is null ? string.Empty : $" ({d.VersionRange})")}, which is not installed.",
                     Fix = new SuggestedFix($"Install '{d.Id}' for this loader and Minecraft version.", true),
                 };
@@ -114,7 +131,11 @@ public sealed class ModCompatibilityAnalyzer : IAnalyzer
         {
             yield return new CheckResult
             {
-                Id = "PC066", Name = "Client-only mod", Status = CheckStatus.Fail, AffectedFile = "mods/" + m.FileName, AffectedPlugin = m.Id,
+                Id = "PC066",
+                Name = "Client-only mod",
+                Status = CheckStatus.Fail,
+                AffectedFile = "mods/" + m.FileName,
+                AffectedPlugin = m.Id,
                 Description = $"'{m.Name ?? m.Id}' is marked as client-only and usually crashes a dedicated server.",
                 Evidence = [$"environment: {m.Environment}"],
                 Fix = new SuggestedFix("Remove it from the server's mods folder; players keep it on their client.", true),
@@ -140,7 +161,11 @@ public sealed class ModCompatibilityAnalyzer : IAnalyzer
                 bad++;
                 yield return new CheckResult
                 {
-                    Id = Id, Name = "Mod made for another Minecraft version", Status = CheckStatus.Fail, AffectedFile = "mods/" + m.FileName, AffectedPlugin = m.Id,
+                    Id = Id,
+                    Name = "Mod made for another Minecraft version",
+                    Status = CheckStatus.Fail,
+                    AffectedFile = "mods/" + m.FileName,
+                    AffectedPlugin = m.Id,
                     Description = $"'{m.Name ?? m.Id}' supports Minecraft {m.MinecraftRange}, the server runs {server}.",
                     Evidence = [$"minecraft: {m.MinecraftRange}"],
                     Fix = new SuggestedFix("Download the release of this mod that matches the server version.", true),
@@ -150,7 +175,11 @@ public sealed class ModCompatibilityAnalyzer : IAnalyzer
             {
                 yield return new CheckResult
                 {
-                    Id = Id, Name = "Unreadable version range", Status = CheckStatus.Warn, Confidence = Confidence.Low, AffectedFile = "mods/" + m.FileName,
+                    Id = Id,
+                    Name = "Unreadable version range",
+                    Status = CheckStatus.Warn,
+                    Confidence = Confidence.Low,
+                    AffectedFile = "mods/" + m.FileName,
                     Description = $"The Minecraft range '{m.MinecraftRange}' of '{m.Name ?? m.Id}' could not be evaluated; it was not guessed.",
                 };
             }

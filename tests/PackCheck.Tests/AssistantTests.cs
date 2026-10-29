@@ -14,8 +14,13 @@ public class AssistantTests
         var pack = new PackBuilder().Text("server.properties", "motd=Old\n").Text("plugins/Shop/messages.yml", "greeting: '&aHello %player%'\n");
         var def = new ServerDefinition
         {
-            Id = "t", Name = "Test", Directory = pack.Root, Platform = ServerPlatform.Paper, MinecraftVersion = "1.21.1",
-            JarFile = "paper.jar", JavaPath = "java.exe",
+            Id = "t",
+            Name = "Test",
+            Directory = pack.Root,
+            Platform = ServerPlatform.Paper,
+            MinecraftVersion = "1.21.1",
+            JarFile = "paper.jar",
+            JavaPath = "java.exe",
         };
         var server = new ServerItemViewModel(def, new ServerRegistry(Path.Combine(pack.Root, "servers.json")), new AppSettings());
         var list = new ServersViewModel(new ServerRegistry(Path.Combine(pack.Root, "servers.json")), new AppSettings(), null!, null!, null!, new App.AppState());
