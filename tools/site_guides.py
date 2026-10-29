@@ -43,9 +43,9 @@ footer{border-top:1px solid var(--rule);padding:28px 16px 40px;text-align:center
 GUIDES = [
     {
         "slug": "host-minecraft-server-windows",
-        "title": "How to host a Minecraft server on Windows (free, step by step)",
+        "title": "How to Host a Minecraft Server on Windows for Free (Step by Step)",
         "short": "Host a Minecraft server on Windows",
-        "desc": "Set up a Minecraft Java server on your own Windows PC in a few minutes: choose Paper, Fabric or Forge, give it RAM, start it and let friends join. Free, no command line.",
+        "desc": "Host a Minecraft Java server on your own Windows PC in minutes: pick Paper, Fabric or Forge, give it RAM, start it and let friends join. Free, no command line.",
         "image": "create-wizard.webp",
         "lead": "You do not need a paid host to play with friends. A normal Windows 10 or 11 PC can run a Minecraft Java server for a handful of players. This guide shows the quickest reliable way, and what to check so it stays smooth.",
         "steps": [
@@ -54,7 +54,7 @@ GUIDES = [
             ("Create the server", "Click New server and pick a profile such as Survival with friends. PackCheck chooses Paper, a free port and sensible game rules; change RAM, CPU cores, game mode, difficulty or the player limit if you like."),
             ("Accept the EULA and create", "Tick the Minecraft EULA box and press Create server. PackCheck downloads the official server, checks its hash and installs the right Java (Temurin) automatically."),
             ("Start and test locally", "Press Start. When the dashboard shows TPS 20, join from your own game with localhost or the local address shown on the Online page."),
-            ("Invite friends", "On the same Wi-Fi friends use your local address. Over the internet open the port on the Online page and confirm with Test from outside."),
+            ("Invite friends", "On the same Wi-Fi friends use your local address. Over the internet open the port on the Online page and confirm with Test from outside (see the port forwarding guide)."),
         ],
         "body": """
 <h2>Which server software should I choose?</h2>
@@ -75,9 +75,9 @@ GUIDES = [
     },
     {
         "slug": "minecraft-port-forwarding",
-        "title": "Minecraft port forwarding: let friends join your server",
+        "title": "Minecraft Port Forwarding: Let Friends Join | PackCheck",
         "short": "Minecraft port forwarding",
-        "desc": "Why friends cannot join your Minecraft server with your IP, how to forward port 25565 on your router, how to test it from outside, and what to do about CGNAT.",
+        "desc": "Why friends cannot join your Minecraft server with your IP, how to forward port 25565 on your router, test it from outside, and handle CGNAT.",
         "image": "online-router.webp",
         "lead": "If friends on the same Wi-Fi can join but people outside cannot, the router is dropping their connection. You fix it once by opening the server port in the Windows firewall and forwarding it on the router.",
         "steps": [
@@ -88,6 +88,7 @@ GUIDES = [
             ("Test from outside", "Press Test from outside in PackCheck. Green means friends can join with your public IP and port."),
         ],
         "body": """
+<p>Not sure which server software to run? See <a href="paper-vs-fabric-vs-forge.html">Paper vs Fabric vs Forge</a>. New to hosting? Start with <a href="host-minecraft-server-windows.html">hosting a Minecraft server on Windows</a>.</p>
 <h2>Still not reachable?</h2>
 <ul>
 <li><b>CGNAT:</b> if the WAN IP on your router page differs from your public IP (or starts with 100.64–100.127), your provider shares one IP between customers. Ask for a public IP or use a tunnel service.</li>
@@ -104,9 +105,9 @@ GUIDES = [
     },
     {
         "slug": "paper-vs-fabric-vs-forge",
-        "title": "Paper vs Fabric vs Forge vs NeoForge: which Minecraft server to choose",
+        "title": "Paper vs Fabric vs Forge (and NeoForge): Which Server to Choose",
         "short": "Paper vs Fabric vs Forge",
-        "desc": "Compare Paper, Purpur, Fabric, Quilt, Forge, NeoForge, Mohist and Velocity for a Minecraft Java server: plugins or mods, performance, versions and when to use each.",
+        "desc": "Compare Paper, Purpur, Fabric, Quilt, Forge, NeoForge, Mohist and Velocity for a Minecraft server: plugins or mods, performance and when to use each.",
         "image": "create-wizard.webp",
         "lead": "Minecraft servers come in two families: plugin servers (Paper and friends) that keep the vanilla client, and mod loaders (Fabric, Forge, NeoForge) where players install the same mods. Pick by what you want to add.",
         "steps": [],
@@ -131,9 +132,9 @@ GUIDES = [
     },
     {
         "slug": "check-minecraft-plugins",
-        "title": "Check Minecraft plugins and mods before they break your server",
+        "title": "Minecraft Plugin Checker: Find Broken Plugins and Mods",
         "short": "Check plugins and mods",
-        "desc": "Find missing dependencies, wrong Minecraft versions, duplicate plugins, corrupt jars and client-only mods before you start your Minecraft server. Free plugin and modpack validator.",
+        "desc": "Free Minecraft plugin and mod checker: find missing dependencies, wrong versions, duplicates, corrupt jars and client-only mods before your server starts.",
         "image": "validation.webp",
         "lead": "Most \"my server won't start\" problems come from the plugins or mods folder: a missing dependency, a jar for another Minecraft version, the same plugin twice, or a broken download. PackCheck finds them without starting the server.",
         "steps": [
@@ -152,6 +153,7 @@ GUIDES = [
 <li>Client-only mods on a dedicated server, mixed loaders</li>
 <li>server.properties values</li>
 </ul>
+<p>Choosing a platform first? Compare them in <a href="paper-vs-fabric-vs-forge.html">Paper vs Fabric vs Forge</a>.</p>
 <p>Plugin code is never executed for these checks. The same checks run from the command line (<code>packcheck validate</code>) for CI.</p>
 """,
         "faq": [
@@ -161,9 +163,9 @@ GUIDES = [
     },
     {
         "slug": "minecraft-server-automation",
-        "title": "Automate your Minecraft server: restarts, backups, crash recovery",
+        "title": "Minecraft Server Automation: Restarts, Backups, Crash Recovery",
         "short": "Minecraft server automation",
-        "desc": "Restart your Minecraft server every night with a countdown, back it up automatically, restart it after crashes, start it with Windows and chain servers behind a proxy.",
+        "desc": "Restart your Minecraft server nightly with a countdown, back it up automatically, recover from crashes, start it with Windows and chain servers.",
         "image": "automation.webp",
         "lead": "A home server is much nicer when it looks after itself. PackCheck's Automation tab runs rules for each server while the app sits in the tray.",
         "steps": [
@@ -174,6 +176,7 @@ GUIDES = [
             ("Start with Windows", "Turn on Start with Windows in Settings so the server comes back after every reboot."),
         ],
         "body": """
+<p>Setting up a server for the first time? Follow <a href="host-minecraft-server-windows.html">how to host a Minecraft server on Windows</a>.</p>
 <h2>Available rules</h2>
 <table>
 <tr><th>Rule</th><th>What it does</th></tr>
@@ -197,9 +200,10 @@ GUIDES = [
 
 TR = {
     "slug": "tr/index",
-    "title": "PackCheck – Windows için ücretsiz Minecraft sunucu yöneticisi",
+    "title": "Windows'ta Ücretsiz Minecraft Sunucusu Kur | PackCheck",
+    "h1": "Windows'ta ücretsiz Minecraft sunucusu kur",
     "short": "Türkçe",
-    "desc": "Windows'ta birkaç tıkla Minecraft sunucusu kur: Paper, Fabric, Forge, NeoForge; eklenti ve mod yükle, otomatik yeniden başlatma ve yedek, modem port yönlendirme rehberi. Ücretsiz ve açık kaynak.",
+    "desc": "Windows'ta birkaç tıkla Minecraft sunucusu kur: Paper, Fabric, Forge; eklenti ve mod, otomatik yedek, port yönlendirme rehberi. Ücretsiz, açık kaynak.",
     "image": "server-overview.webp",
     "lead": "PackCheck, kendi bilgisayarında Minecraft Java sunucusu açmak isteyenler için ücretsiz bir Windows uygulamasıdır. Sunucuyu kurar, doğru Java'yı yükler, eklenti ve modları uyumlu tutar ve arkadaşlarının bağlanmasına yardım eder. Arayüz tamamen Türkçedir.",
     "steps": [
@@ -219,7 +223,7 @@ TR = {
 <li>Otomasyon: zamanlanmış yeniden başlatma ve yedek, çökme sonrası başlatma, sunucular arası tetikleyiciler</li>
 <li>Yapay zeka asistanı (Claude, ChatGPT, Gemini, Grok…): plan modu ve onaylı değişiklikler</li>
 </ul>
-<p>Ayrıntılı rehberler (İngilizce): <a href="../guides/host-minecraft-server-windows.html">Windows'ta sunucu kurma</a>, <a href="../guides/minecraft-port-forwarding.html">port yönlendirme</a>, <a href="../guides/paper-vs-fabric-vs-forge.html">Paper, Fabric ve Forge karşılaştırması</a>.</p>
+<p>Ayrıntılı rehberler (İngilizce): <a href="../guides/host-minecraft-server-windows.html">Windows'ta sunucu kurma</a>, <a href="../guides/minecraft-port-forwarding.html">port yönlendirme</a>, <a href="../guides/paper-vs-fabric-vs-forge.html">Paper, Fabric ve Forge karşılaştırması</a>, <a href="../guides/check-minecraft-plugins.html">eklenti ve mod denetleme</a>, <a href="../guides/minecraft-server-automation.html">sunucu otomasyonu</a>.</p>
 """,
     "faq": [
         ("Minecraft sunucusu kurmak ücretsiz mi?", "Evet. PackCheck ve sunucu yazılımları ücretsizdir; kendi bilgisayarında çalıştırırsın."),
@@ -230,6 +234,9 @@ TR = {
 }
 
 
+HEIGHTS = {}
+
+
 def page(g, prefix, url):
     lang = g.get("lang", "en")
     crumbs = [{"@type": "ListItem", "position": 1, "name": "PackCheck", "item": BASE},
@@ -237,6 +244,10 @@ def page(g, prefix, url):
     data = [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": crumbs},
             {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
                 {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in g["faq"]]}]
+    data.append({"@context": "https://schema.org", "@type": "TechArticle", "headline": g["title"], "description": g["desc"],
+                 "datePublished": "2026-10-29", "dateModified": TODAY, "inLanguage": lang,
+                 "author": {"@type": "Person", "name": "X1NPAR1", "url": "https://github.com/X1NPAR1"},
+                 "image": BASE + "media/" + g["image"].replace(".webp", ".png"), "mainEntityOfPage": url})
     if g["steps"]:
         data.append({"@context": "https://schema.org", "@type": "HowTo", "name": g["title"], "description": g["desc"],
                      "tool": [{"@type": "HowToTool", "name": "PackCheck"}],
@@ -252,12 +263,12 @@ def page(g, prefix, url):
 <title>{escape(g["title"])}</title>
 <meta name="description" content="{escape(g["desc"])}">
 <link rel="canonical" href="{url}">
-<link rel="alternate" hreflang="{'tr' if tr else 'en'}" href="{url}">
-<link rel="alternate" hreflang="{'en' if tr else 'tr'}" href="{BASE if tr else BASE + 'tr/'}">
+{f'<link rel="alternate" hreflang="tr" href="{url}"><link rel="alternate" hreflang="en" href="{BASE}"><link rel="alternate" hreflang="x-default" href="{BASE}">' if tr else ''}
 <meta name="theme-color" content="#F3F4F1">
 <meta property="og:type" content="article"><meta property="og:site_name" content="PackCheck">
 <meta property="og:title" content="{escape(g["title"])}"><meta property="og:description" content="{escape(g["desc"])}">
 <meta property="og:url" content="{url}"><meta property="og:image" content="{BASE}media/{g["image"].replace('.webp', '.png')}">
+<meta property="og:image:alt" content="{escape(g["short"])} in PackCheck"><meta property="og:locale" content="{'tr_TR' if tr else 'en_US'}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="{prefix}media/cube.png"><link rel="manifest" href="{prefix}manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -267,13 +278,13 @@ def page(g, prefix, url):
 </head>
 <body>
 <nav class="nav" aria-label="Main"><div><a class="brand" href="{prefix}"><img src="{prefix}media/cube.png" alt="">PackCheck</a>
-<span class="links"><a href="{prefix}guides/host-minecraft-server-windows.html">{'Rehberler' if tr else 'Guides'}</a><a href="{prefix}tr/">Türkçe</a><a href="https://github.com/X1NPAR1/PackCheck">GitHub</a></span>
+<span class="links"><a href="{prefix}#guides">{'Rehberler' if tr else 'Guides'}</a>{'<a href="../" hreflang="en">English</a>' if tr else f'<a href="{prefix}tr/" hreflang="tr">Türkçe</a>'}<a href="https://github.com/X1NPAR1/PackCheck">GitHub</a></span>
 <a class="btn" href="{DOWNLOAD}">{'İndir' if tr else 'Download'}</a></div></nav>
 <main>
 <div class="crumbs"><a href="{prefix}">PackCheck</a> › {escape(g["short"])}</div>
-<h1>{escape(g["title"])}</h1>
+<h1>{escape(g.get("h1", g["title"].replace(" | PackCheck", "")))}</h1>
 <p class="lead">{escape(g["lead"])}</p>
-<img src="{prefix}media/{g["image"]}" alt="{escape(g["short"])} in PackCheck" loading="lazy">
+<img src="{prefix}media/{g["image"]}" alt="{escape(g["short"])}: screenshot of the PackCheck app" width="1200" height="{HEIGHTS.get(g["image"], 800)}" fetchpriority="high">
 {f'<h2>{"Adım adım" if tr else "Step by step"}</h2><ol>{steps}</ol>' if steps else ''}
 {g["body"]}
 <h2>{'Sık sorulanlar' if tr else 'Questions'}</h2>
@@ -288,6 +299,10 @@ def page(g, prefix, url):
 
 
 def main():
+    from PIL import Image
+    for f in (SITE / "media").glob("*.webp"):
+        with Image.open(f) as im:
+            HEIGHTS[f.name] = round(im.height * 1200 / im.width)
     (SITE / "guides").mkdir(exist_ok=True)
     (SITE / "tr").mkdir(exist_ok=True)
     for g in GUIDES:
@@ -296,7 +311,7 @@ def main():
 
     urls = [(BASE, "1.0"), (BASE + "tr/", "0.8")] + [(BASE + f'guides/{g["slug"]}.html', "0.8") for g in GUIDES]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    sitemap += "".join(f"  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)
+    sitemap += "".join(f"  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n" for u, p in urls)
     sitemap += "</urlset>\n"
     (SITE / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 

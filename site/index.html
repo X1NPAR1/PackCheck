@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PackCheck – free Minecraft server manager for Windows</title>
-<meta name="description" content="Create, run and validate Minecraft Java servers on Windows. Paper, Purpur, Fabric, Forge, NeoForge, Velocity and 12 more platforms, automatic Java, plugin and mod browser, port forwarding help and pack validation. Free and open source.">
-<meta name="keywords" content="minecraft server manager, minecraft server windows, create minecraft server, host minecraft server, paper server, fabric server, forge server, neoforge server, minecraft plugin checker, modpack validator, minecraft port forwarding, velocity proxy, free minecraft server software">
+<meta name="description" content="Free Minecraft server manager for Windows. Host Paper, Fabric, Forge or NeoForge servers, install plugins and mods, set up port forwarding and automation. Open source.">
 <link rel="canonical" href="https://x1npar1.github.io/PackCheck/">
 <meta name="theme-color" content="#F3F4F1">
 <meta property="og:type" content="website">
@@ -20,6 +19,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="alternate" hreflang="en" href="https://x1npar1.github.io/PackCheck/">
 <link rel="alternate" hreflang="tr" href="https://x1npar1.github.io/PackCheck/tr/">
+<link rel="alternate" hreflang="x-default" href="https://x1npar1.github.io/PackCheck/">
+<meta property="og:locale" content="en_US">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -28,14 +29,16 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "PackCheck",
-  "applicationCategory": "GameApplication",
+  "applicationCategory": "UtilitiesApplication",
+  "image": "https://x1npar1.github.io/PackCheck/media/cube.png",
+  "datePublished": "2026-10-29",
   "applicationSubCategory": "Minecraft server manager",
   "operatingSystem": "Windows 10, Windows 11",
   "description": "Free Windows app to create, run and validate Minecraft Java servers and plugin or mod packs.",
   "url": "https://x1npar1.github.io/PackCheck/",
   "downloadUrl": "https://github.com/X1NPAR1/PackCheck/releases/latest",
   "softwareVersion": "3.1.5",
-  "inLanguage": ["en", "tr", "de", "fr", "ru"],
+  "availableLanguage": ["en", "tr", "de", "fr", "ru"],
   "license": "https://opensource.org/licenses/MIT",
   "author": { "@type": "Person", "name": "X1NPAR1", "url": "https://github.com/X1NPAR1" },
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -50,7 +53,9 @@
     { "@type": "Question", "name": "How do I make a Minecraft server on Windows?", "acceptedAnswer": { "@type": "Answer", "text": "Install PackCheck, click New server, choose a profile such as Survival with friends, accept the Minecraft EULA and press Create server. PackCheck downloads the server, installs the right Java and starts it." } },
     { "@type": "Question", "name": "How can my friends join my Minecraft server?", "acceptedAnswer": { "@type": "Answer", "text": "On the same network they use the local address. Over the internet press Open to the internet on the Online page; if the router does not forward the port automatically, follow the guide there and confirm with Test from outside." } },
     { "@type": "Question", "name": "Paper, Fabric or Forge – which should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, Velocity to link several servers." } },
-    { "@type": "Question", "name": "Is PackCheck free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is open source under the MIT license, needs no account and sends no telemetry." } }
+    { "@type": "Question", "name": "Is PackCheck free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is open source under the MIT license, needs no account and sends no telemetry." } },
+    { "@type": "Question", "name": "Why does my plugin or mod not load?", "acceptedAnswer": { "@type": "Answer", "text": "Run Validate. It lists missing dependencies, Minecraft version mismatches, duplicates and corrupt files, each with the fix." } },
+    { "@type": "Question", "name": "What do I need?", "acceptedAnswer": { "@type": "Answer", "text": "Windows 10 or 11 (64-bit) and about 2 GB of free memory for a small server, 6–8 GB for modpacks. Java is installed for you." } }
   ]
 }
 </script>
@@ -273,7 +278,7 @@
 <header class="hero" id="top">
   <div class="wrap">
     <a class="badge" href="https://github.com/X1NPAR1/PackCheck/releases/latest"><b>New</b><span id="ver">Version 3.1.5: create wizard, port forwarding guide, tray menu</span></a>
-    <h1>Host a Minecraft server from your own PC</h1>
+    <h1>Host a Minecraft server on your Windows PC</h1>
     <p class="lead">PackCheck sets up the server, installs Java, keeps plugins and mods compatible and gets your friends connected. A free Windows app, no command line needed.</p>
     <div class="actions">
       <a class="btn btn-dark" href="https://github.com/X1NPAR1/PackCheck/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
@@ -319,17 +324,17 @@
         <div class="panel on" role="tabpanel" id="p0" aria-labelledby="t0">
           <div><h3>A server in a few clicks</h3><p>Start from a profile and change only what you care about.</p>
             <ul><li>Survival, modded, creative, minigames, hardcore or low-end profiles</li><li>RAM from 1 to 32 GB, CPU core limit</li><li>Game rules, free port and the right Java chosen for you</li></ul></div>
-          <img src="media/create-wizard.webp" alt="Create server wizard" loading="lazy">
+          <img src="media/create-wizard.webp" alt="Create Minecraft server wizard with profiles, platform cards, RAM and CPU sliders" loading="lazy">
         </div>
         <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
           <div><h3>See how it is doing</h3><p>Health at a glance, details when you need them.</p>
             <ul><li>TPS, CPU, RAM and ping with history</li><li>Automation: scheduled restarts and backups, crash restarts, idle stop</li><li>Console with search and clickable player names</li><li>Files, backups and a code editor that checks configs</li></ul></div>
-          <img src="media/server-overview.webp" alt="Server dashboard" loading="lazy">
+          <img src="media/automation.webp" width="1200" alt="Automation tab with scheduled restart, backup and crash restart rules for a Minecraft server" loading="lazy">
         </div>
         <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
           <div><h3>Only what fits your server</h3><p>Browse Modrinth, Hangar and CurseForge by category.</p>
             <ul><li>Incompatible items explain why</li><li>Full project details before you install</li><li>Update buttons for installed plugins and mods</li></ul></div>
-          <img src="media/plugins.webp" alt="Plugin browser" loading="lazy">
+          <img src="media/plugins.webp" alt="Minecraft plugin browser showing Modrinth and Hangar plugins compatible with a Paper server" loading="lazy">
         </div>
         <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
           <div><h3>Friends can actually join</h3><p>One button for the firewall and router, and a plain answer when the router says no.</p>
@@ -339,7 +344,7 @@
         <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden>
           <div><h3>Problems before players see them</h3><p>Checks every jar and config without running plugin code.</p>
             <ul><li>Missing dependencies and version mismatches</li><li>Duplicates, corrupt jars, client-only mods</li><li>Evidence and a suggested fix for each finding</li></ul></div>
-          <img src="media/validation.webp" alt="Validation results" loading="lazy">
+          <img src="media/validation.webp" alt="Plugin and mod validation results grouped by severity with evidence and fixes" loading="lazy">
         </div>
       </div>
     </div>
@@ -348,6 +353,7 @@
 
 <section id="features">
   <div class="wrap">
+    <div class="head"><h2>A Minecraft server manager built for home hosting</h2></div>
     <div class="row reveal">
       <div class="copy">
         <h3>Built for the way people really host</h3>
@@ -421,13 +427,13 @@
 
 <section class="faq" id="faq">
   <div class="narrow">
-    <div class="head"><h2>Questions</h2></div>
+    <div class="head"><h2>Minecraft server FAQ</h2></div>
     <details><summary>How do I make a Minecraft server on Windows?</summary><div class="a">Install PackCheck, click <b>New server</b>, choose a profile such as <i>Survival with friends</i>, accept the Minecraft EULA and press <b>Create server</b>. PackCheck downloads the server, installs Java and starts it.</div></details>
-    <details><summary>How can my friends join?</summary><div class="a">On the same Wi-Fi they use the local address. Over the internet press <b>Open to the internet</b>; if your router does not forward the port automatically, follow the guide on the Online page and confirm with <b>Test from outside</b>.</div></details>
-    <details><summary>Paper, Fabric or Forge: which one?</summary><div class="a">Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, and Velocity to link several servers. The create wizard explains each one.</div></details>
+    <details><summary>How can my friends join my Minecraft server?</summary><div class="a">On the same Wi-Fi they use the local address. Over the internet press <b>Open to the internet</b>; if your router does not forward the port automatically, follow the guide on the Online page and confirm with <b>Test from outside</b>.</div></details>
+    <details><summary>Paper, Fabric or Forge – which should I choose?</summary><div class="a">Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, and Velocity to link several servers. The create wizard explains each one.</div></details>
     <details><summary>Why does my plugin or mod not load?</summary><div class="a">Run <b>Validate</b>. It lists missing dependencies, Minecraft version mismatches, duplicates and corrupt files, each with the fix.</div></details>
     <details><summary>What do I need?</summary><div class="a">Windows 10 or 11 (64-bit) and about 2 GB of free memory for a small server, 6–8 GB for modpacks. Java is installed for you.</div></details>
-    <details><summary>Is it really free?</summary><div class="a">Yes. PackCheck is open source under the MIT license, needs no account and sends no telemetry.</div></details>
+    <details><summary>Is PackCheck free?</summary><div class="a">Yes. PackCheck is open source under the MIT license, needs no account and sends no telemetry.</div></details>
   </div>
 </section>
 
