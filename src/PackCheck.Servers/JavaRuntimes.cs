@@ -128,7 +128,32 @@ public sealed partial class JavaRuntimes(HttpClient http)
         return match ?? await InstallTemurinAsync(InstallableFeature(required), progress, ct, jdk: true).ConfigureAwait(false);
     }
 
+    /// <summary>One install at a time: two servers starting together must not download into the same files.</summary>
+    private static readonly SemaphoreSlim InstallGate = new(1, 1);
+
     public async Task<JavaRuntime> InstallTemurinAsync(int feature, IProgress<double>? progress, CancellationToken ct, bool jdk = false)
+    {
+        await InstallGate.WaitAsync(ct).ConfigureAwait(false);
+        try
+        {
+            // Already installed (by an earlier run or by the call we just waited for)? A running server may be using it.
+            var existing = Path.Combine(AppPaths.Runtimes, jdk ? $"temurin-{feature}-jdk" : $"temurin-{feature}");
+            if (Directory.Exists(existing)
+                && Directory.EnumerateFiles(existing, "java.exe", SearchOption.AllDirectories).FirstOrDefault(f => f.EndsWith(Path.Combine("bin", "java.exe"), StringComparison.OrdinalIgnoreCase)) is { } found
+                && await ProbeAsync(found, ct).ConfigureAwait(false) is { } ready && ready.FeatureVersion >= feature)
+            {
+                return ready;
+            }
+
+            return await DownloadTemurinAsync(feature, progress, jdk, ct).ConfigureAwait(false);
+        }
+        finally
+        {
+            InstallGate.Release();
+        }
+    }
+
+    private async Task<JavaRuntime> DownloadTemurinAsync(int feature, IProgress<double>? progress, bool jdk, CancellationToken ct)
     {
         var image = jdk ? "jdk" : "jre";
         var api = new Uri($"https://api.adoptium.net/v3/assets/latest/{feature}/hotspot?os=windows&architecture=x64&image_type={image}&vendor=eclipse");

@@ -376,6 +376,19 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
         }
 
         await File.WriteAllTextAsync(Path.Combine(dir, "server.properties"), string.Concat(props.Select(kv => $"{kv.Key}={kv.Value}\n")), ct).ConfigureAwait(false);
+
+        // Proxies ignore server.properties; their port lives in their own config. Without this they bind 25577.
+        var port = r.Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        if (r.Platform == ServerPlatform.Velocity)
+        {
+            // The full file the Proxy page writes; a partial one is replaced by Velocity's defaults.
+            await File.WriteAllTextAsync(Path.Combine(dir, "velocity.toml"), ProxyConfigurator.VelocityToml(r.Port, safeName, [], []), ct).ConfigureAwait(false);
+            await File.WriteAllTextAsync(Path.Combine(dir, "forwarding.secret"), ProxyConfigurator.NewSecret(), ct).ConfigureAwait(false);
+        }
+        else if (r.Platform == ServerPlatform.BungeeCord)
+        {
+            await File.WriteAllTextAsync(Path.Combine(dir, "config.yml"), $"# Written by PackCheck. BungeeCord adds any missing keys on start.\nlisteners:\n- host: 0.0.0.0:{port}\n  query_port: {port}\n", ct).ConfigureAwait(false);
+        }
         await File.WriteAllTextAsync(Path.Combine(dir, "packcheck.json"), JsonSerializer.Serialize(new { minecraftVersion = r.Version }), ct).ConfigureAwait(false);
 
         progress?.Report((1, "done"));

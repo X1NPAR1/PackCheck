@@ -38,7 +38,19 @@ Each server was created by PackCheck's own code in `D:\MCSERVER\pc-e2e-*`, start
 | NeoForge | 25 | 10 s | ✅ | 20.0 | ✅ |
 | Mohist (1.20.2) | 17 | 77 s | ✅ | 20.0 | ✅ |
 | Velocity + Paper backend | 25 | – | ✅ through the proxy | – | ✅ |
+| Leaf | 25 | 19 s | ✅ | 20.0 | ✅ |
+| Leaves (1.21.11) | 21 | 24 s | ✅ | 19.9 | ✅ |
+| CraftBukkit (BuildTools, 6 min build) | 25 JDK | 11 s | ✅ | n/a | ✅ |
+| SpongeVanilla | 25 | 25 s | ✅ | n/a | ✅ |
+| Arclight (26.1.2) | 25 | 39 s | ✅ | 20.0 | ✅ |
+| Youer (26.2) | 25 | 20 s | ✅ | – | ⚠️ console commands are not read (see below) |
+| Velocity (alone) | 25 | 1 s | ✅ | – | ✅ |
+| BungeeCord | 21 | 4 s | ✅ | – | ✅ |
 
-Problems these runs found and that were fixed: TPS lines with ANSI colors and comma decimals, an outdated Quilt installer hash in Quilt's meta API, BuildTools needing a JDK, read-only git files blocking cleanup, the status query being too early right after "Done", and Velocity 4 needing Java 25.
+The second round (29 Oct 2026) found and fixed: new Velocity and BungeeCord servers ignored the chosen port (proxies read their own config, not `server.properties`), two servers starting at the same time downloaded Java into the same files, Java was re-downloaded over a runtime a running server was using, and non-English console text from Java turned into `?` characters. `-Dfile.encoding=UTF-8` was tried and dropped because it stops Velocity from reading its config.
 
-Not tested end to end: CraftBukkit, Leaf, Leaves, SpongeVanilla, Youer, Arclight and BungeeCord (their downloads are verified by the network tests), and opening a server to the internet (needs the user to approve the Windows administrator prompt).
+Problems the first runs found and that were fixed: TPS lines with ANSI colors and comma decimals, an outdated Quilt installer hash in Quilt's meta API, BuildTools needing a JDK, read-only git files blocking cleanup, the status query being too early right after "Done", and Velocity 4 needing Java 25.
+
+Known issue: Youer starts, answers status pings and stops cleanly, but does not read commands sent to its console from PackCheck.
+
+Not tested end to end: opening a server to the internet (needs the user to approve the Windows administrator prompt). The **Test from outside** check was run against a real server on a home connection without forwarding and correctly reported it as unreachable.

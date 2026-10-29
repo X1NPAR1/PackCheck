@@ -36,7 +36,17 @@ public sealed class ServerProcess : IAsyncDisposable
 
     public static IReadOnlyList<string> BuildArguments(ServerDefinition def)
     {
-        var args = new List<string> { $"-Xms{def.MinMemoryMb}M", $"-Xmx{def.MaxMemoryMb}M" };
+        var args = new List<string>
+        {
+            $"-Xms{def.MinMemoryMb}M", $"-Xmx{def.MaxMemoryMb}M",
+
+            // PackCheck reads the console as UTF-8; without these Java writes in the Windows code page
+            // (Turkish, Russian, ... text turns into '?' characters).
+            "-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8",
+
+            // There is no real terminal; JLine-based consoles otherwise may not read commands from the pipe.
+            "-Dterminal.jline=false",
+        };
         if (def.CpuCores > 0 && def.CpuCores < Environment.ProcessorCount)
         {
             // Sizes the JVM's GC and worker thread pools to the cores the server is allowed to use.
@@ -92,6 +102,7 @@ public sealed class ServerProcess : IAsyncDisposable
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             CreateNoWindow = true,
+            StandardInputEncoding = new UTF8Encoding(false),
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8,
         };

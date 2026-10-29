@@ -29,6 +29,7 @@ public class EndToEndServerTests(ITestOutputHelper output)
     [InlineData(ServerPlatform.Youer)]
     [InlineData(ServerPlatform.Arclight)]
     [InlineData(ServerPlatform.BungeeCord)]
+    [InlineData(ServerPlatform.Velocity)]
     public async Task CreateStartCommandStop(ServerPlatform platform)
     {
         var root = Environment.GetEnvironmentVariable("PACKCHECK_E2E_DIR");
@@ -59,6 +60,7 @@ public class EndToEndServerTests(ITestOutputHelper output)
             var lines = new List<string>();
             var running = new TaskCompletionSource();
             var listReply = new TaskCompletionSource();
+            var listSent = false;
             await using var server = new ServerProcess(def with { MaxMemoryMb = 2048, UseAikarFlags = false });
             server.Output += (_, l) =>
             {
@@ -67,7 +69,8 @@ public class EndToEndServerTests(ITestOutputHelper output)
                     lines.Add(l);
                 }
 
-                if (l.Contains("players online", StringComparison.OrdinalIgnoreCase))
+                // Any output after the command counts as a reply: proxies answer in the system language.
+                if (Volatile.Read(ref listSent) && !l.Contains("> ", StringComparison.Ordinal))
                 {
                     listReply.TrySetResult();
                 }
@@ -104,10 +107,35 @@ public class EndToEndServerTests(ITestOutputHelper output)
                 ping = await ServerListPing.QueryAsync("127.0.0.1", port, TimeSpan.FromSeconds(3), CancellationToken.None);
             }
             output.WriteLine($"{platform}: status ping {(ping is null ? "no answer" : $"{ping.Online}/{ping.Max} players, {ping.LatencyMs} ms, version '{ping.Version}'")}");
+            if (ping is null)
+            {
+                lock (lines)
+                {
+                    foreach (var l in lines.TakeLast(20))
+                    {
+                        output.WriteLine("  last> " + l);
+                    }
+                }
+            }
+
             Assert.NotNull(ping);
 
+            await Task.Delay(1500); // let start-up messages settle so they are not taken as the reply
+            Volatile.Write(ref listSent, true);
             await server.SendCommandAsync(ProxyConfigurator.IsProxy(platform) ? "glist" : "list");
-            Assert.True(await Task.WhenAny(listReply.Task, Task.Delay(TimeSpan.FromSeconds(30))) == listReply.Task, "No reply to 'list'.");
+            var replied = await Task.WhenAny(listReply.Task, Task.Delay(TimeSpan.FromSeconds(30))) == listReply.Task;
+            if (!replied)
+            {
+                lock (lines)
+                {
+                    foreach (var l in lines.TakeLast(15))
+                    {
+                        output.WriteLine("  last> " + l);
+                    }
+                }
+            }
+
+            Assert.True(replied, "No reply to 'list'.");
 
             if (TpsParser.CommandFor(platform, hasSpark: false) is { } tpsCommand)
             {
