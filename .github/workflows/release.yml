@@ -25,6 +25,7 @@ jobs:
           choco install innosetup -y --no-progress
           dotnet tool install --global wix --version 5.0.2
           wix extension add -g WixToolset.UI.wixext/5.0.2
+          wix extension add -g WixToolset.Util.wixext/5.0.2
 
       - name: Test
         run: dotnet test tests/PackCheck.Tests -c Release --filter "Category!=Network&Category!=EndToEnd"
@@ -47,7 +48,7 @@ jobs:
           & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /Q "/DAppVersion=$version" installer/PackCheck.iss
           if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed" }
           Push-Location installer
-          wix build PackCheck.wxs -ext WixToolset.UI.wixext -arch x64 -d "Version=$version" -d "SourceDir=..\publish\PackCheck" -o "..\artifacts\PackCheck-$version.msi"
+          wix build PackCheck.wxs -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext -arch x64 -d "Version=$version" -d "SourceDir=..\publish\PackCheck" -o "..\artifacts\PackCheck-$version.msi"
           if ($LASTEXITCODE -ne 0) { throw "WiX failed" }
           Pop-Location
           Remove-Item artifacts/*.wixpdb -ErrorAction SilentlyContinue

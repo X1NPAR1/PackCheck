@@ -1,20 +1,39 @@
-<!-- PackCheck MSI (WiX v5). Build: wix build PackCheck.wxs -ext WixToolset.UI.wixext -d Version=2.0.0 -d SourceDir=..\publish\PackCheck -o ..\artifacts\PackCheck-2.0.0.msi -->
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+<!-- PackCheck MSI (WiX v5).
+     Build: wix build PackCheck.wxs -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext -arch x64 -d Version=3.1.2 -d SourceDir=..\publish\PackCheck -o ..\artifacts\PackCheck-3.1.2.msi
+     Silent: msiexec /i PackCheck-3.1.2.msi /qn [INSTALLFOLDER="D:\Apps\PackCheck"] [ADDLOCAL=Main,Desktop,Startup] -->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Package Name="PackCheck" Manufacturer="X1NPAR1" Version="$(Version)" UpgradeCode="5B0C2E77-3A1D-4C6F-8E9B-2D7A4F1C6E35"
            Scope="perUser" Compressed="yes" Language="1033">
-    <MajorUpgrade DowngradeErrorMessage="A newer version of PackCheck is already installed." AllowSameVersionUpgrades="yes" />
+    <SummaryInformation Description="PackCheck – Minecraft server studio" Manufacturer="X1NPAR1" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of PackCheck is already installed." AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" />
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <Icon Id="AppIcon" SourceFile="..\src\PackCheck.App\Assets\app.ico" />
     <Property Id="ARPPRODUCTICON" Value="AppIcon" />
-    <Property Id="ARPURLINFOABOUT" Value="https://github.com/X1NPAR1/PackCheck" />
+    <Property Id="ARPURLINFOABOUT" Value="https://x1npar1.github.io/PackCheck/" />
     <Property Id="ARPHELPLINK" Value="https://github.com/X1NPAR1/PackCheck/issues" />
+    <Property Id="ARPURLUPDATEINFO" Value="https://github.com/X1NPAR1/PackCheck/releases" />
+    <Property Id="ARPCONTACT" Value="X1NPAR1" />
+
+    <!-- An upgrade keeps the folder the user chose last time. -->
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id="PreviousFolder" Root="HKCU" Key="Software\PackCheck" Name="InstallFolder" Type="raw" />
+    </Property>
 
     <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
     <WixVariable Id="WixUIBannerBmp" Value="wix-banner.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="wix-dialog.bmp" />
-    <!-- FeatureTree lets the user tick "Start with Windows" (off by default). -->
-    <ui:WixUI Id="WixUI_FeatureTree" />
+
+    <!-- Mondo: Typical / Custom / Complete. "Custom" shows the feature tree with "Browse..." for the install folder. -->
+    <ui:WixUI Id="WixUI_Mondo" />
+    <UI>
+      <!-- "Launch PackCheck" check box on the last page, ticked by default. -->
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed" />
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch PackCheck" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+    <Property Id="WixShellExecTarget" Value="[#PackCheckExe]" />
+    <CustomAction Id="LaunchApplication" DllEntry="WixShellExec" Impersonate="yes" BinaryRef="Wix4UtilCA_X64" />
 
     <StandardDirectory Id="LocalAppDataFolder">
       <Directory Id="ProgramsDir" Name="Programs">
@@ -23,16 +42,31 @@
     </StandardDirectory>
 
     <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
-      <Files Include="$(SourceDir)\**" />
+      <Files Include="$(SourceDir)\**">
+        <Exclude Files="$(SourceDir)\PackCheck.exe" />
+      </Files>
+      <Component Id="MainExe" Guid="E1B7A3D4-58C2-4F0E-9A61-2C7D8B3F4A15">
+        <File Id="PackCheckExe" Source="$(SourceDir)\PackCheck.exe" KeyPath="yes" />
+      </Component>
       <Component Id="InstallType" Guid="8F3B6D1A-2C4E-4B7F-9A0D-1E5C7B2A9F48">
         <File Id="InstallTypeTxt" Source="install-type-msi.txt" Name="install-type.txt" />
+      </Component>
+      <Component Id="RememberFolder" Guid="0C5E8A2B-7D41-4F93-B6A8-3E9D1F0C7B24">
+        <RegistryValue Root="HKCU" Key="Software\PackCheck" Name="InstallFolder" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
     <StandardDirectory Id="ProgramMenuFolder">
       <Component Id="StartMenuShortcut" Guid="3D9E2B7C-6A1F-4E8D-B5C2-7F0A4D3E1B96">
-        <Shortcut Id="AppShortcut" Name="PackCheck" Target="[INSTALLFOLDER]PackCheck.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+        <Shortcut Id="AppShortcut" Name="PackCheck" Description="Create, run and validate Minecraft servers" Target="[#PackCheckExe]" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
         <RegistryValue Root="HKCU" Key="Software\PackCheck" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <StandardDirectory Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="A47C2E19-3B85-4D6F-8E02-5F1B9C7D3A68">
+        <Shortcut Id="DesktopAppShortcut" Name="PackCheck" Description="Create, run and validate Minecraft servers" Target="[#PackCheckExe]" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+        <RegistryValue Root="HKCU" Key="Software\PackCheck" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </StandardDirectory>
 
@@ -44,9 +78,13 @@
       </Component>
     </StandardDirectory>
 
-    <Feature Id="Main" Title="PackCheck" Description="The application and its Start menu shortcut." AllowAbsent="no" Display="expand">
+    <Feature Id="Main" Title="PackCheck" Description="The application and its Start menu shortcut. Click Browse to choose where it is installed."
+             AllowAbsent="no" Display="expand" ConfigurableDirectory="INSTALLFOLDER">
       <ComponentGroupRef Id="AppFiles" />
       <ComponentRef Id="StartMenuShortcut" />
+      <Feature Id="Desktop" Title="Desktop shortcut" Description="A PackCheck icon on the desktop." Level="1">
+        <ComponentRef Id="DesktopShortcut" />
+      </Feature>
       <Feature Id="Startup" Title="Start with Windows" Description="Starts PackCheck minimized to the tray when you sign in. Can be changed later in Settings." Level="2">
         <ComponentRef Id="AutostartValue" />
       </Feature>
