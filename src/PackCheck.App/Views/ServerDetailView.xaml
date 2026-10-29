@@ -518,6 +518,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock DockPanel.Dock="Right" Text="{l:Loc Auto_Add}" VerticalAlignment="Center" Margin="0,0,10,0" Style="{StaticResource Muted}" />
+                    <Button DockPanel.Dock="Right" Content="{l:Loc Auto_Recommended}" Command="{Binding AddRecommendedCommand}" Margin="0,0,14,0" ToolTip="{l:Loc Auto_RecommendedHint}"
+                            AutomationProperties.AutomationId="AddRecommended" />
                     <StackPanel>
                         <TextBlock Text="{l:Loc Auto_Title}" Style="{StaticResource H2}" FontSize="17" />
                         <TextBlock Text="{l:Loc Auto_Subtitle}" Style="{StaticResource Muted}" FontSize="12.5" TextWrapping="Wrap" />

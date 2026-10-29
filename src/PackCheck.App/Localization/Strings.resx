@@ -512,6 +512,8 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="AutoWhy_AppStarted" xml:space="preserve"><value>PackCheck opened</value></data>
   <data name="AutoWhy_RunNow" xml:space="preserve"><value>run by hand</value></data>
   <data name="AutoWhy_Crash" xml:space="preserve"><value>after a crash, attempt {0}</value></data>
+  <data name="Auto_Recommended" xml:space="preserve"><value>Recommended setup</value></data>
+  <data name="Auto_RecommendedHint" xml:space="preserve"><value>Start with PackCheck, restart after crashes, back up at 03:30 and restart at 04:00.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

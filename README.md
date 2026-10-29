@@ -76,6 +76,11 @@ Static checks never execute plugin code. A real startup test is available, but y
 - Every server process tree runs in a Windows Job Object; nothing keeps running after a crash or a forced stop.
 - Zip backups with retention and restore.
 
+**Automation**
+- Per-server rules on an Automation tab: start when PackCheck opens, restart after a crash (with a limit per hour), scheduled restart with a chat countdown, scheduled backup, scheduled or repeating console commands, chat announcements, warn or restart on low TPS or high memory, and stop when nobody is online.
+- Days of the week, "Run now", next and last run for every rule, an activity log, and a one-click recommended setup.
+- Rules keep working while PackCheck sits in the tray; with "Start with Windows" a server comes back after every reboot.
+
 **Plugins, mods and modpacks**
 - Browse Modrinth, Hangar and CurseForge page by page, sorted by downloads or updates and filtered by category, without having to search first.
 - Project detail panel with the full description, supported versions and loaders.
@@ -91,6 +96,8 @@ Static checks never execute plugin code. A real startup test is available, but y
 **AI assistant**
 - Choose a provider (Anthropic Claude, OpenAI, Google Gemini, xAI Grok, DeepSeek, Mistral, Groq, OpenRouter, Ollama, LM Studio) and pick one of its models from a list; the key is stored encrypted with Windows DPAPI.
 - Answers stream in as they are written, with Markdown formatting; each server keeps its own chat history.
+- Four modes: ask before every change, plan first (nothing changes until you run the plan), auto-edit files, or bypass approvals.
+- Every step it takes is listed with a readable title; click a step to see what was sent and what came back.
 - It reads the console, files and validation results, and can edit configs, translate plugin message files, send commands or create several servers at once.
 - Every change waits for your approval with a preview; it cannot leave the server folder and has no shell.
 

@@ -513,6 +513,8 @@ S = {
     "AutoWhy_AppStarted": ["PackCheck opened", "PackCheck açıldı", "PackCheck geöffnet", "PackCheck ouvert", "PackCheck открыт"],
     "AutoWhy_RunNow": ["run by hand", "elle çalıştırıldı", "manuell ausgeführt", "lancé à la main", "запущено вручную"],
     "AutoWhy_Crash": ["after a crash, attempt {0}", "çökme sonrası, deneme {0}", "nach Absturz, Versuch {0}", "après plantage, essai {0}", "после сбоя, попытка {0}"],
+    "Auto_Recommended": ["Recommended setup", "Önerilen kurulum", "Empfohlene Einrichtung", "Configuration conseillée", "Рекомендуемая настройка"],
+    "Auto_RecommendedHint": ["Start with PackCheck, restart after crashes, back up at 03:30 and restart at 04:00.", "PackCheck ile başlat, çökünce yeniden başlat, 03:30'da yedek al, 04:00'te yeniden başlat.", "Mit PackCheck starten, nach Absturz neu starten, 03:30 sichern, 04:00 neu starten.", "Démarrer avec PackCheck, relancer après plantage, sauvegarder à 03:30, redémarrer à 04:00.", "Запуск с PackCheck, перезапуск после сбоя, копия в 03:30, перезапуск в 04:00."],
     "Console_OpenLog": ["Open latest.log", "latest.log'u aç", "latest.log öffnen", "Ouvrir latest.log", "Открыть latest.log"],
     "Player_Op": ["Make operator", "Yetkili yap", "Zum Operator machen", "Rendre opérateur", "Сделать оператором"],
     "Player_Kick": ["Kick", "At", "Kicken", "Expulser", "Выгнать"],

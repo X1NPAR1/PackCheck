@@ -512,6 +512,8 @@
   <data name="AutoWhy_AppStarted" xml:space="preserve"><value>PackCheck открыт</value></data>
   <data name="AutoWhy_RunNow" xml:space="preserve"><value>запущено вручную</value></data>
   <data name="AutoWhy_Crash" xml:space="preserve"><value>после сбоя, попытка {0}</value></data>
+  <data name="Auto_Recommended" xml:space="preserve"><value>Рекомендуемая настройка</value></data>
+  <data name="Auto_RecommendedHint" xml:space="preserve"><value>Запуск с PackCheck, перезапуск после сбоя, копия в 03:30, перезапуск в 04:00.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

@@ -250,6 +250,24 @@ public sealed partial class ServerItemViewModel
         SaveAutomation();
     }
 
+    /// <summary>
+    /// One click for the usual home-server setup: start with PackCheck, restart after crashes,
+    /// back up at 03:30 and restart at 04:00. Kinds that already exist are not added twice.
+    /// </summary>
+    [RelayCommand]
+    private void AddRecommended()
+    {
+        foreach (var kind in new[] { AutomationKind.StartWithApp, AutomationKind.RestartOnCrash, AutomationKind.ScheduledBackup, AutomationKind.ScheduledRestart })
+        {
+            if (AutomationRules.All(r => r.Kind != kind))
+            {
+                AutomationRules.Add(new AutomationRuleRow(AutomationRule.Default(kind), SaveAutomation));
+            }
+        }
+
+        SaveAutomation();
+    }
+
     [RelayCommand]
     private void RemoveRule(AutomationRuleRow? row)
     {
