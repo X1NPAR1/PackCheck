@@ -68,6 +68,7 @@ jobs:
         run: |
           $notes = "release-notes/${{ github.ref_name }}.md"
           $files = Get-ChildItem artifacts -File | ForEach-Object { $_.FullName }
-          $args = @('release', 'create', '${{ github.ref_name }}') + $files + @('--title', 'PackCheck ${{ github.ref_name }}')
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          $args = @('release', 'create', '${{ github.ref_name }}') + $files + @('--title', "PackCheck $version – Minecraft server manager for Windows")
           if (Test-Path $notes) { $args += @('--notes-file', $notes) } else { $args += '--generate-notes' }
           gh @args
