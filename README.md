@@ -32,7 +32,7 @@
 
 PackCheck is a free, open-source Windows desktop app (WPF, .NET 10) for anyone who hosts a Minecraft Java server at home: a survival world for friends, a modded server, or a small network behind a proxy. It does two jobs:
 
-- **Server studio.** Create a Paper, Purpur, Folia, Spigot, Vanilla, Fabric, Quilt, Forge, NeoForge, Mohist, Velocity or BungeeCord server from official sources in a few clicks, pick RAM and CPU cores, start and stop it, watch the live console and TPS, edit `server.properties`, install plugins and mods, open it to your friends over the internet, and take backups.
+- **Server studio.** Create a Paper, Purpur, Folia, Spigot, Vanilla, Fabric, Quilt, Forge, NeoForge, Mohist, Velocity or BungeeCord server from official sources in a few clicks, pick RAM and CPU cores, start and stop it, watch the live console and TPS, edit `server.properties` and Bukkit/Spigot/Paper settings, install plugins and mods, open it to your friends over the internet, take safe backups, manage players, follow performance over 7 days, get a plain-language crash diagnosis with a one-click fix, receive Discord notifications and upgrade to a newer Minecraft version with a compatibility check and rollback.
 - **Pack validation.** Before you add or update plugins, PackCheck reads every JAR and config file and tells you what will break: missing dependencies, duplicate plugins, corrupt downloads, plugins built for a newer Minecraft version, invalid settings. Each finding comes with evidence and a suggested fix.
 
 Static checks never execute plugin code. A real startup test is available, but you have to turn it on yourself, and it runs on a throw-away copy of the pack.
