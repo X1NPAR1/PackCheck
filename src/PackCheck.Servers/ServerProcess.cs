@@ -66,7 +66,7 @@ public sealed class ServerProcess : IAsyncDisposable
             // There is no real terminal; JLine-based consoles otherwise may not read commands from the pipe.
             "-Dterminal.jline=false",
         };
-        if (def.CpuCores > 0 && def.CpuCores < Environment.ProcessorCount)
+        if (def.CpuCores > 0 && def.CpuCores != Environment.ProcessorCount)
         {
             // Sizes the JVM's GC and worker thread pools to the cores the server is allowed to use.
             args.Add($"-XX:ActiveProcessorCount={def.CpuCores}");
@@ -149,7 +149,8 @@ public sealed class ServerProcess : IAsyncDisposable
             try
             {
                 // Limit the server to its first N logical processors so the rest of the PC stays responsive.
-                _process.ProcessorAffinity = (nint)((1L << _def.CpuCores) - 1);
+                var n = Math.Min(_def.CpuCores, 63);
+                _process.ProcessorAffinity = (nint)((1L << n) - 1);
             }
             catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
             {

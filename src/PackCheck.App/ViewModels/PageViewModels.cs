@@ -96,7 +96,11 @@ public sealed partial class CreateServerViewModel : ObservableObject
     /// <summary>Installed physical memory, for the RAM slider's limit and warning.</summary>
     public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
 
-    public int MaxRamGb => (int)Math.Clamp(Math.Floor(SystemRamGb), 1, 32);
+    /// <summary>Upper end of the RAM slider; servers with big modpacks on workstations can use up to 256 GB.</summary>
+    public int MaxRamGb => 256;
+
+    /// <summary>Upper end of the CPU slider. Values above this PC's cores are passed to Java as its processor count.</summary>
+    public int MaxCores => 64;
 
     public int LogicalCores { get; } = Environment.ProcessorCount;
 
@@ -154,10 +158,15 @@ public sealed partial class CreateServerViewModel : ObservableObject
 
     public string MemoryText => Loc.F("Wizard_MemoryValue", MemoryGb, SystemRamGb);
 
-    public string CoresText => (int)CpuCores >= LogicalCores ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", (int)CpuCores, LogicalCores);
+    public string CoresText => CoresLabel((int)CpuCores, LogicalCores);
+
+    public static string CoresLabel(int cores, int logical) =>
+        cores == logical ? Loc.F("Wizard_CoresAll", logical) : cores > logical ? Loc.F("Wizard_CoresOver", cores, logical) : Loc.F("Wizard_CoresValue", cores, logical);
 
     /// <summary>Warns when the server would take most of the PC's memory (Windows and Java need headroom).</summary>
-    public string? MemoryWarning => MemoryGb > SystemRamGb * 0.75 ? Loc.F("Wizard_MemoryTooHigh", SystemRamGb) : MemoryGb < RecommendedGb ? Loc.F("Wizard_MemoryLow", RecommendedGb) : null;
+    public string? MemoryWarning => MemoryGb > SystemRamGb ? Loc.F("Wizard_MemoryOverPhysical", SystemRamGb)
+        : MemoryGb > SystemRamGb * 0.75 ? Loc.F("Wizard_MemoryTooHigh", SystemRamGb)
+        : MemoryGb < RecommendedGb ? Loc.F("Wizard_MemoryLow", RecommendedGb) : null;
 
     public string? OfflineWarning => OnlineMode ? null : Loc.T("Wizard_OfflineWarn");
 
@@ -196,7 +205,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         }
 
         SelectedPlatform = PlatformOptions.First(o => o.Platform == value.Platform);
-        MemoryGb = Math.Min(value.MemoryGb, MaxRamGb);
+        MemoryGb = Math.Min(value.MemoryGb, Math.Max(1, Math.Floor(SystemRamGb)));
         GameMode = value.GameMode;
         Difficulty = value.Difficulty;
         MaxPlayers = value.MaxPlayers;
@@ -396,7 +405,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         {
             var req = new ServerCreator.Request(Name, Folder, Platform, Version, Runtime.JavaExe, (int)(MemoryGb * 1024), Port, Seed, AcceptEula)
             {
-                CpuCores = (int)CpuCores >= LogicalCores ? 0 : (int)CpuCores,
+                CpuCores = (int)CpuCores == LogicalCores ? 0 : (int)CpuCores,
                 Properties = WizardProperties(),
             };
             var def = await _creator.CreateAsync(req, new Progress<(double Progress, string Step)>(p => { Progress = p.Progress; Status = Loc.T("Wizard_Step_" + p.Step); }), _cts.Token).ConfigureAwait(true);

@@ -514,6 +514,8 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="AutoWhy_Crash" xml:space="preserve"><value>nach Absturz, Versuch {0}</value></data>
   <data name="Auto_Recommended" xml:space="preserve"><value>Empfohlene Einrichtung</value></data>
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Mit PackCheck starten, nach Absturz neu starten, 03:30 sichern, 04:00 neu starten.</value></data>
+  <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (dieser PC hat {1})</value></data>
+  <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Mehr als dieser PC hat ({0:0.#} GB). Windows lagert aus, der Server wird sehr langsam.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

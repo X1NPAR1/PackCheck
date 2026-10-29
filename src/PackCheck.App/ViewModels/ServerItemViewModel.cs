@@ -99,7 +99,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public ServerItemViewModel(ServerDefinition def, ServerRegistry registry, AppSettings settings)
     {
         Definition = def;
-        _editRamGb = Math.Clamp(Math.Round(def.MaxMemoryMb / 1024d), 1, 32);
+        _editRamGb = Math.Clamp(Math.Round(def.MaxMemoryMb / 1024d), 1, 256);
         _editCores = def.CpuCores == 0 ? Environment.ProcessorCount : def.CpuCores;
         _editAikar = def.UseAikarFlags;
         _registry = registry;
@@ -123,12 +123,14 @@ public sealed partial class ServerItemViewModel : ObservableObject
     // ----- resources (editable while stopped) -----
     public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
 
-    public int MaxRamGb => (int)Math.Clamp(Math.Floor(SystemRamGb), 1, 32);
+    public int MaxRamGb => 256;
+
+    public int MaxCores => 64;
 
     public int LogicalCores { get; } = Environment.ProcessorCount;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EditRamText), nameof(ResourcesChanged))]
+    [NotifyPropertyChangedFor(nameof(EditRamText), nameof(ResourcesChanged), nameof(EditRamWarning))]
     private double _editRamGb;
 
     [ObservableProperty]
@@ -141,12 +143,14 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     public string EditRamText => Loc.F("Wizard_MemoryValue", EditRamGb, SystemRamGb);
 
-    public string EditCoresText => (int)EditCores >= LogicalCores ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", (int)EditCores, LogicalCores);
+    public string EditCoresText => CreateServerViewModel.CoresLabel((int)EditCores, LogicalCores);
+
+    public string? EditRamWarning => EditRamGb > SystemRamGb ? Loc.F("Wizard_MemoryOverPhysical", SystemRamGb) : EditRamGb > SystemRamGb * 0.75 ? Loc.F("Wizard_MemoryTooHigh", SystemRamGb) : null;
 
     public bool ResourcesChanged =>
         (int)(EditRamGb * 1024) != Definition.MaxMemoryMb || EffectiveCores((int)EditCores) != Definition.CpuCores || EditAikar != Definition.UseAikarFlags;
 
-    private int EffectiveCores(int value) => value >= LogicalCores ? 0 : value;
+    private int EffectiveCores(int value) => value == LogicalCores ? 0 : value;
 
     [RelayCommand]
     private void SaveResources()
@@ -181,7 +185,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         new(Loc.T("Tech_Folder"), Definition.Directory),
         new(Loc.T("Tech_Port"), $"TCP {Definition.Port}"),
         new(Loc.T("Tech_Memory"), $"-Xms{Definition.MinMemoryMb}M -Xmx{Definition.MaxMemoryMb}M"),
-        new(Loc.T("Tech_Cores"), Definition.CpuCores == 0 ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", Definition.CpuCores, LogicalCores)),
+        new(Loc.T("Tech_Cores"), CreateServerViewModel.CoresLabel(Definition.CpuCores == 0 ? LogicalCores : Definition.CpuCores, LogicalCores)),
         new(Loc.T("Tech_Created"), Definition.CreatedAt.LocalDateTime.ToString("g", Loc.Instance.Culture)),
         new("ID", Definition.Id),
     ];

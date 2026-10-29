@@ -514,6 +514,8 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="AutoWhy_Crash" xml:space="preserve"><value>après plantage, essai {0}</value></data>
   <data name="Auto_Recommended" xml:space="preserve"><value>Configuration conseillée</value></data>
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Démarrer avec PackCheck, relancer après plantage, sauvegarder à 03:30, redémarrer à 04:00.</value></data>
+  <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (ce PC en a {1})</value></data>
+  <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Plus que ce PC n'en a ({0:0.#} Go). Windows utilisera le disque, le serveur sera très lent.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

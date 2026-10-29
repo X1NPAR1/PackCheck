@@ -514,6 +514,8 @@ Hayır: açık bırakıp çık.
   <data name="AutoWhy_Crash" xml:space="preserve"><value>çökme sonrası, deneme {0}</value></data>
   <data name="Auto_Recommended" xml:space="preserve"><value>Önerilen kurulum</value></data>
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>PackCheck ile başlat, çökünce yeniden başlat, 03:30'da yedek al, 04:00'te yeniden başlat.</value></data>
+  <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (bu bilgisayarda {1})</value></data>
+  <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Bu bilgisayardaki bellekten fazla ({0:0.#} GB). Windows diske takas yapar ve sunucu çok yavaşlar.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

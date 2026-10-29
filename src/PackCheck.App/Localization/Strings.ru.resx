@@ -514,6 +514,8 @@
   <data name="AutoWhy_Crash" xml:space="preserve"><value>после сбоя, попытка {0}</value></data>
   <data name="Auto_Recommended" xml:space="preserve"><value>Рекомендуемая настройка</value></data>
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Запуск с PackCheck, перезапуск после сбоя, копия в 03:30, перезапуск в 04:00.</value></data>
+  <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (у этого ПК {1})</value></data>
+  <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Больше, чем есть у ПК ({0:0.#} ГБ). Windows начнёт подкачку, сервер будет очень медленным.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

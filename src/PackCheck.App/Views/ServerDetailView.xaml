@@ -265,13 +265,15 @@
                                 <TextBlock DockPanel.Dock="Right" Text="{Binding EditRamText}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
                                 <TextBlock Text="{l:Loc Wizard_Ram}" FontWeight="SemiBold" />
                             </DockPanel>
-                            <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding EditRamGb}" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" Margin="0,6,0,10"
+                            <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding EditRamGb}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,6,0,10"
                                     IsEnabled="{Binding CanEdit}" AutomationProperties.Name="{l:Loc Wizard_Ram}" />
+                            <TextBlock Text="{Binding EditRamWarning}" Foreground="{DynamicResource WarnBrush}" FontSize="11.5" TextWrapping="Wrap" Margin="0,-6,0,8"
+                                       Visibility="{Binding EditRamWarning, Converter={StaticResource NullVis}}" />
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Right" Text="{Binding EditCoresText}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
                                 <TextBlock Text="{l:Loc Wizard_Cpu}" FontWeight="SemiBold" />
                             </DockPanel>
-                            <Slider Minimum="1" Maximum="{Binding LogicalCores}" Value="{Binding EditCores}" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" Margin="0,6,0,10"
+                            <Slider Minimum="1" Maximum="{Binding MaxCores}" Value="{Binding EditCores}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,6,0,10"
                                     IsEnabled="{Binding CanEdit}" AutomationProperties.Name="{l:Loc Wizard_Cpu}" />
                             <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding EditAikar}" IsEnabled="{Binding CanEdit}">
                                 <StackPanel>

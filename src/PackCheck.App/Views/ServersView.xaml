@@ -236,7 +236,7 @@
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding MemoryText}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" />
                                         <TextBlock Text="{l:Loc Wizard_Ram}" FontWeight="SemiBold" />
                                     </DockPanel>
-                                    <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding MemoryGb}" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight"
+                                    <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding MemoryGb}" TickFrequency="1" IsSnapToTickEnabled="True"
                                             Margin="0,8,0,0" AutomationProperties.Name="{l:Loc Wizard_Ram}" AutomationProperties.AutomationId="WizardRam" />
                                     <TextBlock Text="{Binding MemoryWarning}" Foreground="{DynamicResource WarnBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"
                                                Visibility="{Binding MemoryWarning, Converter={StaticResource NullVis}}" />
@@ -244,7 +244,7 @@
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding CoresText}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" />
                                         <TextBlock Text="{l:Loc Wizard_Cpu}" FontWeight="SemiBold" />
                                     </DockPanel>
-                                    <Slider Minimum="1" Maximum="{Binding LogicalCores}" Value="{Binding CpuCores}" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight"
+                                    <Slider Minimum="1" Maximum="{Binding MaxCores}" Value="{Binding CpuCores}" TickFrequency="1" IsSnapToTickEnabled="True"
                                             Margin="0,8,0,0" AutomationProperties.Name="{l:Loc Wizard_Cpu}" AutomationProperties.AutomationId="WizardCpu" />
                                     <TextBlock Text="{l:Loc Wizard_CpuHint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
                                 </StackPanel>

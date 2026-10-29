@@ -515,6 +515,8 @@ S = {
     "AutoWhy_Crash": ["after a crash, attempt {0}", "çökme sonrası, deneme {0}", "nach Absturz, Versuch {0}", "après plantage, essai {0}", "после сбоя, попытка {0}"],
     "Auto_Recommended": ["Recommended setup", "Önerilen kurulum", "Empfohlene Einrichtung", "Configuration conseillée", "Рекомендуемая настройка"],
     "Auto_RecommendedHint": ["Start with PackCheck, restart after crashes, back up at 03:30 and restart at 04:00.", "PackCheck ile başlat, çökünce yeniden başlat, 03:30'da yedek al, 04:00'te yeniden başlat.", "Mit PackCheck starten, nach Absturz neu starten, 03:30 sichern, 04:00 neu starten.", "Démarrer avec PackCheck, relancer après plantage, sauvegarder à 03:30, redémarrer à 04:00.", "Запуск с PackCheck, перезапуск после сбоя, копия в 03:30, перезапуск в 04:00."],
+    "Wizard_CoresOver": ["{0} (this PC has {1})", "{0} (bu bilgisayarda {1})", "{0} (dieser PC hat {1})", "{0} (ce PC en a {1})", "{0} (у этого ПК {1})"],
+    "Wizard_MemoryOverPhysical": ["More than this PC has ({0:0.#} GB). Windows will page to disk and the server will be very slow.", "Bu bilgisayardaki bellekten fazla ({0:0.#} GB). Windows diske takas yapar ve sunucu çok yavaşlar.", "Mehr als dieser PC hat ({0:0.#} GB). Windows lagert aus, der Server wird sehr langsam.", "Plus que ce PC n'en a ({0:0.#} Go). Windows utilisera le disque, le serveur sera très lent.", "Больше, чем есть у ПК ({0:0.#} ГБ). Windows начнёт подкачку, сервер будет очень медленным."],
     "Console_OpenLog": ["Open latest.log", "latest.log'u aç", "latest.log öffnen", "Ouvrir latest.log", "Открыть latest.log"],
     "Player_Op": ["Make operator", "Yetkili yap", "Zum Operator machen", "Rendre opérateur", "Сделать оператором"],
     "Player_Kick": ["Kick", "At", "Kicken", "Expulser", "Выгнать"],
