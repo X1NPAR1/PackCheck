@@ -113,6 +113,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         RefreshBackups();
         RefreshPlugins();
         _ = RefreshDiskAsync();
+        InitAutomation();
     }
 
     public ServerDefinition Definition { get; private set; }
@@ -740,6 +741,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [RelayCommand]
     private async Task StartAsync()
     {
+        _automation.UserStarted();
         try
         {
             ClearConsole();
@@ -760,7 +762,11 @@ public sealed partial class ServerItemViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task StopAsync() => _process.StopAsync(TimeSpan.FromSeconds(60));
+    private Task StopAsync()
+    {
+        _automation.UserStopped(); // a manual stop must not trigger crash or idle rules
+        return _process.StopAsync(TimeSpan.FromSeconds(60));
+    }
 
     [RelayCommand]
     private async Task RestartAsync()

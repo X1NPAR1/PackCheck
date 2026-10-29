@@ -189,6 +189,12 @@ public partial class App : Application
                 main.ShowFromTray();
                 shell.NavIndex = index;
             }));
+        // Automation: "start with PackCheck" rules (PackCheck itself may have started with Windows).
+        foreach (var s in shell.Servers.Items)
+        {
+            _ = s.OnAppStartedAsync();
+        }
+
         foreach (var s in shell.Servers.Items)
         {
             s.PropertyChanged += (_, e) =>

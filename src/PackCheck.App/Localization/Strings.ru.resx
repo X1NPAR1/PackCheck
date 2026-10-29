@@ -458,6 +458,60 @@
   <data name="Mode_RunPlan" xml:space="preserve"><value>Выполнить (с подтверждением)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Выполнить, файлы авто</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>План одобрен. Выполни его по шагам.</value></data>
+  <data name="Auto_Tab" xml:space="preserve"><value>Автоматизация</value></data>
+  <data name="Auto_Title" xml:space="preserve"><value>Правила автоматизации</value></data>
+  <data name="Auto_Subtitle" xml:space="preserve"><value>Правила работают, пока PackCheck открыт (может запускаться с Windows и жить в трее). Изменения сохраняются сразу.</value></data>
+  <data name="Auto_Add" xml:space="preserve"><value>Добавить правило</value></data>
+  <data name="Auto_Empty" xml:space="preserve"><value>Правил пока нет. Например: перезапуск каждую ночь в 04:00, копия перед этим и запуск при открытии PackCheck.</value></data>
+  <data name="Auto_StartWithApp" xml:space="preserve"><value>Запуск при открытии PackCheck</value></data>
+  <data name="Auto_StartWithApp_Hint" xml:space="preserve"><value>Включите «Запуск с Windows», чтобы сервер поднимался после перезагрузки.</value></data>
+  <data name="Auto_RestartOnCrash" xml:space="preserve"><value>Перезапуск после сбоя</value></data>
+  <data name="Auto_RestartOnCrash_Hint" xml:space="preserve"><value>Перезапускает после сбоя; после лимита за час прекращает. Ручная остановка учитывается.</value></data>
+  <data name="Auto_ScheduledRestart" xml:space="preserve"><value>Плановый перезапуск</value></data>
+  <data name="Auto_ScheduledRestart_Hint" xml:space="preserve"><value>Перезапуск в заданное время с предупреждением в чате.</value></data>
+  <data name="Auto_ScheduledBackup" xml:space="preserve"><value>Плановая копия</value></data>
+  <data name="Auto_ScheduledBackup_Hint" xml:space="preserve"><value>Сохраняет мир и делает zip-копию в заданное время.</value></data>
+  <data name="Auto_ScheduledCommand" xml:space="preserve"><value>Команда по расписанию</value></data>
+  <data name="Auto_ScheduledCommand_Hint" xml:space="preserve"><value>Выполняет команду каждые N минут или в заданное время.</value></data>
+  <data name="Auto_Announcement" xml:space="preserve"><value>Объявление в чате</value></data>
+  <data name="Auto_Announcement_Hint" xml:space="preserve"><value>Отправляет сообщение всем игрокам каждые N минут.</value></data>
+  <data name="Auto_LowTps" xml:space="preserve"><value>Низкий TPS</value></data>
+  <data name="Auto_LowTps_Hint" xml:space="preserve"><value>Предупреждает (или перезапускает), если TPS ниже порога.</value></data>
+  <data name="Auto_HighMemory" xml:space="preserve"><value>Много памяти</value></data>
+  <data name="Auto_HighMemory_Hint" xml:space="preserve"><value>Предупреждает (или перезапускает), если память выше порога (%).</value></data>
+  <data name="Auto_StopWhenEmpty" xml:space="preserve"><value>Остановить, если пусто</value></data>
+  <data name="Auto_StopWhenEmpty_Hint" xml:space="preserve"><value>Останавливает сервер, если долго никого нет.</value></data>
+  <data name="Auto_AtTime" xml:space="preserve"><value>В заданное время</value></data>
+  <data name="Auto_Time" xml:space="preserve"><value>Время</value></data>
+  <data name="Auto_DaysHint" xml:space="preserve"><value>Нет дней = каждый день</value></data>
+  <data name="Auto_Every" xml:space="preserve"><value>Каждые</value></data>
+  <data name="Auto_Minutes" xml:space="preserve"><value>мин</value></data>
+  <data name="Auto_Seconds" xml:space="preserve"><value>с</value></data>
+  <data name="Auto_For" xml:space="preserve"><value>в течение</value></data>
+  <data name="Auto_TpsBelow" xml:space="preserve"><value>TPS ниже</value></data>
+  <data name="Auto_MemoryAbove" xml:space="preserve"><value>Память выше %</value></data>
+  <data name="Auto_RestartReaction" xml:space="preserve"><value>Перезапускать, а не только предупреждать</value></data>
+  <data name="Auto_MaxRetries" xml:space="preserve"><value>Не более в час</value></data>
+  <data name="Auto_Warning" xml:space="preserve"><value>Предупредить за</value></data>
+  <data name="Auto_CommandHint" xml:space="preserve"><value>Команда без слэша, напр. save-all</value></data>
+  <data name="Auto_MessageHint" xml:space="preserve"><value>Сообщение всем</value></data>
+  <data name="Auto_RunNow" xml:space="preserve"><value>Выполнить</value></data>
+  <data name="Auto_Remove" xml:space="preserve"><value>Удалить правило</value></data>
+  <data name="Auto_Next" xml:space="preserve"><value>Следующий: {0}</value></data>
+  <data name="Auto_Last" xml:space="preserve"><value>Последний: {0} – {1}</value></data>
+  <data name="Auto_Log" xml:space="preserve"><value>Журнал</value></data>
+  <data name="Auto_LogEmpty" xml:space="preserve"><value>Здесь появятся действия правил.</value></data>
+  <data name="Auto_ClearLog" xml:space="preserve"><value>Очистить</value></data>
+  <data name="Auto_TestNotify" xml:space="preserve"><value>Тестовое уведомление правила.</value></data>
+  <data name="AutoLog_Started" xml:space="preserve"><value>Сервер запущен ({0})</value></data>
+  <data name="AutoLog_Stopped" xml:space="preserve"><value>Сервер остановлен ({0})</value></data>
+  <data name="AutoLog_Restarted" xml:space="preserve"><value>Сервер перезапущен ({0})</value></data>
+  <data name="AutoLog_Backup" xml:space="preserve"><value>Копия создана</value></data>
+  <data name="AutoLog_NotRunning" xml:space="preserve"><value>Пропущено: сервер не запущен</value></data>
+  <data name="AutoSay_Restart" xml:space="preserve"><value>Перезапуск сервера через {0} секунд.</value></data>
+  <data name="AutoWhy_AppStarted" xml:space="preserve"><value>PackCheck открыт</value></data>
+  <data name="AutoWhy_RunNow" xml:space="preserve"><value>запущено вручную</value></data>
+  <data name="AutoWhy_Crash" xml:space="preserve"><value>после сбоя, попытка {0}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

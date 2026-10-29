@@ -458,6 +458,60 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Mode_RunPlan" xml:space="preserve"><value>Run the plan (ask for each change)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Run with automatic file edits</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>The plan is approved. Carry it out now, step by step.</value></data>
+  <data name="Auto_Tab" xml:space="preserve"><value>Automation</value></data>
+  <data name="Auto_Title" xml:space="preserve"><value>Automation rules</value></data>
+  <data name="Auto_Subtitle" xml:space="preserve"><value>Rules run while PackCheck is open (it can start with Windows and stay in the tray). Changes are saved at once.</value></data>
+  <data name="Auto_Add" xml:space="preserve"><value>Add a rule</value></data>
+  <data name="Auto_Empty" xml:space="preserve"><value>No rules yet. Add one with "Add a rule": for example restart every night at 04:00, back up before that, and start the server when PackCheck opens.</value></data>
+  <data name="Auto_StartWithApp" xml:space="preserve"><value>Start when PackCheck opens</value></data>
+  <data name="Auto_StartWithApp_Hint" xml:space="preserve"><value>Turn on "Start with Windows" in Settings to bring the server up after every reboot.</value></data>
+  <data name="Auto_RestartOnCrash" xml:space="preserve"><value>Restart after a crash</value></data>
+  <data name="Auto_RestartOnCrash_Hint" xml:space="preserve"><value>Starts the server again when it crashes; stops trying after the limit within an hour. A manual stop is respected.</value></data>
+  <data name="Auto_ScheduledRestart" xml:space="preserve"><value>Scheduled restart</value></data>
+  <data name="Auto_ScheduledRestart_Hint" xml:space="preserve"><value>Restarts at the set time and warns players in chat before.</value></data>
+  <data name="Auto_ScheduledBackup" xml:space="preserve"><value>Scheduled backup</value></data>
+  <data name="Auto_ScheduledBackup_Hint" xml:space="preserve"><value>Saves the world and makes a zip backup at the set time.</value></data>
+  <data name="Auto_ScheduledCommand" xml:space="preserve"><value>Scheduled command</value></data>
+  <data name="Auto_ScheduledCommand_Hint" xml:space="preserve"><value>Runs a console command every N minutes or at a time of day.</value></data>
+  <data name="Auto_Announcement" xml:space="preserve"><value>Chat announcement</value></data>
+  <data name="Auto_Announcement_Hint" xml:space="preserve"><value>Sends a message to all players every N minutes.</value></data>
+  <data name="Auto_LowTps" xml:space="preserve"><value>Low TPS</value></data>
+  <data name="Auto_LowTps_Hint" xml:space="preserve"><value>Warns (or restarts) when TPS stays below the limit. TPS is read every few seconds.</value></data>
+  <data name="Auto_HighMemory" xml:space="preserve"><value>High memory</value></data>
+  <data name="Auto_HighMemory_Hint" xml:space="preserve"><value>Warns (or restarts) when memory use stays above the limit (percent of the server's RAM).</value></data>
+  <data name="Auto_StopWhenEmpty" xml:space="preserve"><value>Stop when empty</value></data>
+  <data name="Auto_StopWhenEmpty_Hint" xml:space="preserve"><value>Stops the server when nobody has been online for the set time, to save power and memory.</value></data>
+  <data name="Auto_AtTime" xml:space="preserve"><value>At a time of day</value></data>
+  <data name="Auto_Time" xml:space="preserve"><value>Time</value></data>
+  <data name="Auto_DaysHint" xml:space="preserve"><value>No day selected = every day</value></data>
+  <data name="Auto_Every" xml:space="preserve"><value>Every</value></data>
+  <data name="Auto_Minutes" xml:space="preserve"><value>min</value></data>
+  <data name="Auto_Seconds" xml:space="preserve"><value>s</value></data>
+  <data name="Auto_For" xml:space="preserve"><value>for</value></data>
+  <data name="Auto_TpsBelow" xml:space="preserve"><value>TPS below</value></data>
+  <data name="Auto_MemoryAbove" xml:space="preserve"><value>Memory above %</value></data>
+  <data name="Auto_RestartReaction" xml:space="preserve"><value>Restart instead of only warning</value></data>
+  <data name="Auto_MaxRetries" xml:space="preserve"><value>At most per hour</value></data>
+  <data name="Auto_Warning" xml:space="preserve"><value>Warn players</value></data>
+  <data name="Auto_CommandHint" xml:space="preserve"><value>Command without the slash, e.g. save-all</value></data>
+  <data name="Auto_MessageHint" xml:space="preserve"><value>Message for all players</value></data>
+  <data name="Auto_RunNow" xml:space="preserve"><value>Run now</value></data>
+  <data name="Auto_Remove" xml:space="preserve"><value>Remove rule</value></data>
+  <data name="Auto_Next" xml:space="preserve"><value>Next: {0}</value></data>
+  <data name="Auto_Last" xml:space="preserve"><value>Last: {0} – {1}</value></data>
+  <data name="Auto_Log" xml:space="preserve"><value>Activity</value></data>
+  <data name="Auto_LogEmpty" xml:space="preserve"><value>What the rules did shows up here.</value></data>
+  <data name="Auto_ClearLog" xml:space="preserve"><value>Clear</value></data>
+  <data name="Auto_TestNotify" xml:space="preserve"><value>Test notification from an automation rule.</value></data>
+  <data name="AutoLog_Started" xml:space="preserve"><value>Server started ({0})</value></data>
+  <data name="AutoLog_Stopped" xml:space="preserve"><value>Server stopped ({0})</value></data>
+  <data name="AutoLog_Restarted" xml:space="preserve"><value>Server restarted ({0})</value></data>
+  <data name="AutoLog_Backup" xml:space="preserve"><value>Backup created</value></data>
+  <data name="AutoLog_NotRunning" xml:space="preserve"><value>Skipped: the server is not running</value></data>
+  <data name="AutoSay_Restart" xml:space="preserve"><value>Server restarts in {0} seconds.</value></data>
+  <data name="AutoWhy_AppStarted" xml:space="preserve"><value>PackCheck opened</value></data>
+  <data name="AutoWhy_RunNow" xml:space="preserve"><value>run by hand</value></data>
+  <data name="AutoWhy_Crash" xml:space="preserve"><value>after a crash, attempt {0}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

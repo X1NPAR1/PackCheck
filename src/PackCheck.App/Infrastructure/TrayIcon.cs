@@ -57,6 +57,9 @@ public sealed class TrayIcon : IDisposable
         _icon.Text = text.Length > 63 ? text[..63] : text;
     }
 
+    /// <summary>Balloon for automation warnings (low TPS, crash limit, ...).</summary>
+    public void Notify(string text) => _icon.ShowBalloonTip(6000, "PackCheck", text, Forms.ToolTipIcon.Warning);
+
     public void ShowHiddenHint()
     {
         if (_hintShown)

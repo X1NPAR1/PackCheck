@@ -68,6 +68,16 @@ public partial class ServerDetailView : UserControl
         e.Handled = true;
     }
 
+    /// <summary>"Add a rule" picker: adds the chosen kind and resets the picker.</summary>
+    private void OnAddRule(object sender, SelectionChangedEventArgs e)
+    {
+        if (AddRuleBox.SelectedItem is PackCheck.Servers.AutomationKind kind && _vm is not null)
+        {
+            _vm.AddRuleCommand.Execute(kind);
+            AddRuleBox.SelectedItem = null;
+        }
+    }
+
     private void OnPlayerLink(object sender, RoutedEventArgs e)
     {
         if (e.OriginalSource is Hyperlink { Tag: string name } && _vm is not null)

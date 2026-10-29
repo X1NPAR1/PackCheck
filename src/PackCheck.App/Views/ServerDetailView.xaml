@@ -168,6 +168,9 @@
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Backups}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=4}" />
+            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=6}" AutomationProperties.AutomationId="TabAutomation">
+                <TextBlock><Run Text="{l:Loc Auto_Tab}" /><Run Text="{Binding ActiveRuleCount, Mode=OneWay, StringFormat=' · {0}'}" /></TextBlock>
+            </RadioButton>
         </StackPanel>
         </StackPanel>
 
@@ -497,6 +500,153 @@
                     </Border>
                 </StackPanel>
             </ScrollViewer>
+        </Grid>
+
+        <!-- Automation -->
+        <Grid Grid.Row="2" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=6}" AutomationProperties.AutomationId="AutomationPage">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="320" />
+            </Grid.ColumnDefinitions>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                    <ComboBox x:Name="AddRuleBox" DockPanel.Dock="Right" Width="240" ItemsSource="{Binding AutomationKinds}" SelectionChanged="OnAddRule"
+                              ToolTip="{l:Loc Auto_Add}" AutomationProperties.Name="{l:Loc Auto_Add}" AutomationProperties.AutomationId="AddRule">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Auto_}" /></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock DockPanel.Dock="Right" Text="{l:Loc Auto_Add}" VerticalAlignment="Center" Margin="0,0,10,0" Style="{StaticResource Muted}" />
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Auto_Title}" Style="{StaticResource H2}" FontSize="17" />
+                        <TextBlock Text="{l:Loc Auto_Subtitle}" Style="{StaticResource Muted}" FontSize="12.5" TextWrapping="Wrap" />
+                    </StackPanel>
+                </DockPanel>
+                <Grid>
+                    <Border Style="{StaticResource Card}" Padding="28" Visibility="{Binding AutomationRules.Count, Converter={x:Static l:Inverse.Visibility}}" VerticalAlignment="Top">
+                        <TextBlock Text="{l:Loc Auto_Empty}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
+                    </Border>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding AutomationRules}" AutomationProperties.AutomationId="AutomationRules">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource Card}" Padding="16,14" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <DockPanel>
+                                                <CheckBox DockPanel.Dock="Left" Style="{StaticResource Switch}" IsChecked="{Binding Enabled}" VerticalAlignment="Top" Margin="0,2,12,0" AutomationProperties.Name="{Binding Title}" />
+                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                                                    <Button Style="{StaticResource GhostButton}" Content="{l:Loc Auto_RunNow}" Padding="8,3"
+                                                            Command="{Binding DataContext.RunRuleNowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    <Button Style="{StaticResource GhostButton}" Padding="8,3" ToolTip="{l:Loc Auto_Remove}" AutomationProperties.Name="{l:Loc Auto_Remove}"
+                                                            Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                                        <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="10" Height="10" Stroke="{DynamicResource FailBrush}" />
+                                                    </Button>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14" />
+                                                    <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </DockPanel>
+
+                                            <WrapPanel Margin="46,10,0,0">
+                                                <CheckBox Content="{l:Loc Auto_AtTime}" IsChecked="{Binding UseTime}" Visibility="{Binding CanUseInterval, Converter={StaticResource BoolVis}}" VerticalAlignment="Center" Margin="0,0,14,8" />
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasTime, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_Time}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding At, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="84" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" FontFamily="{StaticResource MonoFont}" AutomationProperties.Name="{l:Loc Auto_Time}">
+                                                        <TextBox.Style>
+                                                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding TimeValid}" Value="False"><Setter Property="BorderBrush" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBox.Style>
+                                                    </TextBox>
+                                                </StackPanel>
+                                                <ItemsControl ItemsSource="{Binding Days}" Margin="0,0,16,8" Visibility="{Binding HasTime, Converter={StaticResource BoolVis}}" ToolTip="{l:Loc Auto_DaysHint}">
+                                                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate><ToggleButton Style="{StaticResource Chip}" IsChecked="{Binding On}" Content="{Binding Label}" Margin="0,0,4,0" /></DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasInterval, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_Every}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding IntervalMinutes, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                    <TextBlock Text="{l:Loc Auto_Minutes}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasThreshold, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{Binding ThresholdLabel}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding Threshold, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasDuration, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_For}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding ForMinutes, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                    <TextBlock Text="{l:Loc Auto_Minutes}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
+                                                </StackPanel>
+                                                <CheckBox Content="{l:Loc Auto_RestartReaction}" IsChecked="{Binding Restart}" Visibility="{Binding HasThreshold, Converter={StaticResource BoolVis}}" VerticalAlignment="Center" Margin="0,0,16,8" />
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasRetries, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_MaxRetries}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding MaxRetries, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasWarning, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_Warning}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding WarningSeconds, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                    <TextBlock Text="{l:Loc Auto_Seconds}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
+                                                </StackPanel>
+                                            </WrapPanel>
+                                            <DockPanel Margin="46,0,0,8" Visibility="{Binding HasCommand, Converter={StaticResource BoolVis}}">
+                                                <TextBlock Text="/" FontFamily="{StaticResource MonoFont}" VerticalAlignment="Center" Margin="0,0,4,0" Style="{StaticResource Muted}" />
+                                                <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged, Delay=400}" FontFamily="{StaticResource MonoFont}" Tag="{l:Loc Auto_CommandHint}" />
+                                            </DockPanel>
+                                            <TextBox Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Delay=400}" Margin="46,0,0,8" Tag="{l:Loc Auto_MessageHint}"
+                                                     Visibility="{Binding HasMessage, Converter={StaticResource BoolVis}}" />
+                                            <TextBlock Margin="46,0,0,0" FontSize="11.5" Style="{StaticResource Muted}" TextWrapping="Wrap">
+                                                <Run Text="{Binding NextRun, Mode=OneWay}" /><Run Text="  " /><Run Text="{Binding LastRun, Mode=OneWay}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
+
+            <!-- event log -->
+            <Border Grid.Column="2" Style="{StaticResource Card}" Padding="14">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc Auto_ClearLog}" Command="{Binding ClearAutomationLogCommand}" Padding="6,2" />
+                        <TextBlock Text="{l:Loc Auto_Log}" Style="{StaticResource H2}" FontSize="15" />
+                    </DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="{l:Loc Auto_LogEmpty}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap"
+                               Visibility="{Binding AutomationEvents.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding AutomationEvents}" AutomationProperties.AutomationId="AutomationLog">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,0,0,8">
+                                        <Ellipse DockPanel.Dock="Left" Width="7" Height="7" Margin="0,6,8,0" VerticalAlignment="Top">
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Setter Property="Fill" Value="{DynamicResource PassBrush}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Ok}" Value="False"><Setter Property="Fill" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                        <StackPanel>
+                                            <TextBlock FontSize="12"><Run Text="{Binding Rule, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding Time, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /></TextBlock>
+                                            <TextBlock Text="{Binding Text}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
         </Grid>
 
         <!-- Files -->
