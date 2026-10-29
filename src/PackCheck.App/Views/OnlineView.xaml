@@ -204,6 +204,37 @@
                 </StackPanel>
             </Border>
 
+            <!-- CGNAT: why forwarding cannot work and what to do instead -->
+            <Border Margin="0,14,0,0" AutomationProperties.AutomationId="CgnatGuide">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource Card}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CgnatDetected}" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource WarnBrush}" />
+                                <Setter Property="BorderThickness" Value="2" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="playit.gg ↗" Command="{Binding OpenPlayitCommand}" />
+                        <TextBlock Text="{l:Loc Online_CgnatTitle}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
+                    </DockPanel>
+                    <TextBlock Text="{l:Loc Online_CgnatDetected}" Foreground="{DynamicResource WarnBrush}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Visibility="{Binding CgnatDetected, Converter={StaticResource BoolVis}}" />
+                    <TextBlock Text="{l:Loc Online_CgnatWhat}" TextWrapping="Wrap" Margin="0,8,0,0" />
+                    <TextBlock Text="{l:Loc Online_CgnatCheck}" TextWrapping="Wrap" Margin="0,8,0,0" Style="{StaticResource Muted}" FontSize="12.5" />
+                    <TextBlock Text="{l:Loc Online_CgnatFixesTitle}" Style="{StaticResource Label}" Margin="0,12,0,6" />
+                    <TextBlock Text="{l:Loc Online_CgnatFix1}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Online_CgnatFix2}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Online_CgnatFix3}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Online_CgnatFix4}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Online_CgnatFix5}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Online_CgnatDouble}" TextWrapping="Wrap" Margin="0,4,0,0" Style="{StaticResource Muted}" FontSize="12.5" />
+                </StackPanel>
+            </Border>
+
             <!-- custom domain -->
             <Border Style="{StaticResource Card}" Margin="0,14,0,0">
                 <StackPanel>

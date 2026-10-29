@@ -229,6 +229,7 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
             if (routerWan is not null && (PublicAddress.IsCarrierGradeOrPrivate(routerWan) || (pub is not null && !routerWan.Equals(pub))))
             {
                 Warning = Loc.F("Online_Cgnat", routerWan);
+                CgnatDetected = true;
             }
             else if (UpnpOk != true)
             {
@@ -383,6 +384,13 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
             MainViewModel.Shell?.Toast(ex.Message, isError: true);
         }
     }
+
+    /// <summary>The router's WAN address is shared or private: highlight the CGNAT guide.</summary>
+    [ObservableProperty]
+    private bool _cgnatDetected;
+
+    [RelayCommand]
+    private static void OpenPlayit() => Shell32.Open("https://playit.gg/");
 }
 
 /// <summary>Windows DPAPI (current user) for small secrets such as DNS tokens and API keys.</summary>

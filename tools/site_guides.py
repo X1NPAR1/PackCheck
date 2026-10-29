@@ -91,13 +91,31 @@ GUIDES = [
 <p>Not sure which server software to run? See <a href="paper-vs-fabric-vs-forge.html">Paper vs Fabric vs Forge</a>. New to hosting? Start with <a href="host-minecraft-server-windows.html">hosting a Minecraft server on Windows</a>.</p>
 <h2>Still not reachable?</h2>
 <ul>
-<li><b>CGNAT:</b> if the WAN IP on your router page differs from your public IP (or starts with 100.64–100.127), your provider shares one IP between customers. Ask for a public IP or use a tunnel service.</li>
+<li><b>CGNAT:</b> if the WAN IP on your router page differs from your public IP (or starts with 100.64–100.127), your provider shares one IP between customers. See <a href="#cgnat">CGNAT</a> below.</li>
 <li><b>Two routers:</b> forward on both, or put the provider's modem in bridge mode.</li>
 <li><b>Testing from home:</b> many routers cannot connect to their own public IP (no NAT loopback). Use the local address at home.</li>
 <li><b>Changing IP:</b> share a free DuckDNS name instead of the raw IP; PackCheck can keep it updated.</li>
 </ul>
+<h2 id="cgnat">CGNAT: when port forwarding cannot work</h2>
+<p>Many providers no longer give each home its own IPv4 address. With CGNAT (carrier-grade NAT, also part of DS-Lite) many customers share one address and your router only receives an internal one. Friends who connect to the shared address reach the provider, not your home, so a port forward on your router changes nothing. Your PC and your router settings are fine.</p>
+<h3>How to tell</h3>
+<ol>
+<li>Open your router's page and find the <b>WAN</b> or <b>Internet</b> IP address.</li>
+<li>Compare it with your public IP (PackCheck shows it on the Online page).</li>
+<li>If they differ, or the router's address starts with <code>100.64</code>–<code>100.127</code>, you are behind CGNAT. If it starts with <code>192.168.</code> or <code>10.</code>, there is a second router in front of yours (double NAT).</li>
+</ol>
+<h3>What you can do</h3>
+<ol>
+<li><b>Ask for a public IPv4 address.</b> Tell your provider: "I am behind CGNAT and need a public IPv4 address for port forwarding." Many switch you for free or for a small fee (often called a static IP). Restart the router afterwards.</li>
+<li><b>Use IPv6</b> if you and your friends have it: allow the port for IPv6 in the router's firewall and share your PC's IPv6 address in brackets, for example <code>[2a02:…]:25565</code>.</li>
+<li><b>Use a tunnel</b> such as playit.gg (free, made for Minecraft): run the playit program on your PC, add a Minecraft Java tunnel to <code>127.0.0.1</code> and your server's port, and share the address it gives you. No router changes needed.</li>
+<li><b>Use a virtual LAN</b> for a few friends: Tailscale, ZeroTier or Radmin VPN. Everyone installs the same program and joins your network.</li>
+<li><b>Rent a small server</b> (VPS or Minecraft host) if none of this is possible.</li>
+</ol>
+<p><b>Double NAT, not CGNAT?</b> Forward the port on the provider's modem to your router and on your router to your PC, or put the provider's modem in bridge mode.</p>
 """,
         "faq": [
+            ("What is CGNAT and how do I get around it?", "Your provider shares one public IPv4 address between many customers, so port forwarding cannot reach you. Ask for a public IPv4 address, use IPv6, or use a tunnel such as playit.gg."),
             ("What port does Minecraft Java use?", "25565 over TCP by default. PackCheck picks a free port automatically and shows it on the Online page."),
             ("Is port forwarding safe?", "It only opens the Minecraft port. Keep online mode and a whitelist on, and close the port again from the Online page when you do not need it."),
             ("Why can't my friends join with my IP?", "Usually the router is not forwarding the port, the Windows firewall blocks it, or your provider uses CGNAT."),
@@ -234,6 +252,7 @@ TR = {
     "faq": [
         ("Minecraft sunucusu kurmak ücretsiz mi?", "Evet. PackCheck ve sunucu yazılımları ücretsizdir; kendi bilgisayarında çalıştırırsın."),
         ("Arkadaşlarım neden IP'mle giremiyor?", "Genelde modem portu yönlendirmiyordur veya servis sağlayıcı CGNAT kullanıyordur. Online sayfasındaki rehber ve dışarıdan test bunu çözmek için var."),
+        ("CGNAT nedir, nasıl aşarım?", "İnternet sağlayıcın tek bir IPv4 adresini birçok müşteriye paylaştırıyordur; bu yüzden port yönlendirme sana ulaşamaz. Modemdeki WAN IP'si dış IP'nden farklıysa ya da 100.64–100.127 ile başlıyorsa CGNAT arkasındasın. Çözüm: Türk Telekom, Superonline, TurkNet veya Vodafone'dan CGNAT'tan çıkarılmayı ya da sabit (public) IP istemek, IPv6 kullanmak veya playit.gg gibi ücretsiz bir tünel kullanmak. PackCheck'in Online sayfası adım adım anlatır."),
         ("Ne kadar RAM gerekir?", "Küçük bir survival sunucusu için 2–4 GB, mod paketleri için 6–8 GB veya daha fazlası."),
     ],
     "lang": "tr",
