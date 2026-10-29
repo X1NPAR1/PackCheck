@@ -320,6 +320,9 @@ Annuler : rester dans PackCheck.</value></data>
   <data name="Online_CheckUnknown" xml:space="preserve"><value>Le service de test est injoignable. Réessayez plus tard ou demandez à un ami.</value></data>
   <data name="Online_CheckNoIp" xml:space="preserve"><value>IP publique introuvable (pas de connexion ?).</value></data>
   <data name="Online_CheckNotRunning" xml:space="preserve"><value>Démarrez d'abord le serveur ; le test s'y connecte comme un joueur.</value></data>
+  <data name="Tray_RunningCount" xml:space="preserve"><value>{0} serveur(s) sur {1} en marche</value></data>
+  <data name="Tray_NoServers" xml:space="preserve"><value>Aucun serveur pour l'instant.</value></data>
+  <data name="Tray_StopAll" xml:space="preserve"><value>Arrêter tous les serveurs</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

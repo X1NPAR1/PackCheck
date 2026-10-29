@@ -320,6 +320,9 @@ Hayır: açık bırakıp çık.
   <data name="Online_CheckUnknown" xml:space="preserve"><value>Test servisine ulaşılamadı. Sonra tekrar dene veya bir arkadaşından girmesini iste.</value></data>
   <data name="Online_CheckNoIp" xml:space="preserve"><value>Dış IP adresin bulunamadı (internet bağlantısı yok mu?).</value></data>
   <data name="Online_CheckNotRunning" xml:space="preserve"><value>Önce sunucuyu başlat; test ona bir oyuncu gibi bağlanır.</value></data>
+  <data name="Tray_RunningCount" xml:space="preserve"><value>{1} sunucudan {0} tanesi çalışıyor</value></data>
+  <data name="Tray_NoServers" xml:space="preserve"><value>Henüz sunucu yok.</value></data>
+  <data name="Tray_StopAll" xml:space="preserve"><value>Tüm sunucuları durdur</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

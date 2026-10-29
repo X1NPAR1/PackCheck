@@ -320,6 +320,9 @@
   <data name="Online_CheckUnknown" xml:space="preserve"><value>Сервис проверки недоступен. Повторите позже или попросите друга зайти.</value></data>
   <data name="Online_CheckNoIp" xml:space="preserve"><value>Не удалось определить внешний IP (нет интернета?).</value></data>
   <data name="Online_CheckNotRunning" xml:space="preserve"><value>Сначала запустите сервер: проверка подключается к нему как игрок.</value></data>
+  <data name="Tray_RunningCount" xml:space="preserve"><value>Запущено серверов: {0} из {1}</value></data>
+  <data name="Tray_NoServers" xml:space="preserve"><value>Серверов пока нет.</value></data>
+  <data name="Tray_StopAll" xml:space="preserve"><value>Остановить все серверы</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

@@ -320,6 +320,9 @@ Abbrechen: in PackCheck bleiben.</value></data>
   <data name="Online_CheckUnknown" xml:space="preserve"><value>Der Testdienst war nicht erreichbar. Später erneut versuchen oder einen Freund bitten.</value></data>
   <data name="Online_CheckNoIp" xml:space="preserve"><value>Deine öffentliche IP wurde nicht gefunden (keine Internetverbindung?).</value></data>
   <data name="Online_CheckNotRunning" xml:space="preserve"><value>Starte zuerst den Server; der Test verbindet sich wie ein Spieler.</value></data>
+  <data name="Tray_RunningCount" xml:space="preserve"><value>{0} von {1} Servern laufen</value></data>
+  <data name="Tray_NoServers" xml:space="preserve"><value>Noch keine Server.</value></data>
+  <data name="Tray_StopAll" xml:space="preserve"><value>Alle Server stoppen</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

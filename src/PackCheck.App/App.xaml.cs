@@ -173,7 +173,39 @@ public partial class App : Application
 
         await splash.FadeOutAsync().ConfigureAwait(true);
         splash.Close();
-        Tray = new TrayIcon(main.ShowFromTray, Quit);
+        var shell = (MainViewModel)main.DataContext;
+        Tray = new TrayIcon(new TrayActions(
+            main.ShowFromTray,
+            Quit,
+            () => shell.Servers.Items.ToList(),
+            s =>
+            {
+                main.ShowFromTray();
+                shell.Servers.Selected = s;
+                shell.Navigate(shell.Servers);
+            },
+            index =>
+            {
+                main.ShowFromTray();
+                shell.NavIndex = index;
+            }));
+        foreach (var s in shell.Servers.Items)
+        {
+            s.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(ServerItemViewModel.State))
+                {
+                    Tray?.UpdateTooltip();
+                }
+            };
+        }
+
+        // Opens the tray menu once without a click (screenshots, UI checks).
+        if (Array.IndexOf(e.Args, "--tray-preview") is var at and >= 0 && at + 1 < e.Args.Length)
+        {
+            var target = e.Args[at + 1];
+            _ = Dispatcher.InvokeAsync(() => Tray?.RenderMenu(target), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
         if (minimized)
         {
             main.Opacity = 1;
