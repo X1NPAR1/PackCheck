@@ -113,6 +113,37 @@ public sealed class PageTests(AppFixture app)
         Assert.Contains(".NET", AllText(app.Find("AboutSystemInfo")), StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData("TabBackups", "CreateBackup")]
+    [InlineData("TabPerformance", "PerformancePage")]
+    [InlineData("TabPlayers", "PlayerSearch")]
+    [InlineData("TabIdentity", "IdentityPage")]
+    [InlineData("TabAutomation", "DiscordUrl")]
+    [InlineData("OpenUpgrade", "UpgradePage")]
+    public void ServerDetail_ShowsTheTab(string tab, string page)
+    {
+        app.Navigate("NavServers");
+        var first = app.Find("ServerList").FindFirstChild();
+        if (first is null)
+        {
+            // No server on this machine; the tabs only exist for a selected server.
+            return;
+        }
+
+        first.AsListBoxItem().Select();
+        var control = app.Find(tab);
+        if (control.ControlType == ControlType.Button)
+        {
+            control.AsButton().Invoke();
+        }
+        else
+        {
+            control.AsRadioButton().IsChecked = true;
+        }
+
+        Assert.True(Retry.WhileFalse(() => !app.Find(page).IsOffscreen, TimeSpan.FromSeconds(5)).Result, $"{page} is not visible after {tab}");
+    }
+
     private static int Visible(AutomationElement list) => list.FindAllChildren().Count(c => !c.IsOffscreen);
 
     private static string AllText(AutomationElement root)
