@@ -513,6 +513,44 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Perf_Tab" xml:space="preserve"><value>Производительность</value></data>
+  <data name="Perf_Hint" xml:space="preserve"><value>Одно измерение в минуту, пока сервер работает; хранится 7 дней.</value></data>
+  <data name="Perf_Range" xml:space="preserve"><value>Период</value></data>
+  <data name="Perf_Range1h" xml:space="preserve"><value>Последний час</value></data>
+  <data name="Perf_Range24h" xml:space="preserve"><value>Последние 24 часа</value></data>
+  <data name="Perf_Range7d" xml:space="preserve"><value>Последние 7 дней</value></data>
+  <data name="Perf_Refresh" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Perf_AvgTps" xml:space="preserve"><value>Средний TPS</value></data>
+  <data name="Perf_MinTps" xml:space="preserve"><value>Минимальный TPS</value></data>
+  <data name="Perf_AvgMspt" xml:space="preserve"><value>Среднее время тика</value></data>
+  <data name="Perf_RamPeak" xml:space="preserve"><value>Пик RAM</value></data>
+  <data name="Perf_PlayersPeak" xml:space="preserve"><value>Макс. игроков</value></data>
+  <data name="Perf_Measured" xml:space="preserve"><value>Измерено</value></data>
+  <data name="Perf_Minutes" xml:space="preserve"><value>{0} мин</value></data>
+  <data name="Perf_MsptTitle" xml:space="preserve"><value>Время тика (мс) · выше 50 мс сервер лагает</value></data>
+  <data name="Perf_RamTitle" xml:space="preserve"><value>Память (ГБ)</value></data>
+  <data name="Perf_NoData" xml:space="preserve"><value>Данных пока нет. Запустите сервер; точка добавляется каждую минуту.</value></data>
+  <data name="Perf_Advice" xml:space="preserve"><value>Диагностика и советы</value></data>
+  <data name="Perf_NoAdvice" xml:space="preserve"><value>Пока недостаточно данных для советов.</value></data>
+  <data name="Perf_Spark" xml:space="preserve"><value>Профайлер spark</value></data>
+  <data name="Perf_SparkMissing" xml:space="preserve"><value>Установите spark, чтобы найти плагин, мод или чанк, вызывающий лаги.</value></data>
+  <data name="Perf_RunProfiler" xml:space="preserve"><value>Профилировать 30 секунд</value></data>
+  <data name="Perf_Profiling" xml:space="preserve"><value>Профилирование 30 секунд…</value></data>
+  <data name="Perf_ProfileReady" xml:space="preserve"><value>Отчёт готов. Откройте, чтобы увидеть, что тратит больше всего времени.</value></data>
+  <data name="Perf_ProfileNoLink" xml:space="preserve"><value>spark не вернул ссылку. Смотрите консоль.</value></data>
+  <data name="Perf_OpenReport" xml:space="preserve"><value>Открыть отчёт</value></data>
+  <data name="Perf_LowTps" xml:space="preserve"><value>Сервер лагает: в среднем {0} TPS, минимум {1} (20 — идеально).</value></data>
+  <data name="Perf_MsptSpikes" xml:space="preserve"><value>Время тика достигало {0} мс (выше 50 мс — скачки лагов).</value></data>
+  <data name="Perf_CantKeepUp" xml:space="preserve"><value>"Can't keep up" встречается {0} раз в текущем логе.</value></data>
+  <data name="Perf_ViewDistance" xml:space="preserve"><value>view-distance = {0}. Обычно хватает 8–10, это намного легче (вкладка «Свойства»).</value></data>
+  <data name="Perf_SimulationDistance" xml:space="preserve"><value>simulation-distance = {0}. 6–8 снижает нагрузку от мобов и ферм.</value></data>
+  <data name="Perf_ActivationRange" xml:space="preserve"><value>Монстры активны до {0} блоков (spigot.yml). 16–24 экономит CPU.</value></data>
+  <data name="Perf_RamFull" xml:space="preserve"><value>Память достигла {0} из {1} ГБ. Дайте серверу больше RAM (Обзор).</value></data>
+  <data name="Perf_RamOversized" xml:space="preserve"><value>Пик {0} из {1} ГБ. Меньше RAM может сократить паузы GC.</value></data>
+  <data name="Perf_CpuHigh" xml:space="preserve"><value>CPU в среднем {0}%. Закройте другие программы или дайте больше ядер.</value></data>
+  <data name="Perf_Aikar" xml:space="preserve"><value>Включите оптимизированные флаги G1 GC (Aikar) во вкладке «Обзор».</value></data>
+  <data name="Perf_InstallSpark" xml:space="preserve"><value>Установите spark, чтобы найти причину лагов.</value></data>
+  <data name="Perf_AllGood" xml:space="preserve"><value>За этот период всё в порядке.</value></data>
   <data name="Players_Tab" xml:space="preserve"><value>Игроки</value></data>
   <data name="Players_All" xml:space="preserve"><value>Все игроки</value></data>
   <data name="Players_Online" xml:space="preserve"><value>В сети</value></data>

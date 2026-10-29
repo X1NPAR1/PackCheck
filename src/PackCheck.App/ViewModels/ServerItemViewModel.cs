@@ -437,6 +437,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
         {
             if (TpsParser.TryParse(text) is { } tps)
             {
+                _lastTps = tps;
+                if (MsptParser.TryParse(text) is { } forgeMspt)
+                {
+                    _lastMspt = forgeMspt;
+                }
+
                 Tps.Set(tps / 20, tps.ToString("0.0", Loc.Instance.Culture), Health.Tps(tps), historyValue: tps);
                 _tpsRequestedAt = DateTime.MinValue;
                 return;
@@ -444,6 +450,22 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
             if (text.Contains("Mean tick time", StringComparison.Ordinal) || text.Contains("TPS from last", StringComparison.Ordinal))
             {
+                return;
+            }
+        }
+
+        // Answer to our own background "mspt" poll (Paper family): two lines, both hidden.
+        if (DateTime.Now - _msptRequestedAt < TpsWindow)
+        {
+            if (MsptParser.IsPaperHeader(text))
+            {
+                return;
+            }
+
+            if (MsptParser.TryParse(text) is { } mspt)
+            {
+                _lastMspt = mspt;
+                _msptRequestedAt = DateTime.MinValue;
                 return;
             }
         }
@@ -624,6 +646,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             Uptime = up.TotalHours >= 1 ? $"{(int)up.TotalHours}:{up.Minutes:00}:{up.Seconds:00}" : $"{up.Minutes:00}:{up.Seconds:00}";
 
             var mb = p.WorkingSet64 / 1024d / 1024d;
+            _lastRamMb = mb;
             var ramPct = mb / Math.Max(1, Definition.MaxMemoryMb) * 100;
             Ram.Set(ramPct / 100, $"{ramPct:0}%", Health.Ram(ramPct), $"{mb:N0} / {Definition.MaxMemoryMb:N0} MB", mb);
 
@@ -633,6 +656,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             {
                 var pct = Math.Clamp((cpu - _lastCpu).TotalMilliseconds / (now - _lastSample).TotalMilliseconds / Environment.ProcessorCount * 100, 0, 100);
                 Cpu.Set(pct / 100, $"{pct:0}%", Health.Cpu(pct), Loc.F("Gauge_Threads", p.Threads.Count));
+                _lastCpuPct = pct;
             }
 
             _lastCpu = cpu;
@@ -648,6 +672,8 @@ public sealed partial class ServerItemViewModel : ObservableObject
         {
             return;
         }
+
+        RecordMetrics();
 
         if (_tick % 3 == 0)
         {
@@ -680,6 +706,11 @@ public sealed partial class ServerItemViewModel : ObservableObject
             {
                 _tpsRequestedAt = DateTime.Now;
                 await _process.SendCommandAsync(cmd).ConfigureAwait(true);
+                if (MsptParser.CommandFor(Definition.Platform) is { } msptCmd)
+                {
+                    _msptRequestedAt = DateTime.Now;
+                    await _process.SendCommandAsync(msptCmd).ConfigureAwait(true);
+                }
             }
             else
             {

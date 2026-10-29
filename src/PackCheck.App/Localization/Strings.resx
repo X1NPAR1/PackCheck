@@ -513,6 +513,44 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>This PC has no more free memory to give.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} is ready. Start the server again.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} disabled. Start the server again.</value></data>
+  <data name="Perf_Tab" xml:space="preserve"><value>Performance</value></data>
+  <data name="Perf_Hint" xml:space="preserve"><value>One sample per minute while the server runs; kept for 7 days.</value></data>
+  <data name="Perf_Range" xml:space="preserve"><value>Time range</value></data>
+  <data name="Perf_Range1h" xml:space="preserve"><value>Last hour</value></data>
+  <data name="Perf_Range24h" xml:space="preserve"><value>Last 24 hours</value></data>
+  <data name="Perf_Range7d" xml:space="preserve"><value>Last 7 days</value></data>
+  <data name="Perf_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Perf_AvgTps" xml:space="preserve"><value>Average TPS</value></data>
+  <data name="Perf_MinTps" xml:space="preserve"><value>Lowest TPS</value></data>
+  <data name="Perf_AvgMspt" xml:space="preserve"><value>Average tick time</value></data>
+  <data name="Perf_RamPeak" xml:space="preserve"><value>Peak RAM</value></data>
+  <data name="Perf_PlayersPeak" xml:space="preserve"><value>Most players</value></data>
+  <data name="Perf_Measured" xml:space="preserve"><value>Measured</value></data>
+  <data name="Perf_Minutes" xml:space="preserve"><value>{0} min</value></data>
+  <data name="Perf_MsptTitle" xml:space="preserve"><value>Tick time (ms) · above 50 ms the server lags</value></data>
+  <data name="Perf_RamTitle" xml:space="preserve"><value>Memory (GB)</value></data>
+  <data name="Perf_NoData" xml:space="preserve"><value>No data yet. Start the server; a point is added every minute.</value></data>
+  <data name="Perf_Advice" xml:space="preserve"><value>Diagnosis and advice</value></data>
+  <data name="Perf_NoAdvice" xml:space="preserve"><value>Not enough data for advice yet.</value></data>
+  <data name="Perf_Spark" xml:space="preserve"><value>spark profiler</value></data>
+  <data name="Perf_SparkMissing" xml:space="preserve"><value>Install the spark plugin/mod to find exactly which plugin, mod or chunk causes lag.</value></data>
+  <data name="Perf_RunProfiler" xml:space="preserve"><value>Profile 30 seconds</value></data>
+  <data name="Perf_Profiling" xml:space="preserve"><value>Profiling for 30 seconds…</value></data>
+  <data name="Perf_ProfileReady" xml:space="preserve"><value>Report ready. Open it to see what uses the most time.</value></data>
+  <data name="Perf_ProfileNoLink" xml:space="preserve"><value>spark did not return a report link. See the console.</value></data>
+  <data name="Perf_OpenReport" xml:space="preserve"><value>Open report</value></data>
+  <data name="Perf_LowTps" xml:space="preserve"><value>The server is lagging: average {0} TPS, lowest {1} (20 is perfect).</value></data>
+  <data name="Perf_MsptSpikes" xml:space="preserve"><value>Tick time peaked at {0} ms (over 50 ms means lag spikes).</value></data>
+  <data name="Perf_CantKeepUp" xml:space="preserve"><value>"Can't keep up" was logged {0} times in the current log.</value></data>
+  <data name="Perf_ViewDistance" xml:space="preserve"><value>view-distance is {0}. 8–10 is usually enough and much lighter (Properties tab).</value></data>
+  <data name="Perf_SimulationDistance" xml:space="preserve"><value>simulation-distance is {0}. 6–8 cuts the work for mobs and farms.</value></data>
+  <data name="Perf_ActivationRange" xml:space="preserve"><value>Monsters are fully active up to {0} blocks (spigot.yml). 16–24 saves CPU.</value></data>
+  <data name="Perf_RamFull" xml:space="preserve"><value>Memory reached {0} GB of {1} GB. Give the server more RAM (Overview tab).</value></data>
+  <data name="Perf_RamOversized" xml:space="preserve"><value>Peak use was {0} GB of {1} GB. Less RAM can mean shorter GC pauses.</value></data>
+  <data name="Perf_CpuHigh" xml:space="preserve"><value>CPU averaged {0}%. Close other programs or allow more cores.</value></data>
+  <data name="Perf_Aikar" xml:space="preserve"><value>Turn on the optimized G1 GC flags (Aikar) in the Overview tab.</value></data>
+  <data name="Perf_InstallSpark" xml:space="preserve"><value>Install spark to see which plugin or mod causes the lag.</value></data>
+  <data name="Perf_AllGood" xml:space="preserve"><value>Everything looks healthy in this period.</value></data>
   <data name="Players_Tab" xml:space="preserve"><value>Players</value></data>
   <data name="Players_All" xml:space="preserve"><value>All players</value></data>
   <data name="Players_Online" xml:space="preserve"><value>Online</value></data>

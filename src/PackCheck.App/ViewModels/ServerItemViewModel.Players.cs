@@ -73,6 +73,10 @@ public sealed partial class ServerItemViewModel
         {
             RefreshPlayers();
         }
+        else if (value == PerformanceTab)
+        {
+            RefreshPerformance();
+        }
     }
 
     partial void OnPlayerSearchChanged(string value) => RefreshPlayers();

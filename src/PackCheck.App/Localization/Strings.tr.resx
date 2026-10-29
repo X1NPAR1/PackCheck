@@ -513,6 +513,44 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Perf_Tab" xml:space="preserve"><value>Performans</value></data>
+  <data name="Perf_Hint" xml:space="preserve"><value>Sunucu çalışırken dakikada bir ölçüm; 7 gün saklanır.</value></data>
+  <data name="Perf_Range" xml:space="preserve"><value>Zaman aralığı</value></data>
+  <data name="Perf_Range1h" xml:space="preserve"><value>Son 1 saat</value></data>
+  <data name="Perf_Range24h" xml:space="preserve"><value>Son 24 saat</value></data>
+  <data name="Perf_Range7d" xml:space="preserve"><value>Son 7 gün</value></data>
+  <data name="Perf_Refresh" xml:space="preserve"><value>Yenile</value></data>
+  <data name="Perf_AvgTps" xml:space="preserve"><value>Ortalama TPS</value></data>
+  <data name="Perf_MinTps" xml:space="preserve"><value>En düşük TPS</value></data>
+  <data name="Perf_AvgMspt" xml:space="preserve"><value>Ortalama tick süresi</value></data>
+  <data name="Perf_RamPeak" xml:space="preserve"><value>En yüksek RAM</value></data>
+  <data name="Perf_PlayersPeak" xml:space="preserve"><value>En çok oyuncu</value></data>
+  <data name="Perf_Measured" xml:space="preserve"><value>Ölçülen</value></data>
+  <data name="Perf_Minutes" xml:space="preserve"><value>{0} dk</value></data>
+  <data name="Perf_MsptTitle" xml:space="preserve"><value>Tick süresi (ms) · 50 ms üstünde sunucu kasar</value></data>
+  <data name="Perf_RamTitle" xml:space="preserve"><value>Bellek (GB)</value></data>
+  <data name="Perf_NoData" xml:space="preserve"><value>Henüz veri yok. Sunucuyu başlat; her dakika bir nokta eklenir.</value></data>
+  <data name="Perf_Advice" xml:space="preserve"><value>Teşhis ve öneriler</value></data>
+  <data name="Perf_NoAdvice" xml:space="preserve"><value>Öneri için henüz yeterli veri yok.</value></data>
+  <data name="Perf_Spark" xml:space="preserve"><value>spark profil oluşturucu</value></data>
+  <data name="Perf_SparkMissing" xml:space="preserve"><value>Kasmaya tam olarak hangi eklenti, mod veya chunk'ın yol açtığını bulmak için spark eklentisini/modunu kur.</value></data>
+  <data name="Perf_RunProfiler" xml:space="preserve"><value>30 saniye profil çıkar</value></data>
+  <data name="Perf_Profiling" xml:space="preserve"><value>30 saniye profil çıkarılıyor…</value></data>
+  <data name="Perf_ProfileReady" xml:space="preserve"><value>Rapor hazır. En çok zamanı neyin harcadığını görmek için aç.</value></data>
+  <data name="Perf_ProfileNoLink" xml:space="preserve"><value>spark rapor bağlantısı vermedi. Konsola bak.</value></data>
+  <data name="Perf_OpenReport" xml:space="preserve"><value>Raporu aç</value></data>
+  <data name="Perf_LowTps" xml:space="preserve"><value>Sunucu kasıyor: ortalama {0} TPS, en düşük {1} (20 kusursuz).</value></data>
+  <data name="Perf_MsptSpikes" xml:space="preserve"><value>Tick süresi {0} ms'ye çıktı (50 ms üstü ani kasma demek).</value></data>
+  <data name="Perf_CantKeepUp" xml:space="preserve"><value>Mevcut günlükte {0} kez "Can't keep up" (yetişemiyor) uyarısı var.</value></data>
+  <data name="Perf_ViewDistance" xml:space="preserve"><value>view-distance {0}. Genelde 8–10 yeterli ve çok daha hafif (Özellikler sekmesi).</value></data>
+  <data name="Perf_SimulationDistance" xml:space="preserve"><value>simulation-distance {0}. 6–8 yaratık ve çiftlik yükünü azaltır.</value></data>
+  <data name="Perf_ActivationRange" xml:space="preserve"><value>Canavarlar {0} bloğa kadar tam aktif (spigot.yml). 16–24 CPU kazandırır.</value></data>
+  <data name="Perf_RamFull" xml:space="preserve"><value>Bellek {1} GB'ın {0} GB'ına ulaştı. Sunucuya daha fazla RAM ver (Genel bakış).</value></data>
+  <data name="Perf_RamOversized" xml:space="preserve"><value>En yüksek kullanım {1} GB'ın {0} GB'ı. Daha az RAM, daha kısa GC duraklamaları demek olabilir.</value></data>
+  <data name="Perf_CpuHigh" xml:space="preserve"><value>CPU ortalaması %{0}. Diğer programları kapat ya da daha fazla çekirdek ver.</value></data>
+  <data name="Perf_Aikar" xml:space="preserve"><value>Genel bakış sekmesinden optimize G1 GC ayarlarını (Aikar) aç.</value></data>
+  <data name="Perf_InstallSpark" xml:space="preserve"><value>Kasmaya hangi eklentinin/modun yol açtığını görmek için spark kur.</value></data>
+  <data name="Perf_AllGood" xml:space="preserve"><value>Bu dönemde her şey sağlıklı görünüyor.</value></data>
   <data name="Players_Tab" xml:space="preserve"><value>Oyuncular</value></data>
   <data name="Players_All" xml:space="preserve"><value>Tüm oyuncular</value></data>
   <data name="Players_Online" xml:space="preserve"><value>Çevrimiçi</value></data>

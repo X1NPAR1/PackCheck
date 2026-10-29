@@ -174,6 +174,7 @@
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=6}" AutomationProperties.AutomationId="TabAutomation">
                 <TextBlock><Run Text="{l:Loc Auto_Tab}" /><Run Text="{Binding ActiveRuleCount, Mode=OneWay, StringFormat=' · {0}'}" /></TextBlock>
             </RadioButton>
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Perf_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=9}" AutomationProperties.AutomationId="TabPerformance" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Players_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=8}" AutomationProperties.AutomationId="TabPlayers" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Identity_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=7}" AutomationProperties.AutomationId="TabIdentity" />
         </StackPanel>
@@ -979,6 +980,101 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+
+        <!-- Performance -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=9}" AutomationProperties.AutomationId="PerformancePage">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,12">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <ComboBox Width="150" ItemsSource="{Binding PerfRanges}" SelectedIndex="{Binding PerfRange}" AutomationProperties.Name="{l:Loc Perf_Range}" AutomationProperties.AutomationId="PerfRange" />
+                        <Button Content="{l:Loc Perf_Refresh}" Command="{Binding RefreshPerformanceCommand}" Margin="8,0,0,0" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Perf_Tab}" FontSize="15" FontWeight="SemiBold" />
+                        <TextBlock Text="{l:Loc Perf_Hint}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </DockPanel>
+
+                <!-- Summary -->
+                <UniformGrid Columns="6" Margin="0,0,0,12">
+                    <Border Style="{StaticResource Card}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{l:Loc Perf_AvgTps}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfTps}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{l:Loc Perf_MinTps}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfTpsMin}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{l:Loc Perf_AvgMspt}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfMspt}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{l:Loc Perf_RamPeak}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfRamPeak}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{l:Loc Perf_PlayersPeak}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfPlayersPeak}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                    <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="{l:Loc Perf_Measured}" Style="{StaticResource Muted}" FontSize="12" /><TextBlock Text="{Binding PerfUptime}" FontSize="20" FontWeight="SemiBold" /></StackPanel></Border>
+                </UniformGrid>
+
+                <!-- Advice -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Perf_Advice}" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <TextBlock Text="{l:Loc Perf_NoAdvice}" Style="{StaticResource Muted}" Visibility="{Binding Advice.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding Advice}" AutomationProperties.AutomationId="PerfAdvice">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,4">
+                                        <Ellipse x:Name="Dot" Width="8" Height="8" Margin="0,5,10,0" VerticalAlignment="Top" Fill="{DynamicResource TextMutedBrush}" />
+                                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
+                                    </DockPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsWarning}" Value="True"><Setter TargetName="Dot" Property="Fill" Value="{DynamicResource WarnBrush}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding IsCritical}" Value="True"><Setter TargetName="Dot" Property="Fill" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0" Padding="0,10,0,0">
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                    <Button Content="{l:Loc Perf_OpenReport}" Command="{Binding OpenSparkReportCommand}" Margin="0,0,6,0" Visibility="{Binding HasSparkReport, Converter={StaticResource BoolVis}}" />
+                                    <Button Content="{l:Loc Perf_RunProfiler}" Style="{StaticResource PrimaryButton}" Command="{Binding RunProfilerCommand}" IsEnabled="{Binding IsRunning}" Visibility="{Binding HasSpark, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="RunProfiler" />
+                                </StackPanel>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{l:Loc Perf_Spark}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{l:Loc Perf_SparkMissing}" Style="{StaticResource Muted}" TextWrapping="Wrap" Visibility="{Binding HasSpark, Converter={x:Static l:Inverse.Visibility}}" />
+                                    <TextBlock Text="{Binding SparkStatus}" Style="{StaticResource Muted}" TextWrapping="Wrap" Visibility="{Binding SparkStatus, Converter={StaticResource NullVis}}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Charts -->
+                <UniformGrid Columns="2">
+                    <Border Style="{StaticResource Card}" Margin="0,0,6,12">
+                        <StackPanel>
+                            <TextBlock Text="TPS" FontWeight="SemiBold" />
+                            <c:LineChart Height="150" Margin="0,8,0,0" Points="{Binding TpsPoints}" Minimum="0" Maximum="20" Threshold="18" Unit="TPS" Stroke="{DynamicResource PassBrush}" GridBrush="{DynamicResource LineBrush}" LabelBrush="{DynamicResource TextMutedBrush}" AutomationProperties.AutomationId="ChartTps" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Margin="6,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Perf_MsptTitle}" FontWeight="SemiBold" />
+                            <c:LineChart Height="150" Margin="0,8,0,0" Points="{Binding MsptPoints}" Minimum="0" Threshold="50" Unit="ms" Stroke="{DynamicResource WarnBrush}" GridBrush="{DynamicResource LineBrush}" LabelBrush="{DynamicResource TextMutedBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,6,12">
+                        <StackPanel>
+                            <TextBlock Text="CPU" FontWeight="SemiBold" />
+                            <c:LineChart Height="150" Margin="0,8,0,0" Points="{Binding CpuPoints}" Minimum="0" Maximum="100" Unit="%" Format="0" Stroke="{DynamicResource WarnBrush}" GridBrush="{DynamicResource LineBrush}" LabelBrush="{DynamicResource TextMutedBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Margin="6,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Perf_RamTitle}" FontWeight="SemiBold" />
+                            <c:LineChart Height="150" Margin="0,8,0,0" Points="{Binding RamPoints}" Minimum="0" Unit="GB" Format="0.0" Stroke="{DynamicResource PrimaryBrush}" GridBrush="{DynamicResource LineBrush}" LabelBrush="{DynamicResource TextMutedBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" Margin="0,0,6,0">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Players_Tab}" FontWeight="SemiBold" />
+                            <c:LineChart Height="150" Margin="0,8,0,0" Points="{Binding PlayerPoints}" Minimum="0" Maximum="5" Unit="" Format="0" Stroke="{DynamicResource TextBrush}" GridBrush="{DynamicResource LineBrush}" LabelBrush="{DynamicResource TextMutedBrush}" />
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Players -->
         <Border Grid.Row="2" Style="{StaticResource Card}" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=8}" AutomationProperties.AutomationId="PlayersPage">
