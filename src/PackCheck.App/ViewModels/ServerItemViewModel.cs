@@ -366,6 +366,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             PlayersText = "–";
             _players.Clear();
             Players.Clear();
+            ClosePlayerSessions();
             _ = RefreshDiskAsync();
         }
 
@@ -476,6 +477,8 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
             SyncPlayers(_players);
         }
+
+        TrackPlayerHistory(line);
     }
 
     private void SyncPlayers(IEnumerable<string> names)

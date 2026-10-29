@@ -513,6 +513,40 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Players_Tab" xml:space="preserve"><value>Oyuncular</value></data>
+  <data name="Players_All" xml:space="preserve"><value>Tüm oyuncular</value></data>
+  <data name="Players_Online" xml:space="preserve"><value>Çevrimiçi</value></data>
+  <data name="Players_Ops" xml:space="preserve"><value>Operatörler</value></data>
+  <data name="Players_Whitelisted" xml:space="preserve"><value>Beyaz listede</value></data>
+  <data name="Players_Banned" xml:space="preserve"><value>Yasaklı</value></data>
+  <data name="Players_Filter" xml:space="preserve"><value>Filtre</value></data>
+  <data name="Players_Search" xml:space="preserve"><value>İsim veya IP ile ara…</value></data>
+  <data name="Players_NameHint" xml:space="preserve"><value>Oyuncu adı</value></data>
+  <data name="Players_AddWhitelist" xml:space="preserve"><value>Beyaz listeye al</value></data>
+  <data name="Players_RemoveWhitelist" xml:space="preserve"><value>Beyaz listeden çıkar</value></data>
+  <data name="Players_AddOp" xml:space="preserve"><value>OP yap</value></data>
+  <data name="Players_RemoveOp" xml:space="preserve"><value>OP'yi al</value></data>
+  <data name="Players_Ban" xml:space="preserve"><value>Yasakla</value></data>
+  <data name="Players_Pardon" xml:space="preserve"><value>Yasağı kaldır</value></data>
+  <data name="Players_Kick" xml:space="preserve"><value>At</value></data>
+  <data name="Players_BanConfirm" xml:space="preserve"><value>{0} yasaklansın mı? Bu sunucuya artık giremez.</value></data>
+  <data name="Players_Kicked" xml:space="preserve"><value>{0} sunucudan atıldı.</value></data>
+  <data name="Players_BadName" xml:space="preserve"><value>Geçerli bir Minecraft adı yaz (3–16 harf, rakam veya _).</value></data>
+  <data name="Players_NoUuid" xml:space="preserve"><value>{0} hesabı bulunamadı. Adı kontrol et ya da sunucuyu başlatıp tekrar dene.</value></data>
+  <data name="Players_Added_Whitelist" xml:space="preserve"><value>{0} beyaz listeye eklendi.</value></data>
+  <data name="Players_Removed_Whitelist" xml:space="preserve"><value>{0} beyaz listeden çıkarıldı.</value></data>
+  <data name="Players_Added_Ops" xml:space="preserve"><value>{0} artık operatör.</value></data>
+  <data name="Players_Removed_Ops" xml:space="preserve"><value>{0} artık operatör değil.</value></data>
+  <data name="Players_Added_Banned" xml:space="preserve"><value>{0} yasaklandı.</value></data>
+  <data name="Players_Removed_Banned" xml:space="preserve"><value>{0} yasağı kaldırıldı.</value></data>
+  <data name="Players_Summary" xml:space="preserve"><value>{0} oyuncu · {1} çevrimiçi · {2} OP · {3} yasaklı</value></data>
+  <data name="Players_Empty" xml:space="preserve"><value>Henüz oyuncu yok. Oyuncular girdikten sonra burada görünür ya da yukarıdan ekleyebilirsin.</value></data>
+  <data name="Players_OnlineNow" xml:space="preserve"><value>şu an çevrimiçi</value></data>
+  <data name="Players_LastSeen" xml:space="preserve"><value>Son görülme</value></data>
+  <data name="Players_PlayTime" xml:space="preserve"><value>Oynama süresi</value></data>
+  <data name="Players_Alts" xml:space="preserve"><value>Aynı IP: {0}</value></data>
+  <data name="Players_WhitelistBadge" xml:space="preserve"><value>beyaz liste</value></data>
+  <data name="Players_BannedBadge" xml:space="preserve"><value>yasaklı</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Kimlik</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Sunucu logosu</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Çok oyunculu listesinde sunucunun yanında görünür. Her görsel olur: kare kırpılır ve 64×64 boyutuna getirilir.</value></data>

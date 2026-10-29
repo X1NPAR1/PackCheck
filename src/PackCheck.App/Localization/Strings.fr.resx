@@ -513,6 +513,40 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Ce PC n'a plus de mémoire libre.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} est prêt. Redémarrez le serveur.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} désactivé. Redémarrez le serveur.</value></data>
+  <data name="Players_Tab" xml:space="preserve"><value>Joueurs</value></data>
+  <data name="Players_All" xml:space="preserve"><value>Tous les joueurs</value></data>
+  <data name="Players_Online" xml:space="preserve"><value>En ligne</value></data>
+  <data name="Players_Ops" xml:space="preserve"><value>Opérateurs</value></data>
+  <data name="Players_Whitelisted" xml:space="preserve"><value>Liste blanche</value></data>
+  <data name="Players_Banned" xml:space="preserve"><value>Bannis</value></data>
+  <data name="Players_Filter" xml:space="preserve"><value>Filtre</value></data>
+  <data name="Players_Search" xml:space="preserve"><value>Rechercher par nom ou IP…</value></data>
+  <data name="Players_NameHint" xml:space="preserve"><value>Nom du joueur</value></data>
+  <data name="Players_AddWhitelist" xml:space="preserve"><value>Liste blanche</value></data>
+  <data name="Players_RemoveWhitelist" xml:space="preserve"><value>Retirer de la liste</value></data>
+  <data name="Players_AddOp" xml:space="preserve"><value>Rendre OP</value></data>
+  <data name="Players_RemoveOp" xml:space="preserve"><value>Retirer OP</value></data>
+  <data name="Players_Ban" xml:space="preserve"><value>Bannir</value></data>
+  <data name="Players_Pardon" xml:space="preserve"><value>Débannir</value></data>
+  <data name="Players_Kick" xml:space="preserve"><value>Expulser</value></data>
+  <data name="Players_BanConfirm" xml:space="preserve"><value>Bannir {0} ? Il ne pourra plus rejoindre ce serveur.</value></data>
+  <data name="Players_Kicked" xml:space="preserve"><value>{0} a été expulsé.</value></data>
+  <data name="Players_BadName" xml:space="preserve"><value>Entrez un nom Minecraft valide (3–16 lettres, chiffres ou _).</value></data>
+  <data name="Players_NoUuid" xml:space="preserve"><value>Compte {0} introuvable. Vérifiez le nom ou démarrez le serveur et réessayez.</value></data>
+  <data name="Players_Added_Whitelist" xml:space="preserve"><value>{0} ajouté à la liste blanche.</value></data>
+  <data name="Players_Removed_Whitelist" xml:space="preserve"><value>{0} retiré de la liste blanche.</value></data>
+  <data name="Players_Added_Ops" xml:space="preserve"><value>{0} est maintenant opérateur.</value></data>
+  <data name="Players_Removed_Ops" xml:space="preserve"><value>{0} n'est plus opérateur.</value></data>
+  <data name="Players_Added_Banned" xml:space="preserve"><value>{0} a été banni.</value></data>
+  <data name="Players_Removed_Banned" xml:space="preserve"><value>{0} a été débanni.</value></data>
+  <data name="Players_Summary" xml:space="preserve"><value>{0} joueurs · {1} en ligne · {2} OP · {3} bannis</value></data>
+  <data name="Players_Empty" xml:space="preserve"><value>Aucun joueur. Ils apparaissent après leur connexion, ou ajoutez-en un ci-dessus.</value></data>
+  <data name="Players_OnlineNow" xml:space="preserve"><value>en ligne</value></data>
+  <data name="Players_LastSeen" xml:space="preserve"><value>Vu</value></data>
+  <data name="Players_PlayTime" xml:space="preserve"><value>Temps de jeu</value></data>
+  <data name="Players_Alts" xml:space="preserve"><value>Même IP que : {0}</value></data>
+  <data name="Players_WhitelistBadge" xml:space="preserve"><value>liste blanche</value></data>
+  <data name="Players_BannedBadge" xml:space="preserve"><value>banni</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Identité</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Icône du serveur</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Affichée à côté du serveur dans la liste multijoueur. N'importe quelle image : elle est recadrée en carré et réduite à 64×64.</value></data>

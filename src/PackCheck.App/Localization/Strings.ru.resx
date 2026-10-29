@@ -513,6 +513,40 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Players_Tab" xml:space="preserve"><value>Игроки</value></data>
+  <data name="Players_All" xml:space="preserve"><value>Все игроки</value></data>
+  <data name="Players_Online" xml:space="preserve"><value>В сети</value></data>
+  <data name="Players_Ops" xml:space="preserve"><value>Операторы</value></data>
+  <data name="Players_Whitelisted" xml:space="preserve"><value>В белом списке</value></data>
+  <data name="Players_Banned" xml:space="preserve"><value>Забанены</value></data>
+  <data name="Players_Filter" xml:space="preserve"><value>Фильтр</value></data>
+  <data name="Players_Search" xml:space="preserve"><value>Поиск по имени или IP…</value></data>
+  <data name="Players_NameHint" xml:space="preserve"><value>Имя игрока</value></data>
+  <data name="Players_AddWhitelist" xml:space="preserve"><value>В белый список</value></data>
+  <data name="Players_RemoveWhitelist" xml:space="preserve"><value>Убрать из списка</value></data>
+  <data name="Players_AddOp" xml:space="preserve"><value>Дать OP</value></data>
+  <data name="Players_RemoveOp" xml:space="preserve"><value>Снять OP</value></data>
+  <data name="Players_Ban" xml:space="preserve"><value>Забанить</value></data>
+  <data name="Players_Pardon" xml:space="preserve"><value>Разбанить</value></data>
+  <data name="Players_Kick" xml:space="preserve"><value>Кикнуть</value></data>
+  <data name="Players_BanConfirm" xml:space="preserve"><value>Забанить {0}? Игрок больше не сможет зайти.</value></data>
+  <data name="Players_Kicked" xml:space="preserve"><value>{0} кикнут.</value></data>
+  <data name="Players_BadName" xml:space="preserve"><value>Введите корректное имя (3–16 букв, цифр или _).</value></data>
+  <data name="Players_NoUuid" xml:space="preserve"><value>Аккаунт {0} не найден. Проверьте имя или запустите сервер и повторите.</value></data>
+  <data name="Players_Added_Whitelist" xml:space="preserve"><value>{0} добавлен в белый список.</value></data>
+  <data name="Players_Removed_Whitelist" xml:space="preserve"><value>{0} убран из белого списка.</value></data>
+  <data name="Players_Added_Ops" xml:space="preserve"><value>{0} теперь оператор.</value></data>
+  <data name="Players_Removed_Ops" xml:space="preserve"><value>{0} больше не оператор.</value></data>
+  <data name="Players_Added_Banned" xml:space="preserve"><value>{0} забанен.</value></data>
+  <data name="Players_Removed_Banned" xml:space="preserve"><value>{0} разбанен.</value></data>
+  <data name="Players_Summary" xml:space="preserve"><value>{0} игроков · {1} в сети · {2} OP · {3} забанено</value></data>
+  <data name="Players_Empty" xml:space="preserve"><value>Игроков пока нет. Они появятся после входа, или добавьте вручную выше.</value></data>
+  <data name="Players_OnlineNow" xml:space="preserve"><value>сейчас в сети</value></data>
+  <data name="Players_LastSeen" xml:space="preserve"><value>Был в сети</value></data>
+  <data name="Players_PlayTime" xml:space="preserve"><value>Время в игре</value></data>
+  <data name="Players_Alts" xml:space="preserve"><value>Тот же IP: {0}</value></data>
+  <data name="Players_WhitelistBadge" xml:space="preserve"><value>белый список</value></data>
+  <data name="Players_BannedBadge" xml:space="preserve"><value>забанен</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Оформление</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Значок сервера</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Показывается рядом с сервером в списке. Подойдёт любое изображение: оно обрезается до квадрата и уменьшается до 64×64.</value></data>

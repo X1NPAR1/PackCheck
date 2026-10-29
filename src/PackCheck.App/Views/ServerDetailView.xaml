@@ -174,6 +174,7 @@
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=6}" AutomationProperties.AutomationId="TabAutomation">
                 <TextBlock><Run Text="{l:Loc Auto_Tab}" /><Run Text="{Binding ActiveRuleCount, Mode=OneWay, StringFormat=' · {0}'}" /></TextBlock>
             </RadioButton>
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Players_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=8}" AutomationProperties.AutomationId="TabPlayers" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Identity_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=7}" AutomationProperties.AutomationId="TabIdentity" />
         </StackPanel>
         </StackPanel>
@@ -978,6 +979,100 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+
+        <!-- Players -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=8}" AutomationProperties.AutomationId="PlayersPage">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding PlayerSummary}" Style="{StaticResource Muted}" VerticalAlignment="Center" />
+                        <TextBlock Text="{l:Loc Players_Tab}" FontSize="15" FontWeight="SemiBold" />
+                    </DockPanel>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="170" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Tag="{l:Loc Players_Search}" Text="{Binding PlayerSearch, UpdateSourceTrigger=PropertyChanged, Delay=150}" AutomationProperties.Name="{l:Loc Players_Search}" AutomationProperties.AutomationId="PlayerSearch" />
+                        <ComboBox Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding PlayerFilters}" SelectedIndex="{Binding PlayerFilter}" AutomationProperties.Name="{l:Loc Players_Filter}" />
+                    </Grid>
+                    <Grid Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Tag="{l:Loc Players_NameHint}" Text="{Binding PlayerNameInput, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{l:Loc Players_NameHint}" AutomationProperties.AutomationId="PlayerNameInput" />
+                        <Button Grid.Column="1" Margin="8,0,0,0" Content="{l:Loc Players_AddWhitelist}" Command="{Binding AddToListCommand}" CommandParameter="Whitelist" AutomationProperties.AutomationId="AddWhitelist" />
+                        <Button Grid.Column="2" Margin="6,0,0,0" Content="{l:Loc Players_AddOp}" Command="{Binding AddToListCommand}" CommandParameter="Ops" />
+                        <Button Grid.Column="3" Margin="6,0,0,0" Command="{Binding AddToListCommand}" CommandParameter="Banned">
+                            <TextBlock Text="{l:Loc Players_Ban}" Foreground="{DynamicResource FailBrush}" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+                <Grid>
+                    <TextBlock Text="{l:Loc Players_Empty}" Style="{StaticResource Muted}" TextWrapping="Wrap" Visibility="{Binding PlayerRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding PlayerRows}" AutomationProperties.AutomationId="PlayerList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                                        <DockPanel>
+                                            <Grid Width="40" Height="40" DockPanel.Dock="Left" Margin="0,0,12,0" VerticalAlignment="Top">
+                                                <Border CornerRadius="6" Background="{DynamicResource Surface2Brush}">
+                                                    <TextBlock Text="{Binding Initial}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                                <Image Source="{Binding Avatar}" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                                <Ellipse Width="11" Height="11" Fill="{DynamicResource PassBrush}" Stroke="{DynamicResource SurfaceBrush}" StrokeThickness="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-3,-3"
+                                                         Visibility="{Binding IsOnline, Converter={StaticResource BoolVis}}" />
+                                            </Grid>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button Padding="9,5" Margin="0,0,4,0" Content="{l:Loc Players_Kick}" Visibility="{Binding IsOnline, Converter={StaticResource BoolVis}}"
+                                                        Command="{Binding DataContext.KickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                <Button x:Name="Wl" Padding="9,5" Margin="0,0,4,0" Content="{l:Loc Players_AddWhitelist}"
+                                                        Command="{Binding DataContext.ToggleWhitelistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                <Button x:Name="Op" Padding="9,5" Margin="0,0,4,0" Content="{l:Loc Players_AddOp}"
+                                                        Command="{Binding DataContext.ToggleOpCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                <Button Padding="9,5" Style="{StaticResource GhostButton}"
+                                                        Command="{Binding DataContext.ToggleBanCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                                    <TextBlock x:Name="BanText" Text="{l:Loc Players_Ban}" Foreground="{DynamicResource FailBrush}" />
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
+                                                    <Border CornerRadius="4" Padding="6,1" Margin="8,0,0,0" Background="{DynamicResource Surface2Brush}" Visibility="{Binding IsOp, Converter={StaticResource BoolVis}}">
+                                                        <TextBlock Text="OP" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource WarnBrush}" />
+                                                    </Border>
+                                                    <Border CornerRadius="4" Padding="6,1" Margin="6,0,0,0" Background="{DynamicResource Surface2Brush}" Visibility="{Binding IsWhitelisted, Converter={StaticResource BoolVis}}">
+                                                        <TextBlock Text="{l:Loc Players_WhitelistBadge}" FontSize="11" FontWeight="SemiBold" />
+                                                    </Border>
+                                                    <Border CornerRadius="4" Padding="6,1" Margin="6,0,0,0" Background="{DynamicResource Surface2Brush}" Visibility="{Binding IsBanned, Converter={StaticResource BoolVis}}">
+                                                        <TextBlock Text="{l:Loc Players_BannedBadge}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource FailBrush}" />
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Style="{StaticResource Muted}" FontSize="12" Margin="0,3,0,0">
+                                                    <Run Text="{l:Loc Players_LastSeen}" /><Run Text=" " /><Run Text="{Binding LastSeenText, Mode=OneWay}" />
+                                                    <Run Text="  ·  " /><Run Text="{l:Loc Players_PlayTime}" /><Run Text=" " /><Run Text="{Binding PlayTimeText, Mode=OneWay}" />
+                                                    <Run Text="  ·  IP " /><Run Text="{Binding IpsText, Mode=OneWay}" />
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding AltsText}" FontSize="12" Foreground="{DynamicResource WarnBrush}" Margin="0,2,0,0" Visibility="{Binding HasAlts, Converter={StaticResource BoolVis}}" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsWhitelisted}" Value="True"><Setter TargetName="Wl" Property="Content" Value="{l:Loc Players_RemoveWhitelist}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding IsOp}" Value="True"><Setter TargetName="Op" Property="Content" Value="{l:Loc Players_RemoveOp}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding IsBanned}" Value="True"><Setter TargetName="BanText" Property="Text" Value="{l:Loc Players_Pardon}" /></DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
+        </Border>
 
         <!-- Identity: icon + MOTD -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=7}" AutomationProperties.AutomationId="IdentityPage">

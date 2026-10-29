@@ -513,6 +513,40 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
+  <data name="Players_Tab" xml:space="preserve"><value>Spieler</value></data>
+  <data name="Players_All" xml:space="preserve"><value>Alle Spieler</value></data>
+  <data name="Players_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="Players_Ops" xml:space="preserve"><value>Operatoren</value></data>
+  <data name="Players_Whitelisted" xml:space="preserve"><value>Auf der Whitelist</value></data>
+  <data name="Players_Banned" xml:space="preserve"><value>Gebannt</value></data>
+  <data name="Players_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Players_Search" xml:space="preserve"><value>Nach Name oder IP suchen…</value></data>
+  <data name="Players_NameHint" xml:space="preserve"><value>Spielername</value></data>
+  <data name="Players_AddWhitelist" xml:space="preserve"><value>Whitelist</value></data>
+  <data name="Players_RemoveWhitelist" xml:space="preserve"><value>Von Whitelist entfernen</value></data>
+  <data name="Players_AddOp" xml:space="preserve"><value>OP geben</value></data>
+  <data name="Players_RemoveOp" xml:space="preserve"><value>OP entziehen</value></data>
+  <data name="Players_Ban" xml:space="preserve"><value>Bannen</value></data>
+  <data name="Players_Pardon" xml:space="preserve"><value>Entbannen</value></data>
+  <data name="Players_Kick" xml:space="preserve"><value>Kicken</value></data>
+  <data name="Players_BanConfirm" xml:space="preserve"><value>{0} bannen? Der Spieler kann nicht mehr beitreten.</value></data>
+  <data name="Players_Kicked" xml:space="preserve"><value>{0} wurde gekickt.</value></data>
+  <data name="Players_BadName" xml:space="preserve"><value>Gib einen gültigen Minecraft-Namen ein (3–16 Zeichen, Buchstaben, Ziffern oder _).</value></data>
+  <data name="Players_NoUuid" xml:space="preserve"><value>Konto {0} nicht gefunden. Prüfe den Namen oder starte den Server und versuche es erneut.</value></data>
+  <data name="Players_Added_Whitelist" xml:space="preserve"><value>{0} zur Whitelist hinzugefügt.</value></data>
+  <data name="Players_Removed_Whitelist" xml:space="preserve"><value>{0} von der Whitelist entfernt.</value></data>
+  <data name="Players_Added_Ops" xml:space="preserve"><value>{0} ist jetzt Operator.</value></data>
+  <data name="Players_Removed_Ops" xml:space="preserve"><value>{0} ist kein Operator mehr.</value></data>
+  <data name="Players_Added_Banned" xml:space="preserve"><value>{0} wurde gebannt.</value></data>
+  <data name="Players_Removed_Banned" xml:space="preserve"><value>{0} wurde entbannt.</value></data>
+  <data name="Players_Summary" xml:space="preserve"><value>{0} Spieler · {1} online · {2} OP · {3} gebannt</value></data>
+  <data name="Players_Empty" xml:space="preserve"><value>Noch keine Spieler. Sie erscheinen nach dem Beitritt, oder füge oben einen hinzu.</value></data>
+  <data name="Players_OnlineNow" xml:space="preserve"><value>gerade online</value></data>
+  <data name="Players_LastSeen" xml:space="preserve"><value>Zuletzt gesehen</value></data>
+  <data name="Players_PlayTime" xml:space="preserve"><value>Spielzeit</value></data>
+  <data name="Players_Alts" xml:space="preserve"><value>Gleiche IP wie: {0}</value></data>
+  <data name="Players_WhitelistBadge" xml:space="preserve"><value>Whitelist</value></data>
+  <data name="Players_BannedBadge" xml:space="preserve"><value>gebannt</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Identität</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Server-Symbol</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Wird in der Mehrspielerliste neben dem Server angezeigt. Jedes Bild geht: es wird quadratisch zugeschnitten und auf 64×64 skaliert.</value></data>
