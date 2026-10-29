@@ -49,6 +49,32 @@
   <data name="Servers_Version" xml:space="preserve"><value>Version</value></data>
   <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Stop the server before changing its files.</value></data>
   <data name="Servers_Saved" xml:space="preserve"><value>server.properties saved.</value></data>
+  <data name="BackupKind_Full" xml:space="preserve"><value>Full</value></data>
+  <data name="BackupKind_Worlds" xml:space="preserve"><value>Worlds only</value></data>
+  <data name="BackupKind_Config" xml:space="preserve"><value>Settings only</value></data>
+  <data name="Backups_Kind" xml:space="preserve"><value>Backup type</value></data>
+  <data name="Backups_NoteHint" xml:space="preserve"><value>Note (optional), e.g. before 1.21 update</value></data>
+  <data name="Backups_Working" xml:space="preserve"><value>Backing up… the server keeps running.</value></data>
+  <data name="Backups_DoneSkipped" xml:space="preserve"><value>Backup created. {0} file(s) were in use and skipped.</value></data>
+  <data name="Backups_AutoNote" xml:space="preserve"><value>Scheduled backup</value></data>
+  <data name="Backups_SafetyNote" xml:space="preserve"><value>Automatic: before a restore</value></data>
+  <data name="Backups_Pin" xml:space="preserve"><value>Pin: never delete automatically</value></data>
+  <data name="Backups_Contents" xml:space="preserve"><value>Contents</value></data>
+  <data name="Backups_ContentsHint" xml:space="preserve"><value>Pick what to restore. Worlds are selected; everything else stays as it is.</value></data>
+  <data name="Backups_RestoreSelected" xml:space="preserve"><value>Restore selected</value></data>
+  <data name="Backups_RestoreAll" xml:space="preserve"><value>everything in this backup</value></data>
+  <data name="Backups_RestoreConfirmItems" xml:space="preserve"><value>Restore {0}? The current files are replaced. A safety backup is taken first.</value></data>
+  <data name="Backups_StopFirst" xml:space="preserve"><value>Stop the server before restoring.</value></data>
+  <data name="Backups_Restored" xml:space="preserve"><value>Restored.</value></data>
+  <data name="Backups_Retention" xml:space="preserve"><value>Keep backups</value></data>
+  <data name="Backups_RetentionHint" xml:space="preserve"><value>Older backups are deleted after each new one. Pinned (★) backups are always kept.</value></data>
+  <data name="Backups_KeepLast" xml:space="preserve"><value>Newest backups</value></data>
+  <data name="Backups_KeepDaily" xml:space="preserve"><value>One per day, for days</value></data>
+  <data name="Backups_KeepWeekly" xml:space="preserve"><value>One per week, for weeks</value></data>
+  <data name="Backups_Mirror" xml:space="preserve"><value>Second copy</value></data>
+  <data name="Backups_MirrorHint" xml:space="preserve"><value>Every backup is also copied to this folder. Pick a OneDrive/Google Drive folder or a network drive to keep backups off this disk.</value></data>
+  <data name="Backups_ChooseMirror" xml:space="preserve"><value>Choose folder…</value></data>
+  <data name="Backups_ClearMirror" xml:space="preserve"><value>Turn off</value></data>
   <data name="Backups_Create" xml:space="preserve"><value>Create backup</value></data>
   <data name="Backups_Restore" xml:space="preserve"><value>Restore</value></data>
   <data name="Backups_Empty" xml:space="preserve"><value>No backups yet.</value></data>

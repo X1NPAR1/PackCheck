@@ -49,6 +49,32 @@
   <data name="Servers_Version" xml:space="preserve"><value>Version</value></data>
   <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Stoppe den Server, bevor du Dateien änderst.</value></data>
   <data name="Servers_Saved" xml:space="preserve"><value>server.properties gespeichert.</value></data>
+  <data name="BackupKind_Full" xml:space="preserve"><value>Komplett</value></data>
+  <data name="BackupKind_Worlds" xml:space="preserve"><value>Nur Welten</value></data>
+  <data name="BackupKind_Config" xml:space="preserve"><value>Nur Einstellungen</value></data>
+  <data name="Backups_Kind" xml:space="preserve"><value>Backup-Art</value></data>
+  <data name="Backups_NoteHint" xml:space="preserve"><value>Notiz (optional), z. B. vor dem 1.21-Update</value></data>
+  <data name="Backups_Working" xml:space="preserve"><value>Backup läuft… der Server läuft weiter.</value></data>
+  <data name="Backups_DoneSkipped" xml:space="preserve"><value>Backup erstellt. {0} Datei(en) waren in Benutzung und wurden übersprungen.</value></data>
+  <data name="Backups_AutoNote" xml:space="preserve"><value>Geplantes Backup</value></data>
+  <data name="Backups_SafetyNote" xml:space="preserve"><value>Automatisch: vor einer Wiederherstellung</value></data>
+  <data name="Backups_Pin" xml:space="preserve"><value>Anheften: nie automatisch löschen</value></data>
+  <data name="Backups_Contents" xml:space="preserve"><value>Inhalt</value></data>
+  <data name="Backups_ContentsHint" xml:space="preserve"><value>Wähle, was wiederhergestellt wird. Welten sind ausgewählt; alles andere bleibt.</value></data>
+  <data name="Backups_RestoreSelected" xml:space="preserve"><value>Auswahl wiederherstellen</value></data>
+  <data name="Backups_RestoreAll" xml:space="preserve"><value>alles in diesem Backup</value></data>
+  <data name="Backups_RestoreConfirmItems" xml:space="preserve"><value>{0} wiederherstellen? Die aktuellen Dateien werden ersetzt. Vorher wird ein Sicherheits-Backup erstellt.</value></data>
+  <data name="Backups_StopFirst" xml:space="preserve"><value>Stoppe den Server vor dem Wiederherstellen.</value></data>
+  <data name="Backups_Restored" xml:space="preserve"><value>Wiederhergestellt.</value></data>
+  <data name="Backups_Retention" xml:space="preserve"><value>Backups behalten</value></data>
+  <data name="Backups_RetentionHint" xml:space="preserve"><value>Nach jedem neuen Backup werden alte gelöscht. Angeheftete (★) bleiben immer.</value></data>
+  <data name="Backups_KeepLast" xml:space="preserve"><value>Neueste Backups</value></data>
+  <data name="Backups_KeepDaily" xml:space="preserve"><value>Eines pro Tag, Tage</value></data>
+  <data name="Backups_KeepWeekly" xml:space="preserve"><value>Eines pro Woche, Wochen</value></data>
+  <data name="Backups_Mirror" xml:space="preserve"><value>Zweite Kopie</value></data>
+  <data name="Backups_MirrorHint" xml:space="preserve"><value>Jedes Backup wird zusätzlich hierhin kopiert, z. B. in einen OneDrive-/Google-Drive-Ordner oder ein Netzlaufwerk.</value></data>
+  <data name="Backups_ChooseMirror" xml:space="preserve"><value>Ordner wählen…</value></data>
+  <data name="Backups_ClearMirror" xml:space="preserve"><value>Ausschalten</value></data>
   <data name="Backups_Create" xml:space="preserve"><value>Backup erstellen</value></data>
   <data name="Backups_Restore" xml:space="preserve"><value>Wiederherstellen</value></data>
   <data name="Backups_Empty" xml:space="preserve"><value>Noch keine Backups.</value></data>

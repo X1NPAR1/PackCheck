@@ -170,7 +170,7 @@
                     </TextBlock.Style>
                 </TextBlock>
             </RadioButton>
-            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Backups}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=4}" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Backups}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=4}" AutomationProperties.AutomationId="TabBackups" />
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=6}" AutomationProperties.AutomationId="TabAutomation">
                 <TextBlock><Run Text="{l:Loc Auto_Tab}" /><Run Text="{Binding ActiveRuleCount, Mode=OneWay, StringFormat=' · {0}'}" /></TextBlock>
             </RadioButton>
@@ -844,38 +844,140 @@
         </Border>
 
         <!-- Backups -->
-        <Border Grid.Row="2" Style="{StaticResource Card}" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=4}">
-            <DockPanel>
-                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
-                    <Button DockPanel.Dock="Right" Content="{l:Loc Backups_Create}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateBackupCommand}" />
-                    <TextBlock Text="{l:Loc Servers_Backups}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
+        <Grid Grid.Row="2" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=4}" AutomationProperties.AutomationId="BackupsPage">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Backup list -->
+            <Border Style="{StaticResource Card}" Margin="0,0,12,0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc Common_OpenFolder}" Command="{Binding OpenBackupFolderCommand}" />
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{l:Loc Servers_Backups}" FontSize="15" FontWeight="SemiBold" />
+                                <Run Text="{Binding BackupList.Count, Mode=OneWay, StringFormat=' · {0}'}" Foreground="{DynamicResource TextMutedBrush}" />
+                                <Run Text=" · " Foreground="{DynamicResource TextMutedBrush}" /><Run Text="{Binding BackupTotalSize, Mode=OneWay, Converter={x:Static l:Bytes.Instance}}" Foreground="{DynamicResource TextMutedBrush}" />
+                            </TextBlock>
+                        </DockPanel>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox ItemsSource="{Binding BackupKindNames}" SelectedIndex="{Binding BackupKindIndex}" AutomationProperties.Name="{l:Loc Backups_Kind}" AutomationProperties.AutomationId="BackupKind" />
+                            <TextBox Grid.Column="1" Margin="8,0" Tag="{l:Loc Backups_NoteHint}" Text="{Binding BackupNote, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{l:Loc Backups_NoteHint}" AutomationProperties.AutomationId="BackupNote" />
+                            <Button Grid.Column="2" Content="{l:Loc Backups_Create}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateBackupCommand}" IsEnabled="{Binding IsNotBackingUp}" AutomationProperties.AutomationId="CreateBackup" />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding IsBackingUp, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="{l:Loc Backups_Working}" Style="{StaticResource Muted}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid>
+                        <TextBlock Text="{l:Loc Backups_Empty}" Style="{StaticResource Muted}" Visibility="{Binding BackupList.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding BackupList}" AutomationProperties.AutomationId="BackupList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                                            <DockPanel>
+                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Button Style="{StaticResource GhostButton}" Padding="8,6" ToolTip="{l:Loc Backups_Pin}" AutomationProperties.Name="{l:Loc Backups_Pin}"
+                                                            Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                                        <TextBlock x:Name="Pin" Text="☆" FontSize="15" Foreground="{DynamicResource TextMutedBrush}" />
+                                                    </Button>
+                                                    <Button Content="{l:Loc Backups_Contents}" Padding="10,6" Margin="4,0,0,0"
+                                                            Command="{Binding DataContext.InspectBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    <Button Content="{l:Loc Backups_Restore}" Padding="10,6" Margin="6,0,0,0"
+                                                            Command="{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    <Button Style="{StaticResource GhostButton}" Padding="10,6" Margin="6,0,0,0" ToolTip="{l:Loc Backups_Delete}" AutomationProperties.Name="{l:Loc Backups_Delete}"
+                                                            Command="{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                                        <TextBlock Text="{l:Loc Backups_Delete}" Foreground="{DynamicResource FailBrush}" />
+                                                    </Button>
+                                                </StackPanel>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border CornerRadius="4" Padding="6,1" Background="{DynamicResource Surface2Brush}" Margin="0,0,8,0">
+                                                            <TextBlock x:Name="KindText" Text="{l:Loc BackupKind_Full}" FontSize="11" FontWeight="SemiBold" />
+                                                        </Border>
+                                                        <TextBlock Text="{Binding CreatedAt.LocalDateTime, Mode=OneWay, StringFormat=g}" FontWeight="SemiBold" />
+                                                        <TextBlock Text="{Binding Size, Mode=OneWay, Converter={x:Static l:Bytes.Instance}}" Foreground="{DynamicResource TextMutedBrush}" Margin="8,0,0,0" />
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding Note}" Style="{StaticResource Muted}" FontSize="12" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" Visibility="{Binding Note, Converter={StaticResource NullVis}}" />
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Pinned}" Value="True">
+                                                <Setter TargetName="Pin" Property="Text" Value="★" />
+                                                <Setter TargetName="Pin" Property="Foreground" Value="{DynamicResource WarnBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Kind}" Value="Worlds"><Setter TargetName="KindText" Property="Text" Value="{l:Loc BackupKind_Worlds}" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding Kind}" Value="Config"><Setter TargetName="KindText" Property="Text" Value="{l:Loc BackupKind_Config}" /></DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
                 </DockPanel>
-                <Grid>
-                    <TextBlock Text="{l:Loc Backups_Empty}" Style="{StaticResource Muted}" Visibility="{Binding BackupList.Count, Converter={x:Static l:Inverse.Visibility}}" />
-                    <ItemsControl ItemsSource="{Binding BackupList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
-                                    <DockPanel>
-                                        <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Padding="10,6" Margin="6,0,0,0"
-                                                ToolTip="{l:Loc Backups_Delete}" AutomationProperties.Name="{l:Loc Backups_Delete}"
-                                                Command="{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
-                                            <TextBlock Text="{l:Loc Backups_Delete}" Foreground="{DynamicResource FailBrush}" />
-                                        </Button>
-                                        <Button DockPanel.Dock="Right" Content="{l:Loc Backups_Restore}" Padding="12,6"
-                                                Command="{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run Text="{Binding CreatedAt, Mode=OneWay, StringFormat=g}" />
-                                            <Run Text="{Binding Size, Mode=OneWay, Converter={x:Static l:Bytes.Instance}}" Foreground="{DynamicResource TextMutedBrush}" />
-                                        </TextBlock>
-                                    </DockPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Grid>
-            </DockPanel>
-        </Border>
+            </Border>
+
+            <!-- Side: contents of the selected backup, or retention settings -->
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,12" Visibility="{Binding HasBackupContents, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="BackupContents">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Backups_Contents}" FontSize="15" FontWeight="SemiBold" />
+                            <TextBlock Text="{l:Loc Backups_ContentsHint}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,10" />
+                            <ItemsControl ItemsSource="{Binding BackupContents}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="0,3">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Size, Converter={x:Static l:Bytes.Instance}}" Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" />
+                                            <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center">
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" />
+                                                </TextBlock>
+                                            </CheckBox>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Content="{l:Loc Backups_RestoreSelected}" Style="{StaticResource PrimaryButton}" Command="{Binding RestoreSelectedCommand}" Margin="0,12,0,0" HorizontalAlignment="Left" AutomationProperties.AutomationId="RestoreSelected" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Backups_Retention}" FontSize="15" FontWeight="SemiBold" />
+                            <TextBlock Text="{l:Loc Backups_RetentionHint}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,10" />
+                            <DockPanel Margin="0,0,0,6">
+                                <TextBox DockPanel.Dock="Right" Width="70" Text="{Binding BackupKeepLast, UpdateSourceTrigger=LostFocus}" AutomationProperties.Name="{l:Loc Backups_KeepLast}" />
+                                <TextBlock Text="{l:Loc Backups_KeepLast}" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,6">
+                                <TextBox DockPanel.Dock="Right" Width="70" Text="{Binding BackupKeepDaily, UpdateSourceTrigger=LostFocus}" AutomationProperties.Name="{l:Loc Backups_KeepDaily}" />
+                                <TextBlock Text="{l:Loc Backups_KeepDaily}" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,12">
+                                <TextBox DockPanel.Dock="Right" Width="70" Text="{Binding BackupKeepWeekly, UpdateSourceTrigger=LostFocus}" AutomationProperties.Name="{l:Loc Backups_KeepWeekly}" />
+                                <TextBlock Text="{l:Loc Backups_KeepWeekly}" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <TextBlock Text="{l:Loc Backups_Mirror}" FontWeight="SemiBold" />
+                            <TextBlock Text="{l:Loc Backups_MirrorHint}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,6" />
+                            <TextBlock Text="{Binding BackupMirrorDir}" FontFamily="{StaticResource MonoFont}" FontSize="12" TextWrapping="Wrap" Visibility="{Binding BackupMirrorDir, Converter={StaticResource NullVis}}" Margin="0,0,0,6" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{l:Loc Backups_ChooseMirror}" Command="{Binding ChooseMirrorCommand}" />
+                                <Button Content="{l:Loc Backups_ClearMirror}" Style="{StaticResource GhostButton}" Command="{Binding ClearMirrorCommand}" Margin="6,0,0,0" Visibility="{Binding BackupMirrorDir, Converter={StaticResource NullVis}}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
 
         <!-- Identity: icon + MOTD -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=7}" AutomationProperties.AutomationId="IdentityPage">

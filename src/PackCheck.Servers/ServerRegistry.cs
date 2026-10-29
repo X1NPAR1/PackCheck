@@ -70,62 +70,6 @@ public sealed class ServerRegistry(string? file = null)
     public void Remove(string id) => Save(Load().Where(s => s.Id != id));
 }
 
-public sealed record BackupInfo(string Path, DateTimeOffset CreatedAt, long Size);
-
-/// <summary>Zip backups of a server folder with retention. Restore replaces the folder only after confirmation in the UI.</summary>
-public static class Backups
-{
-    public static string BackupDir(ServerDefinition s) => Path.Combine(s.Directory, "..", ".packcheck-backups", Path.GetFileName(s.Directory));
-
-    public static async Task<BackupInfo> CreateAsync(ServerDefinition s, int keep, CancellationToken ct)
-    {
-        var dir = Path.GetFullPath(BackupDir(s));
-        Directory.CreateDirectory(dir);
-        var file = Path.Combine(dir, $"{DateTime.Now:yyyyMMdd-HHmmss}.zip");
-        await Task.Run(() => ZipFile.CreateFromDirectory(s.Directory, file, CompressionLevel.Fastest, includeBaseDirectory: false), ct).ConfigureAwait(false);
-        ApplyRetention(dir, keep);
-        var fi = new FileInfo(file);
-        return new BackupInfo(file, fi.CreationTime, fi.Length);
-    }
-
-    public static IReadOnlyList<BackupInfo> List(ServerDefinition s)
-    {
-        var dir = Path.GetFullPath(BackupDir(s));
-        return !Directory.Exists(dir)
-            ? []
-            : Directory.EnumerateFiles(dir, "*.zip").Select(f => new FileInfo(f)).OrderByDescending(f => f.Name)
-                .Select(f => new BackupInfo(f.FullName, f.CreationTime, f.Length)).ToList();
-    }
-
-    public static void ApplyRetention(string dir, int keep)
-    {
-        foreach (var old in Directory.EnumerateFiles(dir, "*.zip").Order(StringComparer.Ordinal).Reverse().Skip(Math.Max(1, keep)))
-        {
-            File.Delete(old);
-        }
-    }
-
-    public static async Task RestoreAsync(ServerDefinition s, BackupInfo backup, CancellationToken ct)
-    {
-        var staging = s.Directory + ".restore";
-        if (Directory.Exists(staging))
-        {
-            Directory.Delete(staging, true);
-        }
-
-        await Task.Run(() => ZipFile.ExtractToDirectory(backup.Path, staging), ct).ConfigureAwait(false);
-        var old = s.Directory + ".before-restore";
-        if (Directory.Exists(old))
-        {
-            Directory.Delete(old, true);
-        }
-
-        Directory.Move(s.Directory, old);
-        Directory.Move(staging, s.Directory);
-        Directory.Delete(old, true);
-    }
-}
-
 public sealed partial class ServerCreator
 {
     private static async Task<string> RunJavaAsync(string javaPath, string workDir, IEnumerable<string> args, string logFile, TimeSpan timeout, IProgress<(double, string)>? progress, CancellationToken ct)

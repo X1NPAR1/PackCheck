@@ -49,6 +49,32 @@
   <data name="Servers_Version" xml:space="preserve"><value>Version</value></data>
   <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Arrêtez le serveur avant de modifier ses fichiers.</value></data>
   <data name="Servers_Saved" xml:space="preserve"><value>server.properties enregistré.</value></data>
+  <data name="BackupKind_Full" xml:space="preserve"><value>Complète</value></data>
+  <data name="BackupKind_Worlds" xml:space="preserve"><value>Mondes seulement</value></data>
+  <data name="BackupKind_Config" xml:space="preserve"><value>Réglages seulement</value></data>
+  <data name="Backups_Kind" xml:space="preserve"><value>Type de sauvegarde</value></data>
+  <data name="Backups_NoteHint" xml:space="preserve"><value>Note (facultative), ex. avant la mise à jour 1.21</value></data>
+  <data name="Backups_Working" xml:space="preserve"><value>Sauvegarde… le serveur continue de tourner.</value></data>
+  <data name="Backups_DoneSkipped" xml:space="preserve"><value>Sauvegarde créée. {0} fichier(s) en cours d'utilisation ignoré(s).</value></data>
+  <data name="Backups_AutoNote" xml:space="preserve"><value>Sauvegarde planifiée</value></data>
+  <data name="Backups_SafetyNote" xml:space="preserve"><value>Automatique : avant une restauration</value></data>
+  <data name="Backups_Pin" xml:space="preserve"><value>Épingler : jamais supprimée automatiquement</value></data>
+  <data name="Backups_Contents" xml:space="preserve"><value>Contenu</value></data>
+  <data name="Backups_ContentsHint" xml:space="preserve"><value>Choisissez quoi restaurer. Les mondes sont cochés ; le reste ne change pas.</value></data>
+  <data name="Backups_RestoreSelected" xml:space="preserve"><value>Restaurer la sélection</value></data>
+  <data name="Backups_RestoreAll" xml:space="preserve"><value>tout le contenu de la sauvegarde</value></data>
+  <data name="Backups_RestoreConfirmItems" xml:space="preserve"><value>Restaurer {0} ? Les fichiers actuels sont remplacés. Une sauvegarde de sécurité est faite avant.</value></data>
+  <data name="Backups_StopFirst" xml:space="preserve"><value>Arrêtez le serveur avant de restaurer.</value></data>
+  <data name="Backups_Restored" xml:space="preserve"><value>Restauré.</value></data>
+  <data name="Backups_Retention" xml:space="preserve"><value>Conservation</value></data>
+  <data name="Backups_RetentionHint" xml:space="preserve"><value>Les anciennes sauvegardes sont supprimées après chaque nouvelle. Les épinglées (★) sont conservées.</value></data>
+  <data name="Backups_KeepLast" xml:space="preserve"><value>Plus récentes</value></data>
+  <data name="Backups_KeepDaily" xml:space="preserve"><value>Une par jour, jours</value></data>
+  <data name="Backups_KeepWeekly" xml:space="preserve"><value>Une par semaine, semaines</value></data>
+  <data name="Backups_Mirror" xml:space="preserve"><value>Deuxième copie</value></data>
+  <data name="Backups_MirrorHint" xml:space="preserve"><value>Chaque sauvegarde est aussi copiée ici : dossier OneDrive/Google Drive ou lecteur réseau.</value></data>
+  <data name="Backups_ChooseMirror" xml:space="preserve"><value>Choisir un dossier…</value></data>
+  <data name="Backups_ClearMirror" xml:space="preserve"><value>Désactiver</value></data>
   <data name="Backups_Create" xml:space="preserve"><value>Créer une sauvegarde</value></data>
   <data name="Backups_Restore" xml:space="preserve"><value>Restaurer</value></data>
   <data name="Backups_Empty" xml:space="preserve"><value>Aucune sauvegarde.</value></data>

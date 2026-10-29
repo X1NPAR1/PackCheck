@@ -49,6 +49,32 @@
   <data name="Servers_Version" xml:space="preserve"><value>Версия</value></data>
   <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Остановите сервер перед изменением файлов.</value></data>
   <data name="Servers_Saved" xml:space="preserve"><value>server.properties сохранён.</value></data>
+  <data name="BackupKind_Full" xml:space="preserve"><value>Полная</value></data>
+  <data name="BackupKind_Worlds" xml:space="preserve"><value>Только миры</value></data>
+  <data name="BackupKind_Config" xml:space="preserve"><value>Только настройки</value></data>
+  <data name="Backups_Kind" xml:space="preserve"><value>Тип копии</value></data>
+  <data name="Backups_NoteHint" xml:space="preserve"><value>Заметка (необязательно), напр. перед обновлением 1.21</value></data>
+  <data name="Backups_Working" xml:space="preserve"><value>Резервное копирование… сервер продолжает работать.</value></data>
+  <data name="Backups_DoneSkipped" xml:space="preserve"><value>Копия создана. {0} занятых файлов пропущено.</value></data>
+  <data name="Backups_AutoNote" xml:space="preserve"><value>Плановая копия</value></data>
+  <data name="Backups_SafetyNote" xml:space="preserve"><value>Автоматически: перед восстановлением</value></data>
+  <data name="Backups_Pin" xml:space="preserve"><value>Закрепить: не удалять автоматически</value></data>
+  <data name="Backups_Contents" xml:space="preserve"><value>Содержимое</value></data>
+  <data name="Backups_ContentsHint" xml:space="preserve"><value>Выберите, что восстановить. Миры отмечены; остальное не меняется.</value></data>
+  <data name="Backups_RestoreSelected" xml:space="preserve"><value>Восстановить выбранное</value></data>
+  <data name="Backups_RestoreAll" xml:space="preserve"><value>всё содержимое копии</value></data>
+  <data name="Backups_RestoreConfirmItems" xml:space="preserve"><value>Восстановить {0}? Текущие файлы будут заменены. Сначала создаётся страховочная копия.</value></data>
+  <data name="Backups_StopFirst" xml:space="preserve"><value>Остановите сервер перед восстановлением.</value></data>
+  <data name="Backups_Restored" xml:space="preserve"><value>Восстановлено.</value></data>
+  <data name="Backups_Retention" xml:space="preserve"><value>Хранение копий</value></data>
+  <data name="Backups_RetentionHint" xml:space="preserve"><value>Старые копии удаляются после каждой новой. Закреплённые (★) сохраняются всегда.</value></data>
+  <data name="Backups_KeepLast" xml:space="preserve"><value>Последних копий</value></data>
+  <data name="Backups_KeepDaily" xml:space="preserve"><value>По одной в день, дней</value></data>
+  <data name="Backups_KeepWeekly" xml:space="preserve"><value>По одной в неделю, недель</value></data>
+  <data name="Backups_Mirror" xml:space="preserve"><value>Вторая копия</value></data>
+  <data name="Backups_MirrorHint" xml:space="preserve"><value>Каждая копия также копируется сюда: папка OneDrive/Google Drive или сетевой диск.</value></data>
+  <data name="Backups_ChooseMirror" xml:space="preserve"><value>Выбрать папку…</value></data>
+  <data name="Backups_ClearMirror" xml:space="preserve"><value>Отключить</value></data>
   <data name="Backups_Create" xml:space="preserve"><value>Создать копию</value></data>
   <data name="Backups_Restore" xml:space="preserve"><value>Восстановить</value></data>
   <data name="Backups_Empty" xml:space="preserve"><value>Резервных копий нет.</value></data>

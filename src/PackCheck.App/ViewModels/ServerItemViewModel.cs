@@ -227,8 +227,6 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     public ObservableCollection<PropertyRow> Properties { get; } = [];
 
-    public ObservableCollection<BackupInfo> BackupList { get; } = [];
-
     public ObservableCollection<PluginRow> PluginList { get; } = [];
 
     public Gauge Tps { get; } = new("Gauge_Tps");
@@ -1038,89 +1036,6 @@ public sealed partial class ServerItemViewModel : ObservableObject
         LoadProperties();
         LoadIdentity();
         MainViewModel.Shell?.Toast(Loc.T("Servers_Saved"));
-    }
-
-    // ----- backups -----
-    public void RefreshBackups()
-    {
-        BackupList.Clear();
-        foreach (var b in Backups.List(Definition))
-        {
-            BackupList.Add(b);
-        }
-    }
-
-    [RelayCommand]
-    private async Task CreateBackupAsync()
-    {
-        try
-        {
-            await Backups.CreateAsync(Definition, _settings.BackupsToKeep, CancellationToken.None).ConfigureAwait(true);
-            RefreshBackups();
-            MainViewModel.Shell?.Toast(Loc.T("Backups_Done"));
-        }
-        catch (IOException ex)
-        {
-            MainViewModel.Shell?.Toast(ex.Message, isError: true);
-        }
-    }
-
-    [RelayCommand]
-    private async Task RestoreBackupAsync(BackupInfo? backup)
-    {
-        if (backup is null || MainViewModel.Shell is not { } shell)
-        {
-            return;
-        }
-
-        if (!CanEdit)
-        {
-            shell.Toast(Loc.T("Servers_SaveWhileRunning"), isError: true);
-            return;
-        }
-
-        if (!await shell.ConfirmAsync(Loc.T("Backups_Restore"), Loc.T("Backups_RestoreConfirm"), Loc.T("Backups_Restore"), danger: true).ConfigureAwait(true))
-        {
-            return;
-        }
-
-        try
-        {
-            await Backups.RestoreAsync(Definition, backup, CancellationToken.None).ConfigureAwait(true);
-            LoadProperties();
-            RefreshPlugins();
-        }
-        catch (IOException ex)
-        {
-            shell.Toast(ex.Message, isError: true);
-        }
-    }
-
-    /// <summary>Deletes one backup zip after confirmation; the server itself is not touched.</summary>
-    [RelayCommand]
-    private async Task DeleteBackupAsync(BackupInfo? backup)
-    {
-        if (backup is null || MainViewModel.Shell is not { } shell)
-        {
-            return;
-        }
-
-        var when = backup.CreatedAt.LocalDateTime.ToString("g", Loc.Instance.Culture);
-        if (!await shell.ConfirmAsync(Loc.T("Backups_DeleteTitle"), Loc.F("Backups_DeleteBody", when, Bytes.Format(backup.Size)), Loc.T("Backups_Delete"), danger: true).ConfigureAwait(true))
-        {
-            return;
-        }
-
-        try
-        {
-            File.Delete(backup.Path);
-            RefreshBackups();
-            shell.Toast(Loc.T("Backups_Deleted"));
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            shell.Toast(ex.Message, isError: true);
-        }
     }
 
     // ----- plugins / mods -----

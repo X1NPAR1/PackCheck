@@ -514,14 +514,7 @@ public sealed partial class ServerItemViewModel
                     break;
 
                 case AutomationActionKind.Backup:
-                    if (IsRunning)
-                    {
-                        await _process.SendCommandAsync("save-all flush").ConfigureAwait(true);
-                        await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(true);
-                    }
-
-                    await Backups.CreateAsync(Definition, _settings.BackupsToKeep, CancellationToken.None).ConfigureAwait(true);
-                    RefreshBackups();
+                    await BackupNowAsync(BackupKind.Full, Loc.T("Backups_AutoNote")).ConfigureAwait(true);
                     text = Loc.T("AutoLog_Backup");
                     break;
 

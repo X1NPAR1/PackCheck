@@ -49,6 +49,32 @@
   <data name="Servers_Version" xml:space="preserve"><value>Sürüm</value></data>
   <data name="Servers_SaveWhileRunning" xml:space="preserve"><value>Dosyaları değiştirmeden önce sunucuyu durdur.</value></data>
   <data name="Servers_Saved" xml:space="preserve"><value>server.properties kaydedildi.</value></data>
+  <data name="BackupKind_Full" xml:space="preserve"><value>Tam</value></data>
+  <data name="BackupKind_Worlds" xml:space="preserve"><value>Sadece dünyalar</value></data>
+  <data name="BackupKind_Config" xml:space="preserve"><value>Sadece ayarlar</value></data>
+  <data name="Backups_Kind" xml:space="preserve"><value>Yedek türü</value></data>
+  <data name="Backups_NoteHint" xml:space="preserve"><value>Not (isteğe bağlı), ör. 1.21 güncellemesinden önce</value></data>
+  <data name="Backups_Working" xml:space="preserve"><value>Yedekleniyor… sunucu çalışmaya devam ediyor.</value></data>
+  <data name="Backups_DoneSkipped" xml:space="preserve"><value>Yedek alındı. Kullanımda olan {0} dosya atlandı.</value></data>
+  <data name="Backups_AutoNote" xml:space="preserve"><value>Zamanlanmış yedek</value></data>
+  <data name="Backups_SafetyNote" xml:space="preserve"><value>Otomatik: geri yüklemeden önce</value></data>
+  <data name="Backups_Pin" xml:space="preserve"><value>Sabitle: otomatik olarak asla silinmez</value></data>
+  <data name="Backups_Contents" xml:space="preserve"><value>İçerik</value></data>
+  <data name="Backups_ContentsHint" xml:space="preserve"><value>Geri yüklenecekleri seç. Dünyalar seçili gelir; diğer her şey olduğu gibi kalır.</value></data>
+  <data name="Backups_RestoreSelected" xml:space="preserve"><value>Seçilenleri geri yükle</value></data>
+  <data name="Backups_RestoreAll" xml:space="preserve"><value>bu yedekteki her şey</value></data>
+  <data name="Backups_RestoreConfirmItems" xml:space="preserve"><value>{0} geri yüklensin mi? Mevcut dosyaların yerine geçer. Önce bir güvenlik yedeği alınır.</value></data>
+  <data name="Backups_StopFirst" xml:space="preserve"><value>Geri yüklemeden önce sunucuyu durdur.</value></data>
+  <data name="Backups_Restored" xml:space="preserve"><value>Geri yüklendi.</value></data>
+  <data name="Backups_Retention" xml:space="preserve"><value>Yedek saklama</value></data>
+  <data name="Backups_RetentionHint" xml:space="preserve"><value>Her yeni yedekten sonra eskiler silinir. Sabitlenmiş (★) yedekler her zaman saklanır.</value></data>
+  <data name="Backups_KeepLast" xml:space="preserve"><value>En yeni yedek sayısı</value></data>
+  <data name="Backups_KeepDaily" xml:space="preserve"><value>Günde bir, kaç gün</value></data>
+  <data name="Backups_KeepWeekly" xml:space="preserve"><value>Haftada bir, kaç hafta</value></data>
+  <data name="Backups_Mirror" xml:space="preserve"><value>İkinci kopya</value></data>
+  <data name="Backups_MirrorHint" xml:space="preserve"><value>Her yedek bu klasöre de kopyalanır. Yedekler bu diskte kalmasın diye OneDrive/Google Drive klasörü ya da ağ sürücüsü seç.</value></data>
+  <data name="Backups_ChooseMirror" xml:space="preserve"><value>Klasör seç…</value></data>
+  <data name="Backups_ClearMirror" xml:space="preserve"><value>Kapat</value></data>
   <data name="Backups_Create" xml:space="preserve"><value>Yedek oluştur</value></data>
   <data name="Backups_Restore" xml:space="preserve"><value>Geri yükle</value></data>
   <data name="Backups_Empty" xml:space="preserve"><value>Henüz yedek yok.</value></data>

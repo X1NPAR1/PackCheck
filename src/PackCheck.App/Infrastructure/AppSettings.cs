@@ -28,6 +28,13 @@ public sealed class AppSettings
     public bool AutoUpdate { get; set; }
     public bool AllowNetworkProviders { get; set; } = true;
     public int BackupsToKeep { get; set; } = 5;
+
+    /// <summary>Also keep the newest backup of each of the last N days / ISO weeks (0 = off).</summary>
+    public int BackupKeepDaily { get; set; } = 7;
+    public int BackupKeepWeekly { get; set; } = 4;
+
+    /// <summary>Second folder every backup is copied to (e.g. a OneDrive/Google Drive synced folder or a NAS share).</summary>
+    public string? BackupMirrorDir { get; set; }
     public bool MinimizeToTray { get; set; } = true;
     public bool FirstRunDone { get; set; }
     public List<int> OnlinePorts { get; set; } = [];
