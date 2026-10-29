@@ -458,6 +458,26 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Mode_RunPlan" xml:space="preserve"><value>Run the plan (ask for each change)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Run with automatic file edits</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>The plan is approved. Carry it out now, step by step.</value></data>
+  <data name="Identity_Tab" xml:space="preserve"><value>Identity</value></data>
+  <data name="Identity_Icon" xml:space="preserve"><value>Server icon</value></data>
+  <data name="Identity_IconHint" xml:space="preserve"><value>Shown next to your server in the multiplayer list. Any image works: it is cropped to a square and resized to 64×64.</value></data>
+  <data name="Identity_ChooseImage" xml:space="preserve"><value>Choose image…</value></data>
+  <data name="Identity_RemoveIcon" xml:space="preserve"><value>Remove icon</value></data>
+  <data name="Identity_ImageFilter" xml:space="preserve"><value>Images</value></data>
+  <data name="Identity_ImageError" xml:space="preserve"><value>Could not read the image.</value></data>
+  <data name="Identity_IconSaved" xml:space="preserve"><value>Server icon saved.</value></data>
+  <data name="Identity_SavedRestart" xml:space="preserve"><value>Saved. Restart the server to show it.</value></data>
+  <data name="Identity_Motd" xml:space="preserve"><value>Server description (MOTD)</value></data>
+  <data name="Identity_MotdHint" xml:space="preserve"><value>Two lines shown under the server name. Click a color or style to insert its code (&amp;a, &amp;l …), or type the codes yourself.</value></data>
+  <data name="Identity_Bold" xml:space="preserve"><value>Bold</value></data>
+  <data name="Identity_Italic" xml:space="preserve"><value>Italic</value></data>
+  <data name="Identity_Underline" xml:space="preserve"><value>Underline</value></data>
+  <data name="Identity_Strike" xml:space="preserve"><value>Strikethrough</value></data>
+  <data name="Identity_ResetStyle" xml:space="preserve"><value>Reset style</value></data>
+  <data name="Identity_Preview" xml:space="preserve"><value>Preview in the server list</value></data>
+  <data name="Identity_Undo" xml:space="preserve"><value>Undo changes</value></data>
+  <data name="Identity_SaveMotd" xml:space="preserve"><value>Save description</value></data>
+  <data name="Identity_MotdTooLong" xml:space="preserve"><value>The description is too long (max 118 characters).</value></data>
   <data name="Auto_Tab" xml:space="preserve"><value>Automation</value></data>
   <data name="Auto_Title" xml:space="preserve"><value>Automation rules</value></data>
   <data name="Auto_Subtitle" xml:space="preserve"><value>Rules run while PackCheck is open (it can start with Windows and stay in the tray). Changes are saved at once.</value></data>

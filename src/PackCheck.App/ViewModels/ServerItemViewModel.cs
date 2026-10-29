@@ -110,6 +110,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         _statsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _statsTimer.Tick += async (_, _) => await SampleAsync().ConfigureAwait(true);
         LoadProperties();
+        LoadIdentity();
         RefreshBackups();
         RefreshPlugins();
         _ = RefreshDiskAsync();
@@ -997,6 +998,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         }
 
         LoadProperties();
+        LoadIdentity();
         MainViewModel.Shell?.Toast(Loc.T("Servers_Saved"));
     }
 

@@ -127,8 +127,11 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <StackPanel>
-                <TextBlock Text="{Binding Name}" Style="{StaticResource H2}" FontSize="22" TextTrimming="CharacterEllipsis" />
+            <StackPanel Orientation="Horizontal">
+                <Border Width="32" Height="32" CornerRadius="6" Margin="0,0,10,0" ClipToBounds="True" Visibility="{Binding HasIcon, Converter={StaticResource BoolVis}}">
+                    <Image Source="{Binding Icon}" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Border>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource H2}" FontSize="22" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
             </StackPanel>
         </DockPanel>
 
@@ -171,6 +174,7 @@
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=6}" AutomationProperties.AutomationId="TabAutomation">
                 <TextBlock><Run Text="{l:Loc Auto_Tab}" /><Run Text="{Binding ActiveRuleCount, Mode=OneWay, StringFormat=' · {0}'}" /></TextBlock>
             </RadioButton>
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Identity_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=7}" AutomationProperties.AutomationId="TabIdentity" />
         </StackPanel>
         </StackPanel>
 
@@ -867,5 +871,101 @@
                 </Grid>
             </DockPanel>
         </Border>
+
+        <!-- Identity: icon + MOTD -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=7}" AutomationProperties.AutomationId="IdentityPage">
+            <StackPanel>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Identity_Icon}" Style="{StaticResource H2}" FontSize="15" />
+                        <TextBlock Text="{l:Loc Identity_IconHint}" Style="{StaticResource Muted}" Margin="0,4,0,12" TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="96" Height="96" CornerRadius="8" Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" ClipToBounds="True">
+                                <Grid>
+                                    <TextBlock Text="64×64" Style="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding HasIcon, Converter={x:Static l:Inverse.Visibility}}" />
+                                    <Image Source="{Binding Icon}" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                </Grid>
+                            </Border>
+                            <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                                <Button Content="{l:Loc Identity_ChooseImage}" Style="{StaticResource PrimaryButton}" Command="{Binding ChooseIconCommand}" HorizontalAlignment="Left" AutomationProperties.AutomationId="ChooseIcon" />
+                                <Button Content="{l:Loc Identity_RemoveIcon}" Style="{StaticResource GhostButton}" Command="{Binding RemoveIconCommand}" HorizontalAlignment="Left" Margin="0,6,0,0" Visibility="{Binding HasIcon, Converter={StaticResource BoolVis}}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Identity_Motd}" Style="{StaticResource H2}" FontSize="15" />
+                        <TextBlock Text="{l:Loc Identity_MotdHint}" Style="{StaticResource Muted}" Margin="0,4,0,12" TextWrapping="Wrap" />
+                        <ItemsControl ItemsSource="{Binding MotdColors}" Margin="0,0,0,8">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="22" Height="22" Margin="0,0,4,4" Padding="0" Background="{Binding Hex}" BorderBrush="{DynamicResource LineBrush}" ToolTip="{Binding Code}" Cursor="Hand"
+                                            Command="{Binding DataContext.InsertMotdCodeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding Code}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button"><Border CornerRadius="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" /></ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="B" FontWeight="Bold" Padding="10,4" Margin="0,0,4,0" Command="{Binding InsertMotdCodeCommand}" CommandParameter="l" ToolTip="{l:Loc Identity_Bold}" />
+                            <Button Content="I" FontStyle="Italic" Padding="10,4" Margin="0,0,4,0" Command="{Binding InsertMotdCodeCommand}" CommandParameter="o" ToolTip="{l:Loc Identity_Italic}" />
+                            <Button Padding="10,4" Margin="0,0,4,0" Command="{Binding InsertMotdCodeCommand}" CommandParameter="n" ToolTip="{l:Loc Identity_Underline}"><TextBlock Text="U" TextDecorations="Underline" /></Button>
+                            <Button Padding="10,4" Margin="0,0,4,0" Command="{Binding InsertMotdCodeCommand}" CommandParameter="m" ToolTip="{l:Loc Identity_Strike}"><TextBlock Text="S" TextDecorations="Strikethrough" /></Button>
+                            <Button Content="{l:Loc Identity_ResetStyle}" Padding="10,4" Command="{Binding InsertMotdCodeCommand}" CommandParameter="r" />
+                        </StackPanel>
+                        <TextBox Text="{Binding MotdText, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" MinHeight="56" FontFamily="Consolas" TextWrapping="Wrap" AutomationProperties.AutomationId="MotdText" />
+                        <TextBlock Margin="0,4,0,0" FontSize="12">
+                            <Run Text="{Binding MotdLength, Mode=OneWay}" /><Run Text=" / 118" />
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MotdTooLong}" Value="True"><Setter Property="Foreground" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{l:Loc Identity_Preview}" Style="{StaticResource Muted}" Margin="0,12,0,6" />
+                        <Border Background="#FF2B2B2B" CornerRadius="6" Padding="10">
+                            <DockPanel>
+                                <Border Width="64" Height="64" Margin="0,0,10,0" Background="#FF3C3C3C" DockPanel.Dock="Left">
+                                    <Image Source="{Binding Icon}" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" Foreground="White" FontFamily="Consolas" FontSize="14" />
+                                    <ItemsControl ItemsSource="{Binding MotdLines}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding}">
+                                                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock x:Name="T" Text="{Binding Text}" Foreground="{Binding Color}" FontFamily="Consolas" FontSize="14" />
+                                                            <DataTemplate.Triggers>
+                                                                <DataTrigger Binding="{Binding Bold}" Value="True"><Setter TargetName="T" Property="FontWeight" Value="Bold" /></DataTrigger>
+                                                                <DataTrigger Binding="{Binding Italic}" Value="True"><Setter TargetName="T" Property="FontStyle" Value="Italic" /></DataTrigger>
+                                                                <DataTrigger Binding="{Binding Underline}" Value="True"><Setter TargetName="T" Property="TextDecorations" Value="Underline" /></DataTrigger>
+                                                                <DataTrigger Binding="{Binding Strike}" Value="True"><Setter TargetName="T" Property="TextDecorations" Value="Strikethrough" /></DataTrigger>
+                                                            </DataTemplate.Triggers>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                            <Button Content="{l:Loc Identity_Undo}" Command="{Binding ResetMotdCommand}" Margin="0,0,6,0" />
+                            <Button Content="{l:Loc Identity_SaveMotd}" Style="{StaticResource PrimaryButton}" Command="{Binding SaveMotdCommand}" AutomationProperties.AutomationId="SaveMotd" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

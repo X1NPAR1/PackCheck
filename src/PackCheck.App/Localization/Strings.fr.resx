@@ -458,6 +458,26 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Mode_RunPlan" xml:space="preserve"><value>Exécuter (avec validation)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Exécuter, fichiers auto</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Le plan est validé. Applique-le maintenant étape par étape.</value></data>
+  <data name="Identity_Tab" xml:space="preserve"><value>Identité</value></data>
+  <data name="Identity_Icon" xml:space="preserve"><value>Icône du serveur</value></data>
+  <data name="Identity_IconHint" xml:space="preserve"><value>Affichée à côté du serveur dans la liste multijoueur. N'importe quelle image : elle est recadrée en carré et réduite à 64×64.</value></data>
+  <data name="Identity_ChooseImage" xml:space="preserve"><value>Choisir une image…</value></data>
+  <data name="Identity_RemoveIcon" xml:space="preserve"><value>Retirer l'icône</value></data>
+  <data name="Identity_ImageFilter" xml:space="preserve"><value>Images</value></data>
+  <data name="Identity_ImageError" xml:space="preserve"><value>Impossible de lire l'image.</value></data>
+  <data name="Identity_IconSaved" xml:space="preserve"><value>Icône enregistrée.</value></data>
+  <data name="Identity_SavedRestart" xml:space="preserve"><value>Enregistré. Redémarrez le serveur pour l'afficher.</value></data>
+  <data name="Identity_Motd" xml:space="preserve"><value>Description du serveur (MOTD)</value></data>
+  <data name="Identity_MotdHint" xml:space="preserve"><value>Deux lignes sous le nom du serveur. Cliquez sur une couleur ou un style pour insérer son code (&amp;a, &amp;l …), ou tapez-le.</value></data>
+  <data name="Identity_Bold" xml:space="preserve"><value>Gras</value></data>
+  <data name="Identity_Italic" xml:space="preserve"><value>Italique</value></data>
+  <data name="Identity_Underline" xml:space="preserve"><value>Souligné</value></data>
+  <data name="Identity_Strike" xml:space="preserve"><value>Barré</value></data>
+  <data name="Identity_ResetStyle" xml:space="preserve"><value>Réinitialiser le style</value></data>
+  <data name="Identity_Preview" xml:space="preserve"><value>Aperçu dans la liste des serveurs</value></data>
+  <data name="Identity_Undo" xml:space="preserve"><value>Annuler les modifications</value></data>
+  <data name="Identity_SaveMotd" xml:space="preserve"><value>Enregistrer la description</value></data>
+  <data name="Identity_MotdTooLong" xml:space="preserve"><value>La description est trop longue (118 caractères max).</value></data>
   <data name="Auto_Tab" xml:space="preserve"><value>Automatisation</value></data>
   <data name="Auto_Title" xml:space="preserve"><value>Règles d'automatisation</value></data>
   <data name="Auto_Subtitle" xml:space="preserve"><value>Les règles tournent tant que PackCheck est ouvert (démarrage avec Windows, zone de notification). Enregistré aussitôt.</value></data>

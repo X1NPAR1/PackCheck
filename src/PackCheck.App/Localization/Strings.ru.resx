@@ -458,6 +458,26 @@
   <data name="Mode_RunPlan" xml:space="preserve"><value>Выполнить (с подтверждением)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Выполнить, файлы авто</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>План одобрен. Выполни его по шагам.</value></data>
+  <data name="Identity_Tab" xml:space="preserve"><value>Оформление</value></data>
+  <data name="Identity_Icon" xml:space="preserve"><value>Значок сервера</value></data>
+  <data name="Identity_IconHint" xml:space="preserve"><value>Показывается рядом с сервером в списке. Подойдёт любое изображение: оно обрезается до квадрата и уменьшается до 64×64.</value></data>
+  <data name="Identity_ChooseImage" xml:space="preserve"><value>Выбрать изображение…</value></data>
+  <data name="Identity_RemoveIcon" xml:space="preserve"><value>Убрать значок</value></data>
+  <data name="Identity_ImageFilter" xml:space="preserve"><value>Изображения</value></data>
+  <data name="Identity_ImageError" xml:space="preserve"><value>Не удалось прочитать изображение.</value></data>
+  <data name="Identity_IconSaved" xml:space="preserve"><value>Значок сохранён.</value></data>
+  <data name="Identity_SavedRestart" xml:space="preserve"><value>Сохранено. Перезапустите сервер, чтобы применить.</value></data>
+  <data name="Identity_Motd" xml:space="preserve"><value>Описание сервера (MOTD)</value></data>
+  <data name="Identity_MotdHint" xml:space="preserve"><value>Две строки под названием сервера. Нажмите на цвет или стиль, чтобы вставить код (&amp;a, &amp;l …), или введите его сами.</value></data>
+  <data name="Identity_Bold" xml:space="preserve"><value>Жирный</value></data>
+  <data name="Identity_Italic" xml:space="preserve"><value>Курсив</value></data>
+  <data name="Identity_Underline" xml:space="preserve"><value>Подчёркнутый</value></data>
+  <data name="Identity_Strike" xml:space="preserve"><value>Зачёркнутый</value></data>
+  <data name="Identity_ResetStyle" xml:space="preserve"><value>Сбросить стиль</value></data>
+  <data name="Identity_Preview" xml:space="preserve"><value>Предпросмотр в списке серверов</value></data>
+  <data name="Identity_Undo" xml:space="preserve"><value>Отменить изменения</value></data>
+  <data name="Identity_SaveMotd" xml:space="preserve"><value>Сохранить описание</value></data>
+  <data name="Identity_MotdTooLong" xml:space="preserve"><value>Описание слишком длинное (макс. 118 символов).</value></data>
   <data name="Auto_Tab" xml:space="preserve"><value>Автоматизация</value></data>
   <data name="Auto_Title" xml:space="preserve"><value>Правила автоматизации</value></data>
   <data name="Auto_Subtitle" xml:space="preserve"><value>Правила работают, пока PackCheck открыт (может запускаться с Windows и жить в трее). Изменения сохраняются сразу.</value></data>

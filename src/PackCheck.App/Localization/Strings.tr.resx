@@ -458,6 +458,26 @@ Hayır: açık bırakıp çık.
   <data name="Mode_RunPlan" xml:space="preserve"><value>Planı uygula (her adımda sor)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Dosya düzenlemelerini otomatik uygula</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Plan onaylandı. Şimdi adım adım uygula.</value></data>
+  <data name="Identity_Tab" xml:space="preserve"><value>Kimlik</value></data>
+  <data name="Identity_Icon" xml:space="preserve"><value>Sunucu logosu</value></data>
+  <data name="Identity_IconHint" xml:space="preserve"><value>Çok oyunculu listesinde sunucunun yanında görünür. Her görsel olur: kare kırpılır ve 64×64 boyutuna getirilir.</value></data>
+  <data name="Identity_ChooseImage" xml:space="preserve"><value>Görsel seç…</value></data>
+  <data name="Identity_RemoveIcon" xml:space="preserve"><value>Logoyu kaldır</value></data>
+  <data name="Identity_ImageFilter" xml:space="preserve"><value>Görseller</value></data>
+  <data name="Identity_ImageError" xml:space="preserve"><value>Görsel okunamadı.</value></data>
+  <data name="Identity_IconSaved" xml:space="preserve"><value>Sunucu logosu kaydedildi.</value></data>
+  <data name="Identity_SavedRestart" xml:space="preserve"><value>Kaydedildi. Görünmesi için sunucuyu yeniden başlat.</value></data>
+  <data name="Identity_Motd" xml:space="preserve"><value>Sunucu açıklaması (MOTD)</value></data>
+  <data name="Identity_MotdHint" xml:space="preserve"><value>Sunucu adının altında görünen iki satır. Kodunu eklemek için bir renge veya stile tıkla (&amp;a, &amp;l …) ya da kodları kendin yaz.</value></data>
+  <data name="Identity_Bold" xml:space="preserve"><value>Kalın</value></data>
+  <data name="Identity_Italic" xml:space="preserve"><value>İtalik</value></data>
+  <data name="Identity_Underline" xml:space="preserve"><value>Altı çizili</value></data>
+  <data name="Identity_Strike" xml:space="preserve"><value>Üstü çizili</value></data>
+  <data name="Identity_ResetStyle" xml:space="preserve"><value>Stili sıfırla</value></data>
+  <data name="Identity_Preview" xml:space="preserve"><value>Sunucu listesindeki önizleme</value></data>
+  <data name="Identity_Undo" xml:space="preserve"><value>Değişiklikleri geri al</value></data>
+  <data name="Identity_SaveMotd" xml:space="preserve"><value>Açıklamayı kaydet</value></data>
+  <data name="Identity_MotdTooLong" xml:space="preserve"><value>Açıklama çok uzun (en fazla 118 karakter).</value></data>
   <data name="Auto_Tab" xml:space="preserve"><value>Otomasyon</value></data>
   <data name="Auto_Title" xml:space="preserve"><value>Otomasyon kuralları</value></data>
   <data name="Auto_Subtitle" xml:space="preserve"><value>Kurallar PackCheck açıkken çalışır (Windows ile başlayıp tepside durabilir). Değişiklikler anında kaydedilir.</value></data>
