@@ -38,7 +38,7 @@
   "description": "Free Windows app to create, run and validate Minecraft Java servers and plugin or mod packs.",
   "url": "https://x1npar1.github.io/PackCheck/",
   "downloadUrl": "https://github.com/X1NPAR1/PackCheck/releases/latest",
-  "softwareVersion": "3.1.5",
+  "softwareVersion": "3.2.0",
   "availableLanguage": ["en", "tr", "de", "fr", "ru"],
   "license": "https://opensource.org/licenses/MIT",
   "author": { "@type": "Person", "name": "X1NPAR1", "url": "https://github.com/X1NPAR1" },
@@ -278,7 +278,7 @@
 
 <header class="hero" id="top">
   <div class="wrap">
-    <a class="badge" href="https://github.com/X1NPAR1/PackCheck/releases/latest"><b>New</b><span id="ver">Version 3.1.5: create wizard, port forwarding guide, tray menu</span></a>
+    <a class="badge" href="https://github.com/X1NPAR1/PackCheck/releases/latest"><b>New</b><span id="ver">Version 3.2: performance charts, players, crash diagnosis, version upgrades, Discord</span></a>
     <h1>Host a Minecraft server on your Windows PC</h1>
     <p class="lead">PackCheck sets up the server, installs Java, keeps plugins and mods compatible and gets your friends connected. A free Windows app, no command line needed.</p>
     <div class="actions">
@@ -320,11 +320,13 @@
         <button role="tab" aria-selected="false" aria-controls="p2" id="t2">Plugins and mods</button>
         <button role="tab" aria-selected="false" aria-controls="p3" id="t3">Play online</button>
         <button role="tab" aria-selected="false" aria-controls="p4" id="t4">Validate</button>
+        <button role="tab" aria-selected="false" aria-controls="p5" id="t5">Performance</button>
+        <button role="tab" aria-selected="false" aria-controls="p6" id="t6">Upgrade</button>
       </div>
       <div class="panels">
         <div class="panel on" role="tabpanel" id="p0" aria-labelledby="t0">
           <div><h3>A server in a few clicks</h3><p>Start from a profile and change only what you care about.</p>
-            <ul><li>Survival, modded, creative, minigames, hardcore or low-end profiles</li><li>RAM from 1 to 32 GB, CPU core limit</li><li>Game rules, free port and the right Java chosen for you</li></ul></div>
+            <ul><li>Survival, modded, creative, minigames, hardcore or low-end profiles</li><li>RAM from 1 to 256 GB, up to 64 CPU cores</li><li>Game rules, free port and the right Java chosen for you</li></ul></div>
           <img src="media/create-wizard.webp" alt="Create Minecraft server wizard with profiles, platform cards, RAM and CPU sliders" loading="lazy">
         </div>
         <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
@@ -346,6 +348,16 @@
           <div><h3>Problems before players see them</h3><p>Checks every jar and config without running plugin code.</p>
             <ul><li>Missing dependencies and version mismatches</li><li>Duplicates, corrupt jars, client-only mods</li><li>Evidence and a suggested fix for each finding</li></ul></div>
           <img src="media/validation.webp" alt="Plugin and mod validation results grouped by severity with evidence and fixes" loading="lazy">
+        </div>
+        <div class="panel" role="tabpanel" id="p5" aria-labelledby="t5" hidden>
+          <div><h3>Find out why it lags</h3><p>Seven days of history, read for you.</p>
+            <ul><li>TPS, tick time, CPU, RAM and players per minute</li><li>Advice ranked by impact, with the setting to change</li><li>30-second spark profile with the report link</li></ul></div>
+          <img src="media/performance.webp" alt="Minecraft server performance charts for TPS, tick time, CPU and RAM with advice" loading="lazy">
+        </div>
+        <div class="panel" role="tabpanel" id="p6" aria-labelledby="t6" hidden>
+          <div><h3>Upgrade without fear</h3><p>Move to a newer Minecraft version with a safety net.</p>
+            <ul><li>Every plugin and mod checked against the new version</li><li>Newer builds found on Modrinth and verified</li><li>Pinned backup, test start and one-click rollback</li></ul></div>
+          <img src="media/upgrade.webp" alt="Minecraft server version upgrade wizard with a plugin compatibility report" loading="lazy">
         </div>
       </div>
     </div>
@@ -374,11 +386,35 @@
         <h3>Edit files without breaking them</h3>
         <p>Drag files in, zip and unzip, and edit configs in a code editor that refuses to save broken YAML, JSON or TOML. Every edit keeps a backup.</p>
         <div class="facts">
-          <div><b>Properties editor</b><span>Every setting explained</span></div>
-          <div><b>Backups</b><span>Zip snapshots with restore</span></div>
+          <div><b>Settings editor</b><span>server.properties, Bukkit, Spigot and Paper</span></div>
+          <div><b>Server icon and MOTD</b><span>Live server-list preview</span></div>
         </div>
       </div>
       <img class="shot" src="media/files.webp" alt="Files tab with code editor" loading="lazy">
+    </div>
+
+    <div class="row reveal">
+      <div class="copy">
+        <h3>Know why it crashed, fix it in one click</h3>
+        <p>When a server stops unexpectedly, PackCheck reads the console, the log and the crash report and names the cause: the plugin or mod that broke it, the missing dependency, the wrong Java, the config file and line with a typo, or a port that is already taken.</p>
+        <div class="facts">
+          <div><b>One-click fixes</b><span>Disable the jar, add RAM, install Java, free port</span></div>
+          <div><b>Discord alerts</b><span>Crashes, lag, players and backups</span></div>
+        </div>
+      </div>
+      <img class="shot" src="media/crash-diagnosis.webp" alt="Crash banner naming a broken config file and line with a fix button" loading="lazy">
+    </div>
+
+    <div class="row flip reveal">
+      <div class="copy">
+        <h3>Backups and players under control</h3>
+        <p>Back up the whole server, only the worlds or only the settings while it keeps running. Keep daily and weekly copies, pin the ones that matter, copy them to OneDrive or a NAS and restore a single world. See everyone who joined, with play time and IP history, and whitelist, op or ban them even when the server is off.</p>
+        <div class="facts">
+          <div><b>Smart retention</b><span>Newest, daily, weekly and pinned</span></div>
+          <div><b>Per-world restore</b><span>With a safety backup first</span></div>
+        </div>
+      </div>
+      <img class="shot" src="media/backups.webp" alt="Backups tab with backup types, notes, pinning and per-world restore" loading="lazy">
     </div>
 
     <div class="row reveal">

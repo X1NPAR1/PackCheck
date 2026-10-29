@@ -43,7 +43,19 @@ Static checks never execute plugin code. A real startup test is available, but y
 |---|---|
 | ![Server dashboard with TPS, CPU, RAM and ping gauges, resources and technical details](docs/media/server-overview.png) | ![Create server wizard with profiles, platform cards, RAM and CPU sliders](docs/media/create-wizard.png) |
 
-| Automation | Console |
+| Performance history and advice | Players |
+|---|---|
+| ![Performance tab with TPS, tick time, CPU, RAM and player charts, diagnosis and spark profiling](docs/media/performance.png) | ![Players tab with whitelist, operators, bans, play time and IP history](docs/media/players.png) |
+
+| Backups | Version upgrade |
+|---|---|
+| ![Backups by type with notes, pinning, retention and per-world restore](docs/media/backups.png) | ![Version upgrade wizard with a plugin and mod compatibility report](docs/media/upgrade.png) |
+
+| Crash diagnosis | Server icon and MOTD |
+|---|---|
+| ![Crash banner naming the broken config file and line with a one-click fix](docs/media/crash-diagnosis.png) | ![Server icon upload and MOTD editor with color codes and a live server-list preview](docs/media/identity.png) |
+
+| Automation and Discord | Console |
 |---|---|
 | ![Automation rules with schedules, crash restarts and triggers](docs/media/automation.png) | ![Live console with filters, search and player list](docs/media/console.png) |
 
@@ -73,22 +85,28 @@ Static checks never execute plugin code. A real startup test is available, but y
 - 18 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer, Arclight, and the proxies Velocity and BungeeCord. Version lists come from each project's own API, so only versions with a real download appear.
 - Downloads are hash-verified wherever the source publishes a hash; Forge, NeoForge, Quilt and BuildTools run automatically.
 - The right Java (8, 17, 21 or 25) is installed automatically from Eclipse Temurin before a server starts.
-- Create wizard with ready-made profiles (survival with friends, modded, creative, minigames, hardcore, low-end PC), platform cards, RAM slider (1–32 GB, warns when it leaves too little for Windows), CPU core limit, game rules (game mode, difficulty, players, view distance, PvP, whitelist, online mode, hardcore, MOTD), a free port chosen for you and a live capacity estimate.
+- Create wizard with ready-made profiles (survival with friends, modded, creative, minigames, hardcore, low-end PC), platform cards, RAM slider (1–256 GB, warns when it leaves too little for Windows), CPU core limit (up to 64), game rules (game mode, difficulty, players, view distance, PvP, whitelist, online mode, hardcore, MOTD), a free port chosen for you and a live capacity estimate.
 - Change memory, CPU cores and garbage-collector flags later; see PID, threads, handles and the exact Java start command.
 - Delete a server for good from its page, with two confirmations (backups are kept).
 - Explicit EULA consent: nothing is accepted on your behalf.
 - Live dashboard: ring gauges for TPS, CPU, RAM and ping with five health levels, players, uptime, disk and world size.
 - Console with level filters and counters, search that highlights matches with next/previous, clickable player names (op, kick, ban, teleport), timestamps, copy/save, command history and Tab completion, quick actions, player list, and a crash banner that can hand the error to the assistant.
 - Files tab: upload by drag and drop, multi-select, copy/cut/paste, zip/unzip, delete to the Recycle Bin, and a code editor with line numbers, syntax highlighting and a syntax check before saving.
-- `server.properties` editor with every setting explained, grouped, typed and resettable.
+- Settings editor for `server.properties` plus the main performance settings of `bukkit.yml`, `spigot.yml` and Paper's config files, every one explained in five languages, typed, range-checked and resettable, with a "changed from default" filter. YAML files keep their comments and layout.
+- **Server icon and MOTD**: pick any image and it becomes the 64×64 `server-icon.png`; edit the two-line MOTD with color and style buttons and a live preview of the multiplayer list.
+- **Crash diagnosis**: when a server crashes, PackCheck reads the console, `latest.log` and the crash report and names the cause (EULA, port in use, out of memory, wrong Java, missing dependency, incompatible mod, mixin failure, plugin error, broken config file with line number, damaged world) with a one-click fix: accept the EULA, pick a free port, add RAM, install the right Java, disable the jar that caused it, open the file or restore a backup. Crashes that exit with code 0 (Paper does this) are detected too.
+- **Version upgrade wizard**: pick a newer Minecraft version and PackCheck checks every plugin and mod against it, finds newer builds on Modrinth (verified by SHA-512), takes a pinned full backup, installs the right Java and the new server, test-starts it, and rolls everything back with one click if the test fails.
 - Every server process tree runs in a Windows Job Object; nothing keeps running after a crash or a forced stop.
-- Zip backups with retention and restore.
+- **Backups**: full, worlds-only or settings-only backups with a note, taken safely while the server runs (`save-off`, `save-all flush`, `save-on`); files in use are skipped instead of failing the backup. Keep the newest N plus one per day and one per week, pin backups that must never be deleted, copy every backup to a second folder (OneDrive, Google Drive, NAS), and restore everything or just one world. A safety backup is taken before every restore.
+- **Players**: everyone who ever joined, with last seen, play time, IP addresses and accounts sharing an IP; whitelist, op, ban and kick whether the server is running or not (UUIDs come from the server cache, Mojang or the offline formula).
+- **Performance**: one sample per minute kept for 7 days, charts for TPS, tick time, CPU, RAM and players over 1 h, 24 h or 7 days, a summary, ranked advice (view and simulation distance, entity activation range, memory, GC flags, "Can't keep up" warnings) and a 30-second spark profile with the report link.
 
 **Automation**
 - Per-server rules on an Automation tab: start when PackCheck opens, restart after a crash (with a limit per hour), scheduled restart with a chat countdown, scheduled backup, scheduled or repeating console commands, chat announcements, warn or restart on low TPS or high memory, and stop when nobody is online.
 - Triggers: when this or another server starts, stops or crashes (start, stop, restart, back up, run a command, send a message or notify, after a delay), and when the player count reaches a number.
 - Days of the week, "Run now", next and last run for every rule, an activity log, and a one-click recommended setup.
 - Rules keep working while PackCheck sits in the tray; with "Start with Windows" a server comes back after every reboot.
+- **Discord notifications** per server through a webhook: started, stopped, crashed (with the diagnosis), player joined or left, lag, backup done or failed and automation actions, with an optional @here or role mention for important events, a "Send test" button and a "post to Discord" automation action. Only real Discord webhook URLs are accepted.
 
 **Plugins, mods and modpacks**
 - Browse Modrinth, Hangar and CurseForge page by page, sorted by downloads or updates and filtered by category, without having to search first.
@@ -225,6 +243,9 @@ Adding a check means adding one class that implements `IAnalyzer`. See [docs/rul
 | Pack validation (dependencies, versions, duplicates) | Yes, also as a CLI | No | No |
 | Port forwarding help and outside test | Yes | Usually not (servers are hosted) | Rarely |
 | Automation | Schedules, crash restarts, triggers between servers | Yes (varies) | Rarely |
+| Crash diagnosis with a fix | Names the cause and fixes it in one click | Logs only | No |
+| Version upgrade | Compatibility report, Modrinth updates, backup, test start, rollback | Manual | Manual |
+| Discord notifications | Built in (webhook) | Plugin or add-on | No |
 | Best for | Hosting at home for friends | Hosting providers and many users | One quick server |
 
 
@@ -277,6 +298,9 @@ Requires the .NET 10 SDK on Windows.
 - Fabric's server launcher has no published checksum, so it is verified only by HTTPS.
 - The runtime test isolates files, ports and memory, but plugin code still runs with your user account's rights. Read [docs/security.md](docs/security.md) before you use it on plugins you don't trust.
 - Version checks rely on what plugins declare. A plugin that declares nothing gets a warning, not a guess.
+- Backups reach the cloud through a synced folder (OneDrive, Google Drive, Dropbox) chosen as the second copy; there is no direct cloud API.
+- Discord support sends notifications; running commands from Discord is not supported yet.
+- The upgrade wizard only moves to newer versions, because worlds cannot be opened by an older Minecraft version.
 
 ## License
 
