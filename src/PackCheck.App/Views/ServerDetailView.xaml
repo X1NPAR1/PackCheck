@@ -154,7 +154,7 @@
         <StackPanel Orientation="Horizontal">
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Tab_Overview}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=0}" AutomationProperties.AutomationId="TabOverview" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
-            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" AutomationProperties.AutomationId="TabProperties" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Files_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=5}" AutomationProperties.AutomationId="TabFiles" />
             <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}">
                 <TextBlock>
@@ -703,12 +703,13 @@
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top" Margin="14,12">
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <CheckBox Content="{l:Loc Props_OnlyModified}" IsChecked="{Binding PropertyOnlyModified}" VerticalAlignment="Center" Margin="12,0,0,0" AutomationProperties.AutomationId="PropsOnlyModified" />
                         <Button Content="{l:Loc Props_Raw}" Command="{Binding EditRawPropertiesCommand}" Margin="8,0,8,0" />
                         <Button Content="{l:Loc Common_Save}" Style="{StaticResource PrimaryButton}" Command="{Binding SavePropertiesCommand}" AutomationProperties.AutomationId="SaveProperties" />
                     </StackPanel>
                     <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="12" Foreground="{DynamicResource WarnBrush}"
                                Text="{Binding ChangedCount, Converter={x:Static l:FormatKey.Instance}, ConverterParameter=Props_Modified}" Visibility="{Binding ChangedCount, Converter={StaticResource NullVis}}" />
-                    <TextBox Tag="{l:Loc Props_Search}" Text="{Binding PropertySearch, UpdateSourceTrigger=PropertyChanged, Delay=150}" ToolTip="{l:Loc Props_Search}" AutomationProperties.Name="{l:Loc Props_Search}" />
+                    <TextBox Tag="{l:Loc Props_Search}" Text="{Binding PropertySearch, UpdateSourceTrigger=PropertyChanged, Delay=150}" ToolTip="{l:Loc Props_Search}" AutomationProperties.Name="{l:Loc Props_Search}" AutomationProperties.AutomationId="PropsSearch" />
                 </DockPanel>
                 <TextBlock DockPanel.Dock="Top" Text="{l:Loc Servers_SaveWhileRunning}" Foreground="{DynamicResource WarnBrush}" Margin="14,0,14,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14,0,14,14">
@@ -729,7 +730,7 @@
                                                         </Grid.ColumnDefinitions>
                                                         <StackPanel Margin="0,0,16,0">
                                                             <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding Key}" FontFamily="{StaticResource MonoFont}" FontSize="12.5" FontWeight="SemiBold" />
+                                                                <TextBlock Text="{Binding DisplayKey}" FontFamily="{StaticResource MonoFont}" FontSize="12.5" FontWeight="SemiBold" />
                                                                 <Ellipse Width="7" Height="7" Margin="8,0,0,0" Fill="{DynamicResource WarnBrush}" VerticalAlignment="Center" Visibility="{Binding IsChanged, Converter={StaticResource BoolVis}}" />
                                                             </StackPanel>
                                                             <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12" Visibility="{Binding Description, Converter={StaticResource NullVis}}" />

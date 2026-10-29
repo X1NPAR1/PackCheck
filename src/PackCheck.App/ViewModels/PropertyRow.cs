@@ -20,7 +20,15 @@ public sealed partial class PropertyRow : ObservableObject
         InFile = inFile;
     }
 
+    public PropertyRow(PropertyInfo info, string value)
+        : this(info.Key, value, inFile: false)
+    {
+        Info = info;
+    }
+
     public string Key { get; }
+
+    public string DisplayKey => Info?.IsYaml == true ? $"{Info.File} › {Info.Path}" : Key;
 
     public PropertyInfo? Info { get; }
 
@@ -69,7 +77,7 @@ public sealed partial class PropertyRow : ObservableObject
     }
 
     /// <summary>Whether this row must be written: present in the file, or changed by the user.</summary>
-    public bool ShouldWrite => InFile || IsChanged;
+    public bool ShouldWrite => Info?.IsYaml == true ? IsChanged : InFile || IsChanged;
 
     [RelayCommand]
     private void Reset()
@@ -82,7 +90,7 @@ public sealed partial class PropertyRow : ObservableObject
 
     public bool Matches(string search) =>
         search.Length == 0
-        || Key.Contains(search, StringComparison.OrdinalIgnoreCase)
+        || DisplayKey.Contains(search, StringComparison.OrdinalIgnoreCase)
         || Description.Contains(search, StringComparison.OrdinalIgnoreCase);
 }
 

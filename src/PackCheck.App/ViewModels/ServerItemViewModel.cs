@@ -921,6 +921,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     partial void OnPropertySearchChanged(string value) => GroupProperties();
 
+    /// <summary>Show only settings that differ from the default (or have unsaved edits).</summary>
+    [ObservableProperty]
+    private bool _propertyOnlyModified;
+
+    partial void OnPropertyOnlyModifiedChanged(bool value) => GroupProperties();
+
     /// <summary>Every known key is shown, even when the file does not contain it yet; unknown keys go to "Other".</summary>
     private void LoadProperties()
     {
@@ -935,6 +941,25 @@ public sealed partial class ServerItemViewModel : ObservableObject
         foreach (var (k, v) in values.Where(kv => PropertyCatalog.Find(kv.Key) is null).OrderBy(kv => kv.Key, StringComparer.Ordinal))
         {
             Properties.Add(new PropertyRow(k, v, inFile: true));
+        }
+
+        // Bukkit/Spigot/Paper YAML settings, only those the server's files actually contain.
+        foreach (var yamlGroup in PropertyCatalog.Yaml.GroupBy(y => y.File!))
+        {
+            var path = Path.Combine(Definition.Directory, yamlGroup.Key);
+            if (!File.Exists(path))
+            {
+                continue;
+            }
+
+            var text = File.ReadAllText(path);
+            foreach (var info in yamlGroup)
+            {
+                if (YamlPatcher.Get(text, info.Path!) is { } value)
+                {
+                    Properties.Add(new PropertyRow(info, value));
+                }
+            }
         }
 
         foreach (var row in Properties)
@@ -955,9 +980,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private void GroupProperties()
     {
         PropertyGroups.Clear();
-        foreach (var key in PropertyCatalog.Groups.Append("Other"))
+        foreach (var key in PropertyCatalog.Groups.Append("Other").Concat(PropertyCatalog.YamlGroups))
         {
-            var rows = Properties.Where(r => r.GroupKey == key && r.Matches(PropertySearch)).ToList();
+            var rows = Properties.Where(r => r.GroupKey == key && r.Matches(PropertySearch) && (!PropertyOnlyModified || !r.IsDefault || r.IsChanged)).ToList();
             if (rows.Count > 0)
             {
                 PropertyGroups.Add(new PropertyGroup(key, new ObservableCollection<PropertyRow>(rows)));
@@ -989,7 +1014,18 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
         var file = Path.Combine(Definition.Directory, "server.properties");
         var original = File.Exists(file) ? File.ReadAllText(file) : string.Empty;
-        File.WriteAllText(file, ServerProperties.Update(original, Properties.Where(p => p.ShouldWrite).ToDictionary(p => p.Key, p => p.Value.Trim())));
+        File.WriteAllText(file, ServerProperties.Update(original, Properties.Where(p => p.Info?.IsYaml != true && p.ShouldWrite).ToDictionary(p => p.Key, p => p.Value.Trim())));
+        foreach (var group in Properties.Where(p => p.Info?.IsYaml == true && p.IsChanged).GroupBy(p => p.Info!.File!))
+        {
+            var yamlFile = Path.Combine(Definition.Directory, group.Key);
+            var text = File.ReadAllText(yamlFile);
+            foreach (var row in group)
+            {
+                text = YamlPatcher.Set(text, row.Info!.Path!, row.Value.Trim()) ?? text;
+            }
+
+            File.WriteAllText(yamlFile, text);
+        }
         if (Properties.FirstOrDefault(p => p.Key == "server-port") is { } port && int.TryParse(port.Value, out var n))
         {
             Definition = Definition with { Port = n };

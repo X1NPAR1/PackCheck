@@ -698,6 +698,36 @@ The server may fail to read this file. Save anyway?</value></data>
   <data name="PropGroup_Network" xml:space="preserve"><value>Network</value></data>
   <data name="PropGroup_Performance" xml:space="preserve"><value>Performance</value></data>
   <data name="PropGroup_Security" xml:space="preserve"><value>Security</value></data>
+  <data name="PropGroup_Bukkit" xml:space="preserve"><value>Bukkit (bukkit.yml)</value></data>
+  <data name="PropGroup_Spigot" xml:space="preserve"><value>Spigot (spigot.yml)</value></data>
+  <data name="PropGroup_Paper" xml:space="preserve"><value>Paper (config/paper-*.yml)</value></data>
+  <data name="Props_OnlyModified" xml:space="preserve"><value>Only changed from default</value></data>
+  <data name="Prop_bukkit-monsters" xml:space="preserve"><value>Maximum hostile mobs per player area. Lower it to reduce lag.</value></data>
+  <data name="Prop_bukkit-animals" xml:space="preserve"><value>Maximum passive animals per player area.</value></data>
+  <data name="Prop_bukkit-water-animals" xml:space="preserve"><value>Maximum water animals (squid, dolphins) per player area.</value></data>
+  <data name="Prop_bukkit-ambient" xml:space="preserve"><value>Maximum ambient mobs (bats) per player area.</value></data>
+  <data name="Prop_bukkit-monster-spawns" xml:space="preserve"><value>Ticks between hostile spawn attempts (1 = every tick). Higher is lighter.</value></data>
+  <data name="Prop_bukkit-animal-spawns" xml:space="preserve"><value>Ticks between animal spawn attempts.</value></data>
+  <data name="Prop_bukkit-connection-throttle" xml:space="preserve"><value>Milliseconds a player must wait between connection attempts (-1 = off, needed behind a proxy).</value></data>
+  <data name="Prop_bukkit-allow-end" xml:space="preserve"><value>Whether the End dimension is enabled.</value></data>
+  <data name="Prop_spigot-ear-animals" xml:space="preserve"><value>Blocks around players in which animals are fully ticked. Lower saves CPU.</value></data>
+  <data name="Prop_spigot-ear-monsters" xml:space="preserve"><value>Blocks around players in which monsters are fully ticked.</value></data>
+  <data name="Prop_spigot-ear-raiders" xml:space="preserve"><value>Blocks around players in which raiders are fully ticked.</value></data>
+  <data name="Prop_spigot-ear-misc" xml:space="preserve"><value>Blocks around players in which other entities are fully ticked.</value></data>
+  <data name="Prop_spigot-etr-players" xml:space="preserve"><value>Distance (blocks) at which other players are sent to a client.</value></data>
+  <data name="Prop_spigot-etr-animals" xml:space="preserve"><value>Distance (blocks) at which animals are sent to a client.</value></data>
+  <data name="Prop_spigot-etr-monsters" xml:space="preserve"><value>Distance (blocks) at which monsters are sent to a client.</value></data>
+  <data name="Prop_spigot-timeout" xml:space="preserve"><value>Seconds without a tick before the watchdog reports the server as frozen.</value></data>
+  <data name="Prop_spigot-restart-on-crash" xml:space="preserve"><value>Run the restart script when the server crashes.</value></data>
+  <data name="Prop_spigot-bungeecord" xml:space="preserve"><value>Enable when the server runs behind a BungeeCord/Velocity (legacy) proxy.</value></data>
+  <data name="Prop_paper-autosave-chunks" xml:space="preserve"><value>Maximum chunks saved per tick during autosave. Lower smooths lag spikes.</value></data>
+  <data name="Prop_paper-entity-collisions" xml:space="preserve"><value>Maximum collisions an entity checks per tick. Lower helps mob farms.</value></data>
+  <data name="Prop_paper-spawner-tick" xml:space="preserve"><value>How often mob spawners tick (1 = every tick). 2 halves their cost.</value></data>
+  <data name="Prop_paper-optimize-explosions" xml:space="preserve"><value>Faster explosion calculation (slightly different results).</value></data>
+  <data name="Prop_paper-armor-stands-tick" xml:space="preserve"><value>Whether armor stands tick. Turn off to save CPU if no plugin needs it.</value></data>
+  <data name="Prop_paper-hopper-move-event" xml:space="preserve"><value>Skip the hopper move event (big speed-up, but breaks plugins that listen to it).</value></data>
+  <data name="Prop_paper-prevent-unloaded" xml:space="preserve"><value>Stop players from moving into chunks that are not loaded yet.</value></data>
+  <data name="Prop_paper-max-joins" xml:space="preserve"><value>Players that may join per tick; limits join floods.</value></data>
   <data name="PropGroup_Other" xml:space="preserve"><value>Other keys in the file</value></data>
   <data name="Props_Search" xml:space="preserve"><value>Search settings…</value></data>
   <data name="Props_Raw" xml:space="preserve"><value>Edit raw file</value></data>

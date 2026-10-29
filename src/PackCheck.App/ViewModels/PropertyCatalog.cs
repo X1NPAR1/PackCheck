@@ -9,7 +9,10 @@ public enum PropertyKind
 }
 
 /// <summary>A known server.properties key: its type, default (vanilla) and group. Descriptions live in the RESX files as Prop_&lt;key&gt;.</summary>
-public sealed record PropertyInfo(string Key, PropertyKind Kind, string Default, string Group, string[]? Options = null, int Min = 0, int Max = int.MaxValue, bool Secret = false);
+public sealed record PropertyInfo(string Key, PropertyKind Kind, string Default, string Group, string[]? Options = null, int Min = 0, int Max = int.MaxValue, bool Secret = false, string? File = null, string? Path = null)
+{
+    public bool IsYaml => File is not null;
+}
 
 public static class PropertyCatalog
 {
@@ -79,5 +82,44 @@ public static class PropertyCatalog
         new("broadcast-rcon-to-ops", PropertyKind.Bool, "true", "Security"),
     ];
 
-    public static PropertyInfo? Find(string key) => All.FirstOrDefault(p => p.Key == key);
+    /// <summary>Groups for Bukkit/Spigot/Paper YAML settings; shown only when the file has the key.</summary>
+    public static readonly string[] YamlGroups = ["Bukkit", "Spigot", "Paper"];
+
+    /// <summary>Common performance settings in Bukkit/Spigot/Paper YAML files. Key is the RESX-safe id (Prop_&lt;key&gt;).</summary>
+    public static readonly IReadOnlyList<PropertyInfo> Yaml =
+    [
+        Y("bukkit-monsters", "70", "bukkit.yml", "spawn-limits.monsters", "Bukkit", 0, 500),
+        Y("bukkit-animals", "10", "bukkit.yml", "spawn-limits.animals", "Bukkit", 0, 500),
+        Y("bukkit-water-animals", "5", "bukkit.yml", "spawn-limits.water-animals", "Bukkit", 0, 500),
+        Y("bukkit-ambient", "15", "bukkit.yml", "spawn-limits.ambient", "Bukkit", 0, 500),
+        Y("bukkit-monster-spawns", "1", "bukkit.yml", "ticks-per.monster-spawns", "Bukkit", 0, 6000),
+        Y("bukkit-animal-spawns", "400", "bukkit.yml", "ticks-per.animal-spawns", "Bukkit", 0, 6000),
+        Y("bukkit-connection-throttle", "4000", "bukkit.yml", "settings.connection-throttle", "Bukkit", -1, 60000),
+        new("bukkit-allow-end", PropertyKind.Bool, "true", "Bukkit", File: "bukkit.yml", Path: "settings.allow-end"),
+
+        Y("spigot-ear-animals", "32", "spigot.yml", "world-settings.default.entity-activation-range.animals", "Spigot", 0, 256),
+        Y("spigot-ear-monsters", "32", "spigot.yml", "world-settings.default.entity-activation-range.monsters", "Spigot", 0, 256),
+        Y("spigot-ear-raiders", "64", "spigot.yml", "world-settings.default.entity-activation-range.raiders", "Spigot", 0, 256),
+        Y("spigot-ear-misc", "16", "spigot.yml", "world-settings.default.entity-activation-range.misc", "Spigot", 0, 256),
+        Y("spigot-etr-players", "128", "spigot.yml", "world-settings.default.entity-tracking-range.players", "Spigot", 0, 512),
+        Y("spigot-etr-animals", "96", "spigot.yml", "world-settings.default.entity-tracking-range.animals", "Spigot", 0, 512),
+        Y("spigot-etr-monsters", "96", "spigot.yml", "world-settings.default.entity-tracking-range.monsters", "Spigot", 0, 512),
+        Y("spigot-timeout", "60", "spigot.yml", "settings.timeout-time", "Spigot", 10, 3600),
+        new("spigot-restart-on-crash", PropertyKind.Bool, "true", "Spigot", File: "spigot.yml", Path: "settings.restart-on-crash"),
+        new("spigot-bungeecord", PropertyKind.Bool, "false", "Spigot", File: "spigot.yml", Path: "settings.bungeecord"),
+
+        Y("paper-autosave-chunks", "24", "config/paper-world-defaults.yml", "chunks.max-auto-save-chunks-per-tick", "Paper", 1, 1000),
+        Y("paper-entity-collisions", "8", "config/paper-world-defaults.yml", "collisions.max-entity-collisions", "Paper", 0, 100),
+        Y("paper-spawner-tick", "1", "config/paper-world-defaults.yml", "tick-rates.mob-spawner", "Paper", 1, 100),
+        new("paper-optimize-explosions", PropertyKind.Bool, "false", "Paper", File: "config/paper-world-defaults.yml", Path: "environment.optimize-explosions"),
+        new("paper-armor-stands-tick", PropertyKind.Bool, "true", "Paper", File: "config/paper-world-defaults.yml", Path: "entities.armor-stands.tick"),
+        new("paper-hopper-move-event", PropertyKind.Bool, "false", "Paper", File: "config/paper-world-defaults.yml", Path: "hopper.disable-move-event"),
+        new("paper-prevent-unloaded", PropertyKind.Bool, "false", "Paper", File: "config/paper-world-defaults.yml", Path: "chunks.prevent-moving-into-unloaded-chunks"),
+        Y("paper-max-joins", "5", "config/paper-global.yml", "misc.max-joins-per-tick", "Paper", 1, 100),
+    ];
+
+    private static PropertyInfo Y(string key, string def, string file, string path, string group, int min, int max) =>
+        new(key, PropertyKind.Number, def, group, Min: min, Max: max, File: file, Path: path);
+
+    public static PropertyInfo? Find(string key) => All.FirstOrDefault(p => p.Key == key) ?? Yaml.FirstOrDefault(p => p.Key == key);
 }
