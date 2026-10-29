@@ -16,6 +16,7 @@
 </p>
 
 <p align="center">
+  <a href="https://x1npar1.github.io/PackCheck/"><b>Website</b></a> ·
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download</a> ·
   <a href="#cli">CLI</a> ·
   <a href="docs/security.md">Security model</a> ·

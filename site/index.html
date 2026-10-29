@@ -4,17 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PackCheck – free Minecraft server manager for Windows</title>
-<meta name="description" content="Create, run and validate Minecraft Java servers on Windows. Paper, Purpur, Fabric, Forge, NeoForge, Velocity and more, automatic Java, plugin and mod browser, port forwarding help, pack validation. Free and open source.">
-<meta name="keywords" content="minecraft server manager, minecraft server windows, create minecraft server, paper server, fabric server, forge server, neoforge server, minecraft plugin checker, modpack validator, minecraft port forwarding, velocity proxy, free minecraft server software">
+<meta name="description" content="Create, run and validate Minecraft Java servers on Windows. Paper, Purpur, Fabric, Forge, NeoForge, Velocity and 12 more platforms, automatic Java, plugin and mod browser, port forwarding help and pack validation. Free and open source.">
+<meta name="keywords" content="minecraft server manager, minecraft server windows, create minecraft server, host minecraft server, paper server, fabric server, forge server, neoforge server, minecraft plugin checker, modpack validator, minecraft port forwarding, velocity proxy, free minecraft server software">
 <link rel="canonical" href="https://x1npar1.github.io/PackCheck/">
-<meta name="theme-color" content="#1B1D1C">
+<meta name="theme-color" content="#1E2220">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="PackCheck">
 <meta property="og:title" content="PackCheck – free Minecraft server manager for Windows">
-<meta property="og:description" content="Create, run and validate Minecraft Java servers in a few clicks. 18 platforms, automatic Java, plugin and mod browser, internet play guide.">
+<meta property="og:description" content="Create a Minecraft server in a few clicks, run it with a live dashboard, install plugins and mods safely and let friends join over the internet.">
 <meta property="og:url" content="https://x1npar1.github.io/PackCheck/">
 <meta property="og:image" content="https://x1npar1.github.io/PackCheck/media/server-overview.png">
+<meta property="og:image:alt" content="PackCheck server dashboard with TPS, CPU, RAM and ping gauges">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="media/cube.png">
+<link rel="icon" type="image/png" href="media/cube.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -26,81 +31,503 @@
   "description": "Free Windows app to create, run and validate Minecraft Java servers and plugin or mod packs.",
   "url": "https://x1npar1.github.io/PackCheck/",
   "downloadUrl": "https://github.com/X1NPAR1/PackCheck/releases/latest",
-  "softwareVersion": "3.1.1",
+  "softwareVersion": "3.1.2",
+  "inLanguage": ["en", "tr", "de", "fr", "ru"],
   "license": "https://opensource.org/licenses/MIT",
   "author": { "@type": "Person", "name": "X1NPAR1", "url": "https://github.com/X1NPAR1" },
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "screenshot": "https://x1npar1.github.io/PackCheck/media/server-overview.png"
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How do I make a Minecraft server on Windows?", "acceptedAnswer": { "@type": "Answer", "text": "Install PackCheck, click New server, choose a profile such as Survival with friends, accept the Minecraft EULA and press Create server. PackCheck downloads the server, installs the right Java and starts it." } },
+    { "@type": "Question", "name": "How can my friends join my Minecraft server?", "acceptedAnswer": { "@type": "Answer", "text": "On the same network they use the local address. Over the internet press Open to the internet on the Online page; if the router does not forward the port automatically, follow the guide there and confirm with Test from outside." } },
+    { "@type": "Question", "name": "Paper, Fabric or Forge – which should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, Velocity to link several servers." } },
+    { "@type": "Question", "name": "Is PackCheck free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is open source under the MIT license, needs no account and sends no telemetry." } }
+  ]
+}
+</script>
 <style>
-  :root { --bg:#1B1D1C; --surface:#232624; --line:#3A3F3B; --text:#ECEAE3; --muted:#9C9D96; --green:#5E9A3E; --green2:#73B04F; }
+  :root {
+    --deepslate: #1E2220;
+    --slate: #272C29;
+    --slate-2: #313733;
+    --edge: #3E4540;
+    --moss: #6FA24A;
+    --moss-deep: #4D7A32;
+    --grass: #9BCB6A;
+    --stone: #B8B5A8;
+    --chalk: #EEECE4;
+    --dirt: #7C5A3C;
+    --warn: #D9B44A;
+    --fail: #D2675C;
+    --sky: #9CC7D8;
+    --display: "Exo 2", "Segoe UI", sans-serif;
+    --body: Inter, "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", Consolas, monospace;
+    --measure: 64ch;
+    --radius-window: 14px;
+    --radius-control: 8px;
+  }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 Inter, "Segoe UI", system-ui, sans-serif; }
-  a { color:var(--green2); }
-  .wrap { max-width:1080px; margin:0 auto; padding:0 20px; }
-  header { padding:56px 0 32px; text-align:center; }
-  header img.logo { width:420px; max-width:90%; }
-  h1 { font-size:2.1rem; line-height:1.25; margin:24px 0 12px; }
-  .lead { color:var(--muted); font-size:1.1rem; max-width:720px; margin:0 auto; }
-  .cta { display:inline-block; margin:28px 8px 0; padding:13px 26px; border-radius:10px; background:var(--green); color:#0F1A0A; font-weight:700; text-decoration:none; }
-  .cta.alt { background:transparent; color:var(--text); border:1px solid var(--line); }
-  .shot { width:100%; border-radius:12px; border:1px solid var(--line); margin:36px 0 8px; }
-  h2 { margin:56px 0 16px; font-size:1.5rem; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
-  .card { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px; }
-  .card h3 { margin:0 0 6px; font-size:1.05rem; }
-  .card p { margin:0; color:var(--muted); font-size:.95rem; }
-  .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; }
-  .gallery img { width:100%; border-radius:10px; border:1px solid var(--line); }
-  details { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 18px; margin-bottom:10px; }
-  summary { cursor:pointer; font-weight:600; }
-  footer { color:var(--muted); font-size:.85rem; padding:48px 0; text-align:center; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--deepslate); color: var(--chalk); font: 400 17px/1.65 var(--body); -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; display: block; }
+  a { color: var(--sky); text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--grass); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1180px, 100% - 40px); margin-inline: auto; }
+
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--deepslate) 78%, transparent); border-bottom: 1px solid transparent; transition: border-color .3s; }
+  .nav.scrolled { border-bottom-color: var(--edge); }
+  .nav .wrap { display: flex; align-items: center; gap: 28px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--chalk); text-decoration: none; font: 700 19px var(--display); }
+  .brand img { width: 30px; height: 30px; }
+  .nav-links { display: flex; gap: 22px; margin-left: auto; }
+  .nav-links a { color: var(--stone); text-decoration: none; font-size: 15px; }
+  .nav-links a:hover { color: var(--chalk); }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: var(--radius-control); font: 600 16px var(--body); text-decoration: none; transition: transform .15s, background .2s, box-shadow .2s; }
+  .btn-primary { background: var(--moss); color: #10180B; box-shadow: inset 0 -3px 0 var(--moss-deep); }
+  .btn-primary:hover { background: #7DB356; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 var(--moss-deep); }
+  .btn-quiet { color: var(--chalk); border: 1px solid var(--edge); }
+  .btn-quiet:hover { border-color: var(--stone); }
+  .nav .btn { padding: 8px 16px; font-size: 14px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 96px; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
+  .hero h1 { font: 800 clamp(40px, 5.4vw, 66px)/1.02 var(--display); letter-spacing: -0.02em; margin: 0 0 22px; }
+  .hero p.lead { color: var(--stone); font-size: 19px; max-width: 46ch; margin: 0 0 30px; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .hero .fineprint { color: var(--stone); font-size: 14px; margin-top: 16px; }
+
+  /* app window with the boot sequence */
+  .window { background: var(--slate); border: 1px solid var(--edge); border-radius: var(--radius-window); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); overflow: hidden; }
+  .window-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--edge); font-size: 13px; color: var(--stone); }
+  .window-bar img { width: 18px; }
+  .window-bar .state { margin-left: auto; display: flex; align-items: center; gap: 7px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); transition: background .4s; }
+  .dot.on { background: var(--grass); box-shadow: 0 0 0 4px color-mix(in srgb, var(--grass) 25%, transparent); }
+  .window-body { display: grid; grid-template-columns: 1fr 150px; min-height: 330px; }
+  .console { background: #141716; padding: 14px 16px; font: 12.5px/1.75 var(--mono); color: #CFCDC4; overflow: hidden; height: 330px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .console .line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+  .console .line.shown { opacity: 1; transform: none; }
+  .console .t { color: #6E726B; }
+  .console .w { color: var(--warn); }
+  .console .ok { color: var(--grass); }
+  .gauges { border-left: 1px solid var(--edge); padding: 18px 0; display: grid; gap: 18px; justify-items: center; align-content: start; }
+  .ring { position: relative; width: 92px; height: 92px; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring circle { fill: none; stroke-width: 8; }
+  .ring .track { stroke: var(--slate-2); }
+  .ring .fill { stroke: var(--grass); stroke-linecap: round; stroke-dasharray: 245; stroke-dashoffset: 245; transition: stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1); }
+  .ring .val { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font: 700 20px/1 var(--display); }
+  .ring .val small { display: block; font: 500 11px var(--body); color: var(--stone); margin-top: 4px; }
+  .players { font-size: 13px; color: var(--stone); text-align: center; }
+  .players b { display: block; color: var(--chalk); font: 700 20px var(--display); }
+
+  /* ---------- platforms ---------- */
+  section { padding: 96px 0; }
+  h2 { font: 700 clamp(30px, 3.4vw, 44px)/1.1 var(--display); letter-spacing: -0.01em; margin: 0 0 16px; max-width: 22ch; }
+  .intro { color: var(--stone); max-width: var(--measure); margin: 0 0 40px; }
+  .platforms { border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); background: linear-gradient(var(--slate), var(--deepslate)); }
+  .blocks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .block { position: relative; padding: 16px 14px 14px; background: var(--slate-2); border-radius: 6px; box-shadow: inset 0 4px 0 var(--top, var(--moss)), inset 0 -4px 0 rgba(0,0,0,.28); }
+  .block b { display: block; font: 600 16px var(--display); }
+  .block span { font-size: 13px; color: var(--stone); }
+  .block[data-kind="mods"] { --top: var(--dirt); }
+  .block[data-kind="hybrid"] { --top: #A37A4A; }
+  .block[data-kind="official"] { --top: var(--stone); }
+  .block[data-kind="proxy"] { --top: var(--sky); }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: 14px; color: var(--stone); }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
+
+  /* ---------- lifecycle (scroll story) ---------- */
+  .story { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; }
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  .step { counter-increment: step; min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding-left: 64px; position: relative; opacity: .35; transition: opacity .4s; }
+  .step.active { opacity: 1; }
+  .step::before { content: counter(step); position: absolute; left: 0; top: 50%; translate: 0 -50%; width: 42px; height: 42px; border-radius: 8px; display: grid; place-content: center; font: 700 18px var(--display); background: var(--slate-2); box-shadow: inset 0 3px 0 var(--edge); transition: background .3s, color .3s, box-shadow .3s; }
+  .step.active::before { background: var(--moss); color: #10180B; box-shadow: inset 0 3px 0 var(--grass); }
+  .step h3 { font: 700 26px/1.2 var(--display); margin: 0 0 10px; }
+  .step p { color: var(--stone); margin: 0 0 12px; max-width: 46ch; }
+  .step ul { margin: 0; padding-left: 18px; color: var(--chalk); font-size: 15.5px; }
+  .step li { margin: 4px 0; }
+  .stage { position: sticky; top: 96px; height: min(72vh, 640px); align-self: start; }
+  .stage figure { position: absolute; inset: 0; margin: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: scale(.97) translateY(14px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+  .stage figure.active { opacity: 1; transform: none; }
+  .stage img { border-radius: var(--radius-window); border: 1px solid var(--edge); box-shadow: 0 30px 70px -30px rgba(0,0,0,.75); }
+  .stage figcaption { color: var(--stone); font-size: 14px; margin-top: 12px; }
+  .step .shot { display: none; }
+
+  /* ---------- validation ---------- */
+  .check { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: start; }
+  .check img { border-radius: var(--radius-window); border: 1px solid var(--edge); }
+  .finding { display: grid; grid-template-columns: 70px 1fr; gap: 4px 14px; padding: 14px 0; border-bottom: 1px solid var(--edge); }
+  .finding:first-of-type { border-top: 1px solid var(--edge); }
+  .finding code { font: 13px var(--mono); color: var(--stone); padding-top: 3px; }
+  .finding b { font-weight: 600; }
+  .finding span { grid-column: 2; color: var(--stone); font-size: 15px; }
+  .finding.fail b { color: var(--fail); }
+  .finding.warn b { color: var(--warn); }
+  .cli { margin-top: 28px; background: #141716; border: 1px solid var(--edge); border-radius: 10px; padding: 16px 18px; font: 13px/1.7 var(--mono); color: #CFCDC4; overflow-x: auto; }
+
+  /* ---------- assistant + extras ---------- */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .providers { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+  .providers span { padding: 6px 12px; border: 1px solid var(--edge); border-radius: 999px; font-size: 14px; color: var(--chalk); }
+  .approval { background: var(--slate); border: 1px solid var(--edge); border-radius: var(--radius-window); padding: 20px; }
+  .bubble { background: var(--slate-2); border-radius: 12px; padding: 12px 14px; font-size: 15px; margin-bottom: 12px; max-width: 92%; }
+  .bubble.me { margin-left: auto; background: color-mix(in srgb, var(--moss) 22%, var(--slate)); }
+  .diff { font: 12.5px/1.7 var(--mono); background: #141716; border-radius: 8px; padding: 10px 12px; margin: 8px 0 12px; }
+  .diff .del { color: var(--fail); } .diff .add { color: var(--grass); }
+  .approve-row { display: flex; gap: 8px; }
+  .approve-row span { padding: 7px 14px; border-radius: 7px; font-size: 14px; font-weight: 600; }
+  .approve-row .yes { background: var(--moss); color: #10180B; } .approve-row .no { border: 1px solid var(--edge); }
+
+  .more { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+  .more h3 { font: 600 19px var(--display); margin: 0 0 6px; }
+  .more p { color: var(--stone); margin: 0; font-size: 15.5px; }
+
+  /* ---------- specs + faq ---------- */
+  .specs { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+  .specs th, .specs td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--edge); vertical-align: top; }
+  .specs th { color: var(--stone); font-weight: 500; width: 34%; padding-right: 20px; }
+  details { border-bottom: 1px solid var(--edge); }
+  details summary { cursor: pointer; list-style: none; padding: 18px 40px 18px 0; position: relative; font: 600 18px var(--display); }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: ""; position: absolute; right: 6px; top: 50%; width: 10px; height: 10px; border-right: 2px solid var(--stone); border-bottom: 2px solid var(--stone); translate: 0 -70%; rotate: 45deg; transition: rotate .25s; }
+  details[open] summary::after { rotate: 225deg; translate: 0 -30%; }
+  details .answer { color: var(--stone); padding: 0 0 18px; max-width: var(--measure); }
+
+  /* ---------- final ---------- */
+  .final { text-align: center; padding: 120px 0; background: radial-gradient(60% 80% at 50% 100%, color-mix(in srgb, var(--moss) 20%, transparent), transparent); border-top: 1px solid var(--edge); }
+  .final h2 { margin-inline: auto; }
+  .final p { color: var(--stone); margin: 0 auto 30px; max-width: 52ch; }
+  footer { padding: 36px 0 48px; color: var(--stone); font-size: 14px; border-top: 1px solid var(--edge); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; }
+  footer a { color: var(--stone); }
+
+  /* ---------- page-load: the hero window rises once ---------- */
+  .rise { animation: rise .9s cubic-bezier(.2,.8,.2,1) both; }
+  .rise.d1 { animation-delay: .08s; } .rise.d2 { animation-delay: .16s; } .rise.d3 { animation-delay: .3s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+
+  @media (max-width: 960px) {
+    .hero .wrap, .story, .check, .split { grid-template-columns: 1fr; }
+    .stage { display: none; }
+    .step { min-height: 0; padding: 26px 0 26px 60px; opacity: 1; }
+    .step .shot { display: block; margin-top: 16px; border-radius: 10px; border: 1px solid var(--edge); }
+    .more { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .window-body { grid-template-columns: 1fr; }
+    .gauges { grid-template-columns: repeat(3, 1fr); border-left: 0; border-top: 1px solid var(--edge); padding: 14px 8px; }
+    .ring { width: 76px; height: 76px; } .ring svg { width: 76px; height: 76px; }
+    .more { grid-template-columns: 1fr; }
+    section { padding: 72px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .console .line { opacity: 1; transform: none; }
+  }
 </style>
 </head>
 <body>
-<header class="wrap">
-  <img class="logo" src="media/banner.png" alt="PackCheck logo">
-  <h1>The free Minecraft server manager for Windows</h1>
-  <p class="lead">Create a Minecraft Java server in a few clicks, run it with a live dashboard, install plugins and mods safely, let friends join over the internet, and find what breaks a plugin or mod pack before it goes live.</p>
-  <a class="cta" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download for Windows</a>
-  <a class="cta alt" href="https://github.com/X1NPAR1/PackCheck">Source on GitHub</a>
-  <img class="shot" src="media/server-overview.png" alt="PackCheck server dashboard with TPS, CPU, RAM and ping gauges">
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="media/cube.png" alt="">PackCheck</a>
+    <div class="nav-links">
+      <a href="#platforms">Platforms</a>
+      <a href="#how">How it works</a>
+      <a href="#validate">Validation</a>
+      <a href="#assistant">Assistant</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <h1 class="rise">Your Minecraft server, running on your own PC.</h1>
+      <p class="lead rise d1">PackCheck creates the server, installs the right Java, shows you how it is doing, keeps plugins and mods compatible and helps friends join. Free for Windows.</p>
+      <div class="actions rise d2">
+        <a class="btn btn-primary" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download for Windows</a>
+        <a class="btn btn-quiet" href="https://github.com/X1NPAR1/PackCheck">View the source</a>
+      </div>
+      <p class="fineprint rise d2">Version 3.1.2 · Windows 10 and 11 · EXE or MSI, no admin rights · MIT license</p>
+    </div>
+
+    <div class="window rise d3" role="img" aria-label="PackCheck starting a Paper server: the console shows the start-up log and the TPS gauge reaches 20.">
+      <div class="window-bar">
+        <img src="media/cube.png" alt="">
+        <span>friends-survival · Paper 26.3 · :25565</span>
+        <span class="state"><span class="dot" id="dot"></span><span id="state">Starting</span></span>
+      </div>
+      <div class="window-body">
+        <div class="console" id="console" aria-hidden="true"></div>
+        <div class="gauges" aria-hidden="true">
+          <div class="ring">
+            <svg width="92" height="92" viewBox="0 0 92 92"><circle class="track" cx="46" cy="46" r="39"/><circle class="fill" id="tpsRing" cx="46" cy="46" r="39"/></svg>
+            <div class="val"><span id="tps">–</span><small>TPS</small></div>
+          </div>
+          <div class="ring">
+            <svg width="92" height="92" viewBox="0 0 92 92"><circle class="track" cx="46" cy="46" r="39"/><circle class="fill" id="ramRing" cx="46" cy="46" r="39" style="stroke: var(--sky)"/></svg>
+            <div class="val"><span id="ram">–</span><small>RAM</small></div>
+          </div>
+          <div class="players"><b id="players">0 / 10</b>players</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
-<main class="wrap">
-  <h2>Everything a home server needs</h2>
-  <div class="grid">
-    <div class="card"><h3>18 server platforms</h3><p>Paper, Purpur, Folia, Leaf, Leaves, Spigot, CraftBukkit, Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer, Arclight, Velocity and BungeeCord – downloaded from official sources and hash-verified.</p></div>
-    <div class="card"><h3>Automatic Java</h3><p>The right Eclipse Temurin version (8, 17, 21 or 25) is installed for you, read from the server jar itself.</p></div>
-    <div class="card"><h3>Create wizard</h3><p>Profiles for survival with friends, modded, creative, minigames, hardcore or a low-end PC. RAM and CPU sliders, game rules, a free port and a capacity estimate.</p></div>
-    <div class="card"><h3>Live dashboard and console</h3><p>TPS, CPU, RAM and ping gauges, players, uptime, a searchable console with clickable player names and crash detection.</p></div>
-    <div class="card"><h3>Plugins and mods</h3><p>Browse Modrinth, Hangar and CurseForge by category. Incompatible items explain why; installed ones show updates.</p></div>
-    <div class="card"><h3>Play over the internet</h3><p>Firewall rule and UPnP in one click, a port forwarding guide when the router refuses, and a reachability test from outside.</p></div>
-    <div class="card"><h3>Pack validation</h3><p>Missing dependencies, wrong Minecraft versions, duplicates, corrupt jars, client-only mods – with evidence and a fix. Also as a CLI for CI.</p></div>
-    <div class="card"><h3>AI assistant</h3><p>Claude, ChatGPT, Gemini, Grok, DeepSeek, Mistral, Groq, OpenRouter or a local model. It reads logs and files; every change waits for your approval.</p></div>
-    <div class="card"><h3>Proxy networks</h3><p>Connect Velocity or BungeeCord to backend servers with forwarding secrets and safe backend settings written for you.</p></div>
+<section class="platforms" id="platforms">
+  <div class="wrap">
+    <h2>Eighteen ways to run a server</h2>
+    <p class="intro">Pick plugins, mods, both, or a proxy that ties several servers together. Every version in the list comes from the project's own download API, so you never pick a build that does not exist, and every download is checked against its published hash.</p>
+    <div class="blocks">
+      <div class="block"><b>Paper</b><span>The usual choice for plugins</span></div>
+      <div class="block"><b>Purpur</b><span>Paper with extra options</span></div>
+      <div class="block"><b>Folia</b><span>Regions on many cores</span></div>
+      <div class="block"><b>Leaf</b><span>Performance-focused Paper</span></div>
+      <div class="block"><b>Leaves</b><span>Keeps vanilla mechanics</span></div>
+      <div class="block"><b>Spigot</b><span>Built with BuildTools</span></div>
+      <div class="block"><b>CraftBukkit</b><span>The original Bukkit</span></div>
+      <div class="block" data-kind="official"><b>Vanilla</b><span>Mojang's own server</span></div>
+      <div class="block" data-kind="mods"><b>Fabric</b><span>Light, fast-updating mods</span></div>
+      <div class="block" data-kind="mods"><b>Quilt</b><span>Fabric-compatible</span></div>
+      <div class="block" data-kind="mods"><b>Forge</b><span>Big classic modpacks</span></div>
+      <div class="block" data-kind="mods"><b>NeoForge</b><span>Modern Forge successor</span></div>
+      <div class="block" data-kind="hybrid"><b>Mohist</b><span>Forge mods + plugins</span></div>
+      <div class="block" data-kind="hybrid"><b>Arclight</b><span>NeoForge mods + plugins</span></div>
+      <div class="block" data-kind="hybrid"><b>Youer</b><span>NeoForge mods + plugins</span></div>
+      <div class="block" data-kind="hybrid"><b>SpongeVanilla</b><span>Sponge plugin API</span></div>
+      <div class="block" data-kind="proxy"><b>Velocity</b><span>Modern proxy</span></div>
+      <div class="block" data-kind="proxy"><b>BungeeCord</b><span>Classic proxy</span></div>
+    </div>
+    <div class="legend" aria-label="Colour key">
+      <span><i style="background:var(--moss)"></i>Plugins</span>
+      <span><i style="background:var(--dirt)"></i>Mods</span>
+      <span><i style="background:#A37A4A"></i>Mods and plugins</span>
+      <span><i style="background:var(--stone)"></i>Official</span>
+      <span><i style="background:var(--sky)"></i>Proxy</span>
+    </div>
   </div>
+</section>
 
-  <h2>Screenshots</h2>
-  <div class="gallery">
-    <img src="media/create-wizard.png" alt="Create a Minecraft server: profiles, platform cards, RAM and CPU sliders" loading="lazy">
-    <img src="media/validation.gif" alt="Validating a plugin pack: findings grouped by severity, category and file" loading="lazy">
-    <img src="media/online-router.png" alt="Minecraft port forwarding guide and test from outside" loading="lazy">
-    <img src="media/theme-language.gif" alt="Dark and light theme in five languages" loading="lazy">
+<section id="how">
+  <div class="wrap">
+    <h2>From empty folder to friends online</h2>
+    <p class="intro">The five things you do with a home server, in the order you do them.</p>
+    <div class="story">
+      <ol class="steps">
+        <li class="step" data-shot="0">
+          <h3>Create it</h3>
+          <p>Start from a profile – survival with friends, modded, creative, minigames, hardcore or a low-end PC – then adjust what you like.</p>
+          <ul><li>RAM slider from 1 to 32 GB, with a warning when Windows would run short</li><li>Limit CPU cores so your games stay smooth</li><li>Game mode, difficulty, players, view distance, whitelist and MOTD</li><li>A free port is picked for you; the right Java is installed automatically</li></ul>
+          <img class="shot" src="media/create-wizard.webp" alt="Create server wizard" loading="lazy">
+        </li>
+        <li class="step" data-shot="1">
+          <h3>Run it</h3>
+          <p>A dashboard that tells you at a glance whether the server is healthy.</p>
+          <ul><li>TPS, CPU, RAM and ping gauges with history</li><li>Console with search, clickable player names and crash detection</li><li>Files tab with a code editor that checks YAML and JSON before saving</li><li>Backups, restart, and a tray menu that keeps servers running when the window is closed</li></ul>
+          <img class="shot" src="media/server-overview.webp" alt="Server dashboard" loading="lazy">
+        </li>
+        <li class="step" data-shot="2">
+          <h3>Add plugins and mods</h3>
+          <p>Browse Modrinth, Hangar and CurseForge without searching first, sorted and filtered by category.</p>
+          <ul><li>Anything that does not fit your server's version or loader says why</li><li>Project details with the full description</li><li>An Update button when a newer compatible file exists</li><li>Modrinth modpacks install file by file with hash checks</li></ul>
+          <img class="shot" src="media/mods.webp" alt="Mods browser" loading="lazy">
+        </li>
+        <li class="step" data-shot="3">
+          <h3>Invite your friends</h3>
+          <p>Open the server to the internet with one button, and get a straight answer when the router is in the way.</p>
+          <ul><li>Windows firewall rule and UPnP router forwarding</li><li>A step-by-step forwarding guide with the exact values for your router</li><li>Test from outside: see whether friends can really reach you</li><li>Your own domain records or a free DuckDNS name</li></ul>
+          <img class="shot" src="media/online-router.webp" alt="Port forwarding guide" loading="lazy">
+        </li>
+        <li class="step" data-shot="4">
+          <h3>Check before you update</h3>
+          <p>Validate the server before adding or updating plugins, and again whenever something feels off.</p>
+          <ul><li>Missing dependencies, wrong Minecraft versions, duplicates, corrupt jars</li><li>Findings grouped by severity, category or file, each with evidence and a fix</li><li>Run history with what changed since last time</li></ul>
+          <img class="shot" src="media/validation.webp" alt="Validation results" loading="lazy">
+        </li>
+      </ol>
+      <div class="stage" aria-hidden="true">
+        <figure class="active"><img src="media/create-wizard.webp" alt=""><figcaption>Create server: profiles, platform, resources, game rules.</figcaption></figure>
+        <figure><img src="media/server-overview.webp" alt=""><figcaption>Server dashboard with live gauges and technical details.</figcaption></figure>
+        <figure><img src="media/mods.webp" alt=""><figcaption>Mods browser filtered to the selected server.</figcaption></figure>
+        <figure><img src="media/online-router.webp" alt=""><figcaption>Online page with the forwarding guide and the outside test.</figcaption></figure>
+        <figure><img src="media/validation.webp" alt=""><figcaption>Validation findings with evidence and fixes.</figcaption></figure>
+      </div>
+    </div>
   </div>
+</section>
 
-  <h2>Questions</h2>
-  <details><summary>How do I make a Minecraft server on Windows?</summary><p>Install PackCheck, click <b>New server</b>, choose a profile such as <i>Survival with friends</i>, accept the Minecraft EULA and press <b>Create server</b>. PackCheck downloads the server, installs Java and starts it.</p></details>
-  <details><summary>How can my friends join my Minecraft server?</summary><p>On the same network they use the local address. Over the internet press <b>Open to the internet</b> on the Online page; if the router does not forward the port automatically, follow the guide there and confirm with <b>Test from outside</b>.</p></details>
-  <details><summary>Paper, Fabric or Forge – which should I choose?</summary><p>Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, Velocity to link several servers. The wizard explains every platform.</p></details>
-  <details><summary>Why does my plugin or mod not load?</summary><p>Run <b>Validate</b>: it shows missing dependencies, Minecraft version mismatches, duplicates and corrupt files with the fix.</p></details>
-  <details><summary>Is PackCheck free?</summary><p>Yes. It is open source under the MIT license, needs no account and sends no telemetry.</p></details>
-</main>
+<section id="validate" style="background: var(--slate); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge);">
+  <div class="wrap check">
+    <div>
+      <h2>Broken packs, caught before the server starts</h2>
+      <p class="intro">PackCheck reads every jar and config without running any plugin code, then explains what will go wrong. "Failed" and "could not check" are always reported separately, so a passing result means something.</p>
+      <img src="media/validation.gif" alt="Validating a plugin pack: findings appear grouped by severity, then by category and file, then the plugin inventory" loading="lazy">
+    </div>
+    <div>
+      <div class="finding fail"><code>PC040</code><b>Missing dependency</b><span>EconomyShop needs ProtocolLib, which is not installed. It will not enable.</span></div>
+      <div class="finding fail"><code>PC030</code><b>Duplicate plugin</b><span>Homes is installed twice; the server loads only one of them.</span></div>
+      <div class="finding fail"><code>PC020</code><b>Corrupt jar</b><span>Broken.jar is not a readable archive. Download it again.</span></div>
+      <div class="finding warn"><code>PC050</code><b>Built for a newer version</b><span>A plugin declares api-version 1.21 on a 1.20.4 server.</span></div>
+      <div class="finding fail"><code>PC066</code><b>Client-only mod</b><span>A mod marked client-only usually crashes a dedicated server.</span></div>
+      <pre class="cli" aria-label="Command line example">packcheck validate ./server --mc-version 1.21.1
+Result: FAIL  (pass 12, warn 1, fail 3)
+exit code 1</pre>
+      <p style="color:var(--stone); font-size:15px">The same engine runs as a command-line tool, so you can check a server pack in GitHub Actions or any CI.</p>
+    </div>
+  </div>
+</section>
 
-<footer class="wrap">
-  PackCheck is free and open source (MIT). Available in English, Türkçe, Deutsch, Français and Русский.<br>
-  Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
+<section id="assistant">
+  <div class="wrap split">
+    <div>
+      <h2>An assistant that asks before it changes anything</h2>
+      <p class="intro">Bring your own key or a local model. The assistant reads the console, files and validation results, explains crashes, edits configs, translates plugin messages and can set up several servers at once. Every change shows a preview and waits for you.</p>
+      <div class="providers"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>Grok</span><span>DeepSeek</span><span>Mistral</span><span>Groq</span><span>OpenRouter</span><span>Ollama</span><span>LM Studio</span></div>
+      <p style="color:var(--stone); font-size:15px">Keys are stored encrypted for your Windows user. The assistant cannot leave the server folder and has no shell.</p>
+    </div>
+    <div class="approval" aria-label="Example of an approval request">
+      <div class="bubble me">Players say the spawn is too crowded. Raise the player limit to 20 and turn PvP off.</div>
+      <div class="bubble">I'll change two values in server.properties:</div>
+      <div class="diff"><div class="del">- max-players=10</div><div class="add">+ max-players=20</div><div class="del">- pvp=true</div><div class="add">+ pvp=false</div></div>
+      <div class="approve-row"><span class="yes">Approve</span><span class="no">Reject</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top: 24px">
+  <div class="wrap">
+    <h2>And the details that make it pleasant</h2>
+    <div class="more" style="margin-top: 36px">
+      <div><h3>Proxy networks</h3><p>Connect Velocity or BungeeCord to backends with forwarding secrets and safe backend settings written for you.</p></div>
+      <div><h3>Five languages</h3><p>English, Türkçe, Deutsch, Français and Русский, switched instantly with no restart.</p></div>
+      <div><h3>Dark and light</h3><p>Both themes, or follow Windows. Animations can be reduced or turned off.</p></div>
+      <div><h3>Tray menu</h3><p>Every server's state with start and stop, even while the window is closed.</p></div>
+      <div><h3>Updates that wait for you</h3><p>Postpone an update for two days, or turn on automatic updates. Every package is hash-checked.</p></div>
+      <div><h3>No account, no telemetry</h3><p>Nothing about you or your servers leaves your PC unless you ask for it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--slate); border-top: 1px solid var(--edge);">
+  <div class="wrap split" style="align-items:start">
+    <div>
+      <h2>What you need</h2>
+      <table class="specs">
+        <tr><th scope="row">System</th><td>Windows 10 or 11, 64-bit</td></tr>
+        <tr><th scope="row">Install</th><td>EXE or MSI for your user only; no administrator rights</td></tr>
+        <tr><th scope="row">Java</th><td>Not required up front; Temurin 8, 17, 21 or 25 is installed when a server needs it</td></tr>
+        <tr><th scope="row">Memory</th><td>At least 2 GB free for a small server, 6–8 GB for modpacks</td></tr>
+        <tr><th scope="row">Languages</th><td>English, Turkish, German, French, Russian</td></tr>
+        <tr><th scope="row">License</th><td>MIT, source on GitHub</td></tr>
+      </table>
+    </div>
+    <div id="faq">
+      <h2>Questions</h2>
+      <details><summary>How do I make a Minecraft server on Windows?</summary><div class="answer">Install PackCheck, click <b>New server</b>, choose a profile such as <i>Survival with friends</i>, accept the Minecraft EULA and press <b>Create server</b>. PackCheck downloads the server, installs Java and starts it.</div></details>
+      <details><summary>How can my friends join?</summary><div class="answer">On the same Wi-Fi they use the local address. Over the internet press <b>Open to the internet</b>; if your router does not allow automatic forwarding, follow the guide on the Online page and confirm with <b>Test from outside</b>.</div></details>
+      <details><summary>Paper, Fabric or Forge – which one?</summary><div class="answer">Paper for plugins, Fabric or NeoForge for mods, Mohist or Arclight for both, and Velocity to link several servers. The create wizard explains each platform.</div></details>
+      <details><summary>Why does my plugin or mod not load?</summary><div class="answer">Run <b>Validate</b>. It lists missing dependencies, Minecraft version mismatches, duplicates and corrupt files, each with the fix.</div></details>
+      <details><summary>Is it really free?</summary><div class="answer">Yes. PackCheck is open source under the MIT license, needs no account and sends no telemetry.</div></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Start your server tonight</h2>
+    <p>Download PackCheck, pick a profile and invite your friends. It takes a few minutes, most of them spent downloading.</p>
+    <a class="btn btn-primary" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download PackCheck 3.1.2</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>PackCheck · MIT license · <a href="https://github.com/X1NPAR1/PackCheck">GitHub</a> · <a href="https://github.com/X1NPAR1/PackCheck/releases">Release notes</a> · <a href="https://github.com/X1NPAR1/PackCheck/issues">Report a problem</a></span>
+    <span>Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</span>
+  </div>
 </footer>
+
+<script>
+  // Sticky nav border once the page scrolls.
+  const nav = document.querySelector('.nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+  // Hero: a real Paper start-up log, line by line, then the gauges settle.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const log = [
+    ['t', '[PackCheck] Java 25 (Temurin) · -Xmx4G · 8 of 16 cores'],
+    ['', 'Starting minecraft server version 26.3'],
+    ['', 'Loading properties'],
+    ['', 'Default game type: SURVIVAL'],
+    ['', 'Starting Minecraft server on *:25565'],
+    ['', 'Paper: Using Java compression from Velocity.'],
+    ['', 'Preparing level "world"'],
+    ['', 'Preparing spawn area: 46%'],
+    ['', 'Preparing spawn area: 100%'],
+    ['w', 'Plugin EconomyShop is waiting for ProtocolLib'],
+    ['', 'Running delayed init tasks'],
+    ['ok', 'Done (8.214s)! For help, type "help"'],
+    ['', 'Steve joined the game'],
+    ['', 'Alex joined the game'],
+  ];
+  const con = document.getElementById('console');
+  const time = s => { const d = new Date(Date.now() - (log.length - s) * 700); return d.toTimeString().slice(0, 8); };
+  const lines = log.map(([cls, text], i) => {
+    const el = document.createElement('div');
+    el.className = 'line';
+    el.innerHTML = `<span class="t">[${time(i)}]</span> <span class="${cls}"></span>`;
+    el.lastElementChild.textContent = text;
+    con.appendChild(el);
+    return el;
+  });
+  const ring = (id, f) => document.getElementById(id).style.strokeDashoffset = 245 * (1 - f);
+  const settle = () => {
+    document.getElementById('dot').classList.add('on');
+    document.getElementById('state').textContent = 'Running';
+    document.getElementById('tps').textContent = '20.0';
+    document.getElementById('ram').textContent = '58%';
+    ring('tpsRing', 1); ring('ramRing', .58);
+  };
+  if (reduce) { lines.forEach(l => l.classList.add('shown')); settle(); document.getElementById('players').textContent = '2 / 10'; }
+  else {
+    lines.forEach((l, i) => setTimeout(() => {
+      l.classList.add('shown');
+      if (i === 11) settle();
+      if (i >= 12) document.getElementById('players').textContent = `${i - 11} / 10`;
+    }, 500 + i * 330 + (i > 8 ? 400 : 0)));
+  }
+
+  // How it works: the screenshot follows the step in view.
+  const steps = [...document.querySelectorAll('.step')];
+  const figs = [...document.querySelectorAll('.stage figure')];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      steps.forEach(s => s.classList.toggle('active', s === e.target));
+      const n = +e.target.dataset.shot;
+      figs.forEach((f, i) => f.classList.toggle('active', i === n));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(s => io.observe(s));
+  steps[0].classList.add('active');
+</script>
 </body>
 </html>
