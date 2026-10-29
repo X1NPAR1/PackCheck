@@ -338,7 +338,7 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
     internal static async Task<JsonNode> ReadStreamAsync(System.IO.Stream stream, Action<string>? onText, CancellationToken ct)
     {
         var text = new StringBuilder();
-        var calls = new SortedDictionary<int, (string? Id, string? Name, StringBuilder Args)>();
+        var calls = new SortedDictionary<int, (string? Id, string? Name, StringBuilder Args, JsonObject Extra)>();
         string? finish = null;
         JsonNode? usage = null;
         using var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
@@ -380,10 +380,21 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
                 foreach (var tc in tcs)
                 {
                     var index = tc!["index"]?.GetValue<int>() ?? calls.Count;
-                    var entry = calls.TryGetValue(index, out var e) ? e : (null, null, new StringBuilder());
+                    var entry = calls.TryGetValue(index, out var e) ? e : (null, null, new StringBuilder(), new JsonObject());
                     entry.Id ??= tc["id"]?.GetValue<string>();
                     entry.Name ??= tc["function"]?["name"]?.GetValue<string>();
                     entry.Args.Append(tc["function"]?["arguments"]?.GetValue<string>());
+
+                    // Keep provider-specific fields as sent (Gemini's extra_content.google.thought_signature must be
+                    // echoed back with the call, or the next request is rejected with HTTP 400).
+                    foreach (var (key, value) in tc.AsObject())
+                    {
+                        if (key is not ("index" or "id" or "type" or "function") && value is not null)
+                        {
+                            entry.Extra[key] = value.DeepClone();
+                        }
+                    }
+
                     calls[index] = entry;
                 }
             }
@@ -392,11 +403,20 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         var message = new JsonObject { ["role"] = "assistant", ["content"] = text.Length > 0 ? text.ToString() : null };
         if (calls.Count > 0)
         {
-            message["tool_calls"] = new JsonArray(calls.Values.Select(c => (JsonNode)new JsonObject
+            message["tool_calls"] = new JsonArray(calls.Values.Select(c =>
             {
-                ["id"] = c.Id ?? Guid.NewGuid().ToString("N"),
-                ["type"] = "function",
-                ["function"] = new JsonObject { ["name"] = c.Name, ["arguments"] = c.Args.Length > 0 ? c.Args.ToString() : "{}" },
+                var call = new JsonObject
+                {
+                    ["id"] = c.Id ?? Guid.NewGuid().ToString("N"),
+                    ["type"] = "function",
+                    ["function"] = new JsonObject { ["name"] = c.Name, ["arguments"] = c.Args.Length > 0 ? c.Args.ToString() : "{}" },
+                };
+                foreach (var (key, value) in c.Extra)
+                {
+                    call[key] = value!.DeepClone();
+                }
+
+                return (JsonNode)call;
             }).ToArray());
         }
 

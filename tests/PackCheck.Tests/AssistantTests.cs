@@ -163,6 +163,35 @@ public class AssistantTests
         Assert.Equal("https://api.x.ai/v1/chat/completions", ((StubHandler)GetHandler(http)).Requests[0].RequestUri!.ToString());
     }
 
+    /// <summary>Gemini sends a thought signature with each tool call; it must come back unchanged in the next request.</summary>
+    [Fact]
+    public async Task Gemini_ThoughtSignature_IsSentBack()
+    {
+        var turn = 0;
+        string? second = null;
+        var sse = string.Join("\n",
+            """data: {"choices":[{"delta":{"role":"assistant","tool_calls":[{"index":0,"id":"g1","type":"function","function":{"name":"list_servers","arguments":"{}"},"extra_content":{"google":{"thought_signature":"SIG123"}}}]},"finish_reason":"tool_calls"}]}""",
+            "data: [DONE]", "");
+        var handler = new StubHandler(req =>
+        {
+            turn++;
+            if (turn == 2)
+            {
+                second = req.Content!.ReadAsStringAsync().Result;
+                return StubHandler.Json("""{"choices":[{"finish_reason":"stop","message":{"role":"assistant","content":"ok"}}]}""");
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(sse, System.Text.Encoding.UTF8, "text/event-stream") };
+        });
+        using var http = new HttpClient(handler);
+        var convo = AiProviders.Start(AiProviderKind.Gemini, "k", "gemini-2.5-pro", "s", AssistantTools.Specs, http);
+
+        var step = await convo.SendAsync("hi", CancellationToken.None);
+        await convo.ContinueAsync([(Assert.Single(step.ToolCalls), "- Test", false)], CancellationToken.None);
+
+        Assert.Contains("\"thought_signature\":\"SIG123\"", second, StringComparison.Ordinal);
+    }
+
     private static HttpMessageHandler GetHandler(HttpClient c) =>
         (HttpMessageHandler)typeof(HttpMessageInvoker).GetField("_handler", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(c)!;
 
