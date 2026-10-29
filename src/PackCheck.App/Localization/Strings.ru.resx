@@ -1025,6 +1025,8 @@
   <data name="Update_LastDay" xml:space="preserve"><value>Сегодня последний день отсрочки. Завтра PackCheck обновится при запуске.</value></data>
   <data name="Update_Forced" xml:space="preserve"><value>Срок отсрочки истёк. Устанавливается {0}…</value></data>
   <data name="Update_Auto" xml:space="preserve"><value>Автообновление: устанавливается {0}…</value></data>
+  <data name="Update_StoppingServers" xml:space="preserve"><value>Загрузка проверена. Остановка серверов…</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Запуск установки; PackCheck закроется и откроется снова…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Загрузка обновления… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Не удалось установить обновление: {0}</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Что нового</value></data>

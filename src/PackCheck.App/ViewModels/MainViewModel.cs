@@ -279,9 +279,11 @@ public sealed partial class MainViewModel : ObservableObject
                 UpdateProgressText = Loc.F("Update_Downloading", p);
             });
             var staging = await _updates.DownloadAndStageAsync(PendingRelease, progress, CancellationToken.None).ConfigureAwait(true);
+            UpdateProgressText = Loc.T("Update_StoppingServers");
             await Servers.StopAllAsync().ConfigureAwait(true);
+            UpdateProgressText = Loc.T("Update_Starting");
             UpdateService.LaunchInstaller(staging);
-            App.Quit();
+            App.Quit(forUpdate: true);
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {

@@ -29,11 +29,13 @@ public partial class App : Application
     public static AppSettings? Settings { get; private set; }
 
     /// <summary>Quits for real (tray "Exit", updates): closes the window instead of hiding it.</summary>
-    public static void Quit()
+    /// <param name="forUpdate">The updater waits for this process to end: skip every exit question (open ports) so nothing blocks it.</param>
+    public static void Quit(bool forUpdate = false)
     {
         if (Current.MainWindow is MainWindow w)
         {
             w.AllowClose = true;
+            w.SkipExitQuestions = forUpdate;
             w.Close();
         }
         else
@@ -179,7 +181,7 @@ public partial class App : Application
         var shell = (MainViewModel)main.DataContext;
         Tray = new TrayIcon(new TrayActions(
             main.ShowFromTray,
-            Quit,
+            () => Quit(),
             () => shell.Servers.Items.ToList(),
             s =>
             {

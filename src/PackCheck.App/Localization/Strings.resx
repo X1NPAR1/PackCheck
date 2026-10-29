@@ -1025,6 +1025,8 @@ They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's fo
   <data name="Update_LastDay" xml:space="preserve"><value>This is the last day to postpone. Tomorrow PackCheck updates itself on start.</value></data>
   <data name="Update_Forced" xml:space="preserve"><value>The postponement period has ended. Installing {0}…</value></data>
   <data name="Update_Auto" xml:space="preserve"><value>Automatic update: installing {0}…</value></data>
+  <data name="Update_StoppingServers" xml:space="preserve"><value>Download verified. Stopping servers…</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Starting the installer; PackCheck will close and reopen…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Downloading update… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>The update could not be installed: {0}</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>What's new</value></data>

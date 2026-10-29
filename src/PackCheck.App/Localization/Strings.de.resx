@@ -1025,6 +1025,8 @@ Sie laufen offline, lauschen nur auf 127.0.0.1 und vertrauen dem Weiterleitungss
   <data name="Update_LastDay" xml:space="preserve"><value>Heute ist der letzte Tag zum Verschieben. Morgen aktualisiert sich PackCheck beim Start.</value></data>
   <data name="Update_Forced" xml:space="preserve"><value>Die Aufschubfrist ist abgelaufen. {0} wird installiert…</value></data>
   <data name="Update_Auto" xml:space="preserve"><value>Automatisches Update: {0} wird installiert…</value></data>
+  <data name="Update_StoppingServers" xml:space="preserve"><value>Download geprüft. Server werden gestoppt…</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Installation startet; PackCheck schließt und öffnet sich wieder…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Update wird heruntergeladen… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Das Update konnte nicht installiert werden: {0}</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Neuigkeiten</value></data>

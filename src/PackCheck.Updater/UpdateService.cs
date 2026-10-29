@@ -113,6 +113,7 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
             }
         }
 
+        progress?.Report(1);
         var actual = await Hashing.Sha256FileAsync(zipPath, ct).ConfigureAwait(false);
         if (!Hashing.EqualsHex(actual, expected))
         {

@@ -1025,6 +1025,8 @@ Ils passeront en mode hors ligne, n'écouteront que 127.0.0.1 et feront confianc
   <data name="Update_LastDay" xml:space="preserve"><value>C'est le dernier jour de report. Demain, PackCheck se mettra à jour au démarrage.</value></data>
   <data name="Update_Forced" xml:space="preserve"><value>La période de report est terminée. Installation de {0}…</value></data>
   <data name="Update_Auto" xml:space="preserve"><value>Mise à jour automatique : installation de {0}…</value></data>
+  <data name="Update_StoppingServers" xml:space="preserve"><value>Téléchargement vérifié. Arrêt des serveurs…</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Lancement de l'installation ; PackCheck va se fermer puis rouvrir…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Téléchargement de la mise à jour… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>La mise à jour n'a pas pu être installée : {0}</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Nouveautés</value></data>

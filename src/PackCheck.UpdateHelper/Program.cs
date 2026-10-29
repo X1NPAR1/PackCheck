@@ -31,11 +31,13 @@ try
 {
     try
     {
+        // Servers are already stopped by the app; give it time to close, then end it so the update never hangs.
         using var p = Process.GetProcessById(pid);
-        if (!p.WaitForExit(TimeSpan.FromSeconds(60)))
+        if (!p.WaitForExit(TimeSpan.FromMinutes(3)))
         {
-            Log("App did not exit in time; update aborted.");
-            return 1;
+            Log("App did not exit within 3 minutes; ending it and continuing the update.");
+            p.Kill(entireProcessTree: false);
+            p.WaitForExit(TimeSpan.FromSeconds(20));
         }
     }
     catch (ArgumentException)

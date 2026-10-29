@@ -1025,6 +1025,8 @@ Bunlar çevrimdışı modda çalışacak, sadece 127.0.0.1'i dinleyecek ve proxy
   <data name="Update_LastDay" xml:space="preserve"><value>Ertelemek için son gün. Yarın PackCheck açılışta kendini günceller.</value></data>
   <data name="Update_Forced" xml:space="preserve"><value>Erteleme süresi doldu. {0} kuruluyor…</value></data>
   <data name="Update_Auto" xml:space="preserve"><value>Otomatik güncelleme: {0} kuruluyor…</value></data>
+  <data name="Update_StoppingServers" xml:space="preserve"><value>İndirme doğrulandı. Sunucular durduruluyor…</value></data>
+  <data name="Update_Starting" xml:space="preserve"><value>Kurulum başlatılıyor; PackCheck kapanıp yeniden açılacak…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Güncelleme indiriliyor… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Güncelleme kurulamadı: {0}</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Yenilikler</value></data>

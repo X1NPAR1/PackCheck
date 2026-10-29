@@ -51,6 +51,9 @@ public partial class MainWindow : Window
     /// <summary>Set when the user really quits (tray menu, update), so closing is not turned into hiding.</summary>
     public bool AllowClose { get; set; }
 
+    /// <summary>Set when quitting for an update; the open-ports question would keep the process alive while the updater waits.</summary>
+    public bool SkipExitQuestions { get; set; }
+
     protected override void OnClosing(CancelEventArgs e)
     {
         _closing = true;
@@ -65,7 +68,7 @@ public partial class MainWindow : Window
         }
 
         // Really quitting while servers are open to the internet: offer to close them first.
-        if (!_portsChecked && App.Settings?.OnlinePorts.Count > 0)
+        if (!_portsChecked && !SkipExitQuestions && App.Settings?.OnlinePorts.Count > 0)
         {
             e.Cancel = true;
             _ = AskAboutOpenPortsAsync();
