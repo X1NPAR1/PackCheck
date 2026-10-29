@@ -44,12 +44,12 @@
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
-                <ListBoxItem Tag="SecAppearance"><TextBlock Text="{l:Loc Settings_SecAppearance}" FontWeight="Medium" /></ListBoxItem>
-                <ListBoxItem Tag="SecAi"><TextBlock Text="{l:Loc Ai_Title}" FontWeight="Medium" /></ListBoxItem>
-                <ListBoxItem Tag="SecUpdates"><TextBlock Text="{l:Loc Settings_Updates}" FontWeight="Medium" /></ListBoxItem>
-                <ListBoxItem Tag="SecServers"><TextBlock Text="{l:Loc Settings_SecServers}" FontWeight="Medium" /></ListBoxItem>
-                <ListBoxItem Tag="SecIntegrations"><TextBlock Text="{l:Loc Settings_SecIntegrations}" FontWeight="Medium" /></ListBoxItem>
-                <ListBoxItem Tag="SecJava"><TextBlock Text="Java" FontWeight="Medium" /></ListBoxItem>
+                <ListBoxItem Tag="SecAppearance"><TextBlock Text="{l:Loc Settings_SecAppearance}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecAi"><TextBlock Text="{l:Loc Ai_Title}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecUpdates"><TextBlock Text="{l:Loc Settings_Updates}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecServers"><TextBlock Text="{l:Loc Settings_SecServers}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecIntegrations"><TextBlock Text="{l:Loc Settings_SecIntegrations}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecJava"><TextBlock Text="Java" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
             </ListBox>
             <TextBlock x:Name="NoMatch" Text="{l:Loc Settings_NoMatch}" Style="{StaticResource Muted}" FontSize="12.5" Margin="4,8,0,0" Visibility="Collapsed" TextWrapping="Wrap" />
         </StackPanel>
