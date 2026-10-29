@@ -99,6 +99,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public ServerItemViewModel(ServerDefinition def, ServerRegistry registry, AppSettings settings)
     {
         Definition = def;
+        _editRamGb = Math.Clamp(Math.Round(def.MaxMemoryMb / 1024d), 1, 32);
+        _editCores = def.CpuCores == 0 ? Environment.ProcessorCount : def.CpuCores;
+        _editAikar = def.UseAikarFlags;
         _registry = registry;
         _settings = settings;
         _process = new ServerProcess(def);
@@ -115,6 +118,80 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public ServerDefinition Definition { get; private set; }
 
     public string Name => Definition.Name;
+
+    // ----- resources (editable while stopped) -----
+    public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
+
+    public int MaxRamGb => (int)Math.Clamp(Math.Floor(SystemRamGb), 1, 32);
+
+    public int LogicalCores { get; } = Environment.ProcessorCount;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EditRamText), nameof(ResourcesChanged))]
+    private double _editRamGb;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EditCoresText), nameof(ResourcesChanged))]
+    private double _editCores;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ResourcesChanged))]
+    private bool _editAikar;
+
+    public string EditRamText => Loc.F("Wizard_MemoryValue", EditRamGb, SystemRamGb);
+
+    public string EditCoresText => (int)EditCores >= LogicalCores ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", (int)EditCores, LogicalCores);
+
+    public bool ResourcesChanged =>
+        (int)(EditRamGb * 1024) != Definition.MaxMemoryMb || EffectiveCores((int)EditCores) != Definition.CpuCores || EditAikar != Definition.UseAikarFlags;
+
+    private int EffectiveCores(int value) => value >= LogicalCores ? 0 : value;
+
+    [RelayCommand]
+    private void SaveResources()
+    {
+        if (IsRunning)
+        {
+            MainViewModel.Shell?.Toast(Loc.T("Servers_SaveWhileRunning"), isError: true);
+            return;
+        }
+
+        var mb = (int)(EditRamGb * 1024);
+        Definition = Definition with { MaxMemoryMb = mb, MinMemoryMb = Math.Min(1024, mb), CpuCores = EffectiveCores((int)EditCores), UseAikarFlags = EditAikar };
+        _registry.Upsert(Definition);
+        _process.UpdateDefinition(Definition);
+        OnPropertyChanged(nameof(ResourcesChanged));
+        OnPropertyChanged(nameof(JvmCommand));
+        MainViewModel.Shell?.Toast(Loc.T("Servers_Saved"));
+    }
+
+    // ----- technical details -----
+    /// <summary>The exact command PackCheck runs, for support questions and scripts.</summary>
+    public string JvmCommand => $"\"{Definition.JavaPath}\" {string.Join(' ', ServerProcess.BuildArguments(Definition).Select(a => a.Contains(' ') ? $"\"{a}\"" : a))}";
+
+    [ObservableProperty]
+    private string _processText = "–";
+
+    public IReadOnlyList<KeyValuePair<string, string>> TechnicalInfo =>
+    [
+        new(Loc.T("Tech_Platform"), $"{Definition.Platform} {Definition.MinecraftVersion}"),
+        new(Loc.T("Tech_Jar"), Definition.ArgsFile is null ? Definition.JarFile : "@" + Definition.ArgsFile),
+        new(Loc.T("Tech_Java"), Definition.JavaPath),
+        new(Loc.T("Tech_Folder"), Definition.Directory),
+        new(Loc.T("Tech_Port"), $"TCP {Definition.Port}"),
+        new(Loc.T("Tech_Memory"), $"-Xms{Definition.MinMemoryMb}M -Xmx{Definition.MaxMemoryMb}M"),
+        new(Loc.T("Tech_Cores"), Definition.CpuCores == 0 ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", Definition.CpuCores, LogicalCores)),
+        new(Loc.T("Tech_Created"), Definition.CreatedAt.LocalDateTime.ToString("g", Loc.Instance.Culture)),
+        new("ID", Definition.Id),
+    ];
+
+    [RelayCommand]
+    private void CopyTechnical()
+    {
+        var text = string.Join(Environment.NewLine, TechnicalInfo.Select(kv => $"{kv.Key}: {kv.Value}")) + Environment.NewLine + JvmCommand;
+        System.Windows.Clipboard.SetText(text);
+        MainViewModel.Shell?.Toast(Loc.T("About_Copied"));
+    }
 
     public string Subtitle => $"{Definition.Platform} {Definition.MinecraftVersion} · :{Definition.Port}";
 
@@ -550,6 +627,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
             _lastCpu = cpu;
             _lastSample = now;
+            ProcessText = $"PID {p.Id} · {p.Threads.Count} threads · {p.HandleCount} handles · private {p.PrivateMemorySize64 / 1024 / 1024:N0} MB · started {p.StartTime:HH:mm:ss}";
         }
         catch (InvalidOperationException)
         {

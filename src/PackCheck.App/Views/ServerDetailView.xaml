@@ -246,6 +246,77 @@
                     </Border>
                 </UniformGrid>
 
+                <Grid Margin="0,0,12,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="380" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- resources -->
+                    <Border Style="{StaticResource Card}" AutomationProperties.AutomationId="ServerResources">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Res_Title}" Style="{StaticResource H2}" FontSize="15" />
+                            <TextBlock Text="{l:Loc Res_Hint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,10" />
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding EditRamText}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
+                                <TextBlock Text="{l:Loc Wizard_Ram}" FontWeight="SemiBold" />
+                            </DockPanel>
+                            <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding EditRamGb}" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" Margin="0,6,0,10"
+                                    IsEnabled="{Binding CanEdit}" AutomationProperties.Name="{l:Loc Wizard_Ram}" />
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding EditCoresText}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
+                                <TextBlock Text="{l:Loc Wizard_Cpu}" FontWeight="SemiBold" />
+                            </DockPanel>
+                            <Slider Minimum="1" Maximum="{Binding LogicalCores}" Value="{Binding EditCores}" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" Margin="0,6,0,10"
+                                    IsEnabled="{Binding CanEdit}" AutomationProperties.Name="{l:Loc Wizard_Cpu}" />
+                            <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding EditAikar}" IsEnabled="{Binding CanEdit}">
+                                <StackPanel>
+                                    <TextBlock Text="{l:Loc Res_Aikar}" />
+                                    <TextBlock Text="{l:Loc Res_AikarHint}" Style="{StaticResource Muted}" FontSize="11.5" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </CheckBox>
+                            <DockPanel Margin="0,12,0,0">
+                                <Button DockPanel.Dock="Right" Content="{l:Loc Common_Save}" Style="{StaticResource PrimaryButton}" Command="{Binding SaveResourcesCommand}"
+                                        IsEnabled="{Binding ResourcesChanged}" AutomationProperties.AutomationId="SaveResources" />
+                                <TextBlock Text="{l:Loc Res_StopToEdit}" Style="{StaticResource Muted}" FontSize="11.5" VerticalAlignment="Center" TextWrapping="Wrap"
+                                           Visibility="{Binding CanEdit, Converter={x:Static l:Inverse.Visibility}}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- technical details -->
+                    <Border Grid.Column="2" Style="{StaticResource Card}" AutomationProperties.AutomationId="ServerTechnical">
+                        <StackPanel>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Content="{l:Loc About_Copy}" Command="{Binding CopyTechnicalCommand}" Padding="8,3" />
+                                <TextBlock Text="{l:Loc Tech_Title}" Style="{StaticResource H2}" FontSize="15" />
+                            </DockPanel>
+                            <ItemsControl ItemsSource="{Binding TechnicalInfo}" Margin="0,8,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Key}" Style="{StaticResource Muted}" FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Value}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" TextWrapping="Wrap" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="{Binding ProcessText}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{DynamicResource PassBrush}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                       Visibility="{Binding IsRunning, Converter={StaticResource BoolVis}}" />
+                            <TextBlock Text="{l:Loc Tech_Command}" Style="{StaticResource Label}" Margin="0,10,0,4" />
+                            <Border Background="{DynamicResource ConsoleBgBrush}" CornerRadius="6" Padding="10,8">
+                                <TextBox Text="{Binding JvmCommand, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource ConsoleTextBrush}"
+                                         FontFamily="{StaticResource MonoFont}" FontSize="11" TextWrapping="Wrap" MaxHeight="90" VerticalScrollBarVisibility="Auto" Padding="0" MinHeight="0" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
                 <Border Style="{StaticResource Card}" Margin="0,0,12,0">
                     <StackPanel>
                         <TextBlock Text="{l:Loc Console_Players}" Style="{StaticResource H2}" FontSize="15" />

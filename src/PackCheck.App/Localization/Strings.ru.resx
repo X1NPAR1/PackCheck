@@ -409,6 +409,21 @@
   <data name="Delete_Failed" xml:space="preserve"><value>Не удалось удалить всё: {0}</value></data>
   <data name="Delete_StopFirst" xml:space="preserve"><value>Сначала остановите сервер.</value></data>
   <data name="Delete_Button" xml:space="preserve"><value>Удалить сервер</value></data>
+  <data name="Res_Title" xml:space="preserve"><value>Ресурсы</value></data>
+  <data name="Res_Hint" xml:space="preserve"><value>Память, ядра и флаги Java. Применяется при следующем запуске.</value></data>
+  <data name="Res_Aikar" xml:space="preserve"><value>Оптимизированные флаги G1 (Aikar)</value></data>
+  <data name="Res_AikarHint" xml:space="preserve"><value>Рекомендовано Paper; меньше лагов от сборки мусора.</value></data>
+  <data name="Res_StopToEdit" xml:space="preserve"><value>Остановите сервер, чтобы изменить ресурсы.</value></data>
+  <data name="Tech_Title" xml:space="preserve"><value>Технические сведения</value></data>
+  <data name="Tech_Platform" xml:space="preserve"><value>Платформа</value></data>
+  <data name="Tech_Jar" xml:space="preserve"><value>Файл запуска</value></data>
+  <data name="Tech_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Tech_Folder" xml:space="preserve"><value>Папка</value></data>
+  <data name="Tech_Port" xml:space="preserve"><value>Порт</value></data>
+  <data name="Tech_Memory" xml:space="preserve"><value>Куча</value></data>
+  <data name="Tech_Cores" xml:space="preserve"><value>Ядра ЦП</value></data>
+  <data name="Tech_Created" xml:space="preserve"><value>Создан</value></data>
+  <data name="Tech_Command" xml:space="preserve"><value>Команда запуска</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

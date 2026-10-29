@@ -409,6 +409,21 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Delete_Failed" xml:space="preserve"><value>Could not delete everything: {0}</value></data>
   <data name="Delete_StopFirst" xml:space="preserve"><value>Stop the server before deleting it.</value></data>
   <data name="Delete_Button" xml:space="preserve"><value>Delete server</value></data>
+  <data name="Res_Title" xml:space="preserve"><value>Resources</value></data>
+  <data name="Res_Hint" xml:space="preserve"><value>Change memory, CPU cores and Java flags. Takes effect on the next start.</value></data>
+  <data name="Res_Aikar" xml:space="preserve"><value>Optimized G1 garbage collector flags (Aikar)</value></data>
+  <data name="Res_AikarHint" xml:space="preserve"><value>Recommended by Paper; fewer lag spikes from garbage collection.</value></data>
+  <data name="Res_StopToEdit" xml:space="preserve"><value>Stop the server to change resources.</value></data>
+  <data name="Tech_Title" xml:space="preserve"><value>Technical details</value></data>
+  <data name="Tech_Platform" xml:space="preserve"><value>Platform</value></data>
+  <data name="Tech_Jar" xml:space="preserve"><value>Start file</value></data>
+  <data name="Tech_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Tech_Folder" xml:space="preserve"><value>Folder</value></data>
+  <data name="Tech_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Tech_Memory" xml:space="preserve"><value>Heap</value></data>
+  <data name="Tech_Cores" xml:space="preserve"><value>CPU cores</value></data>
+  <data name="Tech_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Tech_Command" xml:space="preserve"><value>Start command</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

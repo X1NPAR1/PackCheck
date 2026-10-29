@@ -409,6 +409,21 @@ Hayır: açık bırakıp çık.
   <data name="Delete_Failed" xml:space="preserve"><value>Hepsi silinemedi: {0}</value></data>
   <data name="Delete_StopFirst" xml:space="preserve"><value>Silmeden önce sunucuyu durdur.</value></data>
   <data name="Delete_Button" xml:space="preserve"><value>Sunucuyu sil</value></data>
+  <data name="Res_Title" xml:space="preserve"><value>Kaynaklar</value></data>
+  <data name="Res_Hint" xml:space="preserve"><value>Bellek, CPU çekirdeği ve Java ayarlarını değiştir. Bir sonraki başlatmada geçerli olur.</value></data>
+  <data name="Res_Aikar" xml:space="preserve"><value>Optimize G1 çöp toplayıcı ayarları (Aikar)</value></data>
+  <data name="Res_AikarHint" xml:space="preserve"><value>Paper'ın önerisi; çöp toplama kaynaklı ani takılmaları azaltır.</value></data>
+  <data name="Res_StopToEdit" xml:space="preserve"><value>Kaynakları değiştirmek için sunucuyu durdur.</value></data>
+  <data name="Tech_Title" xml:space="preserve"><value>Teknik detaylar</value></data>
+  <data name="Tech_Platform" xml:space="preserve"><value>Platform</value></data>
+  <data name="Tech_Jar" xml:space="preserve"><value>Başlatma dosyası</value></data>
+  <data name="Tech_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Tech_Folder" xml:space="preserve"><value>Klasör</value></data>
+  <data name="Tech_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Tech_Memory" xml:space="preserve"><value>Heap bellek</value></data>
+  <data name="Tech_Cores" xml:space="preserve"><value>CPU çekirdekleri</value></data>
+  <data name="Tech_Created" xml:space="preserve"><value>Oluşturuldu</value></data>
+  <data name="Tech_Command" xml:space="preserve"><value>Başlatma komutu</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

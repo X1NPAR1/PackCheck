@@ -409,6 +409,21 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Delete_Failed" xml:space="preserve"><value>Suppression incomplète : {0}</value></data>
   <data name="Delete_StopFirst" xml:space="preserve"><value>Arrêtez le serveur avant de le supprimer.</value></data>
   <data name="Delete_Button" xml:space="preserve"><value>Supprimer le serveur</value></data>
+  <data name="Res_Title" xml:space="preserve"><value>Ressources</value></data>
+  <data name="Res_Hint" xml:space="preserve"><value>Modifiez mémoire, cœurs et options Java. Effectif au prochain démarrage.</value></data>
+  <data name="Res_Aikar" xml:space="preserve"><value>Options G1 optimisées (Aikar)</value></data>
+  <data name="Res_AikarHint" xml:space="preserve"><value>Recommandé par Paper ; moins de saccades.</value></data>
+  <data name="Res_StopToEdit" xml:space="preserve"><value>Arrêtez le serveur pour modifier.</value></data>
+  <data name="Tech_Title" xml:space="preserve"><value>Détails techniques</value></data>
+  <data name="Tech_Platform" xml:space="preserve"><value>Plateforme</value></data>
+  <data name="Tech_Jar" xml:space="preserve"><value>Fichier de lancement</value></data>
+  <data name="Tech_Java" xml:space="preserve"><value>Java</value></data>
+  <data name="Tech_Folder" xml:space="preserve"><value>Dossier</value></data>
+  <data name="Tech_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Tech_Memory" xml:space="preserve"><value>Tas (heap)</value></data>
+  <data name="Tech_Cores" xml:space="preserve"><value>Cœurs CPU</value></data>
+  <data name="Tech_Created" xml:space="preserve"><value>Créé</value></data>
+  <data name="Tech_Command" xml:space="preserve"><value>Commande de lancement</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>
