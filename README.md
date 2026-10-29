@@ -3,6 +3,11 @@
 </p>
 
 <p align="center">
+  <a href="https://x1npar1.github.io/PackCheck/"><img alt="Website: x1npar1.github.io/PackCheck" src="https://img.shields.io/badge/Website-x1npar1.github.io%2FPackCheck-3F7A2A?style=for-the-badge"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
+</p>
+
+<p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
