@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://x1npar1.github.io/PackCheck/sitemap.xml
