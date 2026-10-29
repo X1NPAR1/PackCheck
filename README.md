@@ -206,7 +206,28 @@ Result: FAIL  (pass 2, warn 1, fail 5, skip 1, error 0)
 
 Adding a check means adding one class that implements `IAnalyzer`. See [docs/rule-authoring.md](docs/rule-authoring.md).
 
-## FAQ
+## Guides
+
+- [How to host a Minecraft server on Windows](https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html)
+- [Minecraft port forwarding: let friends join your server](https://x1npar1.github.io/PackCheck/guides/minecraft-port-forwarding.html)
+- [Paper vs Fabric vs Forge vs NeoForge](https://x1npar1.github.io/PackCheck/guides/paper-vs-fabric-vs-forge.html)
+- [Check Minecraft plugins and mods before they break your server](https://x1npar1.github.io/PackCheck/guides/check-minecraft-plugins.html)
+- [Automate restarts, backups and crash recovery](https://x1npar1.github.io/PackCheck/guides/minecraft-server-automation.html)
+- [Türkçe tanıtım](https://x1npar1.github.io/PackCheck/tr/)
+
+## Compared with other Minecraft server tools
+
+| | PackCheck | Web panels (Crafty, MCSManager, Pterodactyl) | Simple desktop launchers |
+|---|---|---|---|
+| Runs on | Windows desktop, no web server | A server or VM, used through a browser | Windows desktop |
+| Setup | Installer, no admin rights | Web server, often Docker or Linux | Installer |
+| Plugin and mod compatibility | Checked before install, with the reason | Usually not | Usually not |
+| Pack validation (dependencies, versions, duplicates) | Yes, also as a CLI | No | No |
+| Port forwarding help and outside test | Yes | Usually not (servers are hosted) | Rarely |
+| Automation | Schedules, crash restarts, triggers between servers | Yes (varies) | Rarely |
+| Best for | Hosting at home for friends | Hosting providers and many users | One quick server |
+
+
 
 **How do I make a Minecraft server on Windows?** Install PackCheck, click **New server**, pick a profile (for example *Survival with friends*), accept the EULA and press **Create server**. PackCheck downloads the server, installs the right Java and starts it.
 

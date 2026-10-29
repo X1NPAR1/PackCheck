@@ -1,0 +1,15 @@
+{
+  "name": "PackCheck",
+  "short_name": "PackCheck",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#F3F4F1",
+  "theme_color": "#3F7A2A",
+  "icons": [
+    {
+      "src": "media/cube.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

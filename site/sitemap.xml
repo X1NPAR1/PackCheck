@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://x1npar1.github.io/PackCheck/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/</loc><lastmod>2026-10-29</lastmod><priority>1.0</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/tr/</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/guides/minecraft-port-forwarding.html</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/guides/paper-vs-fabric-vs-forge.html</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/guides/check-minecraft-plugins.html</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://x1npar1.github.io/PackCheck/guides/minecraft-server-automation.html</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
 </urlset>

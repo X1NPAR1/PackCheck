@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to host a Minecraft server on Windows (free, step by step)</title>
+<meta name="description" content="Set up a Minecraft Java server on your own Windows PC in a few minutes: choose Paper, Fabric or Forge, give it RAM, start it and let friends join. Free, no command line.">
+<link rel="canonical" href="https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html">
+<link rel="alternate" hreflang="en" href="https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html">
+<link rel="alternate" hreflang="tr" href="https://x1npar1.github.io/PackCheck/tr/">
+<meta name="theme-color" content="#F3F4F1">
+<meta property="og:type" content="article"><meta property="og:site_name" content="PackCheck">
+<meta property="og:title" content="How to host a Minecraft server on Windows (free, step by step)"><meta property="og:description" content="Set up a Minecraft Java server on your own Windows PC in a few minutes: choose Paper, Fabric or Forge, give it RAM, start it and let friends join. Free, no command line.">
+<meta property="og:url" content="https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html"><meta property="og:image" content="https://x1npar1.github.io/PackCheck/media/create-wizard.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="../media/cube.png"><link rel="manifest" href="../manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "PackCheck", "item": "https://x1npar1.github.io/PackCheck/"}, {"@type": "ListItem", "position": 2, "name": "Host a Minecraft server on Windows", "item": "https://x1npar1.github.io/PackCheck/guides/host-minecraft-server-windows.html"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is hosting a Minecraft server on my own PC free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The server software and PackCheck are free; you only pay for electricity and your internet connection."}}, {"@type": "Question", "name": "Can I play on the same PC that runs the server?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, as long as the PC has enough memory for both. Limit the server's CPU cores in PackCheck to keep your game smooth."}}, {"@type": "Question", "name": "Do I need Java?", "acceptedAnswer": {"@type": "Answer", "text": "PackCheck installs the right Java version for the server automatically."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "How to host a Minecraft server on Windows (free, step by step)", "description": "Set up a Minecraft Java server on your own Windows PC in a few minutes: choose Paper, Fabric or Forge, give it RAM, start it and let friends join. Free, no command line.", "tool": [{"@type": "HowToTool", "name": "PackCheck"}], "step": [{"@type": "HowToStep", "position": 1, "name": "Check your PC", "text": "A small survival server needs about 2–4 GB of free memory and a reasonably modern CPU. Modpacks need 6–8 GB or more. Use a wired connection if friends join over the internet."}, {"@type": "HowToStep", "position": 2, "name": "Install PackCheck", "text": "Download the installer from GitHub and run it. It installs for your Windows user only, so you do not need administrator rights."}, {"@type": "HowToStep", "position": 3, "name": "Create the server", "text": "Click New server and pick a profile such as Survival with friends. PackCheck chooses Paper, a free port and sensible game rules; change RAM, CPU cores, game mode, difficulty or the player limit if you like."}, {"@type": "HowToStep", "position": 4, "name": "Accept the EULA and create", "text": "Tick the Minecraft EULA box and press Create server. PackCheck downloads the official server, checks its hash and installs the right Java (Temurin) automatically."}, {"@type": "HowToStep", "position": 5, "name": "Start and test locally", "text": "Press Start. When the dashboard shows TPS 20, join from your own game with localhost or the local address shown on the Online page."}, {"@type": "HowToStep", "position": 6, "name": "Invite friends", "text": "On the same Wi-Fi friends use your local address. Over the internet open the port on the Online page and confirm with Test from outside."}]}</script>
+<style>
+:root{--paper:#F3F4F1;--ink:#161917;--ink2:#464C47;--ink3:#6C726D;--rule:#D5D8D2;--moss:#3F7A2A;--graphite:#1B1E1C}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.7 Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--moss);text-underline-offset:3px}img{max-width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 0 0 1px rgba(22,25,23,.1),0 30px 60px -40px rgba(22,25,23,.6)}
+:focus-visible{outline:3px solid #7DB356;outline-offset:3px}
+.nav{position:sticky;top:0;background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);z-index:5}
+.nav div{width:min(1100px,100% - 32px);margin:auto;height:62px;display:flex;align-items:center;gap:22px}
+.brand{display:flex;gap:9px;align-items:center;font:700 19px "Exo 2","Segoe UI",sans-serif;color:var(--ink);text-decoration:none}.brand img{width:28px;height:28px;box-shadow:none;border-radius:0}
+.nav .links{margin-left:auto;display:flex;gap:20px}.nav .links a{color:var(--ink2);text-decoration:none;font-size:15px}
+.btn{display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:9px;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+main{width:min(760px,100% - 32px);margin:auto;padding:48px 0 72px}
+.crumbs{font-size:14px;color:var(--ink3)}.crumbs a{color:var(--ink3)}
+h1{font:800 clamp(32px,5vw,48px)/1.08 "Exo 2","Segoe UI",sans-serif;letter-spacing:-.02em;margin:14px 0 16px}
+h2{font:700 26px/1.2 "Exo 2","Segoe UI",sans-serif;margin:44px 0 12px}
+h3{font:600 19px/1.3 "Exo 2","Segoe UI",sans-serif;margin:28px 0 8px}
+.lead{font-size:19px;color:var(--ink2)}
+ol li,ul li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:15.5px;margin:16px 0}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top}th{color:var(--ink3);font-weight:600}
+.note{background:#fff;border-left:4px solid var(--moss);padding:14px 18px;border-radius:8px;margin:20px 0}
+.cta{margin:48px 0 0;padding:28px;border-radius:16px;background:var(--graphite);color:#EEECE4}.cta h2{margin:0 0 8px;color:#fff}.cta p{color:#B9BBB4;margin:0 0 18px}.cta .btn{background:#fff;color:var(--ink)}
+.more{display:grid;gap:10px;margin-top:20px}.more a{display:block;padding:14px 16px;background:#fff;border-radius:10px;text-decoration:none;color:var(--ink);box-shadow:0 0 0 1px var(--rule)}
+details{border-top:1px solid var(--rule)}details:last-of-type{border-bottom:1px solid var(--rule)}summary{cursor:pointer;padding:14px 0;font-weight:600}
+footer{border-top:1px solid var(--rule);padding:28px 16px 40px;text-align:center;color:var(--ink3);font-size:14px}
+@media(max-width:700px){.nav .links{display:none}.nav .btn{margin-left:auto}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div><a class="brand" href="../"><img src="../media/cube.png" alt="">PackCheck</a>
+<span class="links"><a href="../guides/host-minecraft-server-windows.html">Guides</a><a href="../tr/">Türkçe</a><a href="https://github.com/X1NPAR1/PackCheck">GitHub</a></span>
+<a class="btn" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download</a></div></nav>
+<main>
+<div class="crumbs"><a href="../">PackCheck</a> › Host a Minecraft server on Windows</div>
+<h1>How to host a Minecraft server on Windows (free, step by step)</h1>
+<p class="lead">You do not need a paid host to play with friends. A normal Windows 10 or 11 PC can run a Minecraft Java server for a handful of players. This guide shows the quickest reliable way, and what to check so it stays smooth.</p>
+<img src="../media/create-wizard.webp" alt="Host a Minecraft server on Windows in PackCheck" loading="lazy">
+<h2>Step by step</h2><ol><li><b>Check your PC.</b> A small survival server needs about 2–4 GB of free memory and a reasonably modern CPU. Modpacks need 6–8 GB or more. Use a wired connection if friends join over the internet.</li><li><b>Install PackCheck.</b> Download the installer from GitHub and run it. It installs for your Windows user only, so you do not need administrator rights.</li><li><b>Create the server.</b> Click New server and pick a profile such as Survival with friends. PackCheck chooses Paper, a free port and sensible game rules; change RAM, CPU cores, game mode, difficulty or the player limit if you like.</li><li><b>Accept the EULA and create.</b> Tick the Minecraft EULA box and press Create server. PackCheck downloads the official server, checks its hash and installs the right Java (Temurin) automatically.</li><li><b>Start and test locally.</b> Press Start. When the dashboard shows TPS 20, join from your own game with localhost or the local address shown on the Online page.</li><li><b>Invite friends.</b> On the same Wi-Fi friends use your local address. Over the internet open the port on the Online page and confirm with Test from outside.</li></ol>
+
+<h2>Which server software should I choose?</h2>
+<p><b>Paper</b> is the usual choice: it runs plugins and is faster than the official server. Choose <b>Fabric</b> or <b>NeoForge</b> for mods, and <b>Velocity</b> if you want to connect several servers. See <a href="paper-vs-fabric-vs-forge.html">Paper vs Fabric vs Forge</a> for details.</p>
+<h2>How much RAM does a Minecraft server need?</h2>
+<table><tr><th>Server</th><th>Players</th><th>RAM</th></tr>
+<tr><td>Vanilla or Paper survival</td><td>2–10</td><td>2–4 GB</td></tr>
+<tr><td>Paper with many plugins</td><td>10–30</td><td>6–8 GB</td></tr>
+<tr><td>Modpack (Fabric/NeoForge)</td><td>2–10</td><td>6–10 GB</td></tr></table>
+<p>Do not give the server more than about three quarters of your PC's memory; Windows and your game need the rest.</p>
+<div class="note">Keep the server running while the window is closed: PackCheck stays in the tray, and <a href="minecraft-server-automation.html">automation rules</a> can start it with Windows and restart it every night.</div>
+
+<h2>Questions</h2>
+<details><summary>Is hosting a Minecraft server on my own PC free?</summary><p>Yes. The server software and PackCheck are free; you only pay for electricity and your internet connection.</p></details><details><summary>Can I play on the same PC that runs the server?</summary><p>Yes, as long as the PC has enough memory for both. Limit the server&#x27;s CPU cores in PackCheck to keep your game smooth.</p></details><details><summary>Do I need Java?</summary><p>PackCheck installs the right Java version for the server automatically.</p></details>
+<div class="cta"><h2>Try it with PackCheck</h2><p>Free and open source, for Windows 10 and 11.</p><a class="btn" href="https://github.com/X1NPAR1/PackCheck/releases/latest">Download for Windows</a></div>
+<h2>More guides</h2><div class="more"><a href="../guides/minecraft-port-forwarding.html">Minecraft port forwarding: let friends join your server</a><a href="../guides/paper-vs-fabric-vs-forge.html">Paper vs Fabric vs Forge vs NeoForge: which Minecraft server to choose</a><a href="../guides/check-minecraft-plugins.html">Check Minecraft plugins and mods before they break your server</a><a href="../guides/minecraft-server-automation.html">Automate your Minecraft server: restarts, backups, crash recovery</a></div>
+</main>
+<footer>PackCheck · MIT · <a href="https://github.com/X1NPAR1/PackCheck">GitHub</a> · Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</footer>
+</body>
+</html>
