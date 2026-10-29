@@ -37,8 +37,31 @@ public sealed class Loc : INotifyPropertyChanged
             _culture = value;
             CultureInfo.CurrentUICulture = value;
             CultureInfo.DefaultThreadCurrentUICulture = value;
+            ApplyXamlLanguage();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
             CultureChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    /// <summary>
+    /// XAML formats dates and numbers (StringFormat=g, N0 …) with the element's Language, which is en-US unless set.
+    /// Every window gets the UI culture so "29.10.2026 18:12" shows in Turkish instead of "10/29/2026 6:12 PM".
+    /// </summary>
+    public static void ApplyXamlLanguage(System.Windows.FrameworkElement? element = null)
+    {
+        var lang = XmlLanguage.GetLanguage(Instance._culture.IetfLanguageTag);
+        if (element is not null)
+        {
+            element.Language = lang;
+            return;
+        }
+
+        if (System.Windows.Application.Current is { } app)
+        {
+            foreach (System.Windows.Window w in app.Windows)
+            {
+                w.Language = lang;
+            }
         }
     }
 

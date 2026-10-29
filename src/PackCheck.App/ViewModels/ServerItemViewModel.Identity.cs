@@ -40,7 +40,7 @@ public sealed partial class ServerItemViewModel
     {
         Icon = LoadIcon(ServerIcon.PathFor(Definition.Directory));
         var file = Path.Combine(Definition.Directory, "server.properties");
-        var values = File.Exists(file) ? ServerProperties.Parse(File.ReadAllText(file, System.Text.Encoding.Latin1)) : [];
+        var values = File.Exists(file) ? ServerProperties.Parse(PropertiesText.ReadFile(file)) : [];
         _savedMotd = values.TryGetValue("motd", out var m) ? PropertiesText.Unescape(m) : "A Minecraft Server";
         MotdText = _savedMotd;
     }
@@ -58,7 +58,6 @@ public sealed partial class ServerItemViewModel
             var img = new BitmapImage();
             img.BeginInit();
             img.CacheOption = BitmapCacheOption.OnLoad;
-            img.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             img.StreamSource = new MemoryStream(File.ReadAllBytes(path));
             img.EndInit();
             img.Freeze();
@@ -143,9 +142,9 @@ public sealed partial class ServerItemViewModel
         }
 
         var file = Path.Combine(Definition.Directory, "server.properties");
-        var original = File.Exists(file) ? File.ReadAllText(file, System.Text.Encoding.Latin1) : string.Empty;
+        var original = File.Exists(file) ? PropertiesText.ReadFile(file) : string.Empty;
         var value = Motd.Normalize(MotdText.Replace("\r", string.Empty));
-        File.WriteAllText(file, ServerProperties.Update(original, new Dictionary<string, string> { ["motd"] = PropertiesText.Escape(value) }), System.Text.Encoding.Latin1);
+        File.WriteAllText(file, ServerProperties.Update(original, new Dictionary<string, string> { ["motd"] = PropertiesText.Escape(value) }));
         _savedMotd = value;
         MotdText = value;
         LoadProperties();

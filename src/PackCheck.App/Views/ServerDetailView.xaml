@@ -115,7 +115,7 @@
                 </Button>
                 <Button Command="{Binding RestartCommand}" Content="{l:Loc Servers_Restart}" Margin="0,0,6,0" Visibility="{Binding IsRunning, Converter={StaticResource BoolVis}}" />
                 <Button Command="{Binding KillCommand}" Content="{l:Loc Servers_Kill}" Style="{StaticResource DangerButton}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
-                <Button Command="{Binding OpenUpgradeCommand}" Content="{l:Loc Upgrade_Button}" Margin="0,0,6,0" AutomationProperties.AutomationId="OpenUpgrade" />
+                <Button Command="{Binding OpenUpgradeCommand}" Content="{l:Loc Upgrade_Button}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="OpenUpgrade" />
                 <Button Command="{Binding ValidateServerCommand}" Content="{l:Loc Servers_Validate}" Margin="0,0,6,0" />
                 <Button Command="{Binding OpenFolderCommand}" Style="{StaticResource GhostButton}" ToolTip="{l:Loc Common_OpenFolder}" AutomationProperties.Name="{l:Loc Common_OpenFolder}">
                     <Path Data="{StaticResource IconFolder}" Style="{StaticResource IconPath}" Stroke="{DynamicResource TextMutedBrush}" />

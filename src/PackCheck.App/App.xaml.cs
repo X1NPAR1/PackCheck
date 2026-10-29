@@ -46,6 +46,9 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // Every window (main, splash, dialogs) formats dates and numbers in the UI language.
+        EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler((sender, _) => Loc.ApplyXamlLanguage((Window)sender)));
+
         // Elevated helper mode: "PackCheck.exe --firewall add|remove <port>" (started via UAC by the Online page).
         if (e.Args is ["--firewall", var op and ("add" or "remove"), var portText] && int.TryParse(portText, out var fwPort) && fwPort is > 0 and < 65536)
         {

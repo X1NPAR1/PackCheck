@@ -135,6 +135,22 @@ public static class PropertiesText
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Newer servers write server.properties as UTF-8, older ones as ISO-8859-1. Strict UTF-8 first, Latin-1 if the bytes are not valid UTF-8.
+    /// </summary>
+    public static string ReadFile(string path)
+    {
+        var bytes = File.ReadAllBytes(path);
+        try
+        {
+            return new UTF8Encoding(false, throwOnInvalidBytes: true).GetString(bytes).TrimStart('﻿');
+        }
+        catch (DecoderFallbackException)
+        {
+            return Encoding.Latin1.GetString(bytes);
+        }
+    }
+
     public static string Unescape(string value)
     {
         var sb = new StringBuilder(value.Length);

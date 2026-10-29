@@ -52,6 +52,18 @@ public class IdentityTests
     }
 
     [Fact]
+    public void Properties_file_is_read_as_utf8_or_latin1()
+    {
+        var dir = Directory.CreateTempSubdirectory("pc-props").FullName;
+        var utf8 = Path.Combine(dir, "a.properties");
+        var latin = Path.Combine(dir, "b.properties");
+        File.WriteAllText(utf8, "motd=§aTürk\n", new System.Text.UTF8Encoding(false));
+        File.WriteAllText(latin, "motd=§aTürk\n", System.Text.Encoding.Latin1);
+        Assert.Equal("motd=§aTürk\n", PropertiesText.ReadFile(utf8));
+        Assert.Equal("motd=§aTürk\n", PropertiesText.ReadFile(latin));
+    }
+
+    [Fact]
     public void Icon_validation_checks_png_size()
     {
         static byte[] Png(int w, int h)
