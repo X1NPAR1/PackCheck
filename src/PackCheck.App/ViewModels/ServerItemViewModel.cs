@@ -122,11 +122,11 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public string Name => Definition.Name;
 
     // ----- resources (editable while stopped) -----
-    public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
+    public double SystemRamGb => SystemLimits.RamGb;
 
-    public int MaxRamGb => 256;
+    public int MaxRamGb => SystemLimits.MaxRamGb;
 
-    public int MaxCores => 64;
+    public int MaxCores => SystemLimits.MaxCores;
 
     public int LogicalCores { get; } = Environment.ProcessorCount;
 

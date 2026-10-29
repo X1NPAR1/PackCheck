@@ -161,6 +161,13 @@ Trotzdem anwenden?</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
   <data name="Mods_NeedServer" xml:space="preserve"><value>Erstelle zuerst einen Fabric-, Forge- oder NeoForge-Server; Mods werden dort installiert.</value></data>
   <data name="Mods_CurseForgeKey" xml:space="preserve"><value>CurseForge-API-Schlüssel in den Einstellungen hinterlegen</value></data>
+  <data name="CurseForge_Verify" xml:space="preserve"><value>Schlüssel prüfen</value></data>
+  <data name="CurseForge_Checking" xml:space="preserve"><value>CurseForge wird gefragt…</value></data>
+  <data name="CurseForge_Valid" xml:space="preserve"><value>✔ CurseForge hat den Schlüssel akzeptiert. CurseForge-Mods sind jetzt verfügbar.</value></data>
+  <data name="CurseForge_Missing" xml:space="preserve"><value>Füge zuerst deinen Schlüssel ein.</value></data>
+  <data name="CurseForge_Rejected" xml:space="preserve"><value>CurseForge hat den Schlüssel abgelehnt ({0}). Öffne console.curseforge.com → API keys und kopiere den Schlüssel erneut; er beginnt mit $2a$10$ und hat 60 Zeichen. Ein Upload-/Projekt-Token funktioniert hier nicht.</value></data>
+  <data name="CurseForge_Unreachable" xml:space="preserve"><value>CurseForge nicht erreichbar: {0}</value></data>
+  <data name="CurseForge_FormatHint" xml:space="preserve"><value>Das sieht nicht wie ein CurseForge-API-Schlüssel aus (beginnt mit $2a$10$, 60 Zeichen). Mit "Schlüssel prüfen" trotzdem testen.</value></data>
   <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge-API-Schlüssel (optional, console.curseforge.com)</value></data>
   <data name="Settings_Tray" xml:space="preserve"><value>Beim Schließen des Fensters im Infobereich weiterlaufen</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>PackCheck öffnen</value></data>

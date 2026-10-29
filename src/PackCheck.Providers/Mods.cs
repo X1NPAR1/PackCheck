@@ -117,12 +117,11 @@ public sealed class CurseForgeMods(HttpClient http, Func<string?> apiKey, TimeSp
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Get, new Uri("https://api.curseforge.com" + path));
-            req.Headers.Add("x-api-key", apiKey());
-            req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            CurseForgeKey.Apply(req, apiKey());
             using var res = await http.SendAsync(req, cts.Token).ConfigureAwait(false);
             if (!res.IsSuccessStatusCode)
             {
-                return new(null, $"HTTP {(int)res.StatusCode}");
+                return new(null, CurseForgeKey.Failure(res.StatusCode));
             }
 
             return new(JsonDocument.Parse(await res.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false)), null);

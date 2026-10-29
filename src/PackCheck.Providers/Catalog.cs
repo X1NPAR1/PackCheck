@@ -257,7 +257,7 @@ public sealed class CurseForgeCatalog(HttpClient http, Func<string?> apiKey, Tim
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Get, new Uri($"https://api.curseforge.com/v1/mods/{Uri.EscapeDataString(item.Id)}/description"));
-            req.Headers.Add("x-api-key", apiKey());
+            CurseForgeKey.Apply(req, apiKey());
             using var res = await http.SendAsync(req, cts.Token).ConfigureAwait(false);
             if (!res.IsSuccessStatusCode)
             {
@@ -290,12 +290,11 @@ public sealed class CurseForgeCatalog(HttpClient http, Func<string?> apiKey, Tim
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Get, new Uri("https://api.curseforge.com" + path));
-            req.Headers.Add("x-api-key", apiKey());
-            req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            CurseForgeKey.Apply(req, apiKey());
             using var res = await http.SendAsync(req, cts.Token).ConfigureAwait(false);
             if (!res.IsSuccessStatusCode)
             {
-                return CatalogPage.Failed($"HTTP {(int)res.StatusCode}");
+                return CatalogPage.Failed(CurseForgeKey.Failure(res.StatusCode));
             }
 
             using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false));

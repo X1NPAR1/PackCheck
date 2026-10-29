@@ -149,6 +149,6 @@ public class CurseForgeTests
     {
         using var http = new HttpClient(new StubHandler(_ => StubHandler.Json("{}", HttpStatusCode.Forbidden)));
         var page = await new CurseForgeCatalog(http, () => "bad").BrowseAsync(CatalogKind.Mod, string.Empty, CatalogSort.Downloads, 0, 20, CancellationToken.None);
-        Assert.Equal("HTTP 403", page.Error);
+        Assert.Equal("API key rejected (HTTP 403)", page.Error);
     }
 }

@@ -161,6 +161,13 @@ Appliquer quand même ?</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
   <data name="Mods_NeedServer" xml:space="preserve"><value>Créez d'abord un serveur Fabric, Forge ou NeoForge ; les mods y sont installés.</value></data>
   <data name="Mods_CurseForgeKey" xml:space="preserve"><value>ajoutez votre clé API CurseForge dans les paramètres</value></data>
+  <data name="CurseForge_Verify" xml:space="preserve"><value>Vérifier la clé</value></data>
+  <data name="CurseForge_Checking" xml:space="preserve"><value>Interrogation de CurseForge…</value></data>
+  <data name="CurseForge_Valid" xml:space="preserve"><value>✔ CurseForge a accepté la clé. Les mods CurseForge sont disponibles.</value></data>
+  <data name="CurseForge_Missing" xml:space="preserve"><value>Collez d'abord votre clé.</value></data>
+  <data name="CurseForge_Rejected" xml:space="preserve"><value>CurseForge a refusé cette clé ({0}). Ouvrez console.curseforge.com → API keys et recopiez la clé ; elle commence par $2a$10$ et fait 60 caractères. Un jeton de projet/upload ne fonctionne pas ici.</value></data>
+  <data name="CurseForge_Unreachable" xml:space="preserve"><value>CurseForge injoignable : {0}</value></data>
+  <data name="CurseForge_FormatHint" xml:space="preserve"><value>Cela ne ressemble pas à une clé CurseForge (commence par $2a$10$, 60 caractères). Cliquez sur "Vérifier la clé" pour tester.</value></data>
   <data name="Settings_CurseForge" xml:space="preserve"><value>Clé API CurseForge (facultatif, console.curseforge.com)</value></data>
   <data name="Settings_Tray" xml:space="preserve"><value>Continuer dans la zone de notification à la fermeture</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Ouvrir PackCheck</value></data>

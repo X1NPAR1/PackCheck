@@ -194,7 +194,7 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
             Name: o["name"]?.ToString() ?? "server",
             Platform: Enum.TryParse<ServerPlatform>(o["platform"]?.ToString(), true, out var p) ? p : ServerPlatform.Paper,
             Version: o["version"]?.ToString() ?? "latest",
-            Memory: int.TryParse(o["memory_mb"]?.ToString(), out var m) ? Math.Clamp(m, 512, 65536) : 4096,
+            Memory: int.TryParse(o["memory_mb"]?.ToString(), out var m) ? Math.Clamp(m, 512, SystemLimits.MaxRamGb * 1024) : Math.Min(4096, SystemLimits.MaxRamGb * 1024),
             Port: int.TryParse(o["port"]?.ToString(), out var port) ? port : 0)).ToList();
         var table = new StringBuilder("Name | Platform | Version | RAM | Port\n");
         foreach (var s in plan)

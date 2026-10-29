@@ -441,6 +441,7 @@
                             </ListBox.Style>
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">

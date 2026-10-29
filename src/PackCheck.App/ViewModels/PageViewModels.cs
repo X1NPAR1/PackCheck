@@ -94,13 +94,13 @@ public sealed partial class CreateServerViewModel : ObservableObject
     public IReadOnlyList<string> Difficulties { get; } = ["peaceful", "easy", "normal", "hard"];
 
     /// <summary>Installed physical memory, for the RAM slider's limit and warning.</summary>
-    public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
+    public double SystemRamGb => SystemLimits.RamGb;
 
-    /// <summary>Upper end of the RAM slider; servers with big modpacks on workstations can use up to 256 GB.</summary>
-    public int MaxRamGb => 256;
+    /// <summary>Upper end of the RAM slider: the RAM this PC has (at most 256 GB).</summary>
+    public int MaxRamGb => SystemLimits.MaxRamGb;
 
-    /// <summary>Upper end of the CPU slider. Values above this PC's cores are passed to Java as its processor count.</summary>
-    public int MaxCores => 64;
+    /// <summary>Upper end of the CPU slider: this PC's logical cores (at most 64).</summary>
+    public int MaxCores => SystemLimits.MaxCores;
 
     public int LogicalCores { get; } = Environment.ProcessorCount;
 
@@ -205,7 +205,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         }
 
         SelectedPlatform = PlatformOptions.First(o => o.Platform == value.Platform);
-        MemoryGb = Math.Min(value.MemoryGb, Math.Max(1, Math.Floor(SystemRamGb)));
+        MemoryGb = Math.Min(value.MemoryGb, MaxRamGb);
         GameMode = value.GameMode;
         Difficulty = value.Difficulty;
         MaxPlayers = value.MaxPlayers;
@@ -1061,8 +1061,34 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     partial void OnCurseForgeKeyChanged(string value)
     {
-        _settings.CurseForgeApiKey = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        // Saved as soon as it is typed or pasted (no Enter needed); spaces, quotes and line breaks are removed.
+        _settings.CurseForgeApiKey = PackCheck.Providers.CurseForgeKey.Normalize(value);
         _settings.Save();
+        CurseForgeStatus = _settings.CurseForgeApiKey is { } k && !PackCheck.Providers.CurseForgeKey.LooksValid(k) ? Loc.T("CurseForge_FormatHint") : null;
+    }
+
+    [ObservableProperty]
+    private string? _curseForgeStatus;
+
+    [ObservableProperty]
+    private bool _curseForgeOk;
+
+    /// <summary>Asks CurseForge whether it accepts the key and says so in plain words.</summary>
+    [RelayCommand]
+    private async Task VerifyCurseForgeAsync()
+    {
+        CurseForgeOk = false;
+        CurseForgeStatus = Loc.T("CurseForge_Checking");
+        var http = (System.Net.Http.HttpClient)App.Services.GetService(typeof(System.Net.Http.HttpClient))!;
+        var (status, detail) = await PackCheck.Providers.CurseForgeKey.CheckAsync(http, _settings.CurseForgeApiKey, CancellationToken.None).ConfigureAwait(true);
+        CurseForgeOk = status == PackCheck.Providers.CurseForgeKeyStatus.Valid;
+        CurseForgeStatus = status switch
+        {
+            PackCheck.Providers.CurseForgeKeyStatus.Valid => Loc.T("CurseForge_Valid"),
+            PackCheck.Providers.CurseForgeKeyStatus.Missing => Loc.T("CurseForge_Missing"),
+            PackCheck.Providers.CurseForgeKeyStatus.Rejected => Loc.F("CurseForge_Rejected", detail ?? "403"),
+            _ => Loc.F("CurseForge_Unreachable", detail ?? "?"),
+        };
     }
 
     public IReadOnlyList<LanguageOption> Languages { get; } = Loc.Languages.Select(l => new LanguageOption(l.Code, l.NativeName)).ToList();

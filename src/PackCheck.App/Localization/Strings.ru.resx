@@ -161,6 +161,13 @@
   <data name="Mods_KindPacks" xml:space="preserve"><value>Сборки</value></data>
   <data name="Mods_NeedServer" xml:space="preserve"><value>Сначала создайте сервер Fabric, Forge или NeoForge — моды устанавливаются в него.</value></data>
   <data name="Mods_CurseForgeKey" xml:space="preserve"><value>добавьте ключ API CurseForge в настройках</value></data>
+  <data name="CurseForge_Verify" xml:space="preserve"><value>Проверить ключ</value></data>
+  <data name="CurseForge_Checking" xml:space="preserve"><value>Запрос к CurseForge…</value></data>
+  <data name="CurseForge_Valid" xml:space="preserve"><value>✔ CurseForge принял ключ. Моды CurseForge теперь доступны.</value></data>
+  <data name="CurseForge_Missing" xml:space="preserve"><value>Сначала вставьте ключ.</value></data>
+  <data name="CurseForge_Rejected" xml:space="preserve"><value>CurseForge отклонил ключ ({0}). Откройте console.curseforge.com → API keys и скопируйте ключ заново; он начинается с $2a$10$ и содержит 60 символов. Токен проекта/загрузки здесь не подходит.</value></data>
+  <data name="CurseForge_Unreachable" xml:space="preserve"><value>CurseForge недоступен: {0}</value></data>
+  <data name="CurseForge_FormatHint" xml:space="preserve"><value>Это не похоже на ключ CurseForge (начинается с $2a$10$, 60 символов). Нажмите «Проверить ключ», чтобы проверить.</value></data>
   <data name="Settings_CurseForge" xml:space="preserve"><value>Ключ API CurseForge (необязательно, console.curseforge.com)</value></data>
   <data name="Settings_Tray" xml:space="preserve"><value>Продолжать работу в трее при закрытии окна</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Открыть PackCheck</value></data>

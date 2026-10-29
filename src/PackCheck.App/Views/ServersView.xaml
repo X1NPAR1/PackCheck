@@ -136,6 +136,7 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                                         <Setter Property="AutomationProperties.Name" Value="{Binding Title}" />
                                         <Setter Property="ToolTip" Value="{Binding Hint}" />
                                         <Setter Property="Margin" Value="0,0,8,8" />
@@ -172,6 +173,7 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                                         <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
                                         <Setter Property="Template">
                                             <Setter.Value>

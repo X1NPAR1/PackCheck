@@ -161,6 +161,13 @@ Apply anyway?</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Modpacks</value></data>
   <data name="Mods_NeedServer" xml:space="preserve"><value>Create a Fabric, Forge or NeoForge server first; mods are installed into it.</value></data>
   <data name="Mods_CurseForgeKey" xml:space="preserve"><value>add your CurseForge API key in Settings</value></data>
+  <data name="CurseForge_Verify" xml:space="preserve"><value>Check key</value></data>
+  <data name="CurseForge_Checking" xml:space="preserve"><value>Asking CurseForge…</value></data>
+  <data name="CurseForge_Valid" xml:space="preserve"><value>✔ CurseForge accepted the key. Mods and modpacks from CurseForge are available now.</value></data>
+  <data name="CurseForge_Missing" xml:space="preserve"><value>Paste your key first.</value></data>
+  <data name="CurseForge_Rejected" xml:space="preserve"><value>CurseForge refused this key ({0}). Open console.curseforge.com → API keys and copy the key there again; it starts with $2a$10$ and is 60 characters long. An upload/project token does not work here.</value></data>
+  <data name="CurseForge_Unreachable" xml:space="preserve"><value>CurseForge could not be reached: {0}</value></data>
+  <data name="CurseForge_FormatHint" xml:space="preserve"><value>This does not look like a CurseForge API key (it should start with $2a$10$ and be 60 characters). Press "Check key" to test it anyway.</value></data>
   <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge API key (optional, from console.curseforge.com)</value></data>
   <data name="Settings_Tray" xml:space="preserve"><value>Keep running in the system tray when the window is closed</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Open PackCheck</value></data>
@@ -328,7 +335,7 @@ Cancel: stay in PackCheck.</value></data>
   <data name="Online_GuideSteps" xml:space="preserve"><value>Steps</value></data>
   <data name="Online_Step0" xml:space="preserve"><value>Press "Open to the internet" above first: it allows the port in the Windows firewall (one administrator prompt). Router forwarding alone is not enough while the firewall blocks it.</value></data>
   <data name="Online_Step1" xml:space="preserve"><value>Open your router's page in a browser and sign in (the password is usually on a sticker under the router):</value></data>
-  <data name="Online_Step2" xml:space="preserve"><value>Find the forwarding menu. Its name depends on the brand: Port Forwarding, NAT, Virtual Server, Port Mapping, Applications &amp; Gaming (on Turkish ISP modems often "NAT" / "Port Yönlendirme" / "Sanal Sunucu").</value></data>
+  <data name="Online_Step2" xml:space="preserve"><value>Find the forwarding menu. Its name depends on the brand: Port Forwarding, NAT, Virtual Server, Port Mapping, Applications &amp; Gaming (on many ISP routers it is under "Advanced", "Security" or "Firewall").</value></data>
   <data name="Online_Step3" xml:space="preserve"><value>Add a new rule with the values above and save. If the router asks for a port range, enter the same port as start and end.</value></data>
   <data name="Online_Step4" xml:space="preserve"><value>Give this PC a fixed local IP (DHCP reservation / "static lease" in the same router), otherwise the rule stops working when the IP changes after a restart.</value></data>
   <data name="Online_Step5" xml:space="preserve"><value>Start the server, then press "Test from outside" above. Green means friends can join with your public IP and port.</value></data>
@@ -968,7 +975,7 @@ They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's fo
   <data name="Assistant_New" xml:space="preserve"><value>New chat</value></data>
   <data name="Assistant_SetupTitle" xml:space="preserve"><value>Connect an AI model first</value></data>
   <data name="Assistant_SetupBody" xml:space="preserve"><value>Choose a provider and one of its models in Settings &gt; AI assistant. Local models (Ollama, LM Studio) need no key.</value></data>
-  <data name="Assistant_Empty" xml:space="preserve"><value>Try: "My server crashes on start, look at the console", "Translate plugins/Essentials/messages.yml to Turkish" or "Create 3 servers: a Paper lobby, a Fabric survival and a Velocity proxy".</value></data>
+  <data name="Assistant_Empty" xml:space="preserve"><value>Try: "My server crashes on start, look at the console", "Translate plugins/Essentials/messages.yml to Spanish" or "Create 3 servers: a Paper lobby, a Fabric survival and a Velocity proxy".</value></data>
   <data name="Assistant_InputHint" xml:space="preserve"><value>Message the assistant · Enter sends, Shift+Enter new line</value></data>
   <data name="Assistant_AttachConsole" xml:space="preserve"><value>+ Console</value></data>
   <data name="Assistant_Approve" xml:space="preserve"><value>Approve change</value></data>

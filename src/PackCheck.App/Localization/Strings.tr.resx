@@ -161,6 +161,13 @@ Yine de uygulansın mı?</value></data>
   <data name="Mods_KindPacks" xml:space="preserve"><value>Mod paketleri</value></data>
   <data name="Mods_NeedServer" xml:space="preserve"><value>Önce bir Fabric, Forge veya NeoForge sunucusu oluştur; modlar onun içine kurulur.</value></data>
   <data name="Mods_CurseForgeKey" xml:space="preserve"><value>Ayarlar'a CurseForge API anahtarını ekle</value></data>
+  <data name="CurseForge_Verify" xml:space="preserve"><value>Anahtarı doğrula</value></data>
+  <data name="CurseForge_Checking" xml:space="preserve"><value>CurseForge'a soruluyor…</value></data>
+  <data name="CurseForge_Valid" xml:space="preserve"><value>✔ CurseForge anahtarı kabul etti. CurseForge mod ve mod paketleri artık kullanılabilir.</value></data>
+  <data name="CurseForge_Missing" xml:space="preserve"><value>Önce anahtarını yapıştır.</value></data>
+  <data name="CurseForge_Rejected" xml:space="preserve"><value>CurseForge bu anahtarı reddetti ({0}). console.curseforge.com → API keys sayfasını açıp oradaki anahtarı yeniden kopyala; $2a$10$ ile başlar ve 60 karakterdir. Proje/yükleme token'ı burada çalışmaz.</value></data>
+  <data name="CurseForge_Unreachable" xml:space="preserve"><value>CurseForge'a ulaşılamadı: {0}</value></data>
+  <data name="CurseForge_FormatHint" xml:space="preserve"><value>Bu bir CurseForge API anahtarına benzemiyor ($2a$10$ ile başlamalı ve 60 karakter olmalı). Yine de denemek için "Anahtarı doğrula"ya bas.</value></data>
   <data name="Settings_CurseForge" xml:space="preserve"><value>CurseForge API anahtarı (isteğe bağlı, console.curseforge.com)</value></data>
   <data name="Settings_Tray" xml:space="preserve"><value>Pencere kapatılınca sistem tepsisinde çalışmaya devam et</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>PackCheck'i aç</value></data>
