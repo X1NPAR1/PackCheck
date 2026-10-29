@@ -780,6 +780,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     {
         if (MainViewModel.Shell is { } shell && await shell.ConfirmAsync(Loc.T("Servers_Kill"), Name, Loc.T("Servers_Kill"), danger: true).ConfigureAwait(true))
         {
+            _automation.UserStopped(); // a forced stop is not a crash
             _process.Kill();
         }
     }
