@@ -516,6 +516,26 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Start with PackCheck, restart after crashes, back up at 03:30 and restart at 04:00.</value></data>
   <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (this PC has {1})</value></data>
   <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>More than this PC has ({0:0.#} GB). Windows will page to disk and the server will be very slow.</value></data>
+  <data name="Auto_WhenServer" xml:space="preserve"><value>When a server starts, stops or crashes</value></data>
+  <data name="Auto_WhenServer_Hint" xml:space="preserve"><value>Chain servers: for example start the lobby 10 s after the proxy, stop it when the proxy stops, or run a command after this server started.</value></data>
+  <data name="Auto_WhenPlayers" xml:space="preserve"><value>When players reach a number</value></data>
+  <data name="Auto_WhenPlayers_Hint" xml:space="preserve"><value>Does something once when the player count reaches the number, again after it dropped below.</value></data>
+  <data name="Auto_When" xml:space="preserve"><value>When</value></data>
+  <data name="Auto_Then" xml:space="preserve"><value>do</value></data>
+  <data name="Auto_After" xml:space="preserve"><value>after</value></data>
+  <data name="Auto_ThisServer" xml:space="preserve"><value>this server</value></data>
+  <data name="Auto_PlayersAtLeast" xml:space="preserve"><value>Players at least</value></data>
+  <data name="Event_Started" xml:space="preserve"><value>started</value></data>
+  <data name="Event_Stopped" xml:space="preserve"><value>stopped</value></data>
+  <data name="Event_Crashed" xml:space="preserve"><value>crashed</value></data>
+  <data name="Act_Start" xml:space="preserve"><value>Start this server</value></data>
+  <data name="Act_Stop" xml:space="preserve"><value>Stop this server</value></data>
+  <data name="Act_Restart" xml:space="preserve"><value>Restart this server</value></data>
+  <data name="Act_Backup" xml:space="preserve"><value>Back up this server</value></data>
+  <data name="Act_Command" xml:space="preserve"><value>Run a console command</value></data>
+  <data name="Act_Say" xml:space="preserve"><value>Send a chat message</value></data>
+  <data name="Act_Notify" xml:space="preserve"><value>Notify me</value></data>
+  <data name="AutoWhy_Event" xml:space="preserve"><value>{0} {1}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

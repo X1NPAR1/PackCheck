@@ -344,6 +344,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     partial void OnStateChanged(ServerState value)
     {
+        AnnounceState(value);
         if (IsBusy)
         {
             if (_statsTimer.IsEnabled is false)

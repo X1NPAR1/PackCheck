@@ -35,23 +35,10 @@ public sealed class ServerProcess : IAsyncDisposable
     public Process? Process => _process;
 
     /// <summary>
-    /// Java reads console input in the Windows ANSI code page (stdin.encoding is ignored by the server consoles),
-    /// so commands are sent in that code page; otherwise Turkish, German or Russian letters arrive broken.
+    /// Console input is sent as UTF-8 without a byte order mark: current server consoles (Java 18+) read UTF-8,
+    /// and a BOM or the Windows code page would turn Turkish, German or Russian letters into '?'.
     /// </summary>
-    public static Encoding ConsoleInputEncoding { get; } = CreateConsoleInputEncoding();
-
-    private static Encoding CreateConsoleInputEncoding()
-    {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        try
-        {
-            return Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage);
-        }
-        catch (Exception ex) when (ex is ArgumentException or NotSupportedException)
-        {
-            return new UTF8Encoding(false);
-        }
-    }
+    public static Encoding ConsoleInputEncoding { get; } = new UTF8Encoding(false);
 
     public static IReadOnlyList<string> BuildArguments(ServerDefinition def)
     {

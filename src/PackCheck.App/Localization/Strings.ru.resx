@@ -516,6 +516,26 @@
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Запуск с PackCheck, перезапуск после сбоя, копия в 03:30, перезапуск в 04:00.</value></data>
   <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (у этого ПК {1})</value></data>
   <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Больше, чем есть у ПК ({0:0.#} ГБ). Windows начнёт подкачку, сервер будет очень медленным.</value></data>
+  <data name="Auto_WhenServer" xml:space="preserve"><value>Когда сервер запускается, останавливается или падает</value></data>
+  <data name="Auto_WhenServer_Hint" xml:space="preserve"><value>Связывайте серверы: например, запуск лобби через 10 с после прокси, остановка вместе с ним или команда после запуска.</value></data>
+  <data name="Auto_WhenPlayers" xml:space="preserve"><value>Когда игроков станет</value></data>
+  <data name="Auto_WhenPlayers_Hint" xml:space="preserve"><value>Срабатывает один раз при достижении числа и снова после снижения.</value></data>
+  <data name="Auto_When" xml:space="preserve"><value>Когда</value></data>
+  <data name="Auto_Then" xml:space="preserve"><value>сделать</value></data>
+  <data name="Auto_After" xml:space="preserve"><value>через</value></data>
+  <data name="Auto_ThisServer" xml:space="preserve"><value>этот сервер</value></data>
+  <data name="Auto_PlayersAtLeast" xml:space="preserve"><value>Игроков не меньше</value></data>
+  <data name="Event_Started" xml:space="preserve"><value>запущен</value></data>
+  <data name="Event_Stopped" xml:space="preserve"><value>остановлен</value></data>
+  <data name="Event_Crashed" xml:space="preserve"><value>упал</value></data>
+  <data name="Act_Start" xml:space="preserve"><value>Запустить этот сервер</value></data>
+  <data name="Act_Stop" xml:space="preserve"><value>Остановить этот сервер</value></data>
+  <data name="Act_Restart" xml:space="preserve"><value>Перезапустить этот сервер</value></data>
+  <data name="Act_Backup" xml:space="preserve"><value>Сделать копию</value></data>
+  <data name="Act_Command" xml:space="preserve"><value>Выполнить команду</value></data>
+  <data name="Act_Say" xml:space="preserve"><value>Сообщение в чат</value></data>
+  <data name="Act_Notify" xml:space="preserve"><value>Уведомить меня</value></data>
+  <data name="AutoWhy_Event" xml:space="preserve"><value>{0} {1}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

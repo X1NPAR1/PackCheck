@@ -123,6 +123,44 @@ public class AutomationTests
     }
 
     [Fact]
+    public void WhenServer_StartsThisServerAfterAnotherOneStarted()
+    {
+        var e = Engine(new AutomationRule { Kind = AutomationKind.WhenServer, SourceServerId = "proxy", SourceEvent = ServerEvent.Started, Action = RuleAction.Start, DelaySeconds = 10 });
+        var a = Assert.Single(e.OnServerEvent("proxy", "lobby", ServerEvent.Started));
+        Assert.Equal((AutomationActionKind.Start, 10), (a.Kind, a.DelaySeconds));
+        Assert.Empty(e.OnServerEvent("proxy", "lobby", ServerEvent.Stopped));
+        Assert.Empty(e.OnServerEvent("other", "lobby", ServerEvent.Started));
+    }
+
+    [Fact]
+    public void WhenServer_ThisServer_RunsACommandAfterItStarted_ButNeverStartsItself()
+    {
+        var e = Engine(
+            new AutomationRule { Kind = AutomationKind.WhenServer, SourceEvent = ServerEvent.Started, Action = RuleAction.Command, Command = "/gamerule keepInventory true", DelaySeconds = 5 },
+            new AutomationRule { Kind = AutomationKind.WhenServer, SourceEvent = ServerEvent.Started, Action = RuleAction.Start });
+        var a = Assert.Single(e.OnServerEvent("me", "me", ServerEvent.Started));
+        Assert.Equal((AutomationActionKind.Command, "gamerule keepInventory true"), (a.Kind, a.Text));
+    }
+
+    [Fact]
+    public void WhenServer_StopsThisServerWhenTheProxyCrashed()
+    {
+        var e = Engine(new AutomationRule { Kind = AutomationKind.WhenServer, SourceServerId = "proxy", SourceEvent = ServerEvent.Crashed, Action = RuleAction.Stop });
+        Assert.Equal(AutomationActionKind.Stop, Assert.Single(e.OnServerEvent("proxy", "lobby", ServerEvent.Crashed)).Kind);
+    }
+
+    [Fact]
+    public void WhenPlayers_FiresOnceWhenTheCountIsReached_AndAgainAfterItDropped()
+    {
+        var e = Engine(new AutomationRule { Kind = AutomationKind.WhenPlayers, Threshold = 3, Action = RuleAction.Say, Message = "full" });
+        Assert.Empty(e.Tick(Day, Running(players: 2)));
+        Assert.Equal("full", Assert.Single(e.Tick(Day.AddMinutes(1), Running(players: 3))).Text);
+        Assert.Empty(e.Tick(Day.AddMinutes(2), Running(players: 4)));
+        e.Tick(Day.AddMinutes(3), Running(players: 1));
+        Assert.Single(e.Tick(Day.AddMinutes(4), Running(players: 3)));
+    }
+
+    [Fact]
     public void NextRun_ShowsTheNextScheduledTime()
     {
         var e = new AutomationEngine();

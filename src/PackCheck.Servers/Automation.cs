@@ -32,6 +32,33 @@ public enum AutomationKind
 
     /// <summary>Stop the server when nobody has been online for N minutes.</summary>
     StopWhenEmpty,
+
+    /// <summary>When this or another server starts, stops or crashes: do something (after an optional delay).</summary>
+    WhenServer,
+
+    /// <summary>When the player count reaches a number: do something once, again after it drops below.</summary>
+    WhenPlayers,
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter<ServerEvent>))]
+public enum ServerEvent
+{
+    Started,
+    Stopped,
+    Crashed,
+}
+
+/// <summary>What a trigger rule does.</summary>
+[JsonConverter(typeof(JsonStringEnumConverter<RuleAction>))]
+public enum RuleAction
+{
+    Start,
+    Stop,
+    Restart,
+    Backup,
+    Command,
+    Say,
+    Notify,
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<AutomationReaction>))]
@@ -62,6 +89,14 @@ public sealed record AutomationRule
     public int WarningSeconds { get; init; } = 60;
     public AutomationReaction Reaction { get; init; } = AutomationReaction.Notify;
 
+    /// <summary>Trigger rules: which server to watch (null = this one) and for what.</summary>
+    public string? SourceServerId { get; init; }
+    public ServerEvent SourceEvent { get; init; } = ServerEvent.Started;
+
+    /// <summary>Trigger rules: what to do, and how long to wait first.</summary>
+    public RuleAction Action { get; init; } = RuleAction.Start;
+    public int DelaySeconds { get; init; }
+
     public static AutomationRule Default(AutomationKind kind) => kind switch
     {
         AutomationKind.ScheduledRestart => new() { Kind = kind, At = "04:00", WarningSeconds = 60 },
@@ -72,6 +107,8 @@ public sealed record AutomationRule
         AutomationKind.HighMemory => new() { Kind = kind, Threshold = 90, ForMinutes = 10, Reaction = AutomationReaction.Notify },
         AutomationKind.StopWhenEmpty => new() { Kind = kind, ForMinutes = 30 },
         AutomationKind.RestartOnCrash => new() { Kind = kind, MaxRetries = 3 },
+        AutomationKind.WhenServer => new() { Kind = kind, SourceEvent = ServerEvent.Started, Action = RuleAction.Start, DelaySeconds = 10 },
+        AutomationKind.WhenPlayers => new() { Kind = kind, Threshold = 10, Action = RuleAction.Say, Message = "The server is busy – thanks for playing!" },
         _ => new() { Kind = kind },
     };
 }
@@ -91,7 +128,11 @@ public enum AutomationActionKind
 }
 
 /// <summary>Something the app should do now because of a rule.</summary>
-public sealed record AutomationAction(AutomationActionKind Kind, string RuleId, string Reason, string? Text = null, int WarningSeconds = 0);
+public sealed record AutomationAction(AutomationActionKind Kind, string RuleId, string Reason, string? Text = null, int WarningSeconds = 0)
+{
+    /// <summary>Wait this long before doing it (trigger rules).</summary>
+    public int DelaySeconds { get; init; }
+}
 
 /// <summary>
 /// Decides, from the rules and the server's state, what to do at a given moment. Pure: no timers or I/O,
@@ -113,6 +154,35 @@ public sealed class AutomationEngine
     public void UserStopped() => _stoppedByUser = true;
 
     public void UserStarted() => _stoppedByUser = false;
+
+    private readonly HashSet<string> _playersFired = [];
+
+    /// <summary>
+    /// Another server (or this one, <paramref name="selfId"/>) started, stopped or crashed.
+    /// Returns the actions of matching "when server" rules.
+    /// </summary>
+    public IReadOnlyList<AutomationAction> OnServerEvent(string sourceId, string selfId, ServerEvent ev) =>
+        Rules.Where(r => r.Enabled && r.Kind == AutomationKind.WhenServer && r.SourceEvent == ev && (r.SourceServerId ?? selfId) == sourceId)
+            // "This server started -> start this server" would do nothing; skip it.
+            .Where(r => !(sourceId == selfId && ev == ServerEvent.Started && r.Action == RuleAction.Start))
+            .Select(r => ToAction(r, $"{ev.ToString().ToLowerInvariant()}:{sourceId}"))
+            .ToList();
+
+    public static AutomationAction ToAction(AutomationRule r, string reason) => new(r.Action switch
+    {
+        RuleAction.Start => AutomationActionKind.Start,
+        RuleAction.Stop => AutomationActionKind.Stop,
+        RuleAction.Restart => AutomationActionKind.Restart,
+        RuleAction.Backup => AutomationActionKind.Backup,
+        RuleAction.Command => AutomationActionKind.Command,
+        RuleAction.Say => AutomationActionKind.Say,
+        _ => AutomationActionKind.Notify,
+    }, r.Id, reason, r.Action switch
+    {
+        RuleAction.Command => r.Command?.Trim().TrimStart('/'),
+        RuleAction.Say or RuleAction.Notify => r.Message,
+        _ => null,
+    }, r.Action == RuleAction.Restart ? Math.Max(0, r.WarningSeconds) : 0) { DelaySeconds = Math.Max(0, r.DelaySeconds) };
 
     public IReadOnlyList<AutomationAction> OnAppStarted(AutomationSnapshot s) =>
         Rules.Where(r => r.Enabled && r.Kind == AutomationKind.StartWithApp && s.State is ServerState.Stopped or ServerState.Crashed)
@@ -169,6 +239,21 @@ public sealed class AutomationEngine
 
                 case AutomationKind.HighMemory:
                     Threshold(r, now, running && s.MemoryPercent is { } m && m > r.Threshold, $"memory above {r.Threshold:0}%", actions);
+                    break;
+
+                case AutomationKind.WhenPlayers:
+                    if (running && s.Players >= Math.Max(1, (int)r.Threshold))
+                    {
+                        if (_playersFired.Add(r.Id))
+                        {
+                            actions.Add(ToAction(r, $"players {s.Players}"));
+                        }
+                    }
+                    else
+                    {
+                        _playersFired.Remove(r.Id);
+                    }
+
                     break;
 
                 case AutomationKind.StopWhenEmpty:

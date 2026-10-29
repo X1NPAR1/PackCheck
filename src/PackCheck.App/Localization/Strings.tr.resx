@@ -516,6 +516,26 @@ Hayır: açık bırakıp çık.
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>PackCheck ile başlat, çökünce yeniden başlat, 03:30'da yedek al, 04:00'te yeniden başlat.</value></data>
   <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (bu bilgisayarda {1})</value></data>
   <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Bu bilgisayardaki bellekten fazla ({0:0.#} GB). Windows diske takas yapar ve sunucu çok yavaşlar.</value></data>
+  <data name="Auto_WhenServer" xml:space="preserve"><value>Bir sunucu açılınca / kapanınca / çökünce</value></data>
+  <data name="Auto_WhenServer_Hint" xml:space="preserve"><value>Sunucuları birbirine bağla: örneğin proxy açılınca 10 sn sonra lobiyi başlat, proxy kapanınca durdur ya da bu sunucu açılınca bir komut çalıştır.</value></data>
+  <data name="Auto_WhenPlayers" xml:space="preserve"><value>Oyuncu sayısı ulaşınca</value></data>
+  <data name="Auto_WhenPlayers_Hint" xml:space="preserve"><value>Oyuncu sayısı bu sayıya ulaşınca bir kez çalışır; altına düştükten sonra tekrar çalışabilir.</value></data>
+  <data name="Auto_When" xml:space="preserve"><value>Şu olunca:</value></data>
+  <data name="Auto_Then" xml:space="preserve"><value>yap:</value></data>
+  <data name="Auto_After" xml:space="preserve"><value>bekle:</value></data>
+  <data name="Auto_ThisServer" xml:space="preserve"><value>bu sunucu</value></data>
+  <data name="Auto_PlayersAtLeast" xml:space="preserve"><value>En az oyuncu</value></data>
+  <data name="Event_Started" xml:space="preserve"><value>açılınca</value></data>
+  <data name="Event_Stopped" xml:space="preserve"><value>kapanınca</value></data>
+  <data name="Event_Crashed" xml:space="preserve"><value>çökünce</value></data>
+  <data name="Act_Start" xml:space="preserve"><value>Bu sunucuyu başlat</value></data>
+  <data name="Act_Stop" xml:space="preserve"><value>Bu sunucuyu durdur</value></data>
+  <data name="Act_Restart" xml:space="preserve"><value>Bu sunucuyu yeniden başlat</value></data>
+  <data name="Act_Backup" xml:space="preserve"><value>Bu sunucunun yedeğini al</value></data>
+  <data name="Act_Command" xml:space="preserve"><value>Konsol komutu çalıştır</value></data>
+  <data name="Act_Say" xml:space="preserve"><value>Sohbete mesaj gönder</value></data>
+  <data name="Act_Notify" xml:space="preserve"><value>Bana bildir</value></data>
+  <data name="AutoWhy_Event" xml:space="preserve"><value>{0} {1}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

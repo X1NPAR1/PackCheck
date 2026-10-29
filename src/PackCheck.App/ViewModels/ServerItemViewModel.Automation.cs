@@ -29,6 +29,12 @@ public sealed partial class AutomationRuleRow : ObservableObject
         _maxRetries = rule.MaxRetries;
         _warningSeconds = rule.WarningSeconds;
         _restart = rule.Reaction == AutomationReaction.Restart;
+        // Keep the saved source even when that server is not loaded (yet), so saving never changes it silently.
+        _sourceServer = ServerOptions.FirstOrDefault(o => o.Id == rule.SourceServerId)
+            ?? (rule.SourceServerId is null ? ServerOptions[0] : new ServerOption(rule.SourceServerId, rule.SourceServerId));
+        _sourceEvent = rule.SourceEvent;
+        _action = rule.Action;
+        _delaySeconds = rule.DelaySeconds;
         foreach (var d in DayOrder)
         {
             var day = new DayToggle(d, rule.Days.Contains(d), Changed);
@@ -60,7 +66,9 @@ public sealed partial class AutomationRuleRow : ObservableObject
 
     public bool HasMessage => Kind is AutomationKind.Announcement;
 
-    public bool HasThreshold => Kind is AutomationKind.LowTps or AutomationKind.HighMemory;
+    public bool HasThreshold => Kind is AutomationKind.LowTps or AutomationKind.HighMemory or AutomationKind.WhenPlayers;
+
+    public bool HasReaction => Kind is AutomationKind.LowTps or AutomationKind.HighMemory;
 
     public bool HasDuration => Kind is AutomationKind.LowTps or AutomationKind.HighMemory or AutomationKind.StopWhenEmpty;
 
@@ -68,7 +76,60 @@ public sealed partial class AutomationRuleRow : ObservableObject
 
     public bool HasWarning => Kind is AutomationKind.ScheduledRestart;
 
-    public string ThresholdLabel => Loc.T(Kind == AutomationKind.LowTps ? "Auto_TpsBelow" : "Auto_MemoryAbove");
+    public string ThresholdLabel => Loc.T(Kind switch { AutomationKind.LowTps => "Auto_TpsBelow", AutomationKind.WhenPlayers => "Auto_PlayersAtLeast", _ => "Auto_MemoryAbove" });
+
+    public bool IsTrigger => Kind is AutomationKind.WhenServer or AutomationKind.WhenPlayers;
+
+    public bool HasSource => Kind is AutomationKind.WhenServer;
+
+    /// <summary>Command / message boxes for trigger rules depend on the chosen action.</summary>
+    public bool ShowsCommand => HasCommand || (IsTrigger && Action == RuleAction.Command);
+
+    public bool ShowsMessage => HasMessage || (IsTrigger && Action is RuleAction.Say or RuleAction.Notify);
+
+    /// <summary>"This server" first, then every other server PackCheck manages.</summary>
+    public static IReadOnlyList<ServerOption> ServerOptions =>
+        [new(null, Loc.T("Auto_ThisServer")), .. (MainViewModel.Shell?.Servers.Items ?? []).Select(s => new ServerOption(s.Definition.Id, s.Name))];
+
+    public IReadOnlyList<ServerOption> SourceChoices
+    {
+        get
+        {
+            var list = ServerOptions.ToList();
+            if (SourceServer is { Id: not null } current && list.All(o => o.Id != current.Id))
+            {
+                list.Add(current);
+            }
+
+            // Same instance as SourceServer for the one that is selected, so the ComboBox shows it.
+            return list.Select(o => o.Id == SourceServer?.Id ? SourceServer! : o).ToList();
+        }
+    }
+
+    public IReadOnlyList<ServerEvent> Events { get; } = Enum.GetValues<ServerEvent>();
+
+    public IReadOnlyList<RuleAction> Actions { get; } = Enum.GetValues<RuleAction>();
+
+    [ObservableProperty]
+    private ServerOption _sourceServer;
+
+    [ObservableProperty]
+    private ServerEvent _sourceEvent;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowsCommand), nameof(ShowsMessage))]
+    private RuleAction _action;
+
+    [ObservableProperty]
+    private double _delaySeconds;
+
+    partial void OnSourceServerChanged(ServerOption value) => Changed();
+
+    partial void OnSourceEventChanged(ServerEvent value) => Changed();
+
+    partial void OnActionChanged(RuleAction value) => Changed();
+
+    partial void OnDelaySecondsChanged(double value) => Changed();
 
     [ObservableProperty]
     private bool _enabled;
@@ -156,6 +217,10 @@ public sealed partial class AutomationRuleRow : ObservableObject
         MaxRetries = (int)Math.Max(1, MaxRetries),
         WarningSeconds = (int)Math.Max(0, WarningSeconds),
         Reaction = Restart ? AutomationReaction.Restart : AutomationReaction.Notify,
+        SourceServerId = SourceServer?.Id,
+        SourceEvent = SourceEvent,
+        Action = Action,
+        DelaySeconds = (int)Math.Max(0, DelaySeconds),
     };
 }
 
@@ -173,6 +238,11 @@ public sealed partial class DayToggle(DayOfWeek day, bool on, Action changed) : 
 
 public sealed record AutomationEventRow(string Time, string Rule, string Text, bool Ok);
 
+public sealed record ServerOption(string? Id, string Name)
+{
+    public override string ToString() => Name;
+}
+
 public sealed partial class ServerItemViewModel
 {
     private readonly AutomationEngine _automation = new();
@@ -180,6 +250,36 @@ public sealed partial class ServerItemViewModel
     private bool _automationBusy;
 
     public ObservableCollection<AutomationRuleRow> AutomationRules { get; } = [];
+
+    /// <summary>Every server announces start / stop / crash; every server's "when server" rules listen.</summary>
+    private static event Action<string, ServerEvent>? ServerEventRaised;
+
+    private ServerState _announcedState = ServerState.Stopped;
+
+    /// <summary>Called on every state change; turns transitions into Started / Stopped / Crashed events.</summary>
+    private void AnnounceState(ServerState value)
+    {
+        ServerEvent? ev = value switch
+        {
+            ServerState.Running when _announcedState != ServerState.Running => ServerEvent.Started,
+            ServerState.Stopped when _announcedState is ServerState.Running or ServerState.Stopping => ServerEvent.Stopped,
+            ServerState.Crashed when _announcedState != ServerState.Crashed => ServerEvent.Crashed,
+            _ => null,
+        };
+        _announcedState = value;
+        if (ev is { } e)
+        {
+            ServerEventRaised?.Invoke(Definition.Id, e);
+        }
+    }
+
+    private async void OnServerEvent(string sourceId, ServerEvent ev)
+    {
+        foreach (var a in _automation.OnServerEvent(sourceId, Definition.Id, ev))
+        {
+            await RunAutomationAsync(a).ConfigureAwait(true);
+        }
+    }
 
     public ObservableCollection<AutomationEventRow> AutomationEvents { get; } = [];
 
@@ -205,6 +305,7 @@ public sealed partial class ServerItemViewModel
         }
 
         _automation.Rules = data.Rules;
+        ServerEventRaised += OnServerEvent;
         _automationTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(15) };
         _automationTimer.Tick += async (_, _) => await AutomationTickAsync().ConfigureAwait(true);
         _automationTimer.Start();
@@ -295,6 +396,7 @@ public sealed partial class ServerItemViewModel
             AutomationKind.ScheduledCommand => new AutomationAction(AutomationActionKind.Command, r.Id, "run now", r.Command?.Trim().TrimStart('/')),
             AutomationKind.Announcement => new AutomationAction(AutomationActionKind.Say, r.Id, "run now", r.Message),
             AutomationKind.StopWhenEmpty => new AutomationAction(AutomationActionKind.Stop, r.Id, "run now"),
+            AutomationKind.WhenServer or AutomationKind.WhenPlayers => AutomationEngine.ToAction(r, "run now") with { DelaySeconds = 0 },
             _ => new AutomationAction(AutomationActionKind.Notify, r.Id, "run now", Loc.T("Auto_TestNotify")),
         };
         return RunAutomationAsync(action);
@@ -355,11 +457,20 @@ public sealed partial class ServerItemViewModel
         _ when reason.StartsWith("no players", StringComparison.Ordinal) => Loc.T("Auto_StopWhenEmpty"),
         _ when reason.StartsWith("TPS", StringComparison.Ordinal) => Loc.T("Auto_LowTps"),
         _ when reason.StartsWith("memory", StringComparison.Ordinal) => Loc.T("Auto_HighMemory"),
+        _ when reason.StartsWith("players", StringComparison.Ordinal) => Loc.T("Auto_WhenPlayers"),
+        _ when reason.Contains(':', StringComparison.Ordinal) => Loc.F("AutoWhy_Event",
+            MainViewModel.Shell?.Servers.Items.FirstOrDefault(s => s.Definition.Id == reason[(reason.IndexOf(':') + 1)..])?.Name ?? "?",
+            Loc.T("Event_" + char.ToUpperInvariant(reason[0]) + reason[1..reason.IndexOf(':')])),
         _ => reason,
     };
 
     private async Task RunAutomationAsync(AutomationAction a)
     {
+        if (a.DelaySeconds > 0)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(a.DelaySeconds)).ConfigureAwait(true);
+        }
+
         var ok = true;
         string text;
         try

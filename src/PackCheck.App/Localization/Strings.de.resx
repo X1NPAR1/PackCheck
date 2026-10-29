@@ -516,6 +516,26 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Mit PackCheck starten, nach Absturz neu starten, 03:30 sichern, 04:00 neu starten.</value></data>
   <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (dieser PC hat {1})</value></data>
   <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Mehr als dieser PC hat ({0:0.#} GB). Windows lagert aus, der Server wird sehr langsam.</value></data>
+  <data name="Auto_WhenServer" xml:space="preserve"><value>Wenn ein Server startet, stoppt oder abstürzt</value></data>
+  <data name="Auto_WhenServer_Hint" xml:space="preserve"><value>Server verketten: z. B. die Lobby 10 s nach dem Proxy starten, mit ihm stoppen oder nach dem Start einen Befehl ausführen.</value></data>
+  <data name="Auto_WhenPlayers" xml:space="preserve"><value>Wenn Spielerzahl erreicht</value></data>
+  <data name="Auto_WhenPlayers_Hint" xml:space="preserve"><value>Einmal, wenn die Spielerzahl erreicht wird; erneut nach Unterschreiten.</value></data>
+  <data name="Auto_When" xml:space="preserve"><value>Wenn</value></data>
+  <data name="Auto_Then" xml:space="preserve"><value>dann</value></data>
+  <data name="Auto_After" xml:space="preserve"><value>nach</value></data>
+  <data name="Auto_ThisServer" xml:space="preserve"><value>dieser Server</value></data>
+  <data name="Auto_PlayersAtLeast" xml:space="preserve"><value>Mindestens Spieler</value></data>
+  <data name="Event_Started" xml:space="preserve"><value>gestartet</value></data>
+  <data name="Event_Stopped" xml:space="preserve"><value>gestoppt</value></data>
+  <data name="Event_Crashed" xml:space="preserve"><value>abgestürzt</value></data>
+  <data name="Act_Start" xml:space="preserve"><value>Diesen Server starten</value></data>
+  <data name="Act_Stop" xml:space="preserve"><value>Diesen Server stoppen</value></data>
+  <data name="Act_Restart" xml:space="preserve"><value>Diesen Server neu starten</value></data>
+  <data name="Act_Backup" xml:space="preserve"><value>Dieses Server sichern</value></data>
+  <data name="Act_Command" xml:space="preserve"><value>Konsolenbefehl ausführen</value></data>
+  <data name="Act_Say" xml:space="preserve"><value>Chatnachricht senden</value></data>
+  <data name="Act_Notify" xml:space="preserve"><value>Mich benachrichtigen</value></data>
+  <data name="AutoWhy_Event" xml:space="preserve"><value>{0} {1}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

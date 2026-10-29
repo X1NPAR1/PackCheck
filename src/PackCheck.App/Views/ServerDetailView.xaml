@@ -553,6 +553,27 @@
                                                 </StackPanel>
                                             </DockPanel>
 
+                                            <WrapPanel Margin="46,10,0,0" Visibility="{Binding IsTrigger, Converter={StaticResource BoolVis}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,12,8" Visibility="{Binding HasSource, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Auto_When}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <ComboBox ItemsSource="{Binding SourceChoices}" SelectedItem="{Binding SourceServer}" Width="170" AutomationProperties.Name="{l:Loc Auto_When}" />
+                                                    <ComboBox ItemsSource="{Binding Events}" SelectedItem="{Binding SourceEvent}" Width="130" Margin="6,0,0,0">
+                                                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Event_}" /></DataTemplate></ComboBox.ItemTemplate>
+                                                    </ComboBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,12,8">
+                                                    <TextBlock Text="{l:Loc Auto_Then}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <ComboBox ItemsSource="{Binding Actions}" SelectedItem="{Binding Action}" Width="190" AutomationProperties.Name="{l:Loc Auto_Then}">
+                                                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Act_}" /></DataTemplate></ComboBox.ItemTemplate>
+                                                    </ComboBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,12,8">
+                                                    <TextBlock Text="{l:Loc Auto_After}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
+                                                    <TextBox Text="{Binding DelaySeconds, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
+                                                    <TextBlock Text="{l:Loc Auto_Seconds}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
+                                                </StackPanel>
+                                            </WrapPanel>
+
                                             <WrapPanel Margin="46,10,0,0">
                                                 <CheckBox Content="{l:Loc Auto_AtTime}" IsChecked="{Binding UseTime}" Visibility="{Binding CanUseInterval, Converter={StaticResource BoolVis}}" VerticalAlignment="Center" Margin="0,0,14,8" />
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasTime, Converter={StaticResource BoolVis}}">
@@ -587,7 +608,7 @@
                                                     <TextBox Text="{Binding ForMinutes, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
                                                     <TextBlock Text="{l:Loc Auto_Minutes}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
                                                 </StackPanel>
-                                                <CheckBox Content="{l:Loc Auto_RestartReaction}" IsChecked="{Binding Restart}" Visibility="{Binding HasThreshold, Converter={StaticResource BoolVis}}" VerticalAlignment="Center" Margin="0,0,16,8" />
+                                                <CheckBox Content="{l:Loc Auto_RestartReaction}" IsChecked="{Binding Restart}" Visibility="{Binding HasReaction, Converter={StaticResource BoolVis}}" VerticalAlignment="Center" Margin="0,0,16,8" />
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,16,8" Visibility="{Binding HasRetries, Converter={StaticResource BoolVis}}">
                                                     <TextBlock Text="{l:Loc Auto_MaxRetries}" VerticalAlignment="Center" Margin="0,0,6,0" Style="{StaticResource Muted}" />
                                                     <TextBox Text="{Binding MaxRetries, UpdateSourceTrigger=PropertyChanged, Delay=400}" Width="78" Height="34" Padding="8,4" MinHeight="0" VerticalContentAlignment="Center" />
@@ -598,12 +619,12 @@
                                                     <TextBlock Text="{l:Loc Auto_Seconds}" VerticalAlignment="Center" Margin="6,0,0,0" Style="{StaticResource Muted}" />
                                                 </StackPanel>
                                             </WrapPanel>
-                                            <DockPanel Margin="46,0,0,8" Visibility="{Binding HasCommand, Converter={StaticResource BoolVis}}">
+                                            <DockPanel Margin="46,0,0,8" Visibility="{Binding ShowsCommand, Converter={StaticResource BoolVis}}">
                                                 <TextBlock Text="/" FontFamily="{StaticResource MonoFont}" VerticalAlignment="Center" Margin="0,0,4,0" Style="{StaticResource Muted}" />
                                                 <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged, Delay=400}" FontFamily="{StaticResource MonoFont}" Tag="{l:Loc Auto_CommandHint}" />
                                             </DockPanel>
                                             <TextBox Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Delay=400}" Margin="46,0,0,8" Tag="{l:Loc Auto_MessageHint}"
-                                                     Visibility="{Binding HasMessage, Converter={StaticResource BoolVis}}" />
+                                                     Visibility="{Binding ShowsMessage, Converter={StaticResource BoolVis}}" />
                                             <TextBlock Margin="46,0,0,0" FontSize="11.5" Style="{StaticResource Muted}" TextWrapping="Wrap">
                                                 <Run Text="{Binding NextRun, Mode=OneWay}" /><Run Text="  " /><Run Text="{Binding LastRun, Mode=OneWay}" />
                                             </TextBlock>

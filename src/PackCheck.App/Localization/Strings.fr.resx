@@ -516,6 +516,26 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Auto_RecommendedHint" xml:space="preserve"><value>Démarrer avec PackCheck, relancer après plantage, sauvegarder à 03:30, redémarrer à 04:00.</value></data>
   <data name="Wizard_CoresOver" xml:space="preserve"><value>{0} (ce PC en a {1})</value></data>
   <data name="Wizard_MemoryOverPhysical" xml:space="preserve"><value>Plus que ce PC n'en a ({0:0.#} Go). Windows utilisera le disque, le serveur sera très lent.</value></data>
+  <data name="Auto_WhenServer" xml:space="preserve"><value>Quand un serveur démarre, s'arrête ou plante</value></data>
+  <data name="Auto_WhenServer_Hint" xml:space="preserve"><value>Enchaînez les serveurs : par ex. démarrer le lobby 10 s après le proxy, l'arrêter avec lui, ou lancer une commande au démarrage.</value></data>
+  <data name="Auto_WhenPlayers" xml:space="preserve"><value>Quand le nombre de joueurs atteint</value></data>
+  <data name="Auto_WhenPlayers_Hint" xml:space="preserve"><value>Une fois quand le nombre est atteint, à nouveau après être redescendu.</value></data>
+  <data name="Auto_When" xml:space="preserve"><value>Quand</value></data>
+  <data name="Auto_Then" xml:space="preserve"><value>faire</value></data>
+  <data name="Auto_After" xml:space="preserve"><value>après</value></data>
+  <data name="Auto_ThisServer" xml:space="preserve"><value>ce serveur</value></data>
+  <data name="Auto_PlayersAtLeast" xml:space="preserve"><value>Joueurs au moins</value></data>
+  <data name="Event_Started" xml:space="preserve"><value>démarre</value></data>
+  <data name="Event_Stopped" xml:space="preserve"><value>s'arrête</value></data>
+  <data name="Event_Crashed" xml:space="preserve"><value>plante</value></data>
+  <data name="Act_Start" xml:space="preserve"><value>Démarrer ce serveur</value></data>
+  <data name="Act_Stop" xml:space="preserve"><value>Arrêter ce serveur</value></data>
+  <data name="Act_Restart" xml:space="preserve"><value>Redémarrer ce serveur</value></data>
+  <data name="Act_Backup" xml:space="preserve"><value>Sauvegarder ce serveur</value></data>
+  <data name="Act_Command" xml:space="preserve"><value>Exécuter une commande</value></data>
+  <data name="Act_Say" xml:space="preserve"><value>Envoyer un message</value></data>
+  <data name="Act_Notify" xml:space="preserve"><value>Me prévenir</value></data>
+  <data name="AutoWhy_Event" xml:space="preserve"><value>{0} {1}</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>
