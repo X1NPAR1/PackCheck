@@ -323,6 +323,92 @@ Cancel: stay in PackCheck.</value></data>
   <data name="Tray_RunningCount" xml:space="preserve"><value>{0} of {1} servers running</value></data>
   <data name="Tray_NoServers" xml:space="preserve"><value>No servers yet.</value></data>
   <data name="Tray_StopAll" xml:space="preserve"><value>Stop all servers</value></data>
+  <data name="Wizard_Subtitle" xml:space="preserve"><value>Pick a starting point, adjust what you like, and PackCheck downloads, verifies and configures everything.</value></data>
+  <data name="Wizard_SecPreset" xml:space="preserve"><value>1 · Start from a profile</value></data>
+  <data name="Wizard_SecPlatform" xml:space="preserve"><value>2 · Platform</value></data>
+  <data name="Wizard_SecResources" xml:space="preserve"><value>3 · Resources</value></data>
+  <data name="Wizard_SecGame" xml:space="preserve"><value>4 · Game rules</value></data>
+  <data name="Wizard_SecWhere" xml:space="preserve"><value>5 · Name and location</value></data>
+  <data name="Wizard_Ram" xml:space="preserve"><value>Memory (RAM)</value></data>
+  <data name="Wizard_MemoryValue" xml:space="preserve"><value>{0:0.#} GB of {1:0.#} GB</value></data>
+  <data name="Wizard_MemoryTooHigh" xml:space="preserve"><value>This leaves too little for Windows ({0:0.#} GB installed). Keep at least a quarter free or the PC will start swapping.</value></data>
+  <data name="Wizard_MemoryLow" xml:space="preserve"><value>Below the recommended {0} GB for this platform; expect lag with more players or mods.</value></data>
+  <data name="Wizard_Cpu" xml:space="preserve"><value>CPU cores</value></data>
+  <data name="Wizard_CoresAll" xml:space="preserve"><value>all {0}</value></data>
+  <data name="Wizard_CoresValue" xml:space="preserve"><value>{0} of {1}</value></data>
+  <data name="Wizard_CpuHint" xml:space="preserve"><value>Fewer cores keep the PC responsive while the server runs (games, streaming). Applied to Java and to the process.</value></data>
+  <data name="Wizard_GameMode" xml:space="preserve"><value>Game mode</value></data>
+  <data name="Wizard_Difficulty" xml:space="preserve"><value>Difficulty</value></data>
+  <data name="Wizard_MaxPlayers" xml:space="preserve"><value>Max players</value></data>
+  <data name="Wizard_ViewDistance" xml:space="preserve"><value>View distance</value></data>
+  <data name="Wizard_Pvp" xml:space="preserve"><value>PvP</value></data>
+  <data name="Wizard_Whitelist" xml:space="preserve"><value>Whitelist (only invited players)</value></data>
+  <data name="Wizard_OnlineMode" xml:space="preserve"><value>Online mode (Mojang account check)</value></data>
+  <data name="Wizard_Hardcore" xml:space="preserve"><value>Hardcore (one life)</value></data>
+  <data name="Wizard_OfflineWarn" xml:space="preserve"><value>Without online mode anyone can join with any name, including yours. Only turn it off behind a proxy or on a private LAN.</value></data>
+  <data name="Wizard_Motd" xml:space="preserve"><value>Message of the day (server list)</value></data>
+  <data name="Wizard_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Wizard_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Wizard_Estimate" xml:space="preserve"><value>Estimate</value></data>
+  <data name="Wizard_Capacity" xml:space="preserve"><value>Comfortable for about {0} players</value></data>
+  <data name="Wizard_EstimateHint" xml:space="preserve"><value>Rule of thumb from memory and platform; big farms or heavy mods need more.</value></data>
+  <data name="Wizard_AfterCreate" xml:space="preserve"><value>After creating: the server appears in the list, the console opens and you can install plugins or mods from the Plugins / Mods pages.</value></data>
+  <data name="Mode_survival" xml:space="preserve"><value>Survival</value></data>
+  <data name="Mode_creative" xml:space="preserve"><value>Creative</value></data>
+  <data name="Mode_adventure" xml:space="preserve"><value>Adventure</value></data>
+  <data name="Mode_spectator" xml:space="preserve"><value>Spectator</value></data>
+  <data name="Diff_peaceful" xml:space="preserve"><value>Peaceful</value></data>
+  <data name="Diff_easy" xml:space="preserve"><value>Easy</value></data>
+  <data name="Diff_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Diff_hard" xml:space="preserve"><value>Hard</value></data>
+  <data name="Preset_Friends" xml:space="preserve"><value>Survival with friends</value></data>
+  <data name="Preset_Friends_Hint" xml:space="preserve"><value>Paper · 4 GB · whitelist</value></data>
+  <data name="Preset_Modded" xml:space="preserve"><value>Modded</value></data>
+  <data name="Preset_Modded_Hint" xml:space="preserve"><value>NeoForge · 8 GB</value></data>
+  <data name="Preset_Creative" xml:space="preserve"><value>Creative build</value></data>
+  <data name="Preset_Creative_Hint" xml:space="preserve"><value>Paper · peaceful · no PvP</value></data>
+  <data name="Preset_Minigames" xml:space="preserve"><value>Minigames / lobby</value></data>
+  <data name="Preset_Minigames_Hint" xml:space="preserve"><value>Purpur · 50 players · adventure</value></data>
+  <data name="Preset_Hardcore" xml:space="preserve"><value>Hardcore</value></data>
+  <data name="Preset_Hardcore_Hint" xml:space="preserve"><value>One life · hard</value></data>
+  <data name="Preset_LowEnd" xml:space="preserve"><value>Low-end PC</value></data>
+  <data name="Preset_LowEnd_Hint" xml:space="preserve"><value>2 GB · half the cores · short view</value></data>
+  <data name="PlatGroup_Plugins" xml:space="preserve"><value>plugins</value></data>
+  <data name="PlatGroup_Mods" xml:space="preserve"><value>mods</value></data>
+  <data name="PlatGroup_Vanilla" xml:space="preserve"><value>official</value></data>
+  <data name="PlatGroup_Hybrid" xml:space="preserve"><value>mods + plugins</value></data>
+  <data name="PlatGroup_Proxy" xml:space="preserve"><value>proxy</value></data>
+  <data name="Plat_Paper" xml:space="preserve"><value>Fast, stable, the usual choice for plugins.</value></data>
+  <data name="Plat_Purpur" xml:space="preserve"><value>Paper plus many extra gameplay options.</value></data>
+  <data name="Plat_Folia" xml:space="preserve"><value>Multithreaded regions for very large servers.</value></data>
+  <data name="Plat_Leaf" xml:space="preserve"><value>Paper fork focused on performance.</value></data>
+  <data name="Plat_Leaves" xml:space="preserve"><value>Paper fork that keeps vanilla mechanics.</value></data>
+  <data name="Plat_Spigot" xml:space="preserve"><value>Classic plugin server, built with BuildTools.</value></data>
+  <data name="Plat_CraftBukkit" xml:space="preserve"><value>Original Bukkit server, built with BuildTools.</value></data>
+  <data name="Plat_Vanilla" xml:space="preserve"><value>Mojang's official server, no plugins or mods.</value></data>
+  <data name="Plat_Fabric" xml:space="preserve"><value>Lightweight mod loader, fast updates.</value></data>
+  <data name="Plat_Quilt" xml:space="preserve"><value>Fabric-compatible mod loader.</value></data>
+  <data name="Plat_Forge" xml:space="preserve"><value>Classic loader for big mod packs.</value></data>
+  <data name="Plat_NeoForge" xml:space="preserve"><value>Modern Forge successor for new versions.</value></data>
+  <data name="Plat_SpongeVanilla" xml:space="preserve"><value>Sponge plugin API on vanilla.</value></data>
+  <data name="Plat_Mohist" xml:space="preserve"><value>Forge mods and Bukkit plugins together.</value></data>
+  <data name="Plat_Youer" xml:space="preserve"><value>NeoForge mods with Bukkit plugins.</value></data>
+  <data name="Plat_Arclight" xml:space="preserve"><value>Mods and plugins on NeoForge.</value></data>
+  <data name="Plat_Velocity" xml:space="preserve"><value>Modern proxy linking several servers.</value></data>
+  <data name="Plat_BungeeCord" xml:space="preserve"><value>Classic proxy linking several servers.</value></data>
+  <data name="Delete_Title1" xml:space="preserve"><value>Delete {0}?</value></data>
+  <data name="Delete_Body1" xml:space="preserve"><value>The whole server folder will be deleted from disk:
+{0} ({1})
+
+Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made in PackCheck (.packcheck-backups) are kept.</value></data>
+  <data name="Delete_Continue" xml:space="preserve"><value>Continue</value></data>
+  <data name="Delete_Title2" xml:space="preserve"><value>This cannot be undone</value></data>
+  <data name="Delete_Body2" xml:space="preserve"><value>"{0}" will be deleted permanently, not moved to the Recycle Bin. Are you sure?</value></data>
+  <data name="Delete_Confirm" xml:space="preserve"><value>Delete permanently</value></data>
+  <data name="Delete_Done" xml:space="preserve"><value>{0} was deleted.</value></data>
+  <data name="Delete_Failed" xml:space="preserve"><value>Could not delete everything: {0}</value></data>
+  <data name="Delete_StopFirst" xml:space="preserve"><value>Stop the server before deleting it.</value></data>
+  <data name="Delete_Button" xml:space="preserve"><value>Delete server</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

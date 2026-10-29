@@ -323,6 +323,92 @@ Abbrechen: in PackCheck bleiben.</value></data>
   <data name="Tray_RunningCount" xml:space="preserve"><value>{0} von {1} Servern laufen</value></data>
   <data name="Tray_NoServers" xml:space="preserve"><value>Noch keine Server.</value></data>
   <data name="Tray_StopAll" xml:space="preserve"><value>Alle Server stoppen</value></data>
+  <data name="Wizard_Subtitle" xml:space="preserve"><value>Wähle einen Ausgangspunkt, passe an, was du willst – PackCheck lädt, prüft und konfiguriert alles.</value></data>
+  <data name="Wizard_SecPreset" xml:space="preserve"><value>1 · Mit einem Profil starten</value></data>
+  <data name="Wizard_SecPlatform" xml:space="preserve"><value>2 · Plattform</value></data>
+  <data name="Wizard_SecResources" xml:space="preserve"><value>3 · Ressourcen</value></data>
+  <data name="Wizard_SecGame" xml:space="preserve"><value>4 · Spielregeln</value></data>
+  <data name="Wizard_SecWhere" xml:space="preserve"><value>5 · Name und Ort</value></data>
+  <data name="Wizard_Ram" xml:space="preserve"><value>Arbeitsspeicher (RAM)</value></data>
+  <data name="Wizard_MemoryValue" xml:space="preserve"><value>{0:0.#} GB von {1:0.#} GB</value></data>
+  <data name="Wizard_MemoryTooHigh" xml:space="preserve"><value>Für Windows bleibt zu wenig übrig ({0:0.#} GB installiert). Lass mindestens ein Viertel frei.</value></data>
+  <data name="Wizard_MemoryLow" xml:space="preserve"><value>Unter den empfohlenen {0} GB für diese Plattform; mit mehr Spielern oder Mods ruckelt es.</value></data>
+  <data name="Wizard_Cpu" xml:space="preserve"><value>CPU-Kerne</value></data>
+  <data name="Wizard_CoresAll" xml:space="preserve"><value>alle {0}</value></data>
+  <data name="Wizard_CoresValue" xml:space="preserve"><value>{0} von {1}</value></data>
+  <data name="Wizard_CpuHint" xml:space="preserve"><value>Weniger Kerne halten den PC flüssig, während der Server läuft. Gilt für Java und den Prozess.</value></data>
+  <data name="Wizard_GameMode" xml:space="preserve"><value>Spielmodus</value></data>
+  <data name="Wizard_Difficulty" xml:space="preserve"><value>Schwierigkeit</value></data>
+  <data name="Wizard_MaxPlayers" xml:space="preserve"><value>Max. Spieler</value></data>
+  <data name="Wizard_ViewDistance" xml:space="preserve"><value>Sichtweite</value></data>
+  <data name="Wizard_Pvp" xml:space="preserve"><value>PvP</value></data>
+  <data name="Wizard_Whitelist" xml:space="preserve"><value>Whitelist (nur Eingeladene)</value></data>
+  <data name="Wizard_OnlineMode" xml:space="preserve"><value>Online-Modus (Konto-Prüfung)</value></data>
+  <data name="Wizard_Hardcore" xml:space="preserve"><value>Hardcore (ein Leben)</value></data>
+  <data name="Wizard_OfflineWarn" xml:space="preserve"><value>Ohne Online-Modus kann jeder mit jedem Namen beitreten, auch mit deinem. Nur hinter einem Proxy oder im privaten LAN abschalten.</value></data>
+  <data name="Wizard_Motd" xml:space="preserve"><value>Nachricht des Tages (Serverliste)</value></data>
+  <data name="Wizard_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Wizard_Summary" xml:space="preserve"><value>Zusammenfassung</value></data>
+  <data name="Wizard_Estimate" xml:space="preserve"><value>Schätzung</value></data>
+  <data name="Wizard_Capacity" xml:space="preserve"><value>Angenehm für etwa {0} Spieler</value></data>
+  <data name="Wizard_EstimateHint" xml:space="preserve"><value>Faustregel aus Speicher und Plattform; große Farmen oder schwere Mods brauchen mehr.</value></data>
+  <data name="Wizard_AfterCreate" xml:space="preserve"><value>Danach erscheint der Server in der Liste; Plugins oder Mods installierst du auf den Seiten Plugins / Mods.</value></data>
+  <data name="Mode_survival" xml:space="preserve"><value>Überleben</value></data>
+  <data name="Mode_creative" xml:space="preserve"><value>Kreativ</value></data>
+  <data name="Mode_adventure" xml:space="preserve"><value>Abenteuer</value></data>
+  <data name="Mode_spectator" xml:space="preserve"><value>Zuschauer</value></data>
+  <data name="Diff_peaceful" xml:space="preserve"><value>Friedlich</value></data>
+  <data name="Diff_easy" xml:space="preserve"><value>Einfach</value></data>
+  <data name="Diff_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Diff_hard" xml:space="preserve"><value>Schwer</value></data>
+  <data name="Preset_Friends" xml:space="preserve"><value>Survival mit Freunden</value></data>
+  <data name="Preset_Friends_Hint" xml:space="preserve"><value>Paper · 4 GB · Whitelist</value></data>
+  <data name="Preset_Modded" xml:space="preserve"><value>Mit Mods</value></data>
+  <data name="Preset_Modded_Hint" xml:space="preserve"><value>NeoForge · 8 GB</value></data>
+  <data name="Preset_Creative" xml:space="preserve"><value>Kreativ bauen</value></data>
+  <data name="Preset_Creative_Hint" xml:space="preserve"><value>Paper · friedlich · kein PvP</value></data>
+  <data name="Preset_Minigames" xml:space="preserve"><value>Minispiele / Lobby</value></data>
+  <data name="Preset_Minigames_Hint" xml:space="preserve"><value>Purpur · 50 Spieler · Abenteuer</value></data>
+  <data name="Preset_Hardcore" xml:space="preserve"><value>Hardcore</value></data>
+  <data name="Preset_Hardcore_Hint" xml:space="preserve"><value>Ein Leben · schwer</value></data>
+  <data name="Preset_LowEnd" xml:space="preserve"><value>Schwacher PC</value></data>
+  <data name="Preset_LowEnd_Hint" xml:space="preserve"><value>2 GB · halbe Kerne · kurze Sicht</value></data>
+  <data name="PlatGroup_Plugins" xml:space="preserve"><value>Plugins</value></data>
+  <data name="PlatGroup_Mods" xml:space="preserve"><value>Mods</value></data>
+  <data name="PlatGroup_Vanilla" xml:space="preserve"><value>offiziell</value></data>
+  <data name="PlatGroup_Hybrid" xml:space="preserve"><value>Mods + Plugins</value></data>
+  <data name="PlatGroup_Proxy" xml:space="preserve"><value>Proxy</value></data>
+  <data name="Plat_Paper" xml:space="preserve"><value>Schnell und stabil, Standard für Plugins.</value></data>
+  <data name="Plat_Purpur" xml:space="preserve"><value>Paper mit vielen Extra-Optionen.</value></data>
+  <data name="Plat_Folia" xml:space="preserve"><value>Mehrere Threads für sehr große Server.</value></data>
+  <data name="Plat_Leaf" xml:space="preserve"><value>Paper-Fork mit Fokus auf Leistung.</value></data>
+  <data name="Plat_Leaves" xml:space="preserve"><value>Paper-Fork mit Vanilla-Mechaniken.</value></data>
+  <data name="Plat_Spigot" xml:space="preserve"><value>Klassischer Plugin-Server (BuildTools).</value></data>
+  <data name="Plat_CraftBukkit" xml:space="preserve"><value>Original-Bukkit-Server (BuildTools).</value></data>
+  <data name="Plat_Vanilla" xml:space="preserve"><value>Offizieller Mojang-Server, ohne Plugins/Mods.</value></data>
+  <data name="Plat_Fabric" xml:space="preserve"><value>Leichter Mod-Loader, schnelle Updates.</value></data>
+  <data name="Plat_Quilt" xml:space="preserve"><value>Fabric-kompatibler Mod-Loader.</value></data>
+  <data name="Plat_Forge" xml:space="preserve"><value>Klassischer Loader für große Modpacks.</value></data>
+  <data name="Plat_NeoForge" xml:space="preserve"><value>Moderner Forge-Nachfolger.</value></data>
+  <data name="Plat_SpongeVanilla" xml:space="preserve"><value>Sponge-Plugin-API auf Vanilla.</value></data>
+  <data name="Plat_Mohist" xml:space="preserve"><value>Forge-Mods und Bukkit-Plugins zusammen.</value></data>
+  <data name="Plat_Youer" xml:space="preserve"><value>NeoForge-Mods mit Bukkit-Plugins.</value></data>
+  <data name="Plat_Arclight" xml:space="preserve"><value>Mods und Plugins auf NeoForge.</value></data>
+  <data name="Plat_Velocity" xml:space="preserve"><value>Moderner Proxy für mehrere Server.</value></data>
+  <data name="Plat_BungeeCord" xml:space="preserve"><value>Klassischer Proxy für mehrere Server.</value></data>
+  <data name="Delete_Title1" xml:space="preserve"><value>{0} löschen?</value></data>
+  <data name="Delete_Body1" xml:space="preserve"><value>Der gesamte Serverordner wird gelöscht:
+{0} ({1})
+
+Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (.packcheck-backups) bleiben.</value></data>
+  <data name="Delete_Continue" xml:space="preserve"><value>Weiter</value></data>
+  <data name="Delete_Title2" xml:space="preserve"><value>Das kann nicht rückgängig gemacht werden</value></data>
+  <data name="Delete_Body2" xml:space="preserve"><value>„{0}“ wird endgültig gelöscht, nicht in den Papierkorb verschoben. Sicher?</value></data>
+  <data name="Delete_Confirm" xml:space="preserve"><value>Endgültig löschen</value></data>
+  <data name="Delete_Done" xml:space="preserve"><value>{0} wurde gelöscht.</value></data>
+  <data name="Delete_Failed" xml:space="preserve"><value>Nicht alles konnte gelöscht werden: {0}</value></data>
+  <data name="Delete_StopFirst" xml:space="preserve"><value>Stoppe den Server vor dem Löschen.</value></data>
+  <data name="Delete_Button" xml:space="preserve"><value>Server löschen</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

@@ -120,8 +120,11 @@
                     <Path Data="{StaticResource IconFolder}" Style="{StaticResource IconPath}" Stroke="{DynamicResource TextMutedBrush}" />
                 </Button>
                 <Button Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}" CommandParameter="{Binding}" Style="{StaticResource GhostButton}"
-                        ToolTip="{l:Loc Servers_Remove}" AutomationProperties.Name="{l:Loc Servers_Remove}">
-                    <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="13" Stroke="{DynamicResource TextMutedBrush}" />
+                        ToolTip="{l:Loc Delete_Button}" AutomationProperties.Name="{l:Loc Delete_Button}" AutomationProperties.AutomationId="DeleteServer" Margin="4,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{StaticResource IconClose}" Style="{StaticResource IconPath}" Width="11" Stroke="{DynamicResource FailBrush}" />
+                        <TextBlock Text="{l:Loc Delete_Button}" Foreground="{DynamicResource FailBrush}" Margin="6,0,0,0" />
+                    </StackPanel>
                 </Button>
             </StackPanel>
             <StackPanel>

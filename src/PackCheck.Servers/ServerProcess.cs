@@ -37,6 +37,12 @@ public sealed class ServerProcess : IAsyncDisposable
     public static IReadOnlyList<string> BuildArguments(ServerDefinition def)
     {
         var args = new List<string> { $"-Xms{def.MinMemoryMb}M", $"-Xmx{def.MaxMemoryMb}M" };
+        if (def.CpuCores > 0 && def.CpuCores < Environment.ProcessorCount)
+        {
+            // Sizes the JVM's GC and worker thread pools to the cores the server is allowed to use.
+            args.Add($"-XX:ActiveProcessorCount={def.CpuCores}");
+        }
+
         if (def.UseAikarFlags)
         {
             args.AddRange(
@@ -108,6 +114,18 @@ public sealed class ServerProcess : IAsyncDisposable
         };
         _process.Start();
         _job.Assign(_process);
+        if (_def.CpuCores > 0 && _def.CpuCores < Environment.ProcessorCount && OperatingSystem.IsWindows())
+        {
+            try
+            {
+                // Limit the server to its first N logical processors so the rest of the PC stays responsive.
+                _process.ProcessorAffinity = (nint)((1L << _def.CpuCores) - 1);
+            }
+            catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
+            {
+            }
+        }
+
         _process.BeginOutputReadLine();
         _process.BeginErrorReadLine();
         return Task.CompletedTask;

@@ -114,58 +114,242 @@
 
         <!-- Create wizard overlay -->
         <Grid Grid.RowSpan="2" Margin="-32,-44,-32,-24" Background="{DynamicResource OverlayBrush}" DataContext="{Binding Wizard}" Visibility="{Binding Converter={StaticResource NullVis}}">
-            <Border Style="{StaticResource Card}" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28" l:Anim.PopIn="True" AutomationProperties.AutomationId="CreateWizard">
-                <StackPanel>
-                    <TextBlock Text="{l:Loc Wizard_Title}" Style="{StaticResource H1}" FontSize="24" />
-                    <Grid Margin="0,8,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="16" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource Card}" MaxWidth="1040" Margin="28" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" l:Anim.PopIn="True" AutomationProperties.AutomationId="CreateWizard">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- left: choices -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="28,24,24,24">
                         <StackPanel>
-                            <TextBlock Text="{l:Loc Wizard_Name}" Style="{StaticResource Label}" />
-                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="WizardName" />
-                            <TextBlock Text="{l:Loc Wizard_Platform}" Style="{StaticResource Label}" />
-                            <ComboBox ItemsSource="{Binding Platforms}" SelectedItem="{Binding Platform}" />
-                            <TextBlock Text="{l:Loc Wizard_Memory}" Style="{StaticResource Label}" />
-                            <TextBox Text="{Binding MemoryMb}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="{l:Loc Wizard_Title}" Style="{StaticResource H1}" FontSize="24" />
+                            <TextBlock Text="{l:Loc Wizard_Subtitle}" Style="{StaticResource Muted}" Margin="0,4,0,0" TextWrapping="Wrap" />
+
+                            <!-- 1. presets -->
+                            <TextBlock Text="{l:Loc Wizard_SecPreset}" Style="{StaticResource H2}" FontSize="14" Margin="0,22,0,8" />
+                            <ListBox ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset}" BorderThickness="0" Background="Transparent"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.AutomationId="WizardPresets">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate><UniformGrid Columns="3" /></ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="AutomationProperties.Name" Value="{Binding Title}" />
+                                        <Setter Property="ToolTip" Value="{Binding Hint}" />
+                                        <Setter Property="Margin" Value="0,0,8,8" />
+                                        <Setter Property="Cursor" Value="Hand" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="Bd" CornerRadius="9" Padding="12,9" BorderThickness="1" BorderBrush="{DynamicResource LineBrush}" Background="{DynamicResource Surface2Brush}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="13" />
+                                                            <TextBlock Text="{Binding Hint}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" /></Trigger>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimarySoftBrush}" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+
+                            <!-- 2. platform -->
+                            <TextBlock Text="{l:Loc Wizard_SecPlatform}" Style="{StaticResource H2}" FontSize="14" Margin="0,18,0,8" />
+                            <ListBox ItemsSource="{Binding PlatformOptions}" SelectedItem="{Binding SelectedPlatform}" BorderThickness="0" Background="Transparent"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.AutomationId="WizardPlatform">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="Bd" Width="196" Margin="0,0,8,8" CornerRadius="9" Padding="12,9" BorderThickness="1" Cursor="Hand"
+                                                            BorderBrush="{DynamicResource LineBrush}" Background="{DynamicResource SurfaceBrush}">
+                                                        <StackPanel>
+                                                            <DockPanel>
+                                                                <TextBlock DockPanel.Dock="Right" Text="{Binding GroupText}" FontSize="10.5" Foreground="{DynamicResource TextFaintBrush}" VerticalAlignment="Center" />
+                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                            </DockPanel>
+                                                            <TextBlock Text="{Binding Description}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" Height="30" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" /></Trigger>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimarySoftBrush}" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+
+                            <!-- version + java -->
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{l:Loc Wizard_Version}" Style="{StaticResource Label}" />
+                                    <ComboBox ItemsSource="{Binding Versions}" SelectedItem="{Binding Version}" AutomationProperties.AutomationId="WizardVersion" />
+                                    <TextBlock Text="{Binding SupportedRange}" Style="{StaticResource Muted}" FontSize="12" Margin="0,4,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{l:Loc Wizard_Java}" Style="{StaticResource Label}" />
+                                    <ComboBox ItemsSource="{Binding Runtimes}" SelectedItem="{Binding Runtime}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate><TextBlock Text="{Binding Display}" /></DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <DockPanel Margin="0,6,0,0" Visibility="{Binding NeedsJava, Converter={StaticResource BoolVis}}">
+                                        <Button DockPanel.Dock="Right" Command="{Binding InstallJavaCommand}" Padding="10,4" Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding RequiredJava, StringFormat='Temurin {0}'}" />
+                                        </Button>
+                                        <TextBlock Text="{Binding JavaHint}" Foreground="{DynamicResource WarnBrush}" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- 3. resources -->
+                            <TextBlock Text="{l:Loc Wizard_SecResources}" Style="{StaticResource H2}" FontSize="14" Margin="0,18,0,8" />
+                            <Border CornerRadius="9" Background="{DynamicResource Surface2Brush}" Padding="16,12">
+                                <StackPanel>
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding MemoryText}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{l:Loc Wizard_Ram}" FontWeight="SemiBold" />
+                                    </DockPanel>
+                                    <Slider Minimum="1" Maximum="{Binding MaxRamGb}" Value="{Binding MemoryGb}" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight"
+                                            Margin="0,8,0,0" AutomationProperties.Name="{l:Loc Wizard_Ram}" AutomationProperties.AutomationId="WizardRam" />
+                                    <TextBlock Text="{Binding MemoryWarning}" Foreground="{DynamicResource WarnBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"
+                                               Visibility="{Binding MemoryWarning, Converter={StaticResource NullVis}}" />
+                                    <DockPanel Margin="0,14,0,0">
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding CoresText}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{l:Loc Wizard_Cpu}" FontWeight="SemiBold" />
+                                    </DockPanel>
+                                    <Slider Minimum="1" Maximum="{Binding LogicalCores}" Value="{Binding CpuCores}" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight"
+                                            Margin="0,8,0,0" AutomationProperties.Name="{l:Loc Wizard_Cpu}" AutomationProperties.AutomationId="WizardCpu" />
+                                    <TextBlock Text="{l:Loc Wizard_CpuHint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 4. game -->
+                            <StackPanel Visibility="{Binding IsProxy, Converter={x:Static l:Inverse.Visibility}}">
+                                <TextBlock Text="{l:Loc Wizard_SecGame}" Style="{StaticResource H2}" FontSize="14" Margin="0,18,0,8" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{l:Loc Wizard_GameMode}" Style="{StaticResource Label}" />
+                                        <ComboBox ItemsSource="{Binding GameModes}" SelectedItem="{Binding GameMode}">
+                                            <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Mode_}" /></DataTemplate></ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <DockPanel Margin="0,12,0,0">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding MaxPlayers, StringFormat=N0}" FontFamily="{StaticResource MonoFont}" />
+                                            <TextBlock Text="{l:Loc Wizard_MaxPlayers}" Style="{StaticResource Label}" Margin="0" />
+                                        </DockPanel>
+                                        <Slider Minimum="1" Maximum="100" Value="{Binding MaxPlayers}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,6,0,0" AutomationProperties.Name="{l:Loc Wizard_MaxPlayers}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{l:Loc Wizard_Difficulty}" Style="{StaticResource Label}" />
+                                        <ComboBox ItemsSource="{Binding Difficulties}" SelectedItem="{Binding Difficulty}">
+                                            <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Diff_}" /></DataTemplate></ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <DockPanel Margin="0,12,0,0">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding ViewDistance, StringFormat='{}{0:N0} chunks'}" FontFamily="{StaticResource MonoFont}" />
+                                            <TextBlock Text="{l:Loc Wizard_ViewDistance}" Style="{StaticResource Label}" Margin="0" />
+                                        </DockPanel>
+                                        <Slider Minimum="3" Maximum="32" Value="{Binding ViewDistance}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,6,0,0" AutomationProperties.Name="{l:Loc Wizard_ViewDistance}" />
+                                    </StackPanel>
+                                </Grid>
+                                <UniformGrid Columns="2" Margin="0,12,0,0">
+                                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Pvp}" Margin="0,0,0,8"><TextBlock Text="{l:Loc Wizard_Pvp}" /></CheckBox>
+                                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Whitelist}" Margin="0,0,0,8"><TextBlock Text="{l:Loc Wizard_Whitelist}" /></CheckBox>
+                                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding OnlineMode}" Margin="0,0,0,8"><TextBlock Text="{l:Loc Wizard_OnlineMode}" /></CheckBox>
+                                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Hardcore}" Margin="0,0,0,8"><TextBlock Text="{l:Loc Wizard_Hardcore}" /></CheckBox>
+                                </UniformGrid>
+                                <TextBlock Text="{Binding OfflineWarning}" Foreground="{DynamicResource FailBrush}" FontSize="12" TextWrapping="Wrap" Visibility="{Binding OfflineWarning, Converter={StaticResource NullVis}}" />
+                                <TextBlock Text="{l:Loc Wizard_Motd}" Style="{StaticResource Label}" />
+                                <TextBox Text="{Binding Motd, UpdateSourceTrigger=PropertyChanged}" MaxLength="59" />
+                            </StackPanel>
+
+                            <!-- 5. where -->
+                            <TextBlock Text="{l:Loc Wizard_SecWhere}" Style="{StaticResource H2}" FontSize="14" Margin="0,18,0,0" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="120" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{l:Loc Wizard_Name}" Style="{StaticResource Label}" />
+                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="WizardName" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{l:Loc Wizard_Port}" Style="{StaticResource Label}" />
+                                    <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" AutomationProperties.AutomationId="WizardPort" />
+                                </StackPanel>
+                            </Grid>
                             <TextBlock Text="{l:Loc Wizard_Folder}" Style="{StaticResource Label}" />
                             <DockPanel>
                                 <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseCommand}" Margin="6,0,0,0" Padding="10,8" />
-                                <TextBox Text="{Binding Folder}" />
+                                <TextBox Text="{Binding Folder}" FontFamily="{StaticResource MonoFont}" />
                             </DockPanel>
-                            <TextBlock Text="{l:Loc Wizard_Version}" Style="{StaticResource Label}" />
-                            <ComboBox ItemsSource="{Binding Versions}" SelectedItem="{Binding Version}" AutomationProperties.AutomationId="WizardVersion" />
-                            <TextBlock Text="{Binding SupportedRange}" Style="{StaticResource Muted}" FontSize="12" Margin="0,4,0,0" />
-                            <TextBlock Text="{l:Loc Wizard_Seed}" Style="{StaticResource Label}" />
-                            <TextBox Text="{Binding Seed}" />
+                            <TextBlock Text="{l:Loc Wizard_Seed}" Style="{StaticResource Label}" Visibility="{Binding IsProxy, Converter={x:Static l:Inverse.Visibility}}" />
+                            <TextBox Text="{Binding Seed}" Visibility="{Binding IsProxy, Converter={x:Static l:Inverse.Visibility}}" />
                         </StackPanel>
-                    </Grid>
-                    <TextBlock Text="{l:Loc Wizard_Java}" Style="{StaticResource Label}" />
-                    <ComboBox ItemsSource="{Binding Runtimes}" SelectedItem="{Binding Runtime}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate><TextBlock Text="{Binding Display}" /></DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <DockPanel Margin="0,8,0,0" Visibility="{Binding NeedsJava, Converter={StaticResource BoolVis}}">
-                        <Button DockPanel.Dock="Right" Command="{Binding InstallJavaCommand}" Padding="12,6">
-                            <TextBlock Text="{Binding RequiredJava, StringFormat='Temurin {0}'}" />
-                        </Button>
-                        <TextBlock Text="{Binding JavaHint}" Foreground="{DynamicResource WarnBrush}" VerticalAlignment="Center" TextWrapping="Wrap" />
-                    </DockPanel>
-                    <CheckBox IsChecked="{Binding AcceptEula}" Margin="0,18,0,0" AutomationProperties.AutomationId="WizardEula">
-                        <TextBlock Text="{l:Loc Wizard_Eula}" TextWrapping="Wrap" />
-                    </CheckBox>
-                    <ProgressBar Margin="0,18,0,6" Maximum="1" Value="{Binding Progress}" Visibility="{Binding IsWorking, Converter={StaticResource BoolVis}}" />
-                    <TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" Margin="0,6,0,0" Visibility="{Binding Status, Converter={StaticResource NullVis}}" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                        <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCommand}" Margin="0,0,8,0" />
-                        <Button Content="{l:Loc Wizard_Create}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateCommand}" AutomationProperties.AutomationId="WizardCreate" />
-                    </StackPanel>
-                </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- right: summary -->
+                    <Border Grid.Column="1" Background="{DynamicResource Surface2Brush}" CornerRadius="0,10,10,0" Padding="22,24">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Bottom">
+                                <CheckBox IsChecked="{Binding AcceptEula}" AutomationProperties.AutomationId="WizardEula">
+                                    <TextBlock Text="{l:Loc Wizard_Eula}" TextWrapping="Wrap" FontSize="12.5" />
+                                </CheckBox>
+                                <ProgressBar Margin="0,14,0,0" Maximum="1" Value="{Binding Progress}" Visibility="{Binding IsWorking, Converter={StaticResource BoolVis}}" />
+                                <TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" Margin="0,6,0,0" TextWrapping="Wrap" Visibility="{Binding Status, Converter={StaticResource NullVis}}" />
+                                <Button Content="{l:Loc Wizard_Create}" Style="{StaticResource PrimaryButton}" Command="{Binding CreateCommand}" Margin="0,16,0,0" Padding="12,10"
+                                        HorizontalAlignment="Stretch" AutomationProperties.AutomationId="WizardCreate" />
+                                <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCommand}" Margin="0,8,0,0" HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="{l:Loc Wizard_Summary}" Style="{StaticResource Label}" Margin="0,0,0,8" />
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource H2}" FontSize="18" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{Binding SummaryText}" FontFamily="{StaticResource MonoFont}" FontSize="12" Margin="0,8,0,0" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" />
+                                <Border CornerRadius="8" Background="{DynamicResource SurfaceBrush}" Padding="12,10" Margin="0,16,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="{l:Loc Wizard_Estimate}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                                        <TextBlock Text="{Binding Capacity}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                        <TextBlock Text="{l:Loc Wizard_EstimateHint}" Style="{StaticResource Muted}" FontSize="11.5" TextWrapping="Wrap" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock Text="{Binding SelectedPlatform.Description}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,14,0,0" />
+                                <TextBlock Text="{l:Loc Wizard_AfterCreate}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,14,0,0" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

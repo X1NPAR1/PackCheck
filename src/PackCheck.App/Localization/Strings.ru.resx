@@ -323,6 +323,92 @@
   <data name="Tray_RunningCount" xml:space="preserve"><value>Запущено серверов: {0} из {1}</value></data>
   <data name="Tray_NoServers" xml:space="preserve"><value>Серверов пока нет.</value></data>
   <data name="Tray_StopAll" xml:space="preserve"><value>Остановить все серверы</value></data>
+  <data name="Wizard_Subtitle" xml:space="preserve"><value>Выберите основу, настройте что нужно — PackCheck скачает, проверит и настроит всё сам.</value></data>
+  <data name="Wizard_SecPreset" xml:space="preserve"><value>1 · Начните с профиля</value></data>
+  <data name="Wizard_SecPlatform" xml:space="preserve"><value>2 · Платформа</value></data>
+  <data name="Wizard_SecResources" xml:space="preserve"><value>3 · Ресурсы</value></data>
+  <data name="Wizard_SecGame" xml:space="preserve"><value>4 · Правила игры</value></data>
+  <data name="Wizard_SecWhere" xml:space="preserve"><value>5 · Имя и расположение</value></data>
+  <data name="Wizard_Ram" xml:space="preserve"><value>Память (ОЗУ)</value></data>
+  <data name="Wizard_MemoryValue" xml:space="preserve"><value>{0:0.#} ГБ из {1:0.#} ГБ</value></data>
+  <data name="Wizard_MemoryTooHigh" xml:space="preserve"><value>Windows останется слишком мало ({0:0.#} ГБ установлено). Оставьте свободной хотя бы четверть.</value></data>
+  <data name="Wizard_MemoryLow" xml:space="preserve"><value>Меньше рекомендуемых {0} ГБ — возможны лаги при большом числе игроков или модов.</value></data>
+  <data name="Wizard_Cpu" xml:space="preserve"><value>Ядра ЦП</value></data>
+  <data name="Wizard_CoresAll" xml:space="preserve"><value>все {0}</value></data>
+  <data name="Wizard_CoresValue" xml:space="preserve"><value>{0} из {1}</value></data>
+  <data name="Wizard_CpuHint" xml:space="preserve"><value>Меньше ядер — ПК остаётся отзывчивым, пока работает сервер. Применяется к Java и процессу.</value></data>
+  <data name="Wizard_GameMode" xml:space="preserve"><value>Режим игры</value></data>
+  <data name="Wizard_Difficulty" xml:space="preserve"><value>Сложность</value></data>
+  <data name="Wizard_MaxPlayers" xml:space="preserve"><value>Макс. игроков</value></data>
+  <data name="Wizard_ViewDistance" xml:space="preserve"><value>Дальность прорисовки</value></data>
+  <data name="Wizard_Pvp" xml:space="preserve"><value>PvP</value></data>
+  <data name="Wizard_Whitelist" xml:space="preserve"><value>Белый список (только приглашённые)</value></data>
+  <data name="Wizard_OnlineMode" xml:space="preserve"><value>Онлайн-режим (проверка аккаунта)</value></data>
+  <data name="Wizard_Hardcore" xml:space="preserve"><value>Хардкор (одна жизнь)</value></data>
+  <data name="Wizard_OfflineWarn" xml:space="preserve"><value>Без онлайн-режима любой может зайти под любым ником, включая ваш. Отключайте только за прокси или в закрытой сети.</value></data>
+  <data name="Wizard_Motd" xml:space="preserve"><value>Сообщение дня (список серверов)</value></data>
+  <data name="Wizard_Port" xml:space="preserve"><value>Порт</value></data>
+  <data name="Wizard_Summary" xml:space="preserve"><value>Сводка</value></data>
+  <data name="Wizard_Estimate" xml:space="preserve"><value>Оценка</value></data>
+  <data name="Wizard_Capacity" xml:space="preserve"><value>Комфортно примерно для {0} игроков</value></data>
+  <data name="Wizard_EstimateHint" xml:space="preserve"><value>Грубая оценка по памяти и платформе; большие фермы и тяжёлые моды требуют больше.</value></data>
+  <data name="Wizard_AfterCreate" xml:space="preserve"><value>После создания сервер появится в списке; плагины и моды ставятся на страницах «Плагины» / «Моды».</value></data>
+  <data name="Mode_survival" xml:space="preserve"><value>Выживание</value></data>
+  <data name="Mode_creative" xml:space="preserve"><value>Творческий</value></data>
+  <data name="Mode_adventure" xml:space="preserve"><value>Приключение</value></data>
+  <data name="Mode_spectator" xml:space="preserve"><value>Наблюдатель</value></data>
+  <data name="Diff_peaceful" xml:space="preserve"><value>Мирный</value></data>
+  <data name="Diff_easy" xml:space="preserve"><value>Лёгкий</value></data>
+  <data name="Diff_normal" xml:space="preserve"><value>Обычный</value></data>
+  <data name="Diff_hard" xml:space="preserve"><value>Сложный</value></data>
+  <data name="Preset_Friends" xml:space="preserve"><value>Выживание с друзьями</value></data>
+  <data name="Preset_Friends_Hint" xml:space="preserve"><value>Paper · 4 ГБ · белый список</value></data>
+  <data name="Preset_Modded" xml:space="preserve"><value>С модами</value></data>
+  <data name="Preset_Modded_Hint" xml:space="preserve"><value>NeoForge · 8 ГБ</value></data>
+  <data name="Preset_Creative" xml:space="preserve"><value>Творческая стройка</value></data>
+  <data name="Preset_Creative_Hint" xml:space="preserve"><value>Paper · мирный · без PvP</value></data>
+  <data name="Preset_Minigames" xml:space="preserve"><value>Мини-игры / лобби</value></data>
+  <data name="Preset_Minigames_Hint" xml:space="preserve"><value>Purpur · 50 игроков · приключение</value></data>
+  <data name="Preset_Hardcore" xml:space="preserve"><value>Хардкор</value></data>
+  <data name="Preset_Hardcore_Hint" xml:space="preserve"><value>Одна жизнь · сложно</value></data>
+  <data name="Preset_LowEnd" xml:space="preserve"><value>Слабый ПК</value></data>
+  <data name="Preset_LowEnd_Hint" xml:space="preserve"><value>2 ГБ · половина ядер · малая дальность</value></data>
+  <data name="PlatGroup_Plugins" xml:space="preserve"><value>плагины</value></data>
+  <data name="PlatGroup_Mods" xml:space="preserve"><value>моды</value></data>
+  <data name="PlatGroup_Vanilla" xml:space="preserve"><value>официальный</value></data>
+  <data name="PlatGroup_Hybrid" xml:space="preserve"><value>моды + плагины</value></data>
+  <data name="PlatGroup_Proxy" xml:space="preserve"><value>прокси</value></data>
+  <data name="Plat_Paper" xml:space="preserve"><value>Быстрый и стабильный выбор для плагинов.</value></data>
+  <data name="Plat_Purpur" xml:space="preserve"><value>Paper с множеством доп. настроек.</value></data>
+  <data name="Plat_Folia" xml:space="preserve"><value>Многопоточные регионы для огромных серверов.</value></data>
+  <data name="Plat_Leaf" xml:space="preserve"><value>Форк Paper с упором на производительность.</value></data>
+  <data name="Plat_Leaves" xml:space="preserve"><value>Форк Paper, сохраняющий ванильные механики.</value></data>
+  <data name="Plat_Spigot" xml:space="preserve"><value>Классический сервер плагинов (BuildTools).</value></data>
+  <data name="Plat_CraftBukkit" xml:space="preserve"><value>Оригинальный Bukkit (BuildTools).</value></data>
+  <data name="Plat_Vanilla" xml:space="preserve"><value>Официальный сервер без плагинов и модов.</value></data>
+  <data name="Plat_Fabric" xml:space="preserve"><value>Лёгкий загрузчик модов.</value></data>
+  <data name="Plat_Quilt" xml:space="preserve"><value>Загрузчик, совместимый с Fabric.</value></data>
+  <data name="Plat_Forge" xml:space="preserve"><value>Классический загрузчик для больших сборок.</value></data>
+  <data name="Plat_NeoForge" xml:space="preserve"><value>Современный преемник Forge.</value></data>
+  <data name="Plat_SpongeVanilla" xml:space="preserve"><value>API плагинов Sponge на ванилле.</value></data>
+  <data name="Plat_Mohist" xml:space="preserve"><value>Моды Forge и плагины Bukkit вместе.</value></data>
+  <data name="Plat_Youer" xml:space="preserve"><value>Моды NeoForge с плагинами Bukkit.</value></data>
+  <data name="Plat_Arclight" xml:space="preserve"><value>Моды и плагины на NeoForge.</value></data>
+  <data name="Plat_Velocity" xml:space="preserve"><value>Современный прокси для нескольких серверов.</value></data>
+  <data name="Plat_BungeeCord" xml:space="preserve"><value>Классический прокси.</value></data>
+  <data name="Delete_Title1" xml:space="preserve"><value>Удалить {0}?</value></data>
+  <data name="Delete_Body1" xml:space="preserve"><value>Папка сервера будет полностью удалена:
+{0} ({1})
+
+Миры, плагины, моды, настройки и логи исчезнут. Резервные копии PackCheck (.packcheck-backups) сохранятся.</value></data>
+  <data name="Delete_Continue" xml:space="preserve"><value>Продолжить</value></data>
+  <data name="Delete_Title2" xml:space="preserve"><value>Это нельзя отменить</value></data>
+  <data name="Delete_Body2" xml:space="preserve"><value>«{0}» будет удалён навсегда, без корзины. Вы уверены?</value></data>
+  <data name="Delete_Confirm" xml:space="preserve"><value>Удалить навсегда</value></data>
+  <data name="Delete_Done" xml:space="preserve"><value>{0} удалён.</value></data>
+  <data name="Delete_Failed" xml:space="preserve"><value>Не удалось удалить всё: {0}</value></data>
+  <data name="Delete_StopFirst" xml:space="preserve"><value>Сначала остановите сервер.</value></data>
+  <data name="Delete_Button" xml:space="preserve"><value>Удалить сервер</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

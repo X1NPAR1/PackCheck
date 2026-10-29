@@ -20,6 +20,9 @@ public sealed record ServerDefinition
     public int MaxMemoryMb { get; init; } = 4096;
     public bool UseAikarFlags { get; init; } = true;
     public int Port { get; init; } = 25565;
+
+    /// <summary>CPU cores the server may use; 0 = all. Applied as JVM processor count and process affinity.</summary>
+    public int CpuCores { get; init; }
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.Now;
 }
 
@@ -289,7 +292,13 @@ public sealed partial class ServerCreator
 /// <summary>Creates a ready-to-run server folder: verified JAR, eula.txt (only after explicit consent), server.properties.</summary>
 public sealed partial class ServerCreator(ServerSources sources, HttpClient http, JavaRuntimes? java = null)
 {
-    public sealed record Request(string Name, string ParentFolder, ServerPlatform Platform, string Version, string JavaPath, int MaxMemoryMb, int Port, string? Seed, bool AcceptEula);
+    public sealed record Request(string Name, string ParentFolder, ServerPlatform Platform, string Version, string JavaPath, int MaxMemoryMb, int Port, string? Seed, bool AcceptEula)
+    {
+        public int CpuCores { get; init; }
+
+        /// <summary>Extra server.properties values chosen in the wizard (game mode, difficulty, players, ...).</summary>
+        public IReadOnlyDictionary<string, string>? Properties { get; init; }
+    }
 
     public async Task<ServerDefinition> CreateAsync(Request r, IProgress<(double Progress, string Step)>? progress, CancellationToken ct)
     {
@@ -357,6 +366,15 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             props["level-seed"] = r.Seed.Trim();
         }
 
+        foreach (var (key, value) in r.Properties ?? new Dictionary<string, string>())
+        {
+            // Keys and values come from the wizard's fixed choices; line breaks would corrupt the file.
+            if (key.Length > 0 && !key.Contains('=') && !key.Contains('\n') && !value.Contains('\n'))
+            {
+                props[key] = value;
+            }
+        }
+
         await File.WriteAllTextAsync(Path.Combine(dir, "server.properties"), string.Concat(props.Select(kv => $"{kv.Key}={kv.Value}\n")), ct).ConfigureAwait(false);
         await File.WriteAllTextAsync(Path.Combine(dir, "packcheck.json"), JsonSerializer.Serialize(new { minecraftVersion = r.Version }), ct).ConfigureAwait(false);
 
@@ -374,6 +392,7 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             MaxMemoryMb = r.MaxMemoryMb,
             MinMemoryMb = Math.Min(1024, r.MaxMemoryMb),
             Port = r.Port,
+            CpuCores = r.CpuCores,
         };
     }
 }

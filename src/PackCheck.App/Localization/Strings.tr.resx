@@ -323,6 +323,92 @@ Hayır: açık bırakıp çık.
   <data name="Tray_RunningCount" xml:space="preserve"><value>{1} sunucudan {0} tanesi çalışıyor</value></data>
   <data name="Tray_NoServers" xml:space="preserve"><value>Henüz sunucu yok.</value></data>
   <data name="Tray_StopAll" xml:space="preserve"><value>Tüm sunucuları durdur</value></data>
+  <data name="Wizard_Subtitle" xml:space="preserve"><value>Bir başlangıç noktası seç, istediğini değiştir; PackCheck her şeyi indirir, doğrular ve ayarlar.</value></data>
+  <data name="Wizard_SecPreset" xml:space="preserve"><value>1 · Bir profille başla</value></data>
+  <data name="Wizard_SecPlatform" xml:space="preserve"><value>2 · Platform</value></data>
+  <data name="Wizard_SecResources" xml:space="preserve"><value>3 · Kaynaklar</value></data>
+  <data name="Wizard_SecGame" xml:space="preserve"><value>4 · Oyun kuralları</value></data>
+  <data name="Wizard_SecWhere" xml:space="preserve"><value>5 · Ad ve konum</value></data>
+  <data name="Wizard_Ram" xml:space="preserve"><value>Bellek (RAM)</value></data>
+  <data name="Wizard_MemoryValue" xml:space="preserve"><value>{0:0.#} GB / {1:0.#} GB</value></data>
+  <data name="Wizard_MemoryTooHigh" xml:space="preserve"><value>Windows'a çok az yer kalıyor ({0:0.#} GB kurulu). En az dörtte birini boş bırak, yoksa bilgisayar diske takas yapmaya başlar.</value></data>
+  <data name="Wizard_MemoryLow" xml:space="preserve"><value>Bu platform için önerilen {0} GB'ın altında; oyuncu veya mod artınca kasma olabilir.</value></data>
+  <data name="Wizard_Cpu" xml:space="preserve"><value>CPU çekirdekleri</value></data>
+  <data name="Wizard_CoresAll" xml:space="preserve"><value>tümü ({0})</value></data>
+  <data name="Wizard_CoresValue" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Wizard_CpuHint" xml:space="preserve"><value>Daha az çekirdek, sunucu çalışırken bilgisayarın (oyun, yayın) akıcı kalmasını sağlar. Hem Java'ya hem işleme uygulanır.</value></data>
+  <data name="Wizard_GameMode" xml:space="preserve"><value>Oyun modu</value></data>
+  <data name="Wizard_Difficulty" xml:space="preserve"><value>Zorluk</value></data>
+  <data name="Wizard_MaxPlayers" xml:space="preserve"><value>En fazla oyuncu</value></data>
+  <data name="Wizard_ViewDistance" xml:space="preserve"><value>Görüş mesafesi</value></data>
+  <data name="Wizard_Pvp" xml:space="preserve"><value>PvP</value></data>
+  <data name="Wizard_Whitelist" xml:space="preserve"><value>Beyaz liste (sadece davetliler)</value></data>
+  <data name="Wizard_OnlineMode" xml:space="preserve"><value>Online mod (Mojang hesap kontrolü)</value></data>
+  <data name="Wizard_Hardcore" xml:space="preserve"><value>Hardcore (tek can)</value></data>
+  <data name="Wizard_OfflineWarn" xml:space="preserve"><value>Online mod kapalıyken herkes istediği isimle (seninki dahil) girebilir. Sadece proxy arkasında veya özel yerel ağda kapat.</value></data>
+  <data name="Wizard_Motd" xml:space="preserve"><value>Günün mesajı (sunucu listesi)</value></data>
+  <data name="Wizard_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Wizard_Summary" xml:space="preserve"><value>Özet</value></data>
+  <data name="Wizard_Estimate" xml:space="preserve"><value>Tahmin</value></data>
+  <data name="Wizard_Capacity" xml:space="preserve"><value>Yaklaşık {0} oyuncu için rahat</value></data>
+  <data name="Wizard_EstimateHint" xml:space="preserve"><value>Bellek ve platforma göre kaba bir tahmin; büyük farmlar veya ağır modlar daha fazlasını ister.</value></data>
+  <data name="Wizard_AfterCreate" xml:space="preserve"><value>Oluşturduktan sonra sunucu listede görünür, konsol açılır; eklenti veya modları Eklentiler / Modlar sayfasından kurabilirsin.</value></data>
+  <data name="Mode_survival" xml:space="preserve"><value>Hayatta kalma</value></data>
+  <data name="Mode_creative" xml:space="preserve"><value>Yaratıcı</value></data>
+  <data name="Mode_adventure" xml:space="preserve"><value>Macera</value></data>
+  <data name="Mode_spectator" xml:space="preserve"><value>İzleyici</value></data>
+  <data name="Diff_peaceful" xml:space="preserve"><value>Barışçıl</value></data>
+  <data name="Diff_easy" xml:space="preserve"><value>Kolay</value></data>
+  <data name="Diff_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Diff_hard" xml:space="preserve"><value>Zor</value></data>
+  <data name="Preset_Friends" xml:space="preserve"><value>Arkadaşlarla survival</value></data>
+  <data name="Preset_Friends_Hint" xml:space="preserve"><value>Paper · 4 GB · beyaz liste</value></data>
+  <data name="Preset_Modded" xml:space="preserve"><value>Modlu</value></data>
+  <data name="Preset_Modded_Hint" xml:space="preserve"><value>NeoForge · 8 GB</value></data>
+  <data name="Preset_Creative" xml:space="preserve"><value>Yaratıcı inşa</value></data>
+  <data name="Preset_Creative_Hint" xml:space="preserve"><value>Paper · barışçıl · PvP yok</value></data>
+  <data name="Preset_Minigames" xml:space="preserve"><value>Mini oyun / lobi</value></data>
+  <data name="Preset_Minigames_Hint" xml:space="preserve"><value>Purpur · 50 oyuncu · macera</value></data>
+  <data name="Preset_Hardcore" xml:space="preserve"><value>Hardcore</value></data>
+  <data name="Preset_Hardcore_Hint" xml:space="preserve"><value>Tek can · zor</value></data>
+  <data name="Preset_LowEnd" xml:space="preserve"><value>Zayıf bilgisayar</value></data>
+  <data name="Preset_LowEnd_Hint" xml:space="preserve"><value>2 GB · çekirdeklerin yarısı · kısa görüş</value></data>
+  <data name="PlatGroup_Plugins" xml:space="preserve"><value>eklenti</value></data>
+  <data name="PlatGroup_Mods" xml:space="preserve"><value>mod</value></data>
+  <data name="PlatGroup_Vanilla" xml:space="preserve"><value>resmî</value></data>
+  <data name="PlatGroup_Hybrid" xml:space="preserve"><value>mod + eklenti</value></data>
+  <data name="PlatGroup_Proxy" xml:space="preserve"><value>proxy</value></data>
+  <data name="Plat_Paper" xml:space="preserve"><value>Hızlı ve kararlı; eklentiler için standart seçim.</value></data>
+  <data name="Plat_Purpur" xml:space="preserve"><value>Paper + birçok ek oyun seçeneği.</value></data>
+  <data name="Plat_Folia" xml:space="preserve"><value>Çok büyük sunucular için çok çekirdekli bölgeler.</value></data>
+  <data name="Plat_Leaf" xml:space="preserve"><value>Performans odaklı Paper türevi.</value></data>
+  <data name="Plat_Leaves" xml:space="preserve"><value>Vanilla mekaniklerini koruyan Paper türevi.</value></data>
+  <data name="Plat_Spigot" xml:space="preserve"><value>Klasik eklenti sunucusu, BuildTools ile derlenir.</value></data>
+  <data name="Plat_CraftBukkit" xml:space="preserve"><value>Orijinal Bukkit sunucusu, BuildTools ile derlenir.</value></data>
+  <data name="Plat_Vanilla" xml:space="preserve"><value>Mojang'ın resmî sunucusu; eklenti ya da mod yok.</value></data>
+  <data name="Plat_Fabric" xml:space="preserve"><value>Hafif mod yükleyici, hızlı güncellenir.</value></data>
+  <data name="Plat_Quilt" xml:space="preserve"><value>Fabric uyumlu mod yükleyici.</value></data>
+  <data name="Plat_Forge" xml:space="preserve"><value>Büyük mod paketleri için klasik yükleyici.</value></data>
+  <data name="Plat_NeoForge" xml:space="preserve"><value>Yeni sürümler için modern Forge devamı.</value></data>
+  <data name="Plat_SpongeVanilla" xml:space="preserve"><value>Vanilla üzerinde Sponge eklenti API'si.</value></data>
+  <data name="Plat_Mohist" xml:space="preserve"><value>Forge modları ve Bukkit eklentileri bir arada.</value></data>
+  <data name="Plat_Youer" xml:space="preserve"><value>NeoForge modları + Bukkit eklentileri.</value></data>
+  <data name="Plat_Arclight" xml:space="preserve"><value>NeoForge üzerinde mod ve eklenti.</value></data>
+  <data name="Plat_Velocity" xml:space="preserve"><value>Birden çok sunucuyu bağlayan modern proxy.</value></data>
+  <data name="Plat_BungeeCord" xml:space="preserve"><value>Birden çok sunucuyu bağlayan klasik proxy.</value></data>
+  <data name="Delete_Title1" xml:space="preserve"><value>{0} silinsin mi?</value></data>
+  <data name="Delete_Body1" xml:space="preserve"><value>Sunucu klasörünün tamamı diskten silinecek:
+{0} ({1})
+
+İçindeki dünyalar, eklentiler, modlar, ayarlar ve kayıtlar geri gelmez. PackCheck'te aldığın yedekler (.packcheck-backups) korunur.</value></data>
+  <data name="Delete_Continue" xml:space="preserve"><value>Devam et</value></data>
+  <data name="Delete_Title2" xml:space="preserve"><value>Bu işlem geri alınamaz</value></data>
+  <data name="Delete_Body2" xml:space="preserve"><value>"{0}" kalıcı olarak silinecek, Geri Dönüşüm Kutusu'na gitmeyecek. Emin misin?</value></data>
+  <data name="Delete_Confirm" xml:space="preserve"><value>Kalıcı olarak sil</value></data>
+  <data name="Delete_Done" xml:space="preserve"><value>{0} silindi.</value></data>
+  <data name="Delete_Failed" xml:space="preserve"><value>Hepsi silinemedi: {0}</value></data>
+  <data name="Delete_StopFirst" xml:space="preserve"><value>Silmeden önce sunucuyu durdur.</value></data>
+  <data name="Delete_Button" xml:space="preserve"><value>Sunucuyu sil</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

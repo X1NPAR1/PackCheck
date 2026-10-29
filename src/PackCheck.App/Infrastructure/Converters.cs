@@ -244,6 +244,8 @@ public sealed class Bytes : IValueConverter
 {
     public static Bytes Instance { get; } = new();
 
+    public static string Format(long bytes) => (string)Instance.Convert(bytes, typeof(string), null, CultureInfo.CurrentCulture);
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var b = System.Convert.ToDouble(value, CultureInfo.InvariantCulture);
@@ -323,7 +325,10 @@ public sealed class LocKey : IValueConverter
 {
     public static LocKey Instance { get; } = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string k ? Loc.T(k) : string.Empty;
+    /// <summary>Same converter; the ConverterParameter is a key prefix ("Mode_" + "survival").</summary>
+    public static LocKey Prefixed => Instance;
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string k ? Loc.T((parameter as string) + k) : string.Empty;
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }

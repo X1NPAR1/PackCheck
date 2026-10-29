@@ -16,6 +16,33 @@ using PackCheck.Validation;
 
 namespace PackCheck.App.ViewModels;
 
+/// <summary>A platform tile in the create wizard.</summary>
+public sealed record PlatformOption(ServerPlatform Platform, string Group)
+{
+    public string Name => Platform.ToString();
+
+    public string Description => Loc.T("Plat_" + Platform);
+
+    public string GroupText => Loc.T("PlatGroup_" + Group);
+
+    public static string GroupOf(ServerPlatform p) => p switch
+    {
+        ServerPlatform.Velocity or ServerPlatform.BungeeCord => "Proxy",
+        ServerPlatform.Vanilla => "Vanilla",
+        ServerPlatform.Mohist or ServerPlatform.Youer or ServerPlatform.Arclight or ServerPlatform.SpongeVanilla => "Hybrid",
+        _ when PlatformInfo.UsesMods(p) => "Mods",
+        _ => "Plugins",
+    };
+}
+
+/// <summary>A starting point that fills platform, resources and game rules in one click.</summary>
+public sealed record WizardPreset(string Key, ServerPlatform Platform, int MemoryGb, string GameMode, string Difficulty, int MaxPlayers, int ViewDistance, bool Pvp, bool Whitelist)
+{
+    public string Title => Loc.T("Preset_" + Key);
+
+    public string Hint => Loc.T("Preset_" + Key + "_Hint");
+}
+
 public sealed partial class CreateServerViewModel : ObservableObject
 {
     private readonly ServerSources _sources;
@@ -40,10 +67,186 @@ public sealed partial class CreateServerViewModel : ObservableObject
             Runtimes.Add(r);
         }
 
+        _selectedPlatform = PlatformOptions.First(o => o.Platform == _platform);
+        _memoryGb = Math.Min(4, MaxRamGb);
+        _port = FreePort(new ServerRegistry().Load().Select(d => d.Port));
         _ = LoadVersionsAsync();
     }
 
     public IReadOnlyList<ServerPlatform> Platforms { get; } = Enum.GetValues<ServerPlatform>();
+
+    public IReadOnlyList<PlatformOption> PlatformOptions { get; } =
+        Enum.GetValues<ServerPlatform>().Select(p => new PlatformOption(p, PlatformOption.GroupOf(p)))
+            .OrderBy(o => Array.IndexOf(["Plugins", "Mods", "Vanilla", "Hybrid", "Proxy"], o.Group)).ToList();
+
+    public IReadOnlyList<WizardPreset> Presets { get; } =
+    [
+        new("Friends", ServerPlatform.Paper, 4, "survival", "normal", 10, 10, true, true),
+        new("Modded", ServerPlatform.NeoForge, 8, "survival", "normal", 8, 10, true, true),
+        new("Creative", ServerPlatform.Paper, 4, "creative", "peaceful", 20, 12, false, true),
+        new("Minigames", ServerPlatform.Purpur, 6, "adventure", "easy", 50, 8, true, false),
+        new("Hardcore", ServerPlatform.Paper, 4, "survival", "hard", 10, 10, true, true),
+        new("LowEnd", ServerPlatform.Paper, 2, "survival", "normal", 5, 6, true, true),
+    ];
+
+    public IReadOnlyList<string> GameModes { get; } = ["survival", "creative", "adventure", "spectator"];
+
+    public IReadOnlyList<string> Difficulties { get; } = ["peaceful", "easy", "normal", "hard"];
+
+    /// <summary>Installed physical memory, for the RAM slider's limit and warning.</summary>
+    public double SystemRamGb { get; } = Math.Round(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024d / 1024 / 1024, 1);
+
+    public int MaxRamGb => (int)Math.Clamp(Math.Floor(SystemRamGb), 1, 32);
+
+    public int LogicalCores { get; } = Environment.ProcessorCount;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(MemoryText), nameof(MemoryWarning), nameof(Capacity), nameof(SummaryText))]
+    private double _memoryGb = 4;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CoresText), nameof(SummaryText))]
+    private double _cpuCores = Environment.ProcessorCount;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SummaryText))]
+    private PlatformOption? _selectedPlatform;
+
+    [ObservableProperty]
+    private WizardPreset? _preset;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SummaryText))]
+    private string _gameMode = "survival";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SummaryText))]
+    private string _difficulty = "normal";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Capacity), nameof(SummaryText))]
+    private double _maxPlayers = 10;
+
+    [ObservableProperty]
+    private double _viewDistance = 10;
+
+    [ObservableProperty]
+    private bool _pvp = true;
+
+    [ObservableProperty]
+    private bool _whitelist = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(OfflineWarning))]
+    private bool _onlineMode = true;
+
+    [ObservableProperty]
+    private bool _hardcore;
+
+    [ObservableProperty]
+    private string _motd = "A PackCheck server";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SummaryText))]
+    private int _port = 25565;
+
+    public bool IsProxy => ProxyConfigurator.IsProxy(Platform);
+
+    public string MemoryText => Loc.F("Wizard_MemoryValue", MemoryGb, SystemRamGb);
+
+    public string CoresText => (int)CpuCores >= LogicalCores ? Loc.F("Wizard_CoresAll", LogicalCores) : Loc.F("Wizard_CoresValue", (int)CpuCores, LogicalCores);
+
+    /// <summary>Warns when the server would take most of the PC's memory (Windows and Java need headroom).</summary>
+    public string? MemoryWarning => MemoryGb > SystemRamGb * 0.75 ? Loc.F("Wizard_MemoryTooHigh", SystemRamGb) : MemoryGb < RecommendedGb ? Loc.F("Wizard_MemoryLow", RecommendedGb) : null;
+
+    public string? OfflineWarning => OnlineMode ? null : Loc.T("Wizard_OfflineWarn");
+
+    /// <summary>Rough rule of thumb, shown as an estimate: mods need far more memory per player than plugins.</summary>
+    public string Capacity
+    {
+        get
+        {
+            var perGb = IsProxy ? 250 : PlatformInfo.UsesMods(Platform) ? 3 : 8;
+            var players = Math.Max(1, (int)((MemoryGb - (PlatformInfo.UsesMods(Platform) ? 2 : 1)) * perGb));
+            return Loc.F("Wizard_Capacity", players);
+        }
+    }
+
+    public int RecommendedGb => IsProxy ? 1 : PlatformInfo.UsesMods(Platform) ? 6 : Platform == ServerPlatform.Vanilla ? 3 : 4;
+
+    public string SummaryText =>
+        $"{Platform} {Version ?? "…"} · {MemoryGb:0.#} GB · {CoresText}\n:{Port} · {(IsProxy ? "proxy" : $"{GameMode} · {Difficulty} · {(int)MaxPlayers} {Loc.T("Card_Players").ToLower(Loc.Instance.Culture)}")}";
+
+    partial void OnSelectedPlatformChanged(PlatformOption? value)
+    {
+        if (value is not null && value.Platform != Platform)
+        {
+            Platform = value.Platform;
+        }
+    }
+
+    [RelayCommand]
+    private void ApplyPreset(WizardPreset? preset) => Preset = preset;
+
+    partial void OnPresetChanged(WizardPreset? value)
+    {
+        if (value is null)
+        {
+            return;
+        }
+
+        SelectedPlatform = PlatformOptions.First(o => o.Platform == value.Platform);
+        MemoryGb = Math.Min(value.MemoryGb, MaxRamGb);
+        GameMode = value.GameMode;
+        Difficulty = value.Difficulty;
+        MaxPlayers = value.MaxPlayers;
+        ViewDistance = value.ViewDistance;
+        Pvp = value.Pvp;
+        Whitelist = value.Whitelist;
+        Hardcore = value.Key == "Hardcore";
+        CpuCores = value.Key == "LowEnd" ? Math.Max(1, LogicalCores / 2) : LogicalCores;
+    }
+
+    /// <summary>First port from 25565 that no registered server uses and nothing listens on.</summary>
+    private static int FreePort(IEnumerable<int> taken)
+    {
+        var used = taken.ToHashSet();
+        for (var p = 25565; p < 25700; p++)
+        {
+            if (used.Contains(p))
+            {
+                continue;
+            }
+
+            try
+            {
+                var l = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Any, p);
+                l.Start();
+                l.Stop();
+                return p;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+            }
+        }
+
+        return 25565;
+    }
+
+    private Dictionary<string, string> WizardProperties() => IsProxy ? [] : new()
+    {
+        ["gamemode"] = GameMode,
+        ["difficulty"] = Difficulty,
+        ["max-players"] = ((int)MaxPlayers).ToString(System.Globalization.CultureInfo.InvariantCulture),
+        ["view-distance"] = ((int)ViewDistance).ToString(System.Globalization.CultureInfo.InvariantCulture),
+        ["simulation-distance"] = Math.Min((int)ViewDistance, 10).ToString(System.Globalization.CultureInfo.InvariantCulture),
+        ["pvp"] = Pvp ? "true" : "false",
+        ["white-list"] = Whitelist ? "true" : "false",
+        ["enforce-whitelist"] = Whitelist ? "true" : "false",
+        ["online-mode"] = OnlineMode ? "true" : "false",
+        ["hardcore"] = Hardcore ? "true" : "false",
+        ["motd"] = Motd.Replace("\n", " ", StringComparison.Ordinal).Trim(),
+    };
 
     public ObservableCollection<string> Versions { get; } = [];
 
@@ -59,7 +262,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
     private ServerPlatform _platform = ServerPlatform.Paper;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(JavaHint), nameof(NeedsJava), nameof(RequiredJava))]
+    [NotifyPropertyChangedFor(nameof(JavaHint), nameof(NeedsJava), nameof(RequiredJava), nameof(SummaryText))]
     private string? _version;
 
     [ObservableProperty]
@@ -98,7 +301,15 @@ public sealed partial class CreateServerViewModel : ObservableObject
 
     public string JavaHint => Loc.F("Wizard_JavaNeeded", Version ?? "?", RequiredJava);
 
-    partial void OnPlatformChanged(ServerPlatform value) => _ = LoadVersionsAsync();
+    partial void OnPlatformChanged(ServerPlatform value)
+    {
+        SelectedPlatform = PlatformOptions.First(o => o.Platform == value);
+        OnPropertyChanged(nameof(IsProxy));
+        OnPropertyChanged(nameof(Capacity));
+        OnPropertyChanged(nameof(MemoryWarning));
+        OnPropertyChanged(nameof(SummaryText));
+        _ = LoadVersionsAsync();
+    }
 
     partial void OnVersionChanged(string? value) => Runtime = Runtimes.FirstOrDefault(r => r.FeatureVersion >= RequiredJava) ?? Runtime;
 
@@ -183,7 +394,11 @@ public sealed partial class CreateServerViewModel : ObservableObject
         _cts = new CancellationTokenSource();
         try
         {
-            var req = new ServerCreator.Request(Name, Folder, Platform, Version, Runtime.JavaExe, MemoryMb, 25565, Seed, AcceptEula);
+            var req = new ServerCreator.Request(Name, Folder, Platform, Version, Runtime.JavaExe, (int)(MemoryGb * 1024), Port, Seed, AcceptEula)
+            {
+                CpuCores = (int)CpuCores >= LogicalCores ? 0 : (int)CpuCores,
+                Properties = WizardProperties(),
+            };
             var def = await _creator.CreateAsync(req, new Progress<(double Progress, string Step)>(p => { Progress = p.Progress; Status = Loc.T("Wizard_Step_" + p.Step); }), _cts.Token).ConfigureAwait(true);
             _done(def);
         }

@@ -89,15 +89,59 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
             return;
         }
 
-        if (MainViewModel.Shell is { } shell && !await shell.ConfirmAsync(Loc.T("Servers_Remove"), item.Name, Loc.T("Servers_Remove"), danger: true).ConfigureAwait(true))
+        if (MainViewModel.Shell is not { } shell)
         {
             return;
         }
 
+        if (item.IsRunning)
+        {
+            shell.Toast(Loc.T("Delete_StopFirst"), isError: true);
+            return;
+        }
+
+        var dir = item.Definition.Directory;
+        var size = await Task.Run(() => FolderSize(dir)).ConfigureAwait(true);
+
+        // 1) what will be lost
+        if (!await shell.ConfirmAsync(Loc.F("Delete_Title1", item.Name), Loc.F("Delete_Body1", dir, Bytes.Format(size)), Loc.T("Delete_Continue"), danger: true).ConfigureAwait(true))
+        {
+            return;
+        }
+
+        // 2) last chance
+        if (!await shell.ConfirmAsync(Loc.T("Delete_Title2"), Loc.F("Delete_Body2", item.Name), Loc.T("Delete_Confirm"), danger: true).ConfigureAwait(true))
+        {
+            return;
+        }
+
+        try
+        {
+            await Task.Run(() => PackCheck.Core.FileSystem.DeleteDirectory(dir)).ConfigureAwait(true);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            shell.Toast(Loc.F("Delete_Failed", ex.Message), isError: true);
+            return;
+        }
+
+        shell.Toast(Loc.F("Delete_Done", item.Name));
         registry.Remove(item.Definition.Id);
         Items.Remove(item);
         Selected = Items.FirstOrDefault();
         OnPropertyChanged(nameof(IsEmpty));
+    }
+
+    private static long FolderSize(string dir)
+    {
+        try
+        {
+            return Directory.Exists(dir) ? new DirectoryInfo(dir).EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length) : 0;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            return 0;
+        }
     }
 
     public async Task StopAllAsync()
