@@ -513,6 +513,48 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Sürümü yükselt</value></data>
+  <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft sürümünü yükselt</value></data>
+  <data name="Upgrade_Hint" xml:space="preserve"><value>Daha yeni bir sürüm seç. PackCheck önce her eklentiyi ve modu kontrol eder, sabitlenmiş tam yedek alır, yeni sürümü kurar, Modrinth'ten güncellenebilenleri günceller ve sunucuyu deneme olarak başlatır. Deneme başarısız olursa tek tıkla her şey geri alınır.</value></data>
+  <data name="Upgrade_Target" xml:space="preserve"><value>Hedef sürüm</value></data>
+  <data name="Upgrade_Check" xml:space="preserve"><value>Uyumluluğu kontrol et</value></data>
+  <data name="Upgrade_Loading" xml:space="preserve"><value>Sürümler yükleniyor…</value></data>
+  <data name="Upgrade_Latest" xml:space="preserve"><value>{0} bu platform için mevcut en yeni sürüm.</value></data>
+  <data name="Upgrade_VersionsFailed" xml:space="preserve"><value>Sürümler yüklenemedi: {0}</value></data>
+  <data name="Upgrade_Checking" xml:space="preserve"><value>Eklentiler ve modlar kontrol ediliyor…</value></data>
+  <data name="Upgrade_Report" xml:space="preserve"><value>Uyumluluk raporu</value></data>
+  <data name="Upgrade_Summary" xml:space="preserve"><value>{0} eklenti/mod · Modrinth'te {1} güncelleme · {2} uyumsuz · {3} bilinmiyor</value></data>
+  <data name="Upgrade_Java" xml:space="preserve"><value>Java {0} gerekiyor (yoksa otomatik kurulur).</value></data>
+  <data name="Upgrade_BackupFirst" xml:space="preserve"><value>Yükseltmeden sonra dünyalar eski sürümle açılamaz. Önce tam yedek alınır ve hiç silinmemesi için sabitlenir.</value></data>
+  <data name="Upgrade_NoAddons" xml:space="preserve"><value>Eklenti veya mod yok.</value></data>
+  <data name="Upgrade_ApplyUpdate" xml:space="preserve"><value>Güncelle</value></data>
+  <data name="Upgrade_Disable" xml:space="preserve"><value>Devre dışı bırak</value></data>
+  <data name="Upgrade_UpdateTo" xml:space="preserve"><value>Modrinth'te bu sürüm için {0} var</value></data>
+  <data name="Upgrade_Declared" xml:space="preserve"><value>beyan edilen: {0}</value></data>
+  <data name="UpgradeStatus_Compatible" xml:space="preserve"><value>Uyumlu</value></data>
+  <data name="UpgradeStatus_Likely" xml:space="preserve"><value>Büyük ihtimalle çalışır</value></data>
+  <data name="UpgradeStatus_UpdateAvailable" xml:space="preserve"><value>Güncelleme var</value></data>
+  <data name="UpgradeStatus_Incompatible" xml:space="preserve"><value>Uyumsuz</value></data>
+  <data name="UpgradeStatus_Unknown" xml:space="preserve"><value>Bilinmiyor</value></data>
+  <data name="Upgrade_Start" xml:space="preserve"><value>Yükselt</value></data>
+  <data name="Upgrade_StopFirst" xml:space="preserve"><value>Yükseltme için sunucu durdurulmalı. Şimdi durdurulsun mu?</value></data>
+  <data name="Upgrade_Confirm" xml:space="preserve"><value>{0} sürümünden {1} sürümüne yükseltilsin mi? Önce sabitlenmiş tam yedek alınır.</value></data>
+  <data name="Upgrade_Progress" xml:space="preserve"><value>İlerleme</value></data>
+  <data name="Upgrade_StepBackup" xml:space="preserve"><value>Tam yedek alınıyor…</value></data>
+  <data name="Upgrade_BackupNote" xml:space="preserve"><value>Yükseltmeden önce {0} → {1}</value></data>
+  <data name="Upgrade_BackupBusy" xml:space="preserve"><value>Başka bir yedek alınıyor. Biraz sonra tekrar dene.</value></data>
+  <data name="Upgrade_StepJava" xml:space="preserve"><value>Java {0} kontrol ediliyor…</value></data>
+  <data name="Upgrade_StepInstall" xml:space="preserve"><value>{0} {1} kuruluyor…</value></data>
+  <data name="Upgrade_StepUpdate" xml:space="preserve"><value>{0}, {1} sürümüne güncelleniyor…</value></data>
+  <data name="Upgrade_StepDisable" xml:space="preserve"><value>{0} devre dışı bırakılıyor…</value></data>
+  <data name="Upgrade_StepTest" xml:space="preserve"><value>Deneme başlatması…</value></data>
+  <data name="Upgrade_TestOk" xml:space="preserve"><value>Sunucu düzgün açıldı. Tekrar durduruluyor…</value></data>
+  <data name="Upgrade_Done" xml:space="preserve"><value>✔ Yükseltme tamamlandı.</value></data>
+  <data name="Upgrade_Success" xml:space="preserve"><value>Sunucu artık Minecraft {0} çalıştırıyor.</value></data>
+  <data name="Upgrade_TestFailed" xml:space="preserve"><value>Deneme başlatması başarısız oldu. Konsola ya da çökme bandına bak veya geri al.</value></data>
+  <data name="Upgrade_Rollback" xml:space="preserve"><value>Geri al</value></data>
+  <data name="Upgrade_RollingBack" xml:space="preserve"><value>Yedek geri yükleniyor…</value></data>
+  <data name="Upgrade_RolledBack" xml:space="preserve"><value>{0} sürümüne geri dönüldü.</value></data>
   <data name="Act_Discord" xml:space="preserve"><value>Discord'a gönder</value></data>
   <data name="Discord_Title" xml:space="preserve"><value>Discord bildirimleri</value></data>
   <data name="Discord_Hint" xml:space="preserve"><value>Discord kanalı → Düzenle → Entegrasyonlar → Webhook'lar → Yeni webhook → URL'yi kopyala, buraya yapıştır.</value></data>

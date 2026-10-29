@@ -513,6 +513,48 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Ce PC n'a plus de mémoire libre.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} est prêt. Redémarrez le serveur.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} désactivé. Redémarrez le serveur.</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Mettre à niveau</value></data>
+  <data name="Upgrade_Title" xml:space="preserve"><value>Mettre à niveau Minecraft</value></data>
+  <data name="Upgrade_Hint" xml:space="preserve"><value>Choisissez une version plus récente. PackCheck vérifie chaque plugin et mod, fait une sauvegarde complète épinglée, installe la version, met à jour via Modrinth et teste le démarrage. En cas d'échec, un clic remet tout en place.</value></data>
+  <data name="Upgrade_Target" xml:space="preserve"><value>Version cible</value></data>
+  <data name="Upgrade_Check" xml:space="preserve"><value>Vérifier la compatibilité</value></data>
+  <data name="Upgrade_Loading" xml:space="preserve"><value>Chargement des versions…</value></data>
+  <data name="Upgrade_Latest" xml:space="preserve"><value>{0} est la version la plus récente pour cette plateforme.</value></data>
+  <data name="Upgrade_VersionsFailed" xml:space="preserve"><value>Impossible de charger les versions : {0}</value></data>
+  <data name="Upgrade_Checking" xml:space="preserve"><value>Vérification des plugins et mods…</value></data>
+  <data name="Upgrade_Report" xml:space="preserve"><value>Rapport de compatibilité</value></data>
+  <data name="Upgrade_Summary" xml:space="preserve"><value>{0} plugins/mods · {1} mises à jour Modrinth · {2} incompatibles · {3} inconnus</value></data>
+  <data name="Upgrade_Java" xml:space="preserve"><value>Nécessite Java {0} (installé automatiquement si absent).</value></data>
+  <data name="Upgrade_BackupFirst" xml:space="preserve"><value>Après la mise à niveau, les mondes ne s'ouvrent plus avec une ancienne version. Une sauvegarde complète épinglée est faite d'abord.</value></data>
+  <data name="Upgrade_NoAddons" xml:space="preserve"><value>Aucun plugin ni mod.</value></data>
+  <data name="Upgrade_ApplyUpdate" xml:space="preserve"><value>Mettre à jour</value></data>
+  <data name="Upgrade_Disable" xml:space="preserve"><value>Désactiver</value></data>
+  <data name="Upgrade_UpdateTo" xml:space="preserve"><value>Modrinth propose {0} pour cette version</value></data>
+  <data name="Upgrade_Declared" xml:space="preserve"><value>déclare : {0}</value></data>
+  <data name="UpgradeStatus_Compatible" xml:space="preserve"><value>Compatible</value></data>
+  <data name="UpgradeStatus_Likely" xml:space="preserve"><value>Devrait marcher</value></data>
+  <data name="UpgradeStatus_UpdateAvailable" xml:space="preserve"><value>Mise à jour dispo</value></data>
+  <data name="UpgradeStatus_Incompatible" xml:space="preserve"><value>Incompatible</value></data>
+  <data name="UpgradeStatus_Unknown" xml:space="preserve"><value>Inconnu</value></data>
+  <data name="Upgrade_Start" xml:space="preserve"><value>Mettre à niveau</value></data>
+  <data name="Upgrade_StopFirst" xml:space="preserve"><value>Le serveur doit être arrêté. L'arrêter maintenant ?</value></data>
+  <data name="Upgrade_Confirm" xml:space="preserve"><value>Passer de {0} à {1} ? Une sauvegarde complète épinglée est faite d'abord.</value></data>
+  <data name="Upgrade_Progress" xml:space="preserve"><value>Progression</value></data>
+  <data name="Upgrade_StepBackup" xml:space="preserve"><value>Sauvegarde complète…</value></data>
+  <data name="Upgrade_BackupNote" xml:space="preserve"><value>Avant mise à niveau {0} → {1}</value></data>
+  <data name="Upgrade_BackupBusy" xml:space="preserve"><value>Une autre sauvegarde est en cours. Réessayez.</value></data>
+  <data name="Upgrade_StepJava" xml:space="preserve"><value>Vérification de Java {0}…</value></data>
+  <data name="Upgrade_StepInstall" xml:space="preserve"><value>Installation de {0} {1}…</value></data>
+  <data name="Upgrade_StepUpdate" xml:space="preserve"><value>Mise à jour de {0} vers {1}…</value></data>
+  <data name="Upgrade_StepDisable" xml:space="preserve"><value>Désactivation de {0}…</value></data>
+  <data name="Upgrade_StepTest" xml:space="preserve"><value>Démarrage de test…</value></data>
+  <data name="Upgrade_TestOk" xml:space="preserve"><value>Le serveur a bien démarré. Arrêt…</value></data>
+  <data name="Upgrade_Done" xml:space="preserve"><value>✔ Mise à niveau terminée.</value></data>
+  <data name="Upgrade_Success" xml:space="preserve"><value>Le serveur tourne maintenant sous Minecraft {0}.</value></data>
+  <data name="Upgrade_TestFailed" xml:space="preserve"><value>Le démarrage de test a échoué. Consultez la console ou revenez en arrière.</value></data>
+  <data name="Upgrade_Rollback" xml:space="preserve"><value>Revenir en arrière</value></data>
+  <data name="Upgrade_RollingBack" xml:space="preserve"><value>Restauration de la sauvegarde…</value></data>
+  <data name="Upgrade_RolledBack" xml:space="preserve"><value>Retour à {0}.</value></data>
   <data name="Act_Discord" xml:space="preserve"><value>publier sur Discord</value></data>
   <data name="Discord_Title" xml:space="preserve"><value>Notifications Discord</value></data>
   <data name="Discord_Hint" xml:space="preserve"><value>Salon Discord → Modifier → Intégrations → Webhooks → Nouveau → Copier l'URL, puis collez-la ici.</value></data>

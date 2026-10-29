@@ -274,32 +274,7 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             Directory.CreateDirectory(Path.Combine(dir, "plugins"));
         }
 
-        progress?.Report((0.05, "resolve"));
-        var dl = await sources.ResolveAsync(r.Platform, r.Version, ct).ConfigureAwait(false);
-        var jar = dl.IsInstaller ? dl.FileName : r.Platform switch
-        {
-            ServerPlatform.Paper => "paper.jar",
-            ServerPlatform.Purpur => "purpur.jar",
-            ServerPlatform.Fabric => "fabric-server-launch.jar",
-            ServerPlatform.Vanilla => "server.jar",
-            ServerPlatform.Velocity => "velocity.jar",
-            ServerPlatform.BungeeCord => "BungeeCord.jar",
-            _ => dl.FileName,
-        };
-        await VerifiedDownloader.DownloadAsync(http, dl.Url, Path.Combine(dir, jar), dl.Hash, dl.Algorithm, 300L * 1024 * 1024,
-            new Progress<double>(p => progress?.Report((0.1 + (p * 0.6), "download"))), ct).ConfigureAwait(false);
-
-        string? argsFile = null;
-        if (dl.IsInstaller)
-        {
-            progress?.Report((0.72, "install"));
-            (jar, argsFile) = r.Platform switch
-            {
-                ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(await JdkForAsync(r, ct).ConfigureAwait(false), dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
-                ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct).ConfigureAwait(false), null),
-                _ => await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false),
-            };
-        }
+        var (jar, argsFile) = await InstallAsync(r, dir, progress, ct).ConfigureAwait(false);
 
         progress?.Report((0.92, "configure"));
         await File.WriteAllTextAsync(Path.Combine(dir, "eula.txt"),
@@ -351,5 +326,41 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             Port = r.Port,
             CpuCores = r.CpuCores,
         };
+    }
+    /// <summary>
+    /// Downloads (and for installer platforms runs) the server software for <paramref name="r"/>.Version into
+    /// <paramref name="dir"/>. Used for new servers and for in-place version upgrades. Returns the jar and the
+    /// Forge/NeoForge args file.
+    /// </summary>
+    public async Task<(string Jar, string? ArgsFile)> InstallAsync(Request r, string dir, IProgress<(double Progress, string Step)>? progress, CancellationToken ct)
+    {
+        progress?.Report((0.05, "resolve"));
+        var dl = await sources.ResolveAsync(r.Platform, r.Version, ct).ConfigureAwait(false);
+        var jar = dl.IsInstaller ? dl.FileName : r.Platform switch
+        {
+            ServerPlatform.Paper => "paper.jar",
+            ServerPlatform.Purpur => "purpur.jar",
+            ServerPlatform.Fabric => "fabric-server-launch.jar",
+            ServerPlatform.Vanilla => "server.jar",
+            ServerPlatform.Velocity => "velocity.jar",
+            ServerPlatform.BungeeCord => "BungeeCord.jar",
+            _ => dl.FileName,
+        };
+        await VerifiedDownloader.DownloadAsync(http, dl.Url, Path.Combine(dir, jar), dl.Hash, dl.Algorithm, 300L * 1024 * 1024,
+            new Progress<double>(p => progress?.Report((0.1 + (p * 0.6), "download"))), ct).ConfigureAwait(false);
+
+        string? argsFile = null;
+        if (dl.IsInstaller)
+        {
+            progress?.Report((0.72, "install"));
+            (jar, argsFile) = r.Platform switch
+            {
+                ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(await JdkForAsync(r, ct).ConfigureAwait(false), dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
+                ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct).ConfigureAwait(false), null),
+                _ => await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false),
+            };
+        }
+
+        return (jar, argsFile);
     }
 }

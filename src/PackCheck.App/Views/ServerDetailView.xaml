@@ -115,6 +115,7 @@
                 </Button>
                 <Button Command="{Binding RestartCommand}" Content="{l:Loc Servers_Restart}" Margin="0,0,6,0" Visibility="{Binding IsRunning, Converter={StaticResource BoolVis}}" />
                 <Button Command="{Binding KillCommand}" Content="{l:Loc Servers_Kill}" Style="{StaticResource DangerButton}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+                <Button Command="{Binding OpenUpgradeCommand}" Content="{l:Loc Upgrade_Button}" Margin="0,0,6,0" AutomationProperties.AutomationId="OpenUpgrade" />
                 <Button Command="{Binding ValidateServerCommand}" Content="{l:Loc Servers_Validate}" Margin="0,0,6,0" />
                 <Button Command="{Binding OpenFolderCommand}" Style="{StaticResource GhostButton}" ToolTip="{l:Loc Common_OpenFolder}" AutomationProperties.Name="{l:Loc Common_OpenFolder}">
                     <Path Data="{StaticResource IconFolder}" Style="{StaticResource IconPath}" Stroke="{DynamicResource TextMutedBrush}" />
@@ -1004,6 +1005,86 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+
+        <!-- Version upgrade wizard -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=10}" AutomationProperties.AutomationId="UpgradePage">
+            <StackPanel>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc Upgrade_Title}" Style="{StaticResource H2}" FontSize="17" />
+                        <TextBlock Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,12">
+                            <Run Text="{l:Loc Upgrade_Hint}" />
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding UpgradeIsChoosing}">
+                            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Run Text="{Binding PlatformText, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →" />
+                            </TextBlock>
+                            <ComboBox Width="160" ItemsSource="{Binding UpgradeVersions}" SelectedItem="{Binding UpgradeTarget}" AutomationProperties.Name="{l:Loc Upgrade_Target}" AutomationProperties.AutomationId="UpgradeTarget" />
+                            <Button Content="{l:Loc Upgrade_Check}" Command="{Binding CheckUpgradeCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="UpgradeCheck" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding UpgradeMessage}" TextWrapping="Wrap" Margin="0,10,0,0" Visibility="{Binding UpgradeMessage, Converter={StaticResource NullVis}}" AutomationProperties.AutomationId="UpgradeMessage" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Step 2: report -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12" Visibility="{Binding UpgradeHasReport, Converter={StaticResource BoolVis}}">
+                    <StackPanel>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Upgrade_Start}" Style="{StaticResource PrimaryButton}" Command="{Binding RunUpgradeCommand}" AutomationProperties.AutomationId="UpgradeRun" />
+                            <StackPanel>
+                                <TextBlock Text="{l:Loc Upgrade_Report}" FontSize="15" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding UpgradeSummary}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding UpgradeJavaText}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </DockPanel>
+                        <TextBlock Text="{l:Loc Upgrade_BackupFirst}" Foreground="{DynamicResource WarnBrush}" TextWrapping="Wrap" Margin="0,8,0,8" />
+                        <TextBlock Text="{l:Loc Upgrade_NoAddons}" Style="{StaticResource Muted}" Visibility="{Binding UpgradeAddons.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding UpgradeAddons}" AutomationProperties.AutomationId="UpgradeAddons">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,7">
+                                        <DockPanel>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <CheckBox Content="{l:Loc Upgrade_ApplyUpdate}" IsChecked="{Binding ApplyUpdate}" Visibility="{Binding HasUpdate, Converter={StaticResource BoolVis}}" Margin="0,0,12,0" />
+                                                <CheckBox Content="{l:Loc Upgrade_Disable}" IsChecked="{Binding Disable}" Visibility="{Binding IsBlocking, Converter={StaticResource BoolVis}}" />
+                                            </StackPanel>
+                                            <Border x:Name="Badge" DockPanel.Dock="Left" CornerRadius="4" Padding="7,2" Margin="0,0,10,0" VerticalAlignment="Center" Background="{DynamicResource Surface2Brush}" MinWidth="110">
+                                                <TextBlock x:Name="BadgeText" Text="{Binding StatusText}" FontSize="11.5" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                <TextBlock Style="{StaticResource Muted}" FontSize="12"><Run Text="{Binding FileName, Mode=OneWay}" /><Run Text="  " /><Run Text="{Binding Detail, Mode=OneWay}" /></TextBlock>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsBlocking}" Value="True"><Setter TargetName="BadgeText" Property="Foreground" Value="{DynamicResource FailBrush}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding IsWarning}" Value="True"><Setter TargetName="BadgeText" Property="Foreground" Value="{DynamicResource WarnBrush}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding IsGood}" Value="True"><Setter TargetName="BadgeText" Property="Foreground" Value="{DynamicResource PassBrush}" /></DataTrigger>
+                                        <DataTrigger Binding="{Binding HasUpdate}" Value="True"><Setter TargetName="BadgeText" Property="Foreground" Value="{DynamicResource PrimaryBrush}" /></DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Steps 3-4: progress, result, rollback -->
+                <Border Style="{StaticResource Card}" Visibility="{Binding UpgradeLog.Count, Converter={StaticResource NullVis}}">
+                    <StackPanel>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Upgrade_Rollback}" Style="{StaticResource DangerButton}" Command="{Binding RollbackUpgradeCommand}" Visibility="{Binding UpgradeFailed, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="UpgradeRollback" />
+                            <TextBlock Text="{l:Loc Upgrade_Progress}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        </DockPanel>
+                        <ItemsControl ItemsSource="{Binding UpgradeLog}" Margin="0,8,0,0" AutomationProperties.AutomationId="UpgradeLog">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate><TextBlock Text="{Binding}" FontFamily="{StaticResource MonoFont}" FontSize="12" TextWrapping="Wrap" Margin="0,1" /></DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Performance -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=9}" AutomationProperties.AutomationId="PerformancePage">

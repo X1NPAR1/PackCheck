@@ -513,6 +513,48 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Version upgraden</value></data>
+  <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft-Version upgraden</value></data>
+  <data name="Upgrade_Hint" xml:space="preserve"><value>Wähle eine neuere Version. PackCheck prüft zuerst alle Plugins und Mods, erstellt ein angeheftetes Komplett-Backup, installiert die neue Version, aktualisiert was möglich ist über Modrinth und startet den Server testweise. Schlägt der Test fehl, stellt ein Klick alles wieder her.</value></data>
+  <data name="Upgrade_Target" xml:space="preserve"><value>Zielversion</value></data>
+  <data name="Upgrade_Check" xml:space="preserve"><value>Kompatibilität prüfen</value></data>
+  <data name="Upgrade_Loading" xml:space="preserve"><value>Versionen werden geladen…</value></data>
+  <data name="Upgrade_Latest" xml:space="preserve"><value>{0} ist die neueste Version für diese Plattform.</value></data>
+  <data name="Upgrade_VersionsFailed" xml:space="preserve"><value>Versionen konnten nicht geladen werden: {0}</value></data>
+  <data name="Upgrade_Checking" xml:space="preserve"><value>Plugins und Mods werden geprüft…</value></data>
+  <data name="Upgrade_Report" xml:space="preserve"><value>Kompatibilitätsbericht</value></data>
+  <data name="Upgrade_Summary" xml:space="preserve"><value>{0} Plugins/Mods · {1} Updates auf Modrinth · {2} inkompatibel · {3} unbekannt</value></data>
+  <data name="Upgrade_Java" xml:space="preserve"><value>Braucht Java {0} (wird bei Bedarf installiert).</value></data>
+  <data name="Upgrade_BackupFirst" xml:space="preserve"><value>Nach dem Upgrade können Welten nicht mehr mit einer älteren Version geöffnet werden. Zuerst wird ein Komplett-Backup erstellt und angeheftet.</value></data>
+  <data name="Upgrade_NoAddons" xml:space="preserve"><value>Keine Plugins oder Mods.</value></data>
+  <data name="Upgrade_ApplyUpdate" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Upgrade_Disable" xml:space="preserve"><value>Deaktivieren</value></data>
+  <data name="Upgrade_UpdateTo" xml:space="preserve"><value>Modrinth hat {0} für diese Version</value></data>
+  <data name="Upgrade_Declared" xml:space="preserve"><value>angegeben: {0}</value></data>
+  <data name="UpgradeStatus_Compatible" xml:space="preserve"><value>Kompatibel</value></data>
+  <data name="UpgradeStatus_Likely" xml:space="preserve"><value>Sollte laufen</value></data>
+  <data name="UpgradeStatus_UpdateAvailable" xml:space="preserve"><value>Update verfügbar</value></data>
+  <data name="UpgradeStatus_Incompatible" xml:space="preserve"><value>Inkompatibel</value></data>
+  <data name="UpgradeStatus_Unknown" xml:space="preserve"><value>Unbekannt</value></data>
+  <data name="Upgrade_Start" xml:space="preserve"><value>Upgraden</value></data>
+  <data name="Upgrade_StopFirst" xml:space="preserve"><value>Für das Upgrade muss der Server gestoppt werden. Jetzt stoppen?</value></data>
+  <data name="Upgrade_Confirm" xml:space="preserve"><value>Von {0} auf {1} upgraden? Zuerst wird ein angeheftetes Komplett-Backup erstellt.</value></data>
+  <data name="Upgrade_Progress" xml:space="preserve"><value>Fortschritt</value></data>
+  <data name="Upgrade_StepBackup" xml:space="preserve"><value>Komplett-Backup wird erstellt…</value></data>
+  <data name="Upgrade_BackupNote" xml:space="preserve"><value>Vor dem Upgrade {0} → {1}</value></data>
+  <data name="Upgrade_BackupBusy" xml:space="preserve"><value>Ein anderes Backup läuft. Versuche es gleich erneut.</value></data>
+  <data name="Upgrade_StepJava" xml:space="preserve"><value>Java {0} wird geprüft…</value></data>
+  <data name="Upgrade_StepInstall" xml:space="preserve"><value>{0} {1} wird installiert…</value></data>
+  <data name="Upgrade_StepUpdate" xml:space="preserve"><value>{0} wird auf {1} aktualisiert…</value></data>
+  <data name="Upgrade_StepDisable" xml:space="preserve"><value>{0} wird deaktiviert…</value></data>
+  <data name="Upgrade_StepTest" xml:space="preserve"><value>Teststart…</value></data>
+  <data name="Upgrade_TestOk" xml:space="preserve"><value>Der Server ist sauber gestartet. Wird wieder gestoppt…</value></data>
+  <data name="Upgrade_Done" xml:space="preserve"><value>✔ Upgrade abgeschlossen.</value></data>
+  <data name="Upgrade_Success" xml:space="preserve"><value>Der Server läuft jetzt mit Minecraft {0}.</value></data>
+  <data name="Upgrade_TestFailed" xml:space="preserve"><value>Der Teststart ist fehlgeschlagen. Sieh in die Konsole oder rolle zurück.</value></data>
+  <data name="Upgrade_Rollback" xml:space="preserve"><value>Zurückrollen</value></data>
+  <data name="Upgrade_RollingBack" xml:space="preserve"><value>Backup wird wiederhergestellt…</value></data>
+  <data name="Upgrade_RolledBack" xml:space="preserve"><value>Auf {0} zurückgerollt.</value></data>
   <data name="Act_Discord" xml:space="preserve"><value>an Discord senden</value></data>
   <data name="Discord_Title" xml:space="preserve"><value>Discord-Benachrichtigungen</value></data>
   <data name="Discord_Hint" xml:space="preserve"><value>Discord-Kanal → Bearbeiten → Integrationen → Webhooks → Neuer Webhook → URL kopieren und hier einfügen.</value></data>

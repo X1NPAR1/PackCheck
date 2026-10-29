@@ -513,6 +513,48 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Обновить версию</value></data>
+  <data name="Upgrade_Title" xml:space="preserve"><value>Обновление версии Minecraft</value></data>
+  <data name="Upgrade_Hint" xml:space="preserve"><value>Выберите более новую версию. PackCheck проверит плагины и моды, сделает закреплённую полную копию, установит версию, обновит что сможет через Modrinth и выполнит тестовый запуск. Если тест не пройдёт, всё вернётся одним кликом.</value></data>
+  <data name="Upgrade_Target" xml:space="preserve"><value>Целевая версия</value></data>
+  <data name="Upgrade_Check" xml:space="preserve"><value>Проверить совместимость</value></data>
+  <data name="Upgrade_Loading" xml:space="preserve"><value>Загрузка версий…</value></data>
+  <data name="Upgrade_Latest" xml:space="preserve"><value>{0} — самая новая версия для этой платформы.</value></data>
+  <data name="Upgrade_VersionsFailed" xml:space="preserve"><value>Не удалось загрузить версии: {0}</value></data>
+  <data name="Upgrade_Checking" xml:space="preserve"><value>Проверка плагинов и модов…</value></data>
+  <data name="Upgrade_Report" xml:space="preserve"><value>Отчёт о совместимости</value></data>
+  <data name="Upgrade_Summary" xml:space="preserve"><value>{0} плагинов/модов · {1} обновлений на Modrinth · {2} несовместимы · {3} неизвестно</value></data>
+  <data name="Upgrade_Java" xml:space="preserve"><value>Нужна Java {0} (установится автоматически).</value></data>
+  <data name="Upgrade_BackupFirst" xml:space="preserve"><value>После обновления миры нельзя открыть старой версией. Сначала создаётся полная копия и закрепляется.</value></data>
+  <data name="Upgrade_NoAddons" xml:space="preserve"><value>Нет плагинов и модов.</value></data>
+  <data name="Upgrade_ApplyUpdate" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Upgrade_Disable" xml:space="preserve"><value>Отключить</value></data>
+  <data name="Upgrade_UpdateTo" xml:space="preserve"><value>На Modrinth есть {0} для этой версии</value></data>
+  <data name="Upgrade_Declared" xml:space="preserve"><value>указано: {0}</value></data>
+  <data name="UpgradeStatus_Compatible" xml:space="preserve"><value>Совместим</value></data>
+  <data name="UpgradeStatus_Likely" xml:space="preserve"><value>Скорее всего работает</value></data>
+  <data name="UpgradeStatus_UpdateAvailable" xml:space="preserve"><value>Есть обновление</value></data>
+  <data name="UpgradeStatus_Incompatible" xml:space="preserve"><value>Несовместим</value></data>
+  <data name="UpgradeStatus_Unknown" xml:space="preserve"><value>Неизвестно</value></data>
+  <data name="Upgrade_Start" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Upgrade_StopFirst" xml:space="preserve"><value>Для обновления сервер нужно остановить. Остановить сейчас?</value></data>
+  <data name="Upgrade_Confirm" xml:space="preserve"><value>Обновить с {0} до {1}? Сначала создаётся закреплённая полная копия.</value></data>
+  <data name="Upgrade_Progress" xml:space="preserve"><value>Ход выполнения</value></data>
+  <data name="Upgrade_StepBackup" xml:space="preserve"><value>Создание полной копии…</value></data>
+  <data name="Upgrade_BackupNote" xml:space="preserve"><value>Перед обновлением {0} → {1}</value></data>
+  <data name="Upgrade_BackupBusy" xml:space="preserve"><value>Идёт другое копирование. Повторите позже.</value></data>
+  <data name="Upgrade_StepJava" xml:space="preserve"><value>Проверка Java {0}…</value></data>
+  <data name="Upgrade_StepInstall" xml:space="preserve"><value>Установка {0} {1}…</value></data>
+  <data name="Upgrade_StepUpdate" xml:space="preserve"><value>Обновление {0} до {1}…</value></data>
+  <data name="Upgrade_StepDisable" xml:space="preserve"><value>Отключение {0}…</value></data>
+  <data name="Upgrade_StepTest" xml:space="preserve"><value>Тестовый запуск…</value></data>
+  <data name="Upgrade_TestOk" xml:space="preserve"><value>Сервер успешно запустился. Останавливаем…</value></data>
+  <data name="Upgrade_Done" xml:space="preserve"><value>✔ Обновление завершено.</value></data>
+  <data name="Upgrade_Success" xml:space="preserve"><value>Сервер теперь работает на Minecraft {0}.</value></data>
+  <data name="Upgrade_TestFailed" xml:space="preserve"><value>Тестовый запуск не удался. Проверьте консоль или откатите.</value></data>
+  <data name="Upgrade_Rollback" xml:space="preserve"><value>Откатить</value></data>
+  <data name="Upgrade_RollingBack" xml:space="preserve"><value>Восстановление копии…</value></data>
+  <data name="Upgrade_RolledBack" xml:space="preserve"><value>Откат к {0} выполнен.</value></data>
   <data name="Act_Discord" xml:space="preserve"><value>отправить в Discord</value></data>
   <data name="Discord_Title" xml:space="preserve"><value>Уведомления Discord</value></data>
   <data name="Discord_Hint" xml:space="preserve"><value>Канал Discord → Настройки → Интеграция → Вебхуки → Новый → Копировать URL и вставить сюда.</value></data>

@@ -513,6 +513,48 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>This PC has no more free memory to give.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} is ready. Start the server again.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} disabled. Start the server again.</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Upgrade version</value></data>
+  <data name="Upgrade_Title" xml:space="preserve"><value>Upgrade Minecraft version</value></data>
+  <data name="Upgrade_Hint" xml:space="preserve"><value>Pick a newer version. PackCheck checks every plugin and mod first, takes a pinned full backup, installs the new version, updates what it can from Modrinth and test-starts the server. If the test fails, one click puts everything back.</value></data>
+  <data name="Upgrade_Target" xml:space="preserve"><value>Target version</value></data>
+  <data name="Upgrade_Check" xml:space="preserve"><value>Check compatibility</value></data>
+  <data name="Upgrade_Loading" xml:space="preserve"><value>Loading versions…</value></data>
+  <data name="Upgrade_Latest" xml:space="preserve"><value>{0} is the newest version available for this platform.</value></data>
+  <data name="Upgrade_VersionsFailed" xml:space="preserve"><value>Could not load versions: {0}</value></data>
+  <data name="Upgrade_Checking" xml:space="preserve"><value>Checking plugins and mods…</value></data>
+  <data name="Upgrade_Report" xml:space="preserve"><value>Compatibility report</value></data>
+  <data name="Upgrade_Summary" xml:space="preserve"><value>{0} plugins/mods · {1} updates on Modrinth · {2} incompatible · {3} unknown</value></data>
+  <data name="Upgrade_Java" xml:space="preserve"><value>Needs Java {0} (installed automatically if missing).</value></data>
+  <data name="Upgrade_BackupFirst" xml:space="preserve"><value>Worlds cannot be opened by an older version after the upgrade. A full backup is taken first and pinned so it is never deleted.</value></data>
+  <data name="Upgrade_NoAddons" xml:space="preserve"><value>No plugins or mods.</value></data>
+  <data name="Upgrade_ApplyUpdate" xml:space="preserve"><value>Update</value></data>
+  <data name="Upgrade_Disable" xml:space="preserve"><value>Disable</value></data>
+  <data name="Upgrade_UpdateTo" xml:space="preserve"><value>Modrinth has {0} for this version</value></data>
+  <data name="Upgrade_Declared" xml:space="preserve"><value>declares: {0}</value></data>
+  <data name="UpgradeStatus_Compatible" xml:space="preserve"><value>Compatible</value></data>
+  <data name="UpgradeStatus_Likely" xml:space="preserve"><value>Should work</value></data>
+  <data name="UpgradeStatus_UpdateAvailable" xml:space="preserve"><value>Update available</value></data>
+  <data name="UpgradeStatus_Incompatible" xml:space="preserve"><value>Incompatible</value></data>
+  <data name="UpgradeStatus_Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="Upgrade_Start" xml:space="preserve"><value>Upgrade</value></data>
+  <data name="Upgrade_StopFirst" xml:space="preserve"><value>The server must be stopped for the upgrade. Stop it now?</value></data>
+  <data name="Upgrade_Confirm" xml:space="preserve"><value>Upgrade from {0} to {1}? A pinned full backup is taken first.</value></data>
+  <data name="Upgrade_Progress" xml:space="preserve"><value>Progress</value></data>
+  <data name="Upgrade_StepBackup" xml:space="preserve"><value>Taking a full backup…</value></data>
+  <data name="Upgrade_BackupNote" xml:space="preserve"><value>Before upgrade {0} → {1}</value></data>
+  <data name="Upgrade_BackupBusy" xml:space="preserve"><value>Another backup is running. Try again in a moment.</value></data>
+  <data name="Upgrade_StepJava" xml:space="preserve"><value>Checking Java {0}…</value></data>
+  <data name="Upgrade_StepInstall" xml:space="preserve"><value>Installing {0} {1}…</value></data>
+  <data name="Upgrade_StepUpdate" xml:space="preserve"><value>Updating {0} to {1}…</value></data>
+  <data name="Upgrade_StepDisable" xml:space="preserve"><value>Disabling {0}…</value></data>
+  <data name="Upgrade_StepTest" xml:space="preserve"><value>Test start…</value></data>
+  <data name="Upgrade_TestOk" xml:space="preserve"><value>The server started correctly. Stopping it again…</value></data>
+  <data name="Upgrade_Done" xml:space="preserve"><value>✔ Upgrade finished.</value></data>
+  <data name="Upgrade_Success" xml:space="preserve"><value>The server now runs Minecraft {0}.</value></data>
+  <data name="Upgrade_TestFailed" xml:space="preserve"><value>The test start failed. Check the console or the crash banner, or roll back.</value></data>
+  <data name="Upgrade_Rollback" xml:space="preserve"><value>Roll back</value></data>
+  <data name="Upgrade_RollingBack" xml:space="preserve"><value>Restoring the backup…</value></data>
+  <data name="Upgrade_RolledBack" xml:space="preserve"><value>Rolled back to {0}.</value></data>
   <data name="Act_Discord" xml:space="preserve"><value>post to Discord</value></data>
   <data name="Discord_Title" xml:space="preserve"><value>Discord notifications</value></data>
   <data name="Discord_Hint" xml:space="preserve"><value>Discord channel → Edit → Integrations → Webhooks → New webhook → Copy URL, then paste it here.</value></data>
