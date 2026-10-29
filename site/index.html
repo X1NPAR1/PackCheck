@@ -208,6 +208,9 @@
     .links { display: none; }
     .panel, .row, .row.flip { grid-template-columns: 1fr; gap: 32px; }
     .row.flip .copy { order: 0; }
+    .row, .row.flip, .panel { grid-template-columns: minmax(0, 1fr); }
+    .row > *, .panel > * { min-width: 0; }
+    .row .shot { width: 100%; max-width: 420px !important; }
     .groups { grid-template-columns: 1fr 1fr; }
     .group { border-bottom: 1px solid var(--rule); }
     .numbers .wrap { grid-template-columns: 1fr 1fr; }
