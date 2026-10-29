@@ -41,23 +41,31 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 | Server dashboard | Create a server |
 |---|---|
-| ![Server dashboard with TPS, CPU, RAM and ping gauges](docs/media/server-overview.png) | ![Create server wizard with profiles, RAM and CPU sliders](docs/media/create-wizard.png) |
+| ![Server dashboard with TPS, CPU, RAM and ping gauges, resources and technical details](docs/media/server-overview.png) | ![Create server wizard with profiles, platform cards, RAM and CPU sliders](docs/media/create-wizard.png) |
+
+| Automation | Console |
+|---|---|
+| ![Automation rules with schedules, crash restarts and triggers](docs/media/automation.png) | ![Live console with filters, search and player list](docs/media/console.png) |
 
 | Pack validation | Theme and language |
 |---|---|
 | ![Validation findings grouped by severity, category and file](docs/media/validation.gif) | ![Dark and light theme, five languages](docs/media/theme-language.gif) |
 
-| Play over the internet | Tray menu |
+| Plugins and mods | Play over the internet |
 |---|---|
-| ![Port forwarding guide and reachability test](docs/media/online-router.png) | ![Tray menu with live server status](docs/media/tray-menu.png) |
+| ![Plugin browser filtered to the selected server](docs/media/plugins.png) | ![Port forwarding guide and reachability test](docs/media/online-router.png) |
 
-| Files and code editor | Mods browser |
+| Files and code editor | Tray menu |
 |---|---|
-| ![Files](docs/media/files.png) | ![Mods](docs/media/mods.png) |
+| ![Files tab with code editor](docs/media/files.png) | ![Tray menu with live server status](docs/media/tray-menu.png) |
 
-| Startup | Settings |
+| Startup | Navigation |
 |---|---|
-| ![Startup](docs/media/splash.gif) | ![Settings with section sidebar and search](docs/media/settings.png) |
+| ![Startup](docs/media/splash.gif) | ![Moving between pages](docs/media/navigation.gif) |
+
+| Settings | About |
+|---|---|
+| ![Settings with section sidebar and search](docs/media/settings.png) | ![About with system information](docs/media/about.png) |
 
 ## Features
 
@@ -78,6 +86,7 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 **Automation**
 - Per-server rules on an Automation tab: start when PackCheck opens, restart after a crash (with a limit per hour), scheduled restart with a chat countdown, scheduled backup, scheduled or repeating console commands, chat announcements, warn or restart on low TPS or high memory, and stop when nobody is online.
+- Triggers: when this or another server starts, stops or crashes (start, stop, restart, back up, run a command, send a message or notify, after a delay), and when the player count reaches a number.
 - Days of the week, "Run now", next and last run for every rule, an activity log, and a one-click recommended setup.
 - Rules keep working while PackCheck sits in the tray; with "Start with Windows" a server comes back after every reboot.
 

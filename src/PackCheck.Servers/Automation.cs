@@ -182,7 +182,8 @@ public sealed class AutomationEngine
         RuleAction.Command => r.Command?.Trim().TrimStart('/'),
         RuleAction.Say or RuleAction.Notify => r.Message,
         _ => null,
-    }, r.Action == RuleAction.Restart ? Math.Max(0, r.WarningSeconds) : 0) { DelaySeconds = Math.Max(0, r.DelaySeconds) };
+    }, r.Action == RuleAction.Restart ? Math.Max(0, r.WarningSeconds) : 0)
+    { DelaySeconds = Math.Max(0, r.DelaySeconds) };
 
     public IReadOnlyList<AutomationAction> OnAppStarted(AutomationSnapshot s) =>
         Rules.Where(r => r.Enabled && r.Kind == AutomationKind.StartWithApp && s.State is ServerState.Stopped or ServerState.Crashed)
