@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/X1NPAR1/PackCheck?label=download&color=5E9A3E&cacheSeconds=600"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.3.0" src="https://img.shields.io/badge/download-v3.3.0-5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
