@@ -61,6 +61,10 @@ Static checks never execute plugin code. A real startup test is available, but y
 |---|---|
 | ![Automation rules with schedules, crash restarts and triggers](docs/media/automation.png) | ![Live console with filters, search and player list](docs/media/console.png) |
 
+| AI assistant: task list for long jobs | Chat history, server picker and screenshots |
+|---|---|
+| ![The assistant translating every plugin with a task list and a task-complete summary](docs/media/assistant.png) | ![Earlier chats with search, a server picker and a pasted screenshot waiting to be sent](docs/media/assistant-history.png) |
+
 | Pack validation | Theme and language |
 |---|---|
 | ![Validation findings grouped by severity, category and file](docs/media/validation.gif) | ![Dark and light theme, five languages](docs/media/theme-language.gif) |

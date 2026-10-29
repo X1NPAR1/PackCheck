@@ -73,6 +73,18 @@ public sealed class PageTests(AppFixture app)
     }
 
     [Fact]
+    public void Assistant_HasItsOwnServerPickerAndHistory()
+    {
+        app.Navigate("NavAssistant");
+        var picker = app.Find("AssistantServer").AsComboBox();
+        picker.Expand();
+        Assert.NotEmpty(picker.Items); // "no server" is always offered
+        picker.Collapse();
+        Assert.NotNull(app.Find("AssistantHistory"));
+        Assert.NotNull(app.Find("AssistantNew"));
+    }
+
+    [Fact]
     public void SettingsSearch_HidesSectionsThatDoNotMatch()
     {
         app.Navigate("NavSettings");

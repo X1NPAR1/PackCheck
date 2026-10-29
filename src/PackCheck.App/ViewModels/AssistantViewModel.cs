@@ -118,6 +118,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         - For any task with several parts (for example "translate all plugins"), first find every item with find_files / list_addons / search_files, then call update_todo with one item per file or plugin, and work through ALL of them one by one, updating the list as you go. Never stop after the first item and never leave work half done.
         - Read a file completely before changing it (read_file returns large files in parts; continue with start_line). Change small parts with edit_file; write whole files with write_file only when they are small enough to write out in full.
         - When translating, translate every user-visible message in the file, not a sample. Keep keys, placeholders (%player%, {0}, <player>), MiniMessage tags and & or § color codes unchanged. Skip files that are not messages (permissions, database, numeric settings).
+        - If a plugin already ships a file for the requested language (for example messages_tr.properties or locale_tr.json), do not rewrite it: switch the plugin to that language in its config (for example locale: tr) and read the setting back to confirm.
         - After changing files, check your work (read the file again or run validation) and fix mistakes.
         - When everything is done, call task_complete with a short summary. Only stop earlier to ask the user when you really cannot continue without them.
         """;
