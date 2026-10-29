@@ -458,6 +458,35 @@
   <data name="Mode_RunPlan" xml:space="preserve"><value>Выполнить (с подтверждением)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Выполнить, файлы авто</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>План одобрен. Выполни его по шагам.</value></data>
+  <data name="Crash_Eula" xml:space="preserve"><value>EULA не принята</value></data>
+  <data name="Crash_PortInUse" xml:space="preserve"><value>Порт уже занят</value></data>
+  <data name="Crash_OutOfMemory" xml:space="preserve"><value>Не хватает памяти</value></data>
+  <data name="Crash_WrongJava" xml:space="preserve"><value>Неверная версия Java</value></data>
+  <data name="Crash_MissingDependency" xml:space="preserve"><value>Отсутствует зависимость</value></data>
+  <data name="Crash_IncompatibleMods" xml:space="preserve"><value>Несовместимые моды</value></data>
+  <data name="Crash_MixinFailure" xml:space="preserve"><value>Мод не загрузился (mixin)</value></data>
+  <data name="Crash_PluginError" xml:space="preserve"><value>Плагин не запустился</value></data>
+  <data name="Crash_BrokenConfig" xml:space="preserve"><value>Повреждённый файл настроек</value></data>
+  <data name="Crash_WorldCorrupt" xml:space="preserve"><value>Данные мира повреждены</value></data>
+  <data name="Crash_Unknown" xml:space="preserve"><value>Причина не найдена</value></data>
+  <data name="Crash_NeedJava" xml:space="preserve"><value>Серверу нужна Java {0} или новее.</value></data>
+  <data name="Crash_MissingDetail" xml:space="preserve"><value>{0} требует {1}, который не установлен.</value></data>
+  <data name="Crash_ConfigLine" xml:space="preserve"><value>Синтаксическая ошибка в {0}, строка {1}.</value></data>
+  <data name="Crash_Culprit" xml:space="preserve"><value>Причина: {0}</value></data>
+  <data name="CrashFix_AcceptEula" xml:space="preserve"><value>Принять EULA</value></data>
+  <data name="CrashFix_ChangePort" xml:space="preserve"><value>Взять свободный порт</value></data>
+  <data name="CrashFix_IncreaseMemory" xml:space="preserve"><value>Добавить 2 ГБ RAM</value></data>
+  <data name="CrashFix_ChangeJava" xml:space="preserve"><value>Установить Java {0}</value></data>
+  <data name="CrashFix_DisableAddon" xml:space="preserve"><value>Отключить</value></data>
+  <data name="CrashFix_OpenContent" xml:space="preserve"><value>Открыть плагины/моды</value></data>
+  <data name="CrashFix_OpenFile" xml:space="preserve"><value>Открыть файл</value></data>
+  <data name="CrashFix_RestoreBackup" xml:space="preserve"><value>Восстановить копию</value></data>
+  <data name="CrashDone_Eula" xml:space="preserve"><value>EULA принята. Можно запускать сервер.</value></data>
+  <data name="CrashDone_Port" xml:space="preserve"><value>Порт изменён на {0}. Запустите сервер снова.</value></data>
+  <data name="CrashDone_Memory" xml:space="preserve"><value>Память увеличена до {0:0.#} ГБ. Запустите сервер снова.</value></data>
+  <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
+  <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
+  <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Оформление</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Значок сервера</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Показывается рядом с сервером в списке. Подойдёт любое изображение: оно обрезается до квадрата и уменьшается до 64×64.</value></data>

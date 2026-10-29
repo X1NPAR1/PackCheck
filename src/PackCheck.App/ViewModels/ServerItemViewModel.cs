@@ -374,10 +374,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
         if (value == ServerState.Crashed)
         {
             CrashSummary = _all.LastOrDefault(e => e.Level == "Error")?.Message ?? Loc.T("Console_CrashNoDetail");
+            DiagnoseCrash();
         }
         else if (value == ServerState.Starting)
         {
             CrashSummary = null;
+            Diagnosis = null;
         }
     }
 
@@ -602,7 +604,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     {
         var tail = string.Join("\n", _all.Skip(Math.Max(0, _all.Count - 80)).Select(e => e.Raw));
         MainViewModel.Shell?.Assistant.Ask(
-            $"My server \"{Name}\" ({Definition.Platform} {Definition.MinecraftVersion}) crashed. Find the cause and tell me how to fix it.\n\nLast console lines:\n```\n{tail}\n```");
+            $"My server \"{Name}\" ({Definition.Platform} {Definition.MinecraftVersion}) crashed. Find the cause and tell me how to fix it.{DiagnosisForAi()}\n\nLast console lines:\n```\n{tail}\n```");
     }
 
     private async Task SampleAsync()
@@ -712,9 +714,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private string? _preparing;
 
     /// <summary>Makes sure the right Java exists before starting; downloads Temurin when it does not.</summary>
-    private async Task EnsureJavaAsync()
+    private async Task EnsureJavaAsync(int? atLeast = null)
     {
-        var required = PlatformInfo.RequiredJava(Definition.Platform, Definition.MinecraftVersion);
+        var required = Math.Max(PlatformInfo.RequiredJava(Definition.Platform, Definition.MinecraftVersion), atLeast ?? 0);
         if (JarJava.RequiredFeature(Path.Combine(Definition.Directory, Definition.JarFile)) is { } fromJar && fromJar > required)
         {
             required = fromJar;

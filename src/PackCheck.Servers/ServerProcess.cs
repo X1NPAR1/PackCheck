@@ -118,6 +118,7 @@ public sealed class ServerProcess : IAsyncDisposable
         }
 
         SetState(ServerState.Starting);
+        _failureSeen = false;
         _job = new JobObject();
         _process = new Process { StartInfo = psi, EnableRaisingEvents = true };
         _process.OutputDataReceived += (_, e) => OnLine(e.Data);
@@ -125,7 +126,7 @@ public sealed class ServerProcess : IAsyncDisposable
         _process.Exited += (_, _) =>
         {
             var code = _process?.ExitCode ?? 0;
-            SetState(State == ServerState.Stopping || code == 0 ? ServerState.Stopped : ServerState.Crashed);
+            SetState(ExitState(State, code, _failureSeen));
             _job?.Dispose();
             _job = null;
         };
@@ -163,8 +164,31 @@ public sealed class ServerProcess : IAsyncDisposable
             SetState(ServerState.Running);
         }
 
+        if (!_failureSeen && IsFailureLine(line))
+        {
+            _failureSeen = true;
+        }
+
         Output?.Invoke(this, line);
     }
+
+    private volatile bool _failureSeen;
+
+    /// <summary>
+    /// Paper/Vanilla often exit with code 0 after a crash (they save a crash report and shut down cleanly),
+    /// and exit 0 when the EULA is missing. Those are crashes for the user, not normal stops.
+    /// </summary>
+    public static ServerState ExitState(ServerState stateBefore, int exitCode, bool failureSeen) =>
+        stateBefore == ServerState.Stopping ? ServerState.Stopped
+        : exitCode != 0 || failureSeen || stateBefore == ServerState.Starting ? ServerState.Crashed
+        : ServerState.Stopped;
+
+    public static bool IsFailureLine(string line) =>
+        line.Contains("This crash report has been saved to", StringComparison.Ordinal)
+        || line.Contains("Failed to start the minecraft server", StringComparison.Ordinal)
+        || line.Contains("Encountered an unexpected exception", StringComparison.Ordinal)
+        || line.Contains("FAILED TO BIND TO PORT", StringComparison.Ordinal)
+        || line.Contains("You need to agree to the EULA", StringComparison.Ordinal);
 
     public async Task SendCommandAsync(string command)
     {
@@ -199,6 +223,12 @@ public sealed class ServerProcess : IAsyncDisposable
 
     public void Kill()
     {
+        // A kill requested by the user is not a crash (no crash banner, no restart-on-crash).
+        if (State is ServerState.Starting or ServerState.Running)
+        {
+            SetState(ServerState.Stopping);
+        }
+
         _job?.Terminate();
         if (_process is { HasExited: false })
         {

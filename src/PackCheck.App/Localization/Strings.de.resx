@@ -458,6 +458,35 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Mode_RunPlan" xml:space="preserve"><value>Plan ausführen (mit Rückfrage)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Mit automatischen Dateiänderungen</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Der Plan ist freigegeben. Setze ihn jetzt Schritt für Schritt um.</value></data>
+  <data name="Crash_Eula" xml:space="preserve"><value>EULA nicht akzeptiert</value></data>
+  <data name="Crash_PortInUse" xml:space="preserve"><value>Port bereits belegt</value></data>
+  <data name="Crash_OutOfMemory" xml:space="preserve"><value>Zu wenig Speicher</value></data>
+  <data name="Crash_WrongJava" xml:space="preserve"><value>Falsche Java-Version</value></data>
+  <data name="Crash_MissingDependency" xml:space="preserve"><value>Fehlende Abhängigkeit</value></data>
+  <data name="Crash_IncompatibleMods" xml:space="preserve"><value>Inkompatible Mods</value></data>
+  <data name="Crash_MixinFailure" xml:space="preserve"><value>Ein Mod konnte nicht laden (Mixin)</value></data>
+  <data name="Crash_PluginError" xml:space="preserve"><value>Ein Plugin konnte nicht starten</value></data>
+  <data name="Crash_BrokenConfig" xml:space="preserve"><value>Fehlerhafte Konfigurationsdatei</value></data>
+  <data name="Crash_WorldCorrupt" xml:space="preserve"><value>Weltdaten beschädigt</value></data>
+  <data name="Crash_Unknown" xml:space="preserve"><value>Ursache unbekannt</value></data>
+  <data name="Crash_NeedJava" xml:space="preserve"><value>Dieser Server braucht Java {0} oder neuer.</value></data>
+  <data name="Crash_MissingDetail" xml:space="preserve"><value>{0} braucht {1}, das nicht installiert ist.</value></data>
+  <data name="Crash_ConfigLine" xml:space="preserve"><value>Syntaxfehler in {0}, Zeile {1}.</value></data>
+  <data name="Crash_Culprit" xml:space="preserve"><value>Verursacht durch: {0}</value></data>
+  <data name="CrashFix_AcceptEula" xml:space="preserve"><value>EULA akzeptieren</value></data>
+  <data name="CrashFix_ChangePort" xml:space="preserve"><value>Freien Port nutzen</value></data>
+  <data name="CrashFix_IncreaseMemory" xml:space="preserve"><value>2 GB mehr RAM geben</value></data>
+  <data name="CrashFix_ChangeJava" xml:space="preserve"><value>Java {0} installieren</value></data>
+  <data name="CrashFix_DisableAddon" xml:space="preserve"><value>Deaktivieren</value></data>
+  <data name="CrashFix_OpenContent" xml:space="preserve"><value>Plugins/Mods öffnen</value></data>
+  <data name="CrashFix_OpenFile" xml:space="preserve"><value>Datei öffnen</value></data>
+  <data name="CrashFix_RestoreBackup" xml:space="preserve"><value>Backup wiederherstellen</value></data>
+  <data name="CrashDone_Eula" xml:space="preserve"><value>EULA akzeptiert. Du kannst den Server jetzt starten.</value></data>
+  <data name="CrashDone_Port" xml:space="preserve"><value>Port auf {0} geändert. Starte den Server erneut.</value></data>
+  <data name="CrashDone_Memory" xml:space="preserve"><value>Speicher auf {0:0.#} GB erhöht. Starte den Server erneut.</value></data>
+  <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
+  <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
+  <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Identität</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Server-Symbol</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Wird in der Mehrspielerliste neben dem Server angezeigt. Jedes Bild geht: es wird quadratisch zugeschnitten und auf 64×64 skaliert.</value></data>

@@ -183,11 +183,15 @@
                 BorderBrush="{DynamicResource FailBrush}" BorderThickness="1" Visibility="{Binding IsCrashed, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Content="{l:Loc Console_OpenLog}" Command="{Binding OpenLatestLogCommand}" Padding="10,5" />
-                <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{l:Loc Console_AskAi}" Command="{Binding AskAiCommand}" Padding="10,5" Margin="0,0,8,0"
+                <Button DockPanel.Dock="Right" Content="{l:Loc Console_AskAi}" Command="{Binding AskAiCommand}" Padding="10,5" Margin="0,0,8,0"
                         AutomationProperties.AutomationId="CrashAskAi" />
+                <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{Binding DiagnosisFixText}" Command="{Binding ApplyCrashFixCommand}" Padding="10,5" Margin="0,0,8,0"
+                        Visibility="{Binding HasDiagnosisFix, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="CrashFix" />
                 <StackPanel>
-                    <TextBlock Text="{l:Loc Console_Crashed}" FontWeight="SemiBold" Foreground="{DynamicResource FailBrush}" />
-                    <TextBlock Text="{Binding CrashSummary}" Style="{StaticResource Muted}" FontSize="12.5" TextTrimming="CharacterEllipsis" />
+                    <TextBlock FontWeight="SemiBold" Foreground="{DynamicResource FailBrush}">
+                        <Run Text="{l:Loc Console_Crashed}" /><Run Text="{Binding DiagnosisTitle, Mode=OneWay, StringFormat=' · {0}'}" />
+                    </TextBlock>
+                    <TextBlock Text="{Binding CrashSummary}" Style="{StaticResource Muted}" FontSize="12.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding CrashSummary}" />
                 </StackPanel>
             </DockPanel>
         </Border>

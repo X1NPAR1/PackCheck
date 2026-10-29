@@ -458,6 +458,35 @@ Hayır: açık bırakıp çık.
   <data name="Mode_RunPlan" xml:space="preserve"><value>Planı uygula (her adımda sor)</value></data>
   <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Dosya düzenlemelerini otomatik uygula</value></data>
   <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Plan onaylandı. Şimdi adım adım uygula.</value></data>
+  <data name="Crash_Eula" xml:space="preserve"><value>EULA kabul edilmemiş</value></data>
+  <data name="Crash_PortInUse" xml:space="preserve"><value>Port zaten kullanımda</value></data>
+  <data name="Crash_OutOfMemory" xml:space="preserve"><value>Bellek yetmedi</value></data>
+  <data name="Crash_WrongJava" xml:space="preserve"><value>Yanlış Java sürümü</value></data>
+  <data name="Crash_MissingDependency" xml:space="preserve"><value>Eksik bağımlılık</value></data>
+  <data name="Crash_IncompatibleMods" xml:space="preserve"><value>Uyumsuz modlar</value></data>
+  <data name="Crash_MixinFailure" xml:space="preserve"><value>Bir mod yüklenemedi (mixin)</value></data>
+  <data name="Crash_PluginError" xml:space="preserve"><value>Bir eklenti başlatılamadı</value></data>
+  <data name="Crash_BrokenConfig" xml:space="preserve"><value>Bozuk ayar dosyası</value></data>
+  <data name="Crash_WorldCorrupt" xml:space="preserve"><value>Dünya verisi bozuk</value></data>
+  <data name="Crash_Unknown" xml:space="preserve"><value>Neden bulunamadı</value></data>
+  <data name="Crash_NeedJava" xml:space="preserve"><value>Bu sunucu Java {0} veya daha yenisini istiyor.</value></data>
+  <data name="Crash_MissingDetail" xml:space="preserve"><value>{0}, yüklü olmayan {1} gerektiriyor.</value></data>
+  <data name="Crash_ConfigLine" xml:space="preserve"><value>{0} dosyasında söz dizimi hatası, satır {1}.</value></data>
+  <data name="Crash_Culprit" xml:space="preserve"><value>Sebep: {0}</value></data>
+  <data name="CrashFix_AcceptEula" xml:space="preserve"><value>EULA'yı kabul et</value></data>
+  <data name="CrashFix_ChangePort" xml:space="preserve"><value>Boş bir port kullan</value></data>
+  <data name="CrashFix_IncreaseMemory" xml:space="preserve"><value>2 GB daha RAM ver</value></data>
+  <data name="CrashFix_ChangeJava" xml:space="preserve"><value>Java {0} kur</value></data>
+  <data name="CrashFix_DisableAddon" xml:space="preserve"><value>Devre dışı bırak</value></data>
+  <data name="CrashFix_OpenContent" xml:space="preserve"><value>Eklentileri/modları aç</value></data>
+  <data name="CrashFix_OpenFile" xml:space="preserve"><value>Dosyayı aç</value></data>
+  <data name="CrashFix_RestoreBackup" xml:space="preserve"><value>Yedekten geri yükle</value></data>
+  <data name="CrashDone_Eula" xml:space="preserve"><value>EULA kabul edildi. Sunucuyu şimdi başlatabilirsin.</value></data>
+  <data name="CrashDone_Port" xml:space="preserve"><value>Port {0} olarak değiştirildi. Sunucuyu yeniden başlat.</value></data>
+  <data name="CrashDone_Memory" xml:space="preserve"><value>Bellek {0:0.#} GB'a çıkarıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
+  <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
+  <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
   <data name="Identity_Tab" xml:space="preserve"><value>Kimlik</value></data>
   <data name="Identity_Icon" xml:space="preserve"><value>Sunucu logosu</value></data>
   <data name="Identity_IconHint" xml:space="preserve"><value>Çok oyunculu listesinde sunucunun yanında görünür. Her görsel olur: kare kırpılır ve 64×64 boyutuna getirilir.</value></data>
