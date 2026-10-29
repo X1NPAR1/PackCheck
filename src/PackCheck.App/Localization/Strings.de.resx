@@ -439,6 +439,25 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Tool_Empty" xml:space="preserve"><value>(leer)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} Tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} Tokens</value></data>
+  <data name="Mode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Mode_Normal" xml:space="preserve"><value>Vor Änderungen fragen</value></data>
+  <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="Mode_Auto" xml:space="preserve"><value>Dateien automatisch</value></data>
+  <data name="Mode_Bypass" xml:space="preserve"><value>Freigaben umgehen</value></data>
+  <data name="Mode_Normal_Hint" xml:space="preserve"><value>Jede Änderung wartet auf dich.</value></data>
+  <data name="Mode_Plan_Hint" xml:space="preserve"><value>Schaut nur und plant; nichts ändert sich, bis du den Plan startest.</value></data>
+  <data name="Mode_Auto_Hint" xml:space="preserve"><value>Dateiänderungen sofort (mit Backup); Befehle und Start/Stopp fragen.</value></data>
+  <data name="Mode_Bypass_Hint" xml:space="preserve"><value>Alles wird ohne Nachfrage ausgeführt.</value></data>
+  <data name="Mode_BypassTitle" xml:space="preserve"><value>Umgehungsmodus einschalten?</value></data>
+  <data name="Mode_BypassBody" xml:space="preserve"><value>Der Assistent ändert Dateien, sendet Befehle, startet/stoppt und erstellt Server ohne Rückfrage. Dateien werden gesichert; Befehle sind nicht umkehrbar.</value></data>
+  <data name="Mode_BypassConfirm" xml:space="preserve"><value>Einschalten</value></data>
+  <data name="Mode_BypassBanner" xml:space="preserve"><value>Umgehung: Änderungen ohne Rückfrage</value></data>
+  <data name="Mode_Blocked" xml:space="preserve"><value>{0} übersprungen (Planmodus)</value></data>
+  <data name="Mode_BlockedDetail" xml:space="preserve"><value>Der Planmodus ändert nichts. Starte den Plan, um ihn anzuwenden.</value></data>
+  <data name="Mode_Applied" xml:space="preserve"><value>Angewendet: {0}</value></data>
+  <data name="Mode_RunPlan" xml:space="preserve"><value>Plan ausführen (mit Rückfrage)</value></data>
+  <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Mit automatischen Dateiänderungen</value></data>
+  <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Der Plan ist freigegeben. Setze ihn jetzt Schritt für Schritt um.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

@@ -439,6 +439,25 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Tool_Empty" xml:space="preserve"><value>(vide)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} jetons</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} jetons</value></data>
+  <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Mode_Normal" xml:space="preserve"><value>Demander avant</value></data>
+  <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="Mode_Auto" xml:space="preserve"><value>Fichiers auto</value></data>
+  <data name="Mode_Bypass" xml:space="preserve"><value>Sans validation</value></data>
+  <data name="Mode_Normal_Hint" xml:space="preserve"><value>Chaque changement attend votre accord.</value></data>
+  <data name="Mode_Plan_Hint" xml:space="preserve"><value>Analyse et propose un plan ; rien ne change avant validation.</value></data>
+  <data name="Mode_Auto_Hint" xml:space="preserve"><value>Fichiers modifiés aussitôt (sauvegarde) ; commandes et démarrage demandent.</value></data>
+  <data name="Mode_Bypass_Hint" xml:space="preserve"><value>Tout est appliqué sans demander.</value></data>
+  <data name="Mode_BypassTitle" xml:space="preserve"><value>Activer le mode sans validation ?</value></data>
+  <data name="Mode_BypassBody" xml:space="preserve"><value>L'assistant modifiera des fichiers, enverra des commandes, démarrera/arrêtera et créera des serveurs sans demander. Les fichiers sont sauvegardés ; les commandes sont irréversibles.</value></data>
+  <data name="Mode_BypassConfirm" xml:space="preserve"><value>Activer</value></data>
+  <data name="Mode_BypassBanner" xml:space="preserve"><value>Sans validation : changements appliqués</value></data>
+  <data name="Mode_Blocked" xml:space="preserve"><value>{0} ignoré (mode plan)</value></data>
+  <data name="Mode_BlockedDetail" xml:space="preserve"><value>Le mode plan ne change rien. Lancez le plan pour l'appliquer.</value></data>
+  <data name="Mode_Applied" xml:space="preserve"><value>Appliqué : {0}</value></data>
+  <data name="Mode_RunPlan" xml:space="preserve"><value>Exécuter (avec validation)</value></data>
+  <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Exécuter, fichiers auto</value></data>
+  <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Le plan est validé. Applique-le maintenant étape par étape.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

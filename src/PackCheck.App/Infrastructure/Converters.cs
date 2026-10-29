@@ -328,7 +328,7 @@ public sealed class LocKey : IValueConverter
     /// <summary>Same converter; the ConverterParameter is a key prefix ("Mode_" + "survival").</summary>
     public static LocKey Prefixed => Instance;
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string k ? Loc.T((parameter as string) + k) : string.Empty;
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is null ? string.Empty : Loc.T((parameter as string) + value);
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }

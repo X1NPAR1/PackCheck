@@ -37,6 +37,9 @@ public sealed class AppSettings
     public PackCheck.App.Ai.AiProviderKind AiProvider { get; set; } = PackCheck.App.Ai.AiProviderKind.Anthropic;
     public string? AiModel { get; set; }
 
+    /// <summary>How the assistant applies changes: Normal (ask each time), Plan, Auto, Bypass.</summary>
+    public PackCheck.App.Ai.AssistantMode AssistantMode { get; set; } = PackCheck.App.Ai.AssistantMode.Normal;
+
     /// <summary>API key, encrypted with DPAPI for the current Windows user.</summary>
     public string? AiKey { get; set; }
     public string? CurseForgeApiKey { get; set; }

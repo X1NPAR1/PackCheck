@@ -73,6 +73,20 @@
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding Role}" Value="plan">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal" Margin="4,0,0,12">
+                                                                    <Button Content="{l:Loc Mode_RunPlan}" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" AutomationProperties.AutomationId="RunPlan"
+                                                                            Command="{Binding DataContext.RunPlanCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="normal" />
+                                                                    <Button Content="{l:Loc Mode_RunPlanAuto}"
+                                                                            Command="{Binding DataContext.RunPlanCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="auto" />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding Role}" Value="tool">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
@@ -176,13 +190,29 @@
             </Grid>
         </Border>
 
+        <!-- bypass warning -->
+        <Border Grid.Row="2" VerticalAlignment="Top" Margin="0,-30,0,0" Padding="10,4" CornerRadius="6" Background="{DynamicResource FailBrush}" HorizontalAlignment="Left"
+                Visibility="{Binding IsBypass, Converter={StaticResource BoolVis}}">
+            <TextBlock Text="{l:Loc Mode_BypassBanner}" Foreground="White" FontSize="12" FontWeight="SemiBold" />
+        </Border>
+
         <!-- input -->
         <DockPanel Grid.Row="2" Margin="0,12,0,0" Visibility="{Binding IsConfigured, Converter={StaticResource BoolVis}}">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCommand}" Margin="8,0,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
                 <Button Content="{l:Loc Console_Send}" Style="{StaticResource PrimaryButton}" Command="{Binding SendCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="AssistantSend" />
             </StackPanel>
-            <Button DockPanel.Dock="Left" Content="{l:Loc Assistant_AttachConsole}" Command="{Binding AttachConsoleCommand}" Margin="0,0,8,0" VerticalAlignment="Bottom" />
+            <StackPanel DockPanel.Dock="Left" Margin="0,0,8,0" VerticalAlignment="Bottom" Width="190">
+                <TextBlock Text="{Binding ModeHint}" FontSize="11.5" TextWrapping="Wrap" Margin="2,0,0,6" Foreground="{DynamicResource TextMutedBrush}" />
+                <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode}" AutomationProperties.AutomationId="AssistantMode" AutomationProperties.Name="{l:Loc Mode_Label}" ToolTip="{l:Loc Mode_Label}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Mode_}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="{l:Loc Assistant_AttachConsole}" Command="{Binding AttachConsoleCommand}" Margin="0,6,0,0" />
+            </StackPanel>
             <TextBox x:Name="InputBox" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Assistant_InputHint}" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="160"
                      VerticalScrollBarVisibility="Auto" PreviewKeyDown="OnKey" AutomationProperties.AutomationId="AssistantInput" />
         </DockPanel>

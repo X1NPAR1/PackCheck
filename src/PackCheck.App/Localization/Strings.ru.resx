@@ -439,6 +439,25 @@
   <data name="Tool_Empty" xml:space="preserve"><value>(пусто)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} токенов</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} токенов</value></data>
+  <data name="Mode_Label" xml:space="preserve"><value>Режим</value></data>
+  <data name="Mode_Normal" xml:space="preserve"><value>Спрашивать</value></data>
+  <data name="Mode_Plan" xml:space="preserve"><value>План</value></data>
+  <data name="Mode_Auto" xml:space="preserve"><value>Авто-правка файлов</value></data>
+  <data name="Mode_Bypass" xml:space="preserve"><value>Без подтверждений</value></data>
+  <data name="Mode_Normal_Hint" xml:space="preserve"><value>Каждое изменение ждёт одобрения.</value></data>
+  <data name="Mode_Plan_Hint" xml:space="preserve"><value>Только смотрит и планирует; ничего не меняется до запуска плана.</value></data>
+  <data name="Mode_Auto_Hint" xml:space="preserve"><value>Файлы меняются сразу (с копией); команды и запуск спрашивают.</value></data>
+  <data name="Mode_Bypass_Hint" xml:space="preserve"><value>Всё применяется без вопросов.</value></data>
+  <data name="Mode_BypassTitle" xml:space="preserve"><value>Включить режим без подтверждений?</value></data>
+  <data name="Mode_BypassBody" xml:space="preserve"><value>Ассистент будет менять файлы, отправлять команды, запускать/останавливать и создавать серверы без вопросов. Файлы сохраняются в копии; команды не отменить.</value></data>
+  <data name="Mode_BypassConfirm" xml:space="preserve"><value>Включить</value></data>
+  <data name="Mode_BypassBanner" xml:space="preserve"><value>Без подтверждений: изменения применяются</value></data>
+  <data name="Mode_Blocked" xml:space="preserve"><value>{0} пропущено (режим плана)</value></data>
+  <data name="Mode_BlockedDetail" xml:space="preserve"><value>Режим плана ничего не меняет. Запустите план.</value></data>
+  <data name="Mode_Applied" xml:space="preserve"><value>Применено: {0}</value></data>
+  <data name="Mode_RunPlan" xml:space="preserve"><value>Выполнить (с подтверждением)</value></data>
+  <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Выполнить, файлы авто</value></data>
+  <data name="Mode_RunPlanMessage" xml:space="preserve"><value>План одобрен. Выполни его по шагам.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

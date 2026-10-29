@@ -439,6 +439,25 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Tool_Empty" xml:space="preserve"><value>(empty)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} tokens</value></data>
+  <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Mode_Normal" xml:space="preserve"><value>Ask before changes</value></data>
+  <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="Mode_Auto" xml:space="preserve"><value>Auto-edit files</value></data>
+  <data name="Mode_Bypass" xml:space="preserve"><value>Bypass approvals</value></data>
+  <data name="Mode_Normal_Hint" xml:space="preserve"><value>Every change waits for your approval.</value></data>
+  <data name="Mode_Plan_Hint" xml:space="preserve"><value>Only looks and plans; nothing changes until you run the plan.</value></data>
+  <data name="Mode_Auto_Hint" xml:space="preserve"><value>File edits apply at once (with backup); commands and start/stop still ask.</value></data>
+  <data name="Mode_Bypass_Hint" xml:space="preserve"><value>Everything is applied without asking. Use with care.</value></data>
+  <data name="Mode_BypassTitle" xml:space="preserve"><value>Turn on bypass mode?</value></data>
+  <data name="Mode_BypassBody" xml:space="preserve"><value>The assistant will edit files, send console commands, start and stop servers and create servers without asking you. File edits keep a backup; commands cannot be undone.</value></data>
+  <data name="Mode_BypassConfirm" xml:space="preserve"><value>Turn on</value></data>
+  <data name="Mode_BypassBanner" xml:space="preserve"><value>Bypass: changes are applied without asking</value></data>
+  <data name="Mode_Blocked" xml:space="preserve"><value>Skipped {0} (plan mode)</value></data>
+  <data name="Mode_BlockedDetail" xml:space="preserve"><value>Plan mode does not change anything. Run the plan to apply it.</value></data>
+  <data name="Mode_Applied" xml:space="preserve"><value>Applied: {0}</value></data>
+  <data name="Mode_RunPlan" xml:space="preserve"><value>Run the plan (ask for each change)</value></data>
+  <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Run with automatic file edits</value></data>
+  <data name="Mode_RunPlanMessage" xml:space="preserve"><value>The plan is approved. Carry it out now, step by step.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

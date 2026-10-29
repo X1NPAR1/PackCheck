@@ -29,6 +29,9 @@ public sealed partial class ChatItem(string role, string text) : ObservableObjec
     [ObservableProperty]
     private bool _isStreaming;
 
+    /// <summary>Mode the message was sent in (shown under user messages that were not sent in Normal mode).</summary>
+    public string? ModeTag { get; init; }
+
     /// <summary>Tool rows: what was asked (arguments) and what came back, shown when the row is expanded.</summary>
     public string? Arguments { get; init; }
 
@@ -62,6 +65,63 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     private string? _historyKey;
 
     public ObservableCollection<ChatItem> Messages { get; } = [];
+
+    public IReadOnlyList<AssistantMode> Modes { get; } = [AssistantMode.Normal, AssistantMode.Plan, AssistantMode.Auto, AssistantMode.Bypass];
+
+    public AssistantMode Mode
+    {
+        get => settings.AssistantMode;
+        set
+        {
+            if (value == settings.AssistantMode)
+            {
+                return;
+            }
+
+            if (value == AssistantMode.Bypass)
+            {
+                _ = ConfirmBypassAsync();
+                return;
+            }
+
+            SetMode(value);
+        }
+    }
+
+    public bool IsBypass => Mode == AssistantMode.Bypass;
+
+    public string ModeHint => Loc.T("Mode_" + Mode + "_Hint");
+
+    private void SetMode(AssistantMode value)
+    {
+        settings.AssistantMode = value;
+        settings.Save();
+        OnPropertyChanged(nameof(Mode));
+        OnPropertyChanged(nameof(IsBypass));
+        OnPropertyChanged(nameof(ModeHint));
+    }
+
+    /// <summary>Bypass applies everything without asking, so switching to it is confirmed once.</summary>
+    private async Task ConfirmBypassAsync()
+    {
+        if (MainViewModel.Shell is { } shell && await shell.ConfirmAsync(Loc.T("Mode_BypassTitle"), Loc.T("Mode_BypassBody"), Loc.T("Mode_BypassConfirm"), danger: true).ConfigureAwait(true))
+        {
+            SetMode(AssistantMode.Bypass);
+        }
+        else
+        {
+            OnPropertyChanged(nameof(Mode)); // put the picker back
+        }
+    }
+
+    /// <summary>Plan answers get buttons: run it with approvals, or run it automatically.</summary>
+    [RelayCommand]
+    private async Task RunPlanAsync(string? how)
+    {
+        SetMode(how == "auto" ? AssistantMode.Auto : AssistantMode.Normal);
+        Input = Loc.T("Mode_RunPlanMessage");
+        await SendAsync().ConfigureAwait(true);
+    }
 
     public bool IsConfigured => settings.AiModel is not null && (AiProviders.IsLocal(settings.AiProvider) || Secrets.Unprotect(settings.AiKey) is not null);
 
@@ -226,8 +286,8 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
                 });
             }
 
-            Messages.Add(new ChatItem("user", text));
-            var step = await _conversation.SendAsync(text, _cts.Token).ConfigureAwait(true);
+            Messages.Add(new ChatItem("user", text) { ModeTag = Mode == AssistantMode.Normal ? null : Loc.T("Mode_" + Mode) });
+            var step = await _conversation.SendAsync(AssistantPolicy.Instruction(Mode) + "\n\n" + text, _cts.Token).ConfigureAwait(true);
             for (var round = 0; round < 12; round++)
             {
                 // Some OpenAI-compatible providers send no usage while streaming; estimate (~4 characters per token) instead of showing 0.
@@ -251,6 +311,11 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
 
                 if (step.ToolCalls.Count == 0)
                 {
+                    if (Mode == AssistantMode.Plan && step.Text.Length > 0)
+                    {
+                        Messages.Add(new ChatItem("plan", string.Empty));
+                    }
+
                     break;
                 }
 
@@ -287,11 +352,26 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     {
         try
         {
+            var decision0 = AssistantPolicy.Decide(Mode, call.Name);
+            if (decision0 == ToolDecision.Block)
+            {
+                Messages.Add(new ChatItem("tool", Loc.F("Mode_Blocked", call.Name)) { Result = Loc.T("Mode_BlockedDetail") });
+                return (call, "Plan mode: this tool changes something and is not allowed. Describe the change in your plan instead.", true);
+            }
+
             var (result, pending) = await _tools.RunAsync(call).ConfigureAwait(true);
             if (pending is null)
             {
                 Messages.Add(ToolRow(call, result ?? string.Empty));
                 return (call, result ?? string.Empty, false);
+            }
+
+            if (decision0 == ToolDecision.Run)
+            {
+                // Auto / Bypass: apply now, but still show exactly what changed.
+                var output = await pending.Execute().ConfigureAwait(true);
+                Messages.Add(new ChatItem("tool", Loc.F("Mode_Applied", pending.Title)) { Arguments = pending.Preview, Result = output });
+                return (call, output, false);
             }
 
             var decision = new TaskCompletionSource<bool>();

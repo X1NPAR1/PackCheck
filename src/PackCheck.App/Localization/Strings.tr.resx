@@ -439,6 +439,25 @@ Hayır: açık bırakıp çık.
   <data name="Tool_Empty" xml:space="preserve"><value>(boş)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} token</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} token</value></data>
+  <data name="Mode_Label" xml:space="preserve"><value>Mod</value></data>
+  <data name="Mode_Normal" xml:space="preserve"><value>Değişiklikte sor</value></data>
+  <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="Mode_Auto" xml:space="preserve"><value>Dosyaları otomatik düzenle</value></data>
+  <data name="Mode_Bypass" xml:space="preserve"><value>Onayları atla (Bypass)</value></data>
+  <data name="Mode_Normal_Hint" xml:space="preserve"><value>Her değişiklik onayını bekler.</value></data>
+  <data name="Mode_Plan_Hint" xml:space="preserve"><value>Sadece inceler ve plan çıkarır; planı çalıştırana kadar hiçbir şey değişmez.</value></data>
+  <data name="Mode_Auto_Hint" xml:space="preserve"><value>Dosya düzenlemeleri hemen uygulanır (yedekli); komut ve başlat/durdur yine sorar.</value></data>
+  <data name="Mode_Bypass_Hint" xml:space="preserve"><value>Her şey sormadan uygulanır. Dikkatli kullan.</value></data>
+  <data name="Mode_BypassTitle" xml:space="preserve"><value>Bypass modu açılsın mı?</value></data>
+  <data name="Mode_BypassBody" xml:space="preserve"><value>Asistan sana sormadan dosya düzenleyecek, konsol komutu gönderecek, sunucuları başlatıp durduracak ve yeni sunucu oluşturacak. Dosya düzenlemelerinin yedeği tutulur; komutlar geri alınamaz.</value></data>
+  <data name="Mode_BypassConfirm" xml:space="preserve"><value>Aç</value></data>
+  <data name="Mode_BypassBanner" xml:space="preserve"><value>Bypass: değişiklikler sormadan uygulanıyor</value></data>
+  <data name="Mode_Blocked" xml:space="preserve"><value>{0} atlandı (plan modu)</value></data>
+  <data name="Mode_BlockedDetail" xml:space="preserve"><value>Plan modu hiçbir şeyi değiştirmez. Uygulamak için planı çalıştır.</value></data>
+  <data name="Mode_Applied" xml:space="preserve"><value>Uygulandı: {0}</value></data>
+  <data name="Mode_RunPlan" xml:space="preserve"><value>Planı uygula (her adımda sor)</value></data>
+  <data name="Mode_RunPlanAuto" xml:space="preserve"><value>Dosya düzenlemelerini otomatik uygula</value></data>
+  <data name="Mode_RunPlanMessage" xml:space="preserve"><value>Plan onaylandı. Şimdi adım adım uygula.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>
