@@ -424,6 +424,10 @@
   <data name="Tech_Cores" xml:space="preserve"><value>Ядра ЦП</value></data>
   <data name="Tech_Created" xml:space="preserve"><value>Создан</value></data>
   <data name="Tech_Command" xml:space="preserve"><value>Команда запуска</value></data>
+  <data name="Backups_Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Backups_DeleteTitle" xml:space="preserve"><value>Удалить эту копию?</value></data>
+  <data name="Backups_DeleteBody" xml:space="preserve"><value>Копия от {0} ({1}) будет удалена навсегда. Сервер не изменится.</value></data>
+  <data name="Backups_Deleted" xml:space="preserve"><value>Копия удалена.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Открыть latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Сделать оператором</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Выгнать</value></data>

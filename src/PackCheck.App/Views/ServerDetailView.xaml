@@ -673,6 +673,11 @@
                             <DataTemplate>
                                 <Border BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                                     <DockPanel>
+                                        <Button DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Padding="10,6" Margin="6,0,0,0"
+                                                ToolTip="{l:Loc Backups_Delete}" AutomationProperties.Name="{l:Loc Backups_Delete}"
+                                                Command="{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                            <TextBlock Text="{l:Loc Backups_Delete}" Foreground="{DynamicResource FailBrush}" />
+                                        </Button>
                                         <Button DockPanel.Dock="Right" Content="{l:Loc Backups_Restore}" Padding="12,6"
                                                 Command="{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
                                         <TextBlock VerticalAlignment="Center">

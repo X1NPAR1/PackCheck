@@ -1044,6 +1044,33 @@ public sealed partial class ServerItemViewModel : ObservableObject
         }
     }
 
+    /// <summary>Deletes one backup zip after confirmation; the server itself is not touched.</summary>
+    [RelayCommand]
+    private async Task DeleteBackupAsync(BackupInfo? backup)
+    {
+        if (backup is null || MainViewModel.Shell is not { } shell)
+        {
+            return;
+        }
+
+        var when = backup.CreatedAt.LocalDateTime.ToString("g", Loc.Instance.Culture);
+        if (!await shell.ConfirmAsync(Loc.T("Backups_DeleteTitle"), Loc.F("Backups_DeleteBody", when, Bytes.Format(backup.Size)), Loc.T("Backups_Delete"), danger: true).ConfigureAwait(true))
+        {
+            return;
+        }
+
+        try
+        {
+            File.Delete(backup.Path);
+            RefreshBackups();
+            shell.Toast(Loc.T("Backups_Deleted"));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            shell.Toast(ex.Message, isError: true);
+        }
+    }
+
     // ----- plugins / mods -----
     /// <summary>Hybrids keep plugins in "plugins"; pure mod platforms use "mods".</summary>
     public string PluginsDir => Path.Combine(Definition.Directory, UsesPlugins ? "plugins" : "mods");

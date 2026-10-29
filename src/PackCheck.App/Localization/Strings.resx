@@ -424,6 +424,10 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Tech_Cores" xml:space="preserve"><value>CPU cores</value></data>
   <data name="Tech_Created" xml:space="preserve"><value>Created</value></data>
   <data name="Tech_Command" xml:space="preserve"><value>Start command</value></data>
+  <data name="Backups_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Backups_DeleteTitle" xml:space="preserve"><value>Delete this backup?</value></data>
+  <data name="Backups_DeleteBody" xml:space="preserve"><value>The backup from {0} ({1}) will be deleted permanently. The server is not changed.</value></data>
+  <data name="Backups_Deleted" xml:space="preserve"><value>Backup deleted.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Open latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Make operator</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kick</value></data>

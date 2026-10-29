@@ -424,6 +424,10 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Tech_Cores" xml:space="preserve"><value>Cœurs CPU</value></data>
   <data name="Tech_Created" xml:space="preserve"><value>Créé</value></data>
   <data name="Tech_Command" xml:space="preserve"><value>Commande de lancement</value></data>
+  <data name="Backups_Delete" xml:space="preserve"><value>Supprimer</value></data>
+  <data name="Backups_DeleteTitle" xml:space="preserve"><value>Supprimer cette sauvegarde ?</value></data>
+  <data name="Backups_DeleteBody" xml:space="preserve"><value>La sauvegarde du {0} ({1}) sera supprimée définitivement. Le serveur n'est pas modifié.</value></data>
+  <data name="Backups_Deleted" xml:space="preserve"><value>Sauvegarde supprimée.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>Ouvrir latest.log</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Rendre opérateur</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Expulser</value></data>

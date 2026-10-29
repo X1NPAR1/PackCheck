@@ -424,6 +424,10 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Tech_Cores" xml:space="preserve"><value>CPU-Kerne</value></data>
   <data name="Tech_Created" xml:space="preserve"><value>Erstellt</value></data>
   <data name="Tech_Command" xml:space="preserve"><value>Startbefehl</value></data>
+  <data name="Backups_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Backups_DeleteTitle" xml:space="preserve"><value>Dieses Backup löschen?</value></data>
+  <data name="Backups_DeleteBody" xml:space="preserve"><value>Das Backup vom {0} ({1}) wird endgültig gelöscht. Der Server bleibt unverändert.</value></data>
+  <data name="Backups_Deleted" xml:space="preserve"><value>Backup gelöscht.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log öffnen</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Zum Operator machen</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>Kicken</value></data>

@@ -424,6 +424,10 @@ Hayır: açık bırakıp çık.
   <data name="Tech_Cores" xml:space="preserve"><value>CPU çekirdekleri</value></data>
   <data name="Tech_Created" xml:space="preserve"><value>Oluşturuldu</value></data>
   <data name="Tech_Command" xml:space="preserve"><value>Başlatma komutu</value></data>
+  <data name="Backups_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Backups_DeleteTitle" xml:space="preserve"><value>Bu yedek silinsin mi?</value></data>
+  <data name="Backups_DeleteBody" xml:space="preserve"><value>{0} tarihli yedek ({1}) kalıcı olarak silinecek. Sunucu değişmez.</value></data>
+  <data name="Backups_Deleted" xml:space="preserve"><value>Yedek silindi.</value></data>
   <data name="Console_OpenLog" xml:space="preserve"><value>latest.log'u aç</value></data>
   <data name="Player_Op" xml:space="preserve"><value>Yetkili yap</value></data>
   <data name="Player_Kick" xml:space="preserve"><value>At</value></data>

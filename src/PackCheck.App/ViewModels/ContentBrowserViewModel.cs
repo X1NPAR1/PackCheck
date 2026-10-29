@@ -598,6 +598,9 @@ public sealed class ModsViewModel(IEnumerable<ICatalog> catalogs, IEnumerable<IP
 /// <summary>An entry of the category filter.</summary>
 public sealed record CategoryOption(string Key, string Text)
 {
+    /// <summary>The app's ComboBox template shows the selected item via ToString().</summary>
+    public override string ToString() => Text;
+
     public static string Label(string key) =>
         Loc.Instance.Has("Category_" + key) ? Loc.T("Category_" + key) : System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(key.Replace('_', ' ').Replace('-', ' '));
 }
