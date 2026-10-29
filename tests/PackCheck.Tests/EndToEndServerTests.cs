@@ -22,6 +22,13 @@ public class EndToEndServerTests(ITestOutputHelper output)
     [InlineData(ServerPlatform.Spigot)]
     [InlineData(ServerPlatform.Folia)]
     [InlineData(ServerPlatform.Mohist)]
+    [InlineData(ServerPlatform.CraftBukkit)]
+    [InlineData(ServerPlatform.Leaf)]
+    [InlineData(ServerPlatform.Leaves)]
+    [InlineData(ServerPlatform.SpongeVanilla)]
+    [InlineData(ServerPlatform.Youer)]
+    [InlineData(ServerPlatform.Arclight)]
+    [InlineData(ServerPlatform.BungeeCord)]
     public async Task CreateStartCommandStop(ServerPlatform platform)
     {
         var root = Environment.GetEnvironmentVariable("PACKCHECK_E2E_DIR");
@@ -99,7 +106,7 @@ public class EndToEndServerTests(ITestOutputHelper output)
             output.WriteLine($"{platform}: status ping {(ping is null ? "no answer" : $"{ping.Online}/{ping.Max} players, {ping.LatencyMs} ms, version '{ping.Version}'")}");
             Assert.NotNull(ping);
 
-            await server.SendCommandAsync("list");
+            await server.SendCommandAsync(ProxyConfigurator.IsProxy(platform) ? "glist" : "list");
             Assert.True(await Task.WhenAny(listReply.Task, Task.Delay(TimeSpan.FromSeconds(30))) == listReply.Task, "No reply to 'list'.");
 
             if (TpsParser.CommandFor(platform, hasSpark: false) is { } tpsCommand)
