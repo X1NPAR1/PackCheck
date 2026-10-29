@@ -531,7 +531,7 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
-  <data name="Upgrade_Button" xml:space="preserve"><value>Sürümü yükselt</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Sürüm değiştir</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft sürümünü yükselt</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Daha yeni bir sürüm seç. PackCheck önce her eklentiyi ve modu kontrol eder, sabitlenmiş tam yedek alır, yeni sürümü kurar, Modrinth'ten güncellenebilenleri günceller ve sunucuyu deneme olarak başlatır. Deneme başarısız olursa tek tıkla her şey geri alınır.</value></data>
   <data name="Upgrade_Target" xml:space="preserve"><value>Hedef sürüm</value></data>
@@ -1094,4 +1094,27 @@ F1 · bu liste
 
 Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü yapıştır · Ctrl+O dosya ekle · Ctrl+H geçmiş · Ctrl+N yeni sohbet</value></data>
   <data name="Assistant_Retrying" xml:space="preserve"><value>Yapay zeka servisi yoğun, {1} sn sonra yeniden deniyor ({0})…</value></data>
+  <data name="Version_Title" xml:space="preserve"><value>Minecraft sürümünü değiştir</value></data>
+  <data name="Version_Upgrade" xml:space="preserve"><value>Yükselt (daha yeni)</value></data>
+  <data name="Version_Downgrade" xml:space="preserve"><value>Düşür (daha eski)</value></data>
+  <data name="Downgrade_Title" xml:space="preserve"><value>Minecraft sürümünü düşür</value></data>
+  <data name="Downgrade_Hint" xml:space="preserve"><value>Daha eski bir sürüm seç. PackCheck her eklenti ve modu o sürüme göre kontrol eder, sabitlenmiş tam yedek alır, eski sunucu dosyasını ve gereken Java'yı kurar (ör. 1.16'ya kadar Java 8), dünyalar için seçtiğin işlemi yapar ve sunucuyu deneme amaçlı başlatır. Deneme başarısız olursa tek tıkla her şey geri yüklenir.</value></data>
+  <data name="Downgrade_Oldest" xml:space="preserve"><value>{0} bu platform için mevcut en eski sürüm.</value></data>
+  <data name="Downgrade_WorldsTitle" xml:space="preserve"><value>Dünyalar</value></data>
+  <data name="Downgrade_WorldsWhy" xml:space="preserve"><value>Minecraft, daha yeni bir sürümün kaydettiği dünyaları açamaz. Dünyalara ne olacağını seç:</value></data>
+  <data name="DowngradeWorlds_RestoreBackup" xml:space="preserve"><value>O sürümde alınmış bir yedekten dünyaları geri yükle</value></data>
+  <data name="DowngradeWorlds_Fresh" xml:space="preserve"><value>Yeni dünyalarla başla (mevcutlar old-worlds/ klasöründe saklanır)</value></data>
+  <data name="DowngradeWorlds_Keep" xml:space="preserve"><value>Mevcut dünyaları tut (önerilmez)</value></data>
+  <data name="Downgrade_BackupFound" xml:space="preserve"><value>✔ Minecraft {0} sürümünde alınmış yedek bulundu ({1}); dünyaları geri yüklenebilir.</value></data>
+  <data name="Downgrade_NoBackup" xml:space="preserve"><value>Minecraft {0} sürümünde alınmış yedek yok; eski dünyalar geri getirilemez. Bunun yerine yeni dünyalarla başla.</value></data>
+  <data name="Downgrade_KeepWarn" xml:space="preserve"><value>Eski sürüm bu dünyaları genelde açmaz veya chunk kaybeder. Deneme başlatması başarısız olursa Geri al'ı kullan.</value></data>
+  <data name="Downgrade_BackupFirst" xml:space="preserve"><value>Önce mevcut sürümün tam yedeği alınır ve sabitlenir; istediğin zaman ona geri dönebilirsin.</value></data>
+  <data name="Downgrade_Start" xml:space="preserve"><value>Düşür</value></data>
+  <data name="Downgrade_Confirm" xml:space="preserve"><value>{0} sürümünden {1} sürümüne düşürülsün mü? Dünyalar: {2}. Önce sabitlenmiş tam yedek alınır.</value></data>
+  <data name="Downgrade_StepMoved" xml:space="preserve"><value>Mevcut dünyalar {0} klasörüne taşındı</value></data>
+  <data name="Downgrade_StepRestore" xml:space="preserve"><value>{0}, {1} yedeğinden geri yükleniyor…</value></data>
+  <data name="Downgrade_StepNoWorlds" xml:space="preserve"><value>Taşınacak dünya yok; sunucu yenilerini oluşturacak.</value></data>
+  <data name="Downgrade_StepKeep" xml:space="preserve"><value>İstendiği gibi mevcut dünyalar tutuluyor.</value></data>
+  <data name="Downgrade_Done" xml:space="preserve"><value>✔ Sürüm düşürme tamamlandı.</value></data>
+  <data name="Downgrade_BackupNote" xml:space="preserve"><value>Sürüm düşürmeden önce {0} → {1}</value></data>
 </root>

@@ -9,7 +9,7 @@ public enum BackupKind
     /// <summary>The whole server folder (minus logs, caches and lock files).</summary>
     Full,
 
-    /// <summary>Only world folders (those with a level.dat).</summary>
+    /// <summary>Only world folders (see <see cref="IsWorldFolder"/>).</summary>
     Worlds,
 
     /// <summary>Only settings: server.properties, *.yml/*.toml/*.json in the root, config/ and plugin configs (no jars, no worlds).</summary>
@@ -25,6 +25,9 @@ public sealed record BackupInfo(string Path, DateTimeOffset CreatedAt, long Size
     public string? Note { get; init; }
     public bool Pinned { get; init; }
     public int Skipped { get; init; }
+
+    /// <summary>Minecraft version the server ran when the backup was taken (from the manifest).</summary>
+    public string? Version { get; init; }
 }
 
 /// <summary>Grandfather-father-son retention: the newest <see cref="KeepLast"/>, plus the newest backup of each of the last
@@ -103,10 +106,16 @@ public static class Backups
         AlwaysExcluded.Any(x => x.EndsWith('/') ? rel.StartsWith(x, StringComparison.OrdinalIgnoreCase) || rel.Contains("/" + x, StringComparison.OrdinalIgnoreCase) : rel.EndsWith(x, StringComparison.OrdinalIgnoreCase))
         || rel.EndsWith(".lock", StringComparison.OrdinalIgnoreCase);
 
-    /// <summary>Top-level folders that hold a world (level.dat inside).</summary>
+    /// <summary>Files and folders that only a world folder has; a world that was never saved yet has no level.dat but a session.lock.</summary>
+    private static readonly string[] WorldMarkers = ["level.dat", "session.lock", "region", "DIM-1", "DIM1", "dimensions"];
+
+    public static bool IsWorldFolder(string dir) =>
+        WorldMarkers.Any(m => File.Exists(Path.Combine(dir, m)) || Directory.Exists(Path.Combine(dir, m)));
+
+    /// <summary>Top-level folders that hold a world.</summary>
     public static HashSet<string> WorldFolders(string root) =>
         Directory.Exists(root)
-            ? [.. Directory.EnumerateDirectories(root).Where(d => File.Exists(Path.Combine(d, "level.dat"))).Select(Path.GetFileName).OfType<string>()]
+            ? [.. Directory.EnumerateDirectories(root).Where(IsWorldFolder).Select(Path.GetFileName).OfType<string>()]
             : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
@@ -189,7 +198,7 @@ public static class Backups
                 using var stream = e.Open();
                 if (JsonSerializer.Deserialize<BackupManifest>(stream, Json) is { } m)
                 {
-                    return info with { CreatedAt = m.CreatedAt, Kind = m.Kind, Note = m.Note, Skipped = m.Skipped };
+                    return info with { CreatedAt = m.CreatedAt, Kind = m.Kind, Note = m.Note, Skipped = m.Skipped, Version = m.Version };
                 }
             }
         }
@@ -230,7 +239,9 @@ public static class Backups
     public static IReadOnlyList<(string Name, long Size, bool IsWorld)> Contents(string zipPath)
     {
         using var zip = ZipFile.OpenRead(zipPath);
-        var worlds = zip.Entries.Where(e => e.FullName.EndsWith("/level.dat", StringComparison.Ordinal) && e.FullName.Count(c => c == '/') == 1)
+        var worlds = zip.Entries.Where(e => e.FullName.Contains('/') && WorldMarkers.Any(m =>
+                e.FullName.Equals(e.FullName[..e.FullName.IndexOf('/')] + "/" + m, StringComparison.Ordinal)
+                || e.FullName.StartsWith(e.FullName[..e.FullName.IndexOf('/')] + "/" + m + "/", StringComparison.Ordinal)))
             .Select(e => e.FullName[..e.FullName.IndexOf('/')]).ToHashSet(StringComparer.Ordinal);
         return zip.Entries.Where(e => e.FullName != ManifestName && e.Name.Length > 0)
             .GroupBy(e => e.FullName.Contains('/') ? e.FullName[..(e.FullName.IndexOf('/') + 1)] : e.FullName)

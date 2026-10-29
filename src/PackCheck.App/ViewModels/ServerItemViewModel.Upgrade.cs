@@ -39,6 +39,41 @@ public sealed partial class ServerItemViewModel
 {
     public const int UpgradeTab = 10;
 
+    /// <summary>False = upgrade to a newer version, true = downgrade to an older one.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsUpgradeDirection), nameof(UpgradeStartText), nameof(DowngradeBackupText), nameof(HasDowngradeBackup))]
+    private bool _isDowngrade;
+
+    public bool IsUpgradeDirection
+    {
+        get => !IsDowngrade;
+        set => IsDowngrade = !value;
+    }
+
+    /// <summary>What happens to the worlds on a downgrade (an older version cannot open worlds saved by a newer one).</summary>
+    [ObservableProperty]
+    private DowngradeWorlds _downgradeWorlds = DowngradeWorlds.Fresh;
+
+    public IReadOnlyList<DowngradeWorlds> DowngradeWorldOptions { get; } = [DowngradeWorlds.RestoreBackup, DowngradeWorlds.Fresh, DowngradeWorlds.Keep];
+
+    private BackupInfo? MatchingWorldBackup => IsDowngrade && UpgradeTarget is { } t ? UpgradeAdvisor.WorldBackupFor(Backups.List(Definition), t) : null;
+
+    public bool HasDowngradeBackup => MatchingWorldBackup is not null;
+
+    public string DowngradeBackupText => MatchingWorldBackup is { } b
+        ? Loc.F("Downgrade_BackupFound", b.Version ?? "?", b.CreatedAt.ToLocalTime().ToString("g", Loc.Instance.Culture))
+        : Loc.F("Downgrade_NoBackup", UpgradeTarget ?? "?");
+
+    public string UpgradeStartText => Loc.T(IsDowngrade ? "Downgrade_Start" : "Upgrade_Start");
+
+    partial void OnIsDowngradeChanged(bool value)
+    {
+        if (UpgradeStep is not 2)
+        {
+            _ = LoadUpgradeTargetsAsync();
+        }
+    }
+
     public ObservableCollection<string> UpgradeVersions { get; } = [];
 
     public ObservableCollection<UpgradeAddonRow> UpgradeAddons { get; } = [];
@@ -85,23 +120,31 @@ public sealed partial class ServerItemViewModel
             return;
         }
 
+        await LoadUpgradeTargetsAsync().ConfigureAwait(true);
+    }
+
+    private async Task LoadUpgradeTargetsAsync()
+    {
         UpgradeStep = 0;
         UpgradeReport = null;
         UpgradeAddons.Clear();
         UpgradeLog.Clear();
+        UpgradeVersions.Clear();
         UpgradeMessage = Loc.T("Upgrade_Loading");
         try
         {
             var sources = (ServerSources)App.Services.GetService(typeof(ServerSources))!;
             var all = await sources.GetVersionsAsync(Definition.Platform, CancellationToken.None).ConfigureAwait(true);
             UpgradeVersions.Clear();
-            foreach (var v in UpgradeAdvisor.Targets(Definition.MinecraftVersion, all))
+            foreach (var v in UpgradeAdvisor.Targets(Definition.MinecraftVersion, all, IsDowngrade))
             {
                 UpgradeVersions.Add(v);
             }
 
             UpgradeTarget = UpgradeVersions.FirstOrDefault();
-            UpgradeMessage = UpgradeVersions.Count == 0 ? Loc.F("Upgrade_Latest", Definition.MinecraftVersion) : null;
+            DowngradeWorlds = HasDowngradeBackup ? DowngradeWorlds.RestoreBackup : DowngradeWorlds.Fresh;
+            UpgradeMessage = UpgradeVersions.Count > 0 ? null
+                : Loc.F(IsDowngrade ? "Downgrade_Oldest" : "Upgrade_Latest", Definition.MinecraftVersion);
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or InvalidOperationException)
         {
@@ -111,6 +154,14 @@ public sealed partial class ServerItemViewModel
 
     partial void OnUpgradeTargetChanged(string? value)
     {
+        OnPropertyChanged(nameof(HasDowngradeBackup));
+        OnPropertyChanged(nameof(DowngradeBackupText));
+        if (IsDowngrade && DowngradeWorlds != DowngradeWorlds.Keep)
+        {
+            // Bringing the real worlds back is the best choice whenever a backup of that version exists.
+            DowngradeWorlds = HasDowngradeBackup ? DowngradeWorlds.RestoreBackup : DowngradeWorlds.Fresh;
+        }
+
         if (UpgradeStep == 1)
         {
             UpgradeStep = 0;
@@ -168,7 +219,19 @@ public sealed partial class ServerItemViewModel
             await _process.StopAsync(TimeSpan.FromSeconds(60)).ConfigureAwait(true);
         }
 
-        if (!await shell.ConfirmAsync(Loc.T("Upgrade_Title"), Loc.F("Upgrade_Confirm", Definition.MinecraftVersion, target), Loc.T("Upgrade_Start"), danger: true).ConfigureAwait(true))
+        var downgrade = IsDowngrade;
+        var worldMode = DowngradeWorlds;
+        var worldBackup = downgrade && worldMode == DowngradeWorlds.RestoreBackup ? MatchingWorldBackup : null;
+        if (downgrade && worldMode == DowngradeWorlds.RestoreBackup && worldBackup is null)
+        {
+            shell.Toast(Loc.F("Downgrade_NoBackup", target), isError: true);
+            return;
+        }
+
+        var confirm = downgrade
+            ? Loc.F("Downgrade_Confirm", Definition.MinecraftVersion, target, Loc.T("DowngradeWorlds_" + worldMode))
+            : Loc.F("Upgrade_Confirm", Definition.MinecraftVersion, target);
+        if (!await shell.ConfirmAsync(Loc.T(downgrade ? "Downgrade_Title" : "Upgrade_Title"), confirm, UpgradeStartText, danger: true).ConfigureAwait(true))
         {
             return;
         }
@@ -179,13 +242,16 @@ public sealed partial class ServerItemViewModel
         try
         {
             Log(Loc.T("Upgrade_StepBackup"));
-            _upgradeBackup = await BackupNowAsync(BackupKind.Full, Loc.F("Upgrade_BackupNote", Definition.MinecraftVersion, target)).ConfigureAwait(true)
+            _upgradeBackup = await BackupNowAsync(BackupKind.Full, Loc.F(downgrade ? "Downgrade_BackupNote" : "Upgrade_BackupNote", Definition.MinecraftVersion, target)).ConfigureAwait(true)
                 ?? throw new InvalidOperationException(Loc.T("Upgrade_BackupBusy"));
             _upgradeBackup = Backups.SetPinned(_upgradeBackup, true);
             RefreshBackups();
 
-            Log(Loc.F("Upgrade_StepJava", report.RequiredJava));
-            await EnsureJavaAsync(report.RequiredJava).ConfigureAwait(true);
+            if (!downgrade)
+            {
+                Log(Loc.F("Upgrade_StepJava", report.RequiredJava));
+                await EnsureJavaAsync(report.RequiredJava).ConfigureAwait(true);
+            }
 
             Log(Loc.F("Upgrade_StepInstall", Definition.Platform, target));
             var creator = (ServerCreator)App.Services.GetService(typeof(ServerCreator))!;
@@ -216,10 +282,46 @@ public sealed partial class ServerItemViewModel
             OnPropertyChanged(nameof(PlatformText));
             RefreshPlugins();
 
+            if (downgrade)
+            {
+                var from = _beforeUpgrade.MinecraftVersion;
+                switch (worldMode)
+                {
+                    case DowngradeWorlds.RestoreBackup when worldBackup is not null:
+                        {
+                            var aside = UpgradeAdvisor.MoveWorldsAside(Definition.Directory, from, DateTime.Now);
+                            if (aside is not null)
+                            {
+                                Log(Loc.F("Downgrade_StepMoved", Path.GetRelativePath(Definition.Directory, aside)));
+                            }
+
+                            var worlds = Backups.Contents(worldBackup.Path).Where(c => c.IsWorld).Select(c => c.Name).ToList();
+                            Log(Loc.F("Downgrade_StepRestore", string.Join(", ", worlds.Select(w => w.TrimEnd('/'))), worldBackup.Version ?? target));
+                            await Backups.RestoreAsync(Definition, worldBackup, worlds, CancellationToken.None).ConfigureAwait(true);
+                            break;
+                        }
+
+                    case DowngradeWorlds.Fresh:
+                        {
+                            var aside = UpgradeAdvisor.MoveWorldsAside(Definition.Directory, from, DateTime.Now);
+                            Log(aside is null ? Loc.T("Downgrade_StepNoWorlds") : Loc.F("Downgrade_StepMoved", Path.GetRelativePath(Definition.Directory, aside)));
+                            break;
+                        }
+
+                    default:
+                        Log(Loc.T("Downgrade_StepKeep"));
+                        break;
+                }
+
+                // Old versions need their own Java (for example exactly Java 8 up to 1.16); the new jar decides.
+                Log(Loc.F("Upgrade_StepJava", PlatformInfo.RequiredJava(Definition.Platform, target)));
+                await EnsureJavaAsync().ConfigureAwait(true);
+            }
+
             Log(Loc.T("Upgrade_StepTest"));
             if (await TestStartAsync().ConfigureAwait(true))
             {
-                Log(Loc.T("Upgrade_Done"));
+                Log(Loc.T(downgrade ? "Downgrade_Done" : "Upgrade_Done"));
                 UpgradeMessage = Loc.F("Upgrade_Success", target);
                 UpgradeStep = 3;
                 PostDiscord(DiscordEvent.Automation, Loc.F("Upgrade_Success", target));

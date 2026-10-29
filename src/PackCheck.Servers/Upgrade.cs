@@ -33,6 +33,19 @@ public sealed record AddonCheck(string FileName, string FilePath, string Name, b
     public string? UpdateSha512 { get; init; }
 }
 
+/// <summary>What a downgrade does with the worlds: an older game version cannot load worlds saved by a newer one.</summary>
+public enum DowngradeWorlds
+{
+    /// <summary>Bring back the worlds from the newest backup taken on the target version.</summary>
+    RestoreBackup,
+
+    /// <summary>Move the current worlds into old-worlds/ and let the server make new ones.</summary>
+    Fresh,
+
+    /// <summary>Keep the worlds (usually fails or loses chunks; for testing only).</summary>
+    Keep,
+}
+
 public sealed record UpgradeReport(string From, string To, int RequiredJava, IReadOnlyList<AddonCheck> Addons)
 {
     public int Blocking => Addons.Count(a => a.Status == AddonStatus.Incompatible);
@@ -43,12 +56,46 @@ public static class UpgradeAdvisor
 {
     private const string ModrinthUpdate = "https://api.modrinth.com/v2/version_files/update";
 
-    /// <summary>Worlds cannot be opened by an older game version, so only upgrades are offered.</summary>
     public static bool CanUpgrade(string current, string target) =>
         MinecraftVersion.TryParse(current, out var c) && MinecraftVersion.TryParse(target, out var t) && t > c;
 
-    public static IReadOnlyList<string> Targets(string current, IEnumerable<string> available) =>
-        [.. available.Where(v => CanUpgrade(current, v))];
+    public static bool CanDowngrade(string current, string target) =>
+        MinecraftVersion.TryParse(current, out var c) && MinecraftVersion.TryParse(target, out var t) && t < c;
+
+    /// <summary>Newer versions (upgrade) or older versions (downgrade), newest first as the platform lists them.</summary>
+    public static IReadOnlyList<string> Targets(string current, IEnumerable<string> available, bool downgrade = false) =>
+        [.. available.Where(v => downgrade ? CanDowngrade(current, v) : CanUpgrade(current, v))];
+
+    /// <summary>
+    /// The newest full or worlds backup that was taken while the server ran <paramref name="version"/>; its worlds can be
+    /// opened by that version, so a downgrade can bring them back.
+    /// </summary>
+    public static BackupInfo? WorldBackupFor(IEnumerable<BackupInfo> backups, string version) =>
+        backups.Where(b => b.Kind is BackupKind.Full or BackupKind.Worlds && string.Equals(b.Version, version, StringComparison.OrdinalIgnoreCase))
+            .OrderByDescending(b => b.CreatedAt).FirstOrDefault();
+
+    /// <summary>
+    /// Moves every world folder (and its nether/end siblings) into <c>old-worlds/{version}-{time}/</c> so the server makes
+    /// fresh ones. Nothing is deleted. Returns the folder, or null when there were no worlds.
+    /// </summary>
+    public static string? MoveWorldsAside(string serverDir, string fromVersion, DateTime now)
+    {
+        var worlds = Backups.WorldFolders(serverDir);
+        if (worlds.Count == 0)
+        {
+            return null;
+        }
+
+        var safe = string.Concat(fromVersion.Select(ch => Path.GetInvalidFileNameChars().Contains(ch) ? '_' : ch));
+        var target = Path.Combine(serverDir, "old-worlds", $"{safe}-{now:yyyyMMdd-HHmmss}");
+        Directory.CreateDirectory(target);
+        foreach (var w in worlds)
+        {
+            Directory.Move(Path.Combine(serverDir, w), Path.Combine(target, w));
+        }
+
+        return target;
+    }
 
     /// <summary>Modrinth loader names for a platform (the first is the best match).</summary>
     public static string[] Loaders(ServerPlatform p) => p switch

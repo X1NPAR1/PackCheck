@@ -531,7 +531,7 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
-  <data name="Upgrade_Button" xml:space="preserve"><value>Version upgraden</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Version ändern</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft-Version upgraden</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Wähle eine neuere Version. PackCheck prüft zuerst alle Plugins und Mods, erstellt ein angeheftetes Komplett-Backup, installiert die neue Version, aktualisiert was möglich ist über Modrinth und startet den Server testweise. Schlägt der Test fehl, stellt ein Klick alles wieder her.</value></data>
   <data name="Upgrade_Target" xml:space="preserve"><value>Zielversion</value></data>
@@ -1094,4 +1094,27 @@ F1 · diese Liste
 
 Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfügen · Strg+O Datei anhängen · Strg+H Verlauf · Strg+N neuer Chat</value></data>
   <data name="Assistant_Retrying" xml:space="preserve"><value>Der KI-Dienst ist ausgelastet, neuer Versuch ({0}) in {1} s…</value></data>
+  <data name="Version_Title" xml:space="preserve"><value>Minecraft-Version ändern</value></data>
+  <data name="Version_Upgrade" xml:space="preserve"><value>Upgrade (neuer)</value></data>
+  <data name="Version_Downgrade" xml:space="preserve"><value>Downgrade (älter)</value></data>
+  <data name="Downgrade_Title" xml:space="preserve"><value>Minecraft-Version downgraden</value></data>
+  <data name="Downgrade_Hint" xml:space="preserve"><value>Wähle eine ältere Version. PackCheck prüft jedes Plugin und jeden Mod dagegen, erstellt ein angeheftetes Komplett-Backup, installiert die alte Server-Datei und die passende Java-Version (z. B. Java 8 bis 1.16), kümmert sich um die Welten und startet den Server testweise. Schlägt der Test fehl, stellt ein Klick alles wieder her.</value></data>
+  <data name="Downgrade_Oldest" xml:space="preserve"><value>{0} ist die älteste Version für diese Plattform.</value></data>
+  <data name="Downgrade_WorldsTitle" xml:space="preserve"><value>Welten</value></data>
+  <data name="Downgrade_WorldsWhy" xml:space="preserve"><value>Minecraft kann Welten nicht öffnen, die eine neuere Version gespeichert hat. Wähle, was mit ihnen passiert:</value></data>
+  <data name="DowngradeWorlds_RestoreBackup" xml:space="preserve"><value>Welten aus einem Backup dieser Version wiederherstellen</value></data>
+  <data name="DowngradeWorlds_Fresh" xml:space="preserve"><value>Mit neuen Welten starten (die alten bleiben in old-worlds/)</value></data>
+  <data name="DowngradeWorlds_Keep" xml:space="preserve"><value>Aktuelle Welten behalten (nicht empfohlen)</value></data>
+  <data name="Downgrade_BackupFound" xml:space="preserve"><value>✔ Backup von Minecraft {0} gefunden ({1}); die Welten lassen sich wiederherstellen.</value></data>
+  <data name="Downgrade_NoBackup" xml:space="preserve"><value>Es gibt kein Backup von Minecraft {0}, die alten Welten lassen sich nicht zurückholen. Starte stattdessen mit neuen Welten.</value></data>
+  <data name="Downgrade_KeepWarn" xml:space="preserve"><value>Die alte Version lehnt diese Welten meist ab oder verliert Chunks. Schlägt der Teststart fehl, nutze Zurücksetzen.</value></data>
+  <data name="Downgrade_BackupFirst" xml:space="preserve"><value>Zuerst wird ein Komplett-Backup der aktuellen Version erstellt und angeheftet, damit du jederzeit zurückkannst.</value></data>
+  <data name="Downgrade_Start" xml:space="preserve"><value>Downgraden</value></data>
+  <data name="Downgrade_Confirm" xml:space="preserve"><value>Von {0} auf {1} downgraden? Welten: {2}. Zuerst wird ein angeheftetes Komplett-Backup erstellt.</value></data>
+  <data name="Downgrade_StepMoved" xml:space="preserve"><value>Aktuelle Welten nach {0} verschoben</value></data>
+  <data name="Downgrade_StepRestore" xml:space="preserve"><value>{0} wird aus dem {1}-Backup wiederhergestellt…</value></data>
+  <data name="Downgrade_StepNoWorlds" xml:space="preserve"><value>Keine Welten zu verschieben; der Server erstellt neue.</value></data>
+  <data name="Downgrade_StepKeep" xml:space="preserve"><value>Aktuelle Welten bleiben wie gewünscht.</value></data>
+  <data name="Downgrade_Done" xml:space="preserve"><value>✔ Downgrade abgeschlossen.</value></data>
+  <data name="Downgrade_BackupNote" xml:space="preserve"><value>Vor dem Downgrade {0} → {1}</value></data>
 </root>

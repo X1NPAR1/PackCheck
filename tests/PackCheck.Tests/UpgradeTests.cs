@@ -39,6 +39,54 @@ public sealed class UpgradeTests : IDisposable
         Assert.Equal(["1.21.4", "1.21.1"], UpgradeAdvisor.Targets("1.20.6", ["1.21.4", "1.21.1", "1.20.6", "1.20.1"]));
 
     [Fact]
+    public void Downgrade_targets_are_the_older_versions() =>
+        Assert.Equal(["1.20.1", "1.16.5"], UpgradeAdvisor.Targets("1.20.6", ["1.21.4", "1.20.6", "1.20.1", "1.16.5"], downgrade: true));
+
+    [Fact]
+    public void World_backup_is_the_newest_one_from_the_target_version()
+    {
+        var now = DateTimeOffset.Now;
+        BackupInfo B(string v, int hoursAgo, BackupKind k = BackupKind.Full) => new($"{v}-{hoursAgo}.zip", now.AddHours(-hoursAgo), 1) { Version = v, Kind = k };
+        var list = new[] { B("1.21.4", 1), B("1.20.1", 30), B("1.20.1", 5), B("1.20.1", 2, BackupKind.Config) };
+
+        Assert.Equal("1.20.1-5.zip", UpgradeAdvisor.WorldBackupFor(list, "1.20.1")!.Path);
+        Assert.Null(UpgradeAdvisor.WorldBackupFor(list, "1.19.4"));
+    }
+
+    [Fact]
+    public void A_world_that_was_never_saved_still_counts_as_a_world()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-w-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(dir, "world", "players", "data"));
+        File.WriteAllText(Path.Combine(dir, "world", "session.lock"), "");
+        Directory.CreateDirectory(Path.Combine(dir, "plugins", "x"));
+
+        Assert.Equal(["world"], Backups.WorldFolders(dir));
+    }
+
+    [Fact]
+    public void Worlds_are_moved_aside_not_deleted()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-down-" + Guid.NewGuid().ToString("N"));
+        foreach (var w in new[] { "world", "world_nether" })
+        {
+            Directory.CreateDirectory(Path.Combine(dir, w));
+            File.WriteAllText(Path.Combine(dir, w, "level.dat"), "x");
+        }
+
+        Directory.CreateDirectory(Path.Combine(dir, "plugins"));
+
+        var aside = UpgradeAdvisor.MoveWorldsAside(dir, "1.21.4", new DateTime(2026, 10, 29, 20, 0, 0));
+
+        Assert.Equal(Path.Combine(dir, "old-worlds", "1.21.4-20261029-200000"), aside);
+        Assert.True(File.Exists(Path.Combine(aside!, "world", "level.dat")));
+        Assert.True(File.Exists(Path.Combine(aside!, "world_nether", "level.dat")));
+        Assert.False(Directory.Exists(Path.Combine(dir, "world")));
+        Assert.True(Directory.Exists(Path.Combine(dir, "plugins")));
+        Assert.Null(UpgradeAdvisor.MoveWorldsAside(dir, "1.21.4", DateTime.Now));
+    }
+
+    [Fact]
     public async Task Plugins_are_checked_by_api_version()
     {
         Jar("plugins", "Old.jar", "plugin.yml", "name: Old\nversion: 1\nmain: a.B\napi-version: '1.13'\n");

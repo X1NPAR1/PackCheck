@@ -531,7 +531,7 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Ce PC n'a plus de mémoire libre.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} est prêt. Redémarrez le serveur.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} désactivé. Redémarrez le serveur.</value></data>
-  <data name="Upgrade_Button" xml:space="preserve"><value>Mettre à niveau</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Changer de version</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Mettre à niveau Minecraft</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Choisissez une version plus récente. PackCheck vérifie chaque plugin et mod, fait une sauvegarde complète épinglée, installe la version, met à jour via Modrinth et teste le démarrage. En cas d'échec, un clic remet tout en place.</value></data>
   <data name="Upgrade_Target" xml:space="preserve"><value>Version cible</value></data>
@@ -1094,4 +1094,27 @@ F1 · cette liste
 
 Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une capture · Ctrl+O joindre un fichier · Ctrl+H historique · Ctrl+N nouvelle discussion</value></data>
   <data name="Assistant_Retrying" xml:space="preserve"><value>Le service IA est saturé, nouvel essai ({0}) dans {1} s…</value></data>
+  <data name="Version_Title" xml:space="preserve"><value>Changer la version de Minecraft</value></data>
+  <data name="Version_Upgrade" xml:space="preserve"><value>Monter (plus récente)</value></data>
+  <data name="Version_Downgrade" xml:space="preserve"><value>Descendre (plus ancienne)</value></data>
+  <data name="Downgrade_Title" xml:space="preserve"><value>Revenir à une version antérieure</value></data>
+  <data name="Downgrade_Hint" xml:space="preserve"><value>Choisissez une version plus ancienne. PackCheck vérifie chaque plugin et mod, crée une sauvegarde complète épinglée, installe l'ancien jar et le Java nécessaire (par ex. Java 8 jusqu'à 1.16), traite les mondes selon votre choix puis fait un démarrage de test. En cas d'échec, un clic restaure tout.</value></data>
+  <data name="Downgrade_Oldest" xml:space="preserve"><value>{0} est la plus ancienne version disponible pour cette plateforme.</value></data>
+  <data name="Downgrade_WorldsTitle" xml:space="preserve"><value>Mondes</value></data>
+  <data name="Downgrade_WorldsWhy" xml:space="preserve"><value>Minecraft ne peut pas ouvrir des mondes enregistrés par une version plus récente. Choisissez quoi en faire :</value></data>
+  <data name="DowngradeWorlds_RestoreBackup" xml:space="preserve"><value>Restaurer les mondes depuis une sauvegarde de cette version</value></data>
+  <data name="DowngradeWorlds_Fresh" xml:space="preserve"><value>Repartir de nouveaux mondes (les actuels sont gardés dans old-worlds/)</value></data>
+  <data name="DowngradeWorlds_Keep" xml:space="preserve"><value>Garder les mondes actuels (déconseillé)</value></data>
+  <data name="Downgrade_BackupFound" xml:space="preserve"><value>✔ Sauvegarde de Minecraft {0} trouvée ({1}) ; ses mondes peuvent être restaurés.</value></data>
+  <data name="Downgrade_NoBackup" xml:space="preserve"><value>Aucune sauvegarde de Minecraft {0} : les anciens mondes ne peuvent pas revenir. Repartez plutôt de nouveaux mondes.</value></data>
+  <data name="Downgrade_KeepWarn" xml:space="preserve"><value>L'ancienne version refuse généralement ces mondes ou perd des chunks. Si le test échoue, utilisez Annuler.</value></data>
+  <data name="Downgrade_BackupFirst" xml:space="preserve"><value>Une sauvegarde complète de la version actuelle est d'abord créée et épinglée pour pouvoir y revenir à tout moment.</value></data>
+  <data name="Downgrade_Start" xml:space="preserve"><value>Rétrograder</value></data>
+  <data name="Downgrade_Confirm" xml:space="preserve"><value>Revenir de {0} à {1} ? Mondes : {2}. Une sauvegarde complète épinglée est créée d'abord.</value></data>
+  <data name="Downgrade_StepMoved" xml:space="preserve"><value>Mondes actuels déplacés vers {0}</value></data>
+  <data name="Downgrade_StepRestore" xml:space="preserve"><value>Restauration de {0} depuis la sauvegarde {1}…</value></data>
+  <data name="Downgrade_StepNoWorlds" xml:space="preserve"><value>Aucun monde à déplacer ; le serveur en créera de nouveaux.</value></data>
+  <data name="Downgrade_StepKeep" xml:space="preserve"><value>Mondes actuels conservés comme demandé.</value></data>
+  <data name="Downgrade_Done" xml:space="preserve"><value>✔ Retour de version terminé.</value></data>
+  <data name="Downgrade_BackupNote" xml:space="preserve"><value>Avant retour de version {0} → {1}</value></data>
 </root>

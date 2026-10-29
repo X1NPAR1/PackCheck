@@ -7,14 +7,14 @@
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
 </p>
 
-<p align="center"><b>Current version: 3.3.0</b> · <a href="CHANGELOG.md">changelog</a></p>
+<p align="center"><b>Current version: 3.3.1</b> · <a href="CHANGELOG.md">changelog</a></p>
 
 <p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.3.0" src="https://img.shields.io/badge/download-v3.3.0-5E9A3E"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.3.1" src="https://img.shields.io/badge/download-v3.3.1-5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
@@ -34,7 +34,7 @@
 
 PackCheck is a free, open-source Windows desktop app (WPF, .NET 10) for anyone who hosts a Minecraft Java server at home: a survival world for friends, a modded server, or a small network behind a proxy. It does two jobs:
 
-- **Server studio.** Create a Paper, Purpur, Folia, Spigot, Vanilla, Fabric, Quilt, Forge, NeoForge, Mohist, Velocity or BungeeCord server from official sources in a few clicks, pick RAM and CPU cores, start and stop it, watch the live console and TPS, edit `server.properties` and Bukkit/Spigot/Paper settings, install plugins and mods, open it to your friends over the internet, take safe backups, manage players, follow performance over 7 days, get a plain-language crash diagnosis with a one-click fix, receive Discord notifications and upgrade to a newer Minecraft version with a compatibility check and rollback.
+- **Server studio.** Create a Paper, Purpur, Folia, Spigot, Vanilla, Fabric, Quilt, Forge, NeoForge, Mohist, Velocity or BungeeCord server from official sources in a few clicks, pick RAM and CPU cores, start and stop it, watch the live console and TPS, edit `server.properties` and Bukkit/Spigot/Paper settings, install plugins and mods, open it to your friends over the internet, take safe backups, manage players, follow performance over 7 days, get a plain-language crash diagnosis with a one-click fix, receive Discord notifications and upgrade or downgrade the Minecraft version with a compatibility check and rollback.
 - **Pack validation.** Before you add or update plugins, PackCheck reads every JAR and config file and tells you what will break: missing dependencies, duplicate plugins, corrupt downloads, plugins built for a newer Minecraft version, invalid settings. Each finding comes with evidence and a suggested fix.
 
 Static checks never execute plugin code. A real startup test is available, but you have to turn it on yourself, and it runs on a throw-away copy of the pack.
@@ -49,9 +49,9 @@ Static checks never execute plugin code. A real startup test is available, but y
 |---|---|
 | ![Performance tab with TPS, tick time, CPU, RAM and player charts, diagnosis and spark profiling](docs/media/performance.png) | ![Players tab with whitelist, operators, bans, play time and IP history](docs/media/players.png) |
 
-| Backups | Version upgrade |
+| Backups | Version upgrade and downgrade |
 |---|---|
-| ![Backups by type with notes, pinning, retention and per-world restore](docs/media/backups.png) | ![Version upgrade wizard with a plugin and mod compatibility report](docs/media/upgrade.png) |
+| ![Backups by type with notes, pinning, retention and per-world restore](docs/media/backups.png) | ![Version wizard downgrading a server and restoring the worlds from a backup of that version](docs/media/upgrade.png) |
 
 | Crash diagnosis | Server icon and MOTD |
 |---|---|
@@ -101,7 +101,11 @@ Static checks never execute plugin code. A real startup test is available, but y
 - Settings editor for `server.properties` plus the main performance settings of `bukkit.yml`, `spigot.yml` and Paper's config files, every one explained in five languages, typed, range-checked and resettable, with a "changed from default" filter. YAML files keep their comments and layout.
 - **Server icon and MOTD**: pick any image and it becomes the 64×64 `server-icon.png`; edit the two-line MOTD with color and style buttons and a live preview of the multiplayer list.
 - **Crash diagnosis**: when a server crashes, PackCheck reads the console, `latest.log` and the crash report and names the cause (EULA, port in use, out of memory, wrong Java, missing dependency, incompatible mod, mixin failure, plugin error, broken config file with line number, damaged world) with a one-click fix: accept the EULA, pick a free port, add RAM, install the right Java, disable the jar that caused it, open the file or restore a backup. Crashes that exit with code 0 (Paper does this) are detected too.
-- **Version upgrade wizard**: pick a newer Minecraft version and PackCheck checks every plugin and mod against it, finds newer builds on Modrinth (verified by SHA-512), takes a pinned full backup, installs the right Java and the new server, test-starts it, and rolls everything back with one click if the test fails.
+- **Version upgrade and downgrade**: pick a newer or an older Minecraft version. PackCheck checks every plugin and mod against it, finds matching builds on Modrinth (verified by SHA-512), takes a pinned full backup, installs the right Java (for example Java 8 for old versions) and the server jar, test-starts it, and rolls everything back with one click if the test fails.
+- Downgrades handle the worlds, because an older version cannot open worlds saved by a newer one. You choose one of three options:
+  - Restore the worlds from the newest backup made on the target version (found automatically).
+  - Start with new worlds. The current worlds are moved to `old-worlds/`, never deleted.
+  - Keep the current worlds. This is not recommended.
 - Every server process tree runs in a Windows Job Object; nothing keeps running after a crash or a forced stop.
 - **Backups**: full, worlds-only or settings-only backups with a note, taken safely while the server runs (`save-off`, `save-all flush`, `save-on`); files in use are skipped instead of failing the backup. Keep the newest N plus one per day and one per week, pin backups that must never be deleted, copy every backup to a second folder (OneDrive, Google Drive, NAS), and restore everything or just one world. A safety backup is taken before every restore.
 - **Players**: everyone who ever joined, with last seen, play time, IP addresses and accounts sharing an IP; whitelist, op, ban and kick whether the server is running or not (UUIDs come from the server cache, Mojang or the offline formula).
@@ -205,7 +209,7 @@ packcheck version
 Example output:
 
 ```text
-PackCheck 3.3.0 - demo-pack
+PackCheck 3.3.1 - demo-pack
   [FAIL ] PC040 Missing dependency: 'EconomyShop' requires 'ProtocolLib', which is not installed. The plugin will not enable.
            plugin.yml: depend: [Vault, ProtocolLib]
            fix: Install 'ProtocolLib' or remove 'EconomyShop'.
@@ -259,7 +263,7 @@ Adding a check means adding one class that implements `IAnalyzer`. See [docs/rul
 | Port forwarding help and outside test | Yes | Usually not (servers are hosted) | Rarely |
 | Automation | Schedules, crash restarts, triggers between servers | Yes (varies) | Rarely |
 | Crash diagnosis with a fix | Names the cause and fixes it in one click | Logs only | No |
-| Version upgrade | Compatibility report, Modrinth updates, backup, test start, rollback | Manual | Manual |
+| Version upgrade / downgrade | Compatibility report, Modrinth updates, backup, world handling, test start, rollback | Manual | Manual |
 | Discord notifications | Built in (webhook) | Plugin or add-on | No |
 | Best for | Hosting at home for friends | Hosting providers and many users | One quick server |
 
@@ -315,7 +319,7 @@ Requires the .NET 10 SDK on Windows.
 - Version checks rely on what plugins declare. A plugin that declares nothing gets a warning, not a guess.
 - Backups reach the cloud through a synced folder (OneDrive, Google Drive, Dropbox) chosen as the second copy; there is no direct cloud API.
 - Discord support sends notifications; running commands from Discord is not supported yet.
-- The upgrade wizard only moves to newer versions, because worlds cannot be opened by an older Minecraft version.
+- A downgrade cannot convert worlds back: old worlds come from a backup made on that version, or the server starts with new worlds.
 
 ## License
 

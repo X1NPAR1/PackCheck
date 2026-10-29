@@ -531,7 +531,7 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
-  <data name="Upgrade_Button" xml:space="preserve"><value>Обновить версию</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Сменить версию</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Обновление версии Minecraft</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Выберите более новую версию. PackCheck проверит плагины и моды, сделает закреплённую полную копию, установит версию, обновит что сможет через Modrinth и выполнит тестовый запуск. Если тест не пройдёт, всё вернётся одним кликом.</value></data>
   <data name="Upgrade_Target" xml:space="preserve"><value>Целевая версия</value></data>
@@ -1094,4 +1094,27 @@ F1 · этот список
 
 Ассистент: Enter отправить · Shift+Enter новая строка · Ctrl+V вставить скриншот · Ctrl+O прикрепить файл · Ctrl+H история · Ctrl+N новый чат</value></data>
   <data name="Assistant_Retrying" xml:space="preserve"><value>Сервис ИИ перегружен, повтор ({0}) через {1} с…</value></data>
+  <data name="Version_Title" xml:space="preserve"><value>Смена версии Minecraft</value></data>
+  <data name="Version_Upgrade" xml:space="preserve"><value>Повысить (новее)</value></data>
+  <data name="Version_Downgrade" xml:space="preserve"><value>Понизить (старее)</value></data>
+  <data name="Downgrade_Title" xml:space="preserve"><value>Понижение версии Minecraft</value></data>
+  <data name="Downgrade_Hint" xml:space="preserve"><value>Выберите более старую версию. PackCheck проверит каждый плагин и мод, сделает закреплённую полную копию, установит старый jar и нужную Java (например, Java 8 до 1.16), обработает миры по вашему выбору и сделает тестовый запуск. Если тест не пройдёт, всё восстанавливается одним нажатием.</value></data>
+  <data name="Downgrade_Oldest" xml:space="preserve"><value>{0} — самая старая версия для этой платформы.</value></data>
+  <data name="Downgrade_WorldsTitle" xml:space="preserve"><value>Миры</value></data>
+  <data name="Downgrade_WorldsWhy" xml:space="preserve"><value>Minecraft не открывает миры, сохранённые более новой версией. Выберите, что с ними сделать:</value></data>
+  <data name="DowngradeWorlds_RestoreBackup" xml:space="preserve"><value>Восстановить миры из копии этой версии</value></data>
+  <data name="DowngradeWorlds_Fresh" xml:space="preserve"><value>Начать с новых миров (текущие сохраняются в old-worlds/)</value></data>
+  <data name="DowngradeWorlds_Keep" xml:space="preserve"><value>Оставить текущие миры (не рекомендуется)</value></data>
+  <data name="Downgrade_BackupFound" xml:space="preserve"><value>✔ Найдена копия Minecraft {0} ({1}); миры можно восстановить.</value></data>
+  <data name="Downgrade_NoBackup" xml:space="preserve"><value>Копии Minecraft {0} нет, старые миры не вернуть. Начните с новых миров.</value></data>
+  <data name="Downgrade_KeepWarn" xml:space="preserve"><value>Старая версия обычно не открывает такие миры или теряет чанки. Если тест не пройдёт, нажмите «Откатить».</value></data>
+  <data name="Downgrade_BackupFirst" xml:space="preserve"><value>Сначала делается закреплённая полная копия текущей версии, к ней можно вернуться в любой момент.</value></data>
+  <data name="Downgrade_Start" xml:space="preserve"><value>Понизить</value></data>
+  <data name="Downgrade_Confirm" xml:space="preserve"><value>Понизить с {0} до {1}? Миры: {2}. Сначала делается закреплённая полная копия.</value></data>
+  <data name="Downgrade_StepMoved" xml:space="preserve"><value>Текущие миры перенесены в {0}</value></data>
+  <data name="Downgrade_StepRestore" xml:space="preserve"><value>Восстановление {0} из копии {1}…</value></data>
+  <data name="Downgrade_StepNoWorlds" xml:space="preserve"><value>Миров нет; сервер создаст новые.</value></data>
+  <data name="Downgrade_StepKeep" xml:space="preserve"><value>Текущие миры оставлены, как выбрано.</value></data>
+  <data name="Downgrade_Done" xml:space="preserve"><value>✔ Понижение версии завершено.</value></data>
+  <data name="Downgrade_BackupNote" xml:space="preserve"><value>Перед понижением {0} → {1}</value></data>
 </root>

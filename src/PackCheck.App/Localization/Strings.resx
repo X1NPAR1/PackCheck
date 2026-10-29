@@ -531,7 +531,7 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>This PC has no more free memory to give.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} is ready. Start the server again.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} disabled. Start the server again.</value></data>
-  <data name="Upgrade_Button" xml:space="preserve"><value>Upgrade version</value></data>
+  <data name="Upgrade_Button" xml:space="preserve"><value>Change version</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Upgrade Minecraft version</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Pick a newer version. PackCheck checks every plugin and mod first, takes a pinned full backup, installs the new version, updates what it can from Modrinth and test-starts the server. If the test fails, one click puts everything back.</value></data>
   <data name="Upgrade_Target" xml:space="preserve"><value>Target version</value></data>
@@ -1094,4 +1094,27 @@ F1 · this list
 
 Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl+O attach file · Ctrl+H history · Ctrl+N new chat</value></data>
   <data name="Assistant_Retrying" xml:space="preserve"><value>The AI service is busy, trying again ({0}) in {1} s…</value></data>
+  <data name="Version_Title" xml:space="preserve"><value>Change Minecraft version</value></data>
+  <data name="Version_Upgrade" xml:space="preserve"><value>Upgrade (newer)</value></data>
+  <data name="Version_Downgrade" xml:space="preserve"><value>Downgrade (older)</value></data>
+  <data name="Downgrade_Title" xml:space="preserve"><value>Downgrade Minecraft version</value></data>
+  <data name="Downgrade_Hint" xml:space="preserve"><value>Pick an older version. PackCheck checks every plugin and mod against it, takes a pinned full backup, installs the old server jar and the Java it needs (for example Java 8 up to 1.16), decides what happens to the worlds, then test-starts the server. If the test fails, one click restores everything.</value></data>
+  <data name="Downgrade_Oldest" xml:space="preserve"><value>{0} is the oldest version available for this platform.</value></data>
+  <data name="Downgrade_WorldsTitle" xml:space="preserve"><value>Worlds</value></data>
+  <data name="Downgrade_WorldsWhy" xml:space="preserve"><value>Minecraft cannot open worlds that a newer version has saved. Choose what happens to them:</value></data>
+  <data name="DowngradeWorlds_RestoreBackup" xml:space="preserve"><value>Restore the worlds from a backup made on that version</value></data>
+  <data name="DowngradeWorlds_Fresh" xml:space="preserve"><value>Start with new worlds (current ones are kept in old-worlds/)</value></data>
+  <data name="DowngradeWorlds_Keep" xml:space="preserve"><value>Keep the current worlds (not recommended)</value></data>
+  <data name="Downgrade_BackupFound" xml:space="preserve"><value>✔ Backup from Minecraft {0} found ({1}); its worlds can be restored.</value></data>
+  <data name="Downgrade_NoBackup" xml:space="preserve"><value>No backup from Minecraft {0} exists, so the old worlds cannot be brought back. Start with new worlds instead.</value></data>
+  <data name="Downgrade_KeepWarn" xml:space="preserve"><value>The old version usually refuses these worlds or loses chunks. If the test start fails, use Roll back.</value></data>
+  <data name="Downgrade_BackupFirst" xml:space="preserve"><value>A full backup of the current version is taken first and pinned, so you can go back to it at any time.</value></data>
+  <data name="Downgrade_Start" xml:space="preserve"><value>Downgrade</value></data>
+  <data name="Downgrade_Confirm" xml:space="preserve"><value>Downgrade from {0} to {1}? Worlds: {2}. A pinned full backup is taken first.</value></data>
+  <data name="Downgrade_StepMoved" xml:space="preserve"><value>Current worlds moved to {0}</value></data>
+  <data name="Downgrade_StepRestore" xml:space="preserve"><value>Restoring {0} from the {1} backup…</value></data>
+  <data name="Downgrade_StepNoWorlds" xml:space="preserve"><value>No worlds to move; the server will create new ones.</value></data>
+  <data name="Downgrade_StepKeep" xml:space="preserve"><value>Keeping the current worlds as requested.</value></data>
+  <data name="Downgrade_Done" xml:space="preserve"><value>✔ Downgrade finished.</value></data>
+  <data name="Downgrade_BackupNote" xml:space="preserve"><value>Before downgrade {0} → {1}</value></data>
 </root>

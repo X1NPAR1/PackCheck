@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.1 - 2026-10-29
+
+See [release-notes/v3.3.1.md](release-notes/v3.3.1.md).
+
 ## 3.3.0 - 2026-10-29
 
 See [release-notes/v3.3.0.md](release-notes/v3.3.0.md).

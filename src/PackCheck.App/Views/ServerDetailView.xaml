@@ -1012,9 +1012,20 @@
             <StackPanel>
                 <Border Style="{StaticResource Card}" Margin="0,0,0,12">
                     <StackPanel>
-                        <TextBlock Text="{l:Loc Upgrade_Title}" Style="{StaticResource H2}" FontSize="17" />
-                        <TextBlock Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,12">
-                            <Run Text="{l:Loc Upgrade_Hint}" />
+                        <TextBlock Text="{l:Loc Version_Title}" Style="{StaticResource H2}" FontSize="17" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,8" IsEnabled="{Binding UpgradeIsChoosing}">
+                            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Version_Upgrade}" IsChecked="{Binding IsUpgradeDirection}" AutomationProperties.AutomationId="VersionUp" />
+                            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Version_Downgrade}" IsChecked="{Binding IsDowngrade}" AutomationProperties.AutomationId="VersionDown" />
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" Margin="0,2,0,12">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+                                    <Setter Property="Text" Value="{l:Loc Upgrade_Hint}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDowngrade}" Value="True"><Setter Property="Text" Value="{l:Loc Downgrade_Hint}" /></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
                         </TextBlock>
                         <StackPanel Orientation="Horizontal" IsEnabled="{Binding UpgradeIsChoosing}">
                             <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">
@@ -1023,6 +1034,41 @@
                             <ComboBox Width="160" ItemsSource="{Binding UpgradeVersions}" SelectedItem="{Binding UpgradeTarget}" AutomationProperties.Name="{l:Loc Upgrade_Target}" AutomationProperties.AutomationId="UpgradeTarget" />
                             <Button Content="{l:Loc Upgrade_Check}" Command="{Binding CheckUpgradeCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="UpgradeCheck" />
                         </StackPanel>
+                        <!-- downgrade: what happens to the worlds -->
+                        <Border Visibility="{Binding IsDowngrade, Converter={StaticResource BoolVis}}" Margin="0,12,0,0" Padding="12,10" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource WarnBrush}" IsEnabled="{Binding UpgradeIsChoosing}">
+                            <StackPanel>
+                                <TextBlock Text="{l:Loc Downgrade_WorldsTitle}" FontWeight="SemiBold" />
+                                <TextBlock Text="{l:Loc Downgrade_WorldsWhy}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,8" />
+                                <ComboBox ItemsSource="{Binding DowngradeWorldOptions}" SelectedItem="{Binding DowngradeWorlds}" HorizontalAlignment="Left" MinWidth="360"
+                                          AutomationProperties.AutomationId="DowngradeWorlds" AutomationProperties.Name="{l:Loc Downgrade_WorldsTitle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=DowngradeWorlds_}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <TextBlock Text="{Binding DowngradeBackupText}" TextWrapping="Wrap" Margin="0,6,0,0" FontSize="12">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasDowngradeBackup}" Value="True"><Setter Property="Foreground" Value="{DynamicResource PassBrush}" /></DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Text="{l:Loc Downgrade_KeepWarn}" Foreground="{DynamicResource FailBrush}" TextWrapping="Wrap" Margin="0,6,0,0" FontSize="12">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DowngradeWorlds}" Value="Keep"><Setter Property="Visibility" Value="Visible" /></DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
                         <TextBlock Text="{Binding UpgradeMessage}" TextWrapping="Wrap" Margin="0,10,0,0" Visibility="{Binding UpgradeMessage, Converter={StaticResource NullVis}}" AutomationProperties.AutomationId="UpgradeMessage" />
                     </StackPanel>
                 </Border>
@@ -1031,14 +1077,15 @@
                 <Border Style="{StaticResource Card}" Margin="0,0,0,12" Visibility="{Binding UpgradeHasReport, Converter={StaticResource BoolVis}}">
                     <StackPanel>
                         <DockPanel>
-                            <Button DockPanel.Dock="Right" Content="{l:Loc Upgrade_Start}" Style="{StaticResource PrimaryButton}" Command="{Binding RunUpgradeCommand}" AutomationProperties.AutomationId="UpgradeRun" />
+                            <Button DockPanel.Dock="Right" Content="{Binding UpgradeStartText}" Style="{StaticResource PrimaryButton}" Command="{Binding RunUpgradeCommand}" AutomationProperties.AutomationId="UpgradeRun" />
                             <StackPanel>
                                 <TextBlock Text="{l:Loc Upgrade_Report}" FontSize="15" FontWeight="SemiBold" />
                                 <TextBlock Text="{Binding UpgradeSummary}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
                                 <TextBlock Text="{Binding UpgradeJavaText}" Style="{StaticResource Muted}" TextWrapping="Wrap" />
                             </StackPanel>
                         </DockPanel>
-                        <TextBlock Text="{l:Loc Upgrade_BackupFirst}" Foreground="{DynamicResource WarnBrush}" TextWrapping="Wrap" Margin="0,8,0,8" />
+                        <TextBlock Text="{l:Loc Upgrade_BackupFirst}" Foreground="{DynamicResource WarnBrush}" TextWrapping="Wrap" Margin="0,8,0,8" Visibility="{Binding IsDowngrade, Converter={x:Static l:Inverse.Visibility}}" />
+                        <TextBlock Text="{l:Loc Downgrade_BackupFirst}" Foreground="{DynamicResource WarnBrush}" TextWrapping="Wrap" Margin="0,8,0,8" Visibility="{Binding IsDowngrade, Converter={StaticResource BoolVis}}" />
                         <TextBlock Text="{l:Loc Upgrade_NoAddons}" Style="{StaticResource Muted}" Visibility="{Binding UpgradeAddons.Count, Converter={x:Static l:Inverse.Visibility}}" />
                         <ItemsControl ItemsSource="{Binding UpgradeAddons}" AutomationProperties.AutomationId="UpgradeAddons">
                             <ItemsControl.ItemTemplate>

@@ -224,7 +224,7 @@
             <Border Style="{StaticResource Card}" Width="480" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="24" l:Anim.PopIn="True">
                 <StackPanel>
                     <TextBlock Text="{Binding Confirm.Title}" Style="{StaticResource H2}" />
-                    <TextBlock Text="{Binding Confirm.Body}" Style="{StaticResource Muted}" Margin="0,10,0,0" />
+                    <TextBlock Text="{Binding Confirm.Body}" Style="{StaticResource Muted}" Margin="0,10,0,0" TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
                         <Button Content="{l:Loc Common_Cancel}" Command="{Binding ConfirmNoCommand}" Margin="0,0,8,0" IsCancel="True" AutomationProperties.AutomationId="ConfirmNo" />
                         <Button Content="{Binding Confirm.ConfirmText}" Command="{Binding ConfirmYesCommand}" AutomationProperties.AutomationId="ConfirmYes">
