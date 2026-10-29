@@ -212,7 +212,23 @@
     .group { border-bottom: 1px solid var(--rule); }
     .numbers .wrap { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 1000px) { .nav .btn { margin-left: auto; } }
   @media (max-width: 600px) {
+    .wrap, .narrow { width: calc(100% - 32px); }
+    .hero { padding-top: 56px; }
+    .hero .actions .btn { width: 100%; }
+    .showcase { margin-top: 44px; width: calc(100% - 20px); }
+    .frame { padding: 6px; border-radius: 12px; }
+    .frame .bar { display: none; }
+    .tour { border-radius: 20px; padding: 48px 0 52px; }
+    .tabs { flex-wrap: nowrap; overflow-x: auto; width: 100%; justify-content: flex-start; scrollbar-width: none; scroll-snap-type: x mandatory; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tabs button { flex: none; scroll-snap-align: start; }
+    .row + .row { margin-top: 80px; }
+    .row h3 { font-size: 28px; }
+    .numbers b { font-size: 30px; }
+    .cta { border-radius: 20px; padding: 72px 20px; }
+    footer .wrap { flex-direction: column; }
     section { padding: 80px 0; }
     .groups, .facts { grid-template-columns: 1fr; }
     .tabs { width: auto; }
