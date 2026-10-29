@@ -9,7 +9,7 @@ namespace PackCheck.Tests;
 
 public class AssistantTests
 {
-    private static (AssistantTools Tools, ServerItemViewModel Server, PackBuilder Pack) Setup()
+    internal static (AssistantTools Tools, ServerItemViewModel Server, PackBuilder Pack) Setup()
     {
         var pack = new PackBuilder().Text("server.properties", "motd=Old\n").Text("plugins/Shop/messages.yml", "greeting: '&aHello %player%'\n");
         var def = new ServerDefinition
@@ -27,7 +27,7 @@ public class AssistantTests
         return (new AssistantTools(list, () => server), server, pack);
     }
 
-    private static AiToolCall Call(string name, string json) => new("id-1", name, (JsonNode.Parse(json) as JsonObject)!);
+    internal static AiToolCall Call(string name, string json) => new("id-1", name, (JsonNode.Parse(json) as JsonObject)!);
 
     [Fact]
     public async Task ReadFile_ReturnsContent()
@@ -123,7 +123,7 @@ public class AssistantTests
         using var http = new HttpClient(handler);
         var convo = AiProviders.Start(AiProviderKind.LmStudio, null, "local-model", "system", AssistantTools.Specs, http);
 
-        var step = await convo.SendAsync("how many servers?", CancellationToken.None);
+        var step = await convo.SendAsync("how many servers?", [], CancellationToken.None);
         var call = Assert.Single(step.ToolCalls);
         Assert.Equal("list_servers", call.Name);
 
@@ -153,7 +153,7 @@ public class AssistantTests
         var pieces = new List<string>();
         convo.TextDelta = pieces.Add;
 
-        var step = await convo.SendAsync("hi", CancellationToken.None);
+        var step = await convo.SendAsync("hi", [], CancellationToken.None);
 
         Assert.Equal(["Hel", "lo"], pieces);
         Assert.Equal("Hello", step.Text);
@@ -186,7 +186,7 @@ public class AssistantTests
         using var http = new HttpClient(handler);
         var convo = AiProviders.Start(AiProviderKind.Gemini, "k", "gemini-2.5-pro", "s", AssistantTools.Specs, http);
 
-        var step = await convo.SendAsync("hi", CancellationToken.None);
+        var step = await convo.SendAsync("hi", [], CancellationToken.None);
         await convo.ContinueAsync([(Assert.Single(step.ToolCalls), "- Test", false)], CancellationToken.None);
 
         Assert.Contains("\"thought_signature\":\"SIG123\"", second, StringComparison.Ordinal);
@@ -200,7 +200,7 @@ public class AssistantTests
     {
         using var http = new HttpClient(new StubHandler(_ => StubHandler.Json("""{"error":"bad key"}""", HttpStatusCode.Unauthorized)));
         var convo = AiProviders.Start(AiProviderKind.OpenAI, "k", "m", "s", AssistantTools.Specs, http);
-        var ex = await Assert.ThrowsAsync<HttpRequestException>(() => convo.SendAsync("hi", CancellationToken.None));
+        var ex = await Assert.ThrowsAsync<HttpRequestException>(() => convo.SendAsync("hi", [], CancellationToken.None));
         Assert.Contains("401", ex.Message, StringComparison.Ordinal);
     }
 }

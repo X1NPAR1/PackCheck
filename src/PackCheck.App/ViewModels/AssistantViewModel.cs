@@ -40,12 +40,68 @@ public sealed partial class ChatItem(string role, string text) : ObservableObjec
     [ObservableProperty]
     private bool _isOpen;
 
+    /// <summary>Files sent with a user message (stored next to the chat).</summary>
+    public IReadOnlyList<ChatFile>? Files { get; init; }
+
+    public bool HasFiles => Files is { Count: > 0 };
+
     [RelayCommand]
     private void Toggle() => IsOpen = !IsOpen;
 }
 
-/// <summary>What is kept on disk per server: user, assistant and status lines (pending approvals are not restored).</summary>
-public sealed record SavedChatLine(string Role, string Text);
+/// <summary>An attachment shown in a sent message; clicking it opens the file.</summary>
+public sealed partial class ChatFile(string name, string fullPath, bool isImage)
+{
+    public string Name { get; } = name;
+
+    public string FullPath { get; } = fullPath;
+
+    public bool IsImage { get; } = isImage;
+
+    public System.Windows.Media.Imaging.BitmapSource? Thumbnail
+    {
+        get
+        {
+            try
+            {
+                return IsImage && File.Exists(FullPath) ? AttachmentLoader.Decode(File.ReadAllBytes(FullPath), 240) : null;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                return null;
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void Open()
+    {
+        if (File.Exists(FullPath))
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(FullPath) { UseShellExecute = true });
+        }
+    }
+}
+
+/// <summary>An entry of the assistant's server picker; <see cref="Server"/> is null for "no server".</summary>
+public sealed record ServerChoice(ServerItemViewModel? Server, string Name)
+{
+    public override string ToString() => Name;
+}
+
+/// <summary>A row in the chat history list.</summary>
+public sealed class ChatHistoryRow(ChatSummary summary, string serverName, bool isCurrent)
+{
+    public ChatSummary Summary { get; } = summary;
+
+    public string Title => Summary.Title.Length > 0 ? Summary.Title : Loc.T("Assistant_Untitled");
+
+    public string ServerName { get; } = serverName;
+
+    public bool IsCurrent { get; } = isCurrent;
+
+    public string Detail => $"{ServerName} · {Summary.Updated.ToLocalTime().ToString("g", System.Globalization.CultureInfo.CurrentUICulture)} · {Loc.F("Assistant_MessageCount", Summary.Count)}";
+}
 
 /// <summary>Chat with the chosen model; tool calls run through <see cref="AssistantTools"/> with approval for every change.</summary>
 public sealed partial class AssistantViewModel(ServersViewModel servers, AppSettings settings, HttpClient http) : ObservableObject
@@ -57,12 +113,242 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         Every change (writing files, console commands, starting, stopping or creating servers) needs the user's approval, which the app asks for; describe briefly what you will change and why.
         When translating files keep keys, placeholders such as %player% or {0}, and color codes (& or §) unchanged.
         Answer in the language the user writes in. Keep answers short and concrete.
+
+        Work like a careful agent that finishes the job:
+        - For any task with several parts (for example "translate all plugins"), first find every item with find_files / list_addons / search_files, then call update_todo with one item per file or plugin, and work through ALL of them one by one, updating the list as you go. Never stop after the first item and never leave work half done.
+        - Read a file completely before changing it (read_file returns large files in parts; continue with start_line). Change small parts with edit_file; write whole files with write_file only when they are small enough to write out in full.
+        - When translating, translate every user-visible message in the file, not a sample. Keep keys, placeholders (%player%, {0}, <player>), MiniMessage tags and & or § color codes unchanged. Skip files that are not messages (permissions, database, numeric settings).
+        - After changing files, check your work (read the file again or run validation) and fix mistakes.
+        - When everything is done, call task_complete with a short summary. Only stop earlier to ask the user when you really cannot continue without them.
         """;
 
-    private readonly AssistantTools _tools = new(servers, () => servers.Selected);
+    private readonly ChatStore _store = new(Path.Combine(Core.AppPaths.DataRoot, "assistant"));
+    private AssistantTools? _tools;
     private IAiConversation? _conversation;
     private CancellationTokenSource? _cts;
-    private string? _historyKey;
+    private string? _chatId;
+    private bool _migrated;
+    private bool _quietServerChange;
+
+    private AssistantTools Tools
+    {
+        get
+        {
+            if (_tools is null)
+            {
+                _tools = new AssistantTools(servers, () => Target);
+                _tools.TodoChanged += items => System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Todo.Clear();
+                    foreach (var t in items)
+                    {
+                        Todo.Add(t);
+                    }
+
+                    OnPropertyChanged(nameof(TodoProgress));
+                    OnPropertyChanged(nameof(HasTodo));
+                });
+            }
+
+            return _tools;
+        }
+    }
+
+    /// <summary>The assistant's own task list for long jobs, shown above the input.</summary>
+    public ObservableCollection<TodoItem> Todo { get; } = [];
+
+    public bool HasTodo => Todo.Count > 0;
+
+    public string TodoProgress => Loc.F("Assistant_TodoProgress", Todo.Count(t => t.IsDone), Todo.Count);
+
+    [ObservableProperty]
+    private string _statusText = string.Empty;
+
+    private void ClearTodo()
+    {
+        Todo.Clear();
+        OnPropertyChanged(nameof(TodoProgress));
+        OnPropertyChanged(nameof(HasTodo));
+    }
+
+    /// <summary>The server the assistant works on, chosen in its own picker (independent of the Servers page).</summary>
+    public ServerItemViewModel? Target => SelectedServer?.Server;
+
+    public ObservableCollection<ServerChoice> ServerChoices { get; } = [];
+
+    [ObservableProperty]
+    private ServerChoice? _selectedServer;
+
+    partial void OnSelectedServerChanged(ServerChoice? oldValue, ServerChoice? newValue)
+    {
+        OnPropertyChanged(nameof(ServerText));
+        OnPropertyChanged(nameof(Target));
+        AttachConsoleCommand.NotifyCanExecuteChanged();
+        if (_quietServerChange || oldValue is null || newValue is null || oldValue.Server == newValue.Server)
+        {
+            return;
+        }
+
+        // The next message starts a model conversation that knows the new server; earlier lines go along as context.
+        _conversation = null;
+        if (Messages.Count > 0)
+        {
+            Messages.Add(new ChatItem("system", Loc.F("Assistant_ServerSwitched", newValue.Name)));
+            SaveChat();
+        }
+    }
+
+    // ----- attachments -----
+    public ObservableCollection<ChatAttachment> PendingFiles { get; } = [];
+
+    public void AddFiles(IEnumerable<string> paths)
+    {
+        foreach (var path in paths)
+        {
+            try
+            {
+                AddAttachment(AttachmentLoader.FromFile(path));
+            }
+            catch (InvalidDataException ex)
+            {
+                MainViewModel.Shell?.Toast(Loc.F(ex.Message, Path.GetFileName(path)), isError: true);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                MainViewModel.Shell?.Toast(Loc.F("Attach_ReadFailed", Path.GetFileName(path), ex.Message), isError: true);
+            }
+        }
+    }
+
+    /// <summary>A pasted screenshot.</summary>
+    public void AddImage(System.Windows.Media.Imaging.BitmapSource image)
+    {
+        var name = Loc.T("Attach_ScreenshotName") + " " + DateTime.Now.ToString("HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture) + ".png";
+        AddAttachment(AttachmentLoader.FromBitmap(name, image));
+    }
+
+    private void AddAttachment(ChatAttachment a)
+    {
+        if (PendingFiles.Count >= AttachmentLoader.MaxAttachments)
+        {
+            MainViewModel.Shell?.Toast(Loc.F("Attach_Limit", AttachmentLoader.MaxAttachments), isError: true);
+            return;
+        }
+
+        PendingFiles.Add(a);
+    }
+
+    [RelayCommand]
+    private void AttachFiles()
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Multiselect = true,
+            Title = Loc.T("Attach_Title"),
+            Filter = $"{Loc.T("Attach_Filter")}|{AttachmentLoader.FileFilter}",
+        };
+        if (Target is { } s && Directory.Exists(s.Definition.Directory))
+        {
+            dialog.InitialDirectory = s.Definition.Directory;
+        }
+
+        if (dialog.ShowDialog() == true)
+        {
+            AddFiles(dialog.FileNames);
+        }
+    }
+
+    [RelayCommand]
+    private void RemoveFile(ChatAttachment? a)
+    {
+        if (a is not null)
+        {
+            PendingFiles.Remove(a);
+        }
+    }
+
+    // ----- history -----
+    public ObservableCollection<ChatHistoryRow> History { get; } = [];
+
+    [ObservableProperty]
+    private bool _isHistoryOpen;
+
+    [ObservableProperty]
+    private string _historySearch = string.Empty;
+
+    partial void OnHistorySearchChanged(string value) => RefreshHistory();
+
+    partial void OnIsHistoryOpenChanged(bool value)
+    {
+        if (value)
+        {
+            RefreshHistory();
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleHistory() => IsHistoryOpen = !IsHistoryOpen;
+
+    private string ServerName(string? id) =>
+        id is null ? Loc.T("Assistant_General") : servers.Items.FirstOrDefault(s => s.Definition.Id == id)?.Name ?? Loc.T("Assistant_RemovedServer");
+
+    /// <summary>Search looks at titles, server names and the messages themselves.</summary>
+    private void RefreshHistory()
+    {
+        History.Clear();
+        var q = HistorySearch.Trim();
+        foreach (var c in _store.List())
+        {
+            var row = new ChatHistoryRow(c, ServerName(c.ServerId), c.Id == _chatId);
+            if (q.Length == 0 || row.Title.Contains(q, StringComparison.CurrentCultureIgnoreCase) || row.ServerName.Contains(q, StringComparison.CurrentCultureIgnoreCase)
+                || (_store.Load(c.Id)?.Lines.Any(l => l.Text.Contains(q, StringComparison.CurrentCultureIgnoreCase)) ?? false))
+            {
+                History.Add(row);
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void OpenChat(ChatHistoryRow? row)
+    {
+        if (row is null || IsBusy)
+        {
+            return;
+        }
+
+        LoadChat(row.Summary.Id);
+        IsHistoryOpen = false;
+    }
+
+    [RelayCommand]
+    private async Task DeleteChatAsync(ChatHistoryRow? row)
+    {
+        if (row is null || MainViewModel.Shell is not { } shell)
+        {
+            return;
+        }
+
+        if (!await shell.ConfirmAsync(Loc.T("Assistant_DeleteTitle"), Loc.F("Assistant_DeleteBody", row.Title), Loc.T("Assistant_DeleteConfirm"), danger: true).ConfigureAwait(true))
+        {
+            return;
+        }
+
+        try
+        {
+            _store.Delete(row.Summary.Id);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            shell.Toast(ex.Message, isError: true);
+        }
+
+        if (row.Summary.Id == _chatId && !IsBusy)
+        {
+            StartNewChat();
+        }
+
+        RefreshHistory();
+    }
 
     public ObservableCollection<ChatItem> Messages { get; } = [];
 
@@ -127,7 +413,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
 
     public string ModelText => $"{AiProviders.DisplayName(settings.AiProvider)} · {settings.AiModel ?? "–"}";
 
-    public string ServerText => servers.Selected is { } s ? s.Name : Loc.T("Assistant_NoServer");
+    public string ServerText => Target is { } s ? s.Name : Loc.T("Assistant_NoServer");
 
     [ObservableProperty]
     private string _input = string.Empty;
@@ -150,52 +436,107 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     {
         OnPropertyChanged(nameof(IsConfigured));
         OnPropertyChanged(nameof(ModelText));
-        OnPropertyChanged(nameof(ServerText));
-        LoadHistory();
+        RefreshServers();
+        if (!_migrated)
+        {
+            _migrated = true;
+            _store.MigrateLegacy();
+        }
+
+        if (_chatId is null)
+        {
+            // Continue this server's last chat, or start a fresh one.
+            var key = Target?.Definition.Id;
+            if (_store.List().FirstOrDefault(c => c.ServerId == key) is { } last)
+            {
+                LoadChat(last.Id);
+            }
+            else
+            {
+                StartNewChat();
+            }
+        }
+
+        if (IsHistoryOpen)
+        {
+            RefreshHistory();
+        }
     }
 
-    // ----- history (one file per server, "general" without a server) -----
-    private static string HistoryDir => Path.Combine(Core.AppPaths.DataRoot, "assistant");
-
-    private string CurrentKey => servers.Selected?.Definition.Id ?? "general";
-
-    private void LoadHistory()
+    /// <summary>Keeps the picker in step with the server list; the first time it follows the Servers page selection.</summary>
+    private void RefreshServers()
     {
-        if (_historyKey == CurrentKey || IsBusy)
+        var keep = SelectedServer is null ? servers.Selected : SelectedServer.Server;
+        _quietServerChange = true;
+        ServerChoices.Clear();
+        ServerChoices.Add(new ServerChoice(null, Loc.T("Assistant_General")));
+        foreach (var s in servers.Items)
+        {
+            ServerChoices.Add(new ServerChoice(s, s.Name));
+        }
+
+        SelectedServer = ServerChoices.FirstOrDefault(c => keep is not null && c.Server == keep) ?? ServerChoices[0];
+        _quietServerChange = false;
+    }
+
+    private void SelectServer(string? id)
+    {
+        _quietServerChange = true;
+        SelectedServer = ServerChoices.FirstOrDefault(c => c.Server?.Definition.Id == id) ?? ServerChoices.FirstOrDefault();
+        _quietServerChange = false;
+    }
+
+    private void LoadChat(string id)
+    {
+        StartNewChat();
+        _chatId = id;
+        if (_store.Load(id) is { } chat)
+        {
+            SelectServer(chat.ServerId);
+            var dir = _store.AttachmentDir(id);
+            foreach (var l in chat.Lines)
+            {
+                Messages.Add(new ChatItem(l.Role, l.Text)
+                {
+                    Files = l.Files?.Select(f => new ChatFile(f, Path.Combine(dir, f), AttachmentLoader.IsImageName(f))).ToList(),
+                });
+            }
+        }
+    }
+
+    private void StartNewChat()
+    {
+        _cts?.Cancel();
+        _conversation = null;
+        Messages.Clear();
+        ClearTodo();
+        Tokens = 0;
+        TokensEstimated = false;
+        _chatId = ChatStore.NewId();
+    }
+
+    /// <summary>Saves the open chat; a chat without a user message is not written, so "New chat" leaves no empty entries.</summary>
+    private void SaveChat()
+    {
+        if (_chatId is null || !Messages.Any(m => m.Role == "user"))
         {
             return;
         }
 
-        _historyKey = CurrentKey;
-        _conversation = null;
-        Messages.Clear();
-        Tokens = 0;
         try
         {
-            var file = Path.Combine(HistoryDir, _historyKey + ".json");
-            if (File.Exists(file) && JsonSerializer.Deserialize<List<SavedChatLine>>(File.ReadAllText(file)) is { } lines)
-            {
-                foreach (var l in lines)
-                {
-                    Messages.Add(new ChatItem(l.Role, l.Text));
-                }
-            }
-        }
-        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
-        {
-        }
-    }
-
-    private void SaveHistory()
-    {
-        try
-        {
-            Directory.CreateDirectory(HistoryDir);
-            var lines = Messages.Where(m => m.Role is "user" or "assistant" or "system").TakeLast(200).Select(m => new SavedChatLine(m.Role, m.Text)).ToList();
-            File.WriteAllText(Path.Combine(HistoryDir, (_historyKey ?? CurrentKey) + ".json"), JsonSerializer.Serialize(lines));
+            var lines = Messages.Where(m => m.Role is "user" or "assistant" or "system" or "done")
+                .Select(m => new SavedChatLine(m.Role, m.Text, m.Files?.Select(f => f.Name).ToList())).ToList();
+            var title = _store.Load(_chatId) is { Title.Length: > 0 } existing ? existing.Title : ChatStore.MakeTitle(lines);
+            _store.Save(new SavedChat(_chatId, title, Target?.Definition.Id, DateTimeOffset.Now, lines));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
+        }
+
+        if (IsHistoryOpen)
+        {
+            RefreshHistory();
         }
     }
 
@@ -212,6 +553,19 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     public void Ask(string text)
     {
         MainViewModel.Shell?.Navigate(this);
+        if (!IsBusy)
+        {
+            if (Messages.Count > 0)
+            {
+                StartNewChat();
+            }
+
+            if (servers.Selected is { } selected)
+            {
+                SelectServer(selected.Definition.Id);
+            }
+        }
+
         Input = text;
         if (IsConfigured && SendCommand.CanExecute(null))
         {
@@ -222,21 +576,21 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     [RelayCommand]
     private void NewChat()
     {
-        _cts?.Cancel();
-        _conversation = null;
-        Messages.Clear();
-        Tokens = 0;
-        SaveHistory();
+        StartNewChat();
+        PendingFiles.Clear();
+        IsHistoryOpen = false;
     }
 
     [RelayCommand]
     private void Cancel() => _cts?.Cancel();
 
     /// <summary>One-click context: puts the selected server's recent console into the prompt.</summary>
-    [RelayCommand]
+    private bool CanAttachConsole() => Target is not null;
+
+    [RelayCommand(CanExecute = nameof(CanAttachConsole))]
     private void AttachConsole()
     {
-        if (servers.Selected is not { } s)
+        if (Target is not { } s)
         {
             return;
         }
@@ -251,9 +605,15 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     private async Task SendAsync()
     {
         var text = Input.Trim();
-        if (text.Length == 0)
+        var files = PendingFiles.ToList();
+        if (text.Length == 0 && files.Count == 0)
         {
             return;
+        }
+
+        if (text.Length == 0)
+        {
+            text = Loc.T("Attach_DefaultPrompt");
         }
 
         if (!IsConfigured)
@@ -262,8 +622,9 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             return;
         }
 
-        LoadHistory();
+        _chatId ??= ChatStore.NewId();
         Input = string.Empty;
+        PendingFiles.Clear();
         IsBusy = true;
         _cts = new CancellationTokenSource();
         ChatItem? live = null;
@@ -274,6 +635,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
                 _conversation = AiProviders.Start(settings.AiProvider, Secrets.Unprotect(settings.AiKey), settings.AiModel!,
                     SystemPrompt + $"\nSelected server: {ServerText}." + EarlierTranscript(), AssistantTools.Specs, http);
                 var dispatcher = System.Windows.Application.Current.Dispatcher;
+                _conversation.Retrying = (attempt, wait) => dispatcher.BeginInvoke(() => StatusText = Loc.F("Assistant_Retrying", attempt, (int)Math.Ceiling(wait.TotalSeconds)));
                 _conversation.TextDelta = piece => dispatcher.BeginInvoke(() =>
                 {
                     if (live is null)
@@ -286,10 +648,36 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
                 });
             }
 
-            Messages.Add(new ChatItem("user", text) { ModeTag = Mode == AssistantMode.Normal ? null : Loc.T("Mode_" + Mode) });
-            var step = await _conversation.SendAsync(AssistantPolicy.Instruction(Mode) + "\n\n" + text, _cts.Token).ConfigureAwait(true);
-            for (var round = 0; round < 12; round++)
+            var stored = new List<ChatFile>();
+            foreach (var f in files)
             {
+                try
+                {
+                    var name = _store.SaveAttachment(_chatId, f.Name, f.Data);
+                    stored.Add(new ChatFile(name, Path.Combine(_store.AttachmentDir(_chatId), name), f.IsImage));
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    stored.Add(new ChatFile(f.Name, string.Empty, f.IsImage));
+                }
+            }
+
+            Messages.Add(new ChatItem("user", text) { ModeTag = Mode == AssistantMode.Normal ? null : Loc.T("Mode_" + Mode), Files = stored.Count > 0 ? stored : null });
+            var prompt = AssistantPolicy.Instruction(Mode) + "\n\n" + text;
+            foreach (var f in files.Where(f => !f.IsImage))
+            {
+                prompt += $"\n\nAttached file {f.Name}:\n```\n{f.Text}\n```";
+            }
+
+            var images = files.Where(f => f.IsImage).Select(f => new AiImage(f.MediaType, f.Data)).ToList();
+            var step = await _conversation.SendAsync(prompt, images, _cts.Token).ConfigureAwait(true);
+            var nudges = 0;
+            var completed = false;
+            var maxRounds = AssistantPolicy.MaxRounds(Mode);
+            var round = 0;
+            for (; round < maxRounds; round++)
+            {
+                StatusText = Loc.F("Assistant_Working", round + 1);
                 // Some OpenAI-compatible providers send no usage while streaming; estimate (~4 characters per token) instead of showing 0.
                 Tokens += step.InputTokens + step.OutputTokens > 0
                     ? step.InputTokens + step.OutputTokens
@@ -311,6 +699,20 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
 
                 if (step.ToolCalls.Count == 0)
                 {
+                    // Like Cline: an answer that stops while the task list still has open items (or that was cut off) gets a nudge to carry on.
+                    var open = Todo.Where(t => !t.IsDone).Select(t => t.Text).ToList();
+                    var cut = step.StopReason is "max_tokens" or "length";
+                    if (!completed && Mode != AssistantMode.Plan && nudges < 3 && (open.Count > 0 || cut))
+                    {
+                        nudges++;
+                        Messages.Add(new ChatItem("system", Loc.T("Assistant_Continuing")));
+                        var nudge = cut
+                            ? "Your last answer was cut off. Continue exactly where you stopped."
+                            : "Continue the task without stopping. Open items in your task list: " + string.Join("; ", open.Take(30)) + ". Work through them, update the list, and call task_complete when everything is done. If you truly need the user's input, say so clearly and ask one question.";
+                        step = await _conversation.SendAsync(nudge, [], _cts.Token).ConfigureAwait(true);
+                        continue;
+                    }
+
                     if (Mode == AssistantMode.Plan && step.Text.Length > 0)
                     {
                         Messages.Add(new ChatItem("plan", string.Empty));
@@ -319,13 +721,25 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
                     break;
                 }
 
+                nudges = 0;
                 var results = new List<(AiToolCall, string, bool)>();
                 foreach (var call in step.ToolCalls)
                 {
+                    if (call.Name == "task_complete")
+                    {
+                        completed = true;
+                        Messages.Add(new ChatItem("done", call.Arguments["summary"]?.ToString() ?? string.Empty));
+                    }
+
                     results.Add(await RunToolAsync(call).ConfigureAwait(true));
                 }
 
                 step = await _conversation.ContinueAsync(results, _cts.Token).ConfigureAwait(true);
+            }
+
+            if (round >= maxRounds)
+            {
+                Messages.Add(new ChatItem("system", Loc.F("Assistant_RoundLimit", maxRounds)));
             }
         }
         catch (OperationCanceledException)
@@ -335,6 +749,10 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or Anthropic.Exceptions.AnthropicApiException or System.Text.Json.JsonException)
         {
             Messages.Add(new ChatItem("system", Loc.F("Assistant_Error", ex.Message)));
+            if (files.Any(f => f.IsImage))
+            {
+                Messages.Add(new ChatItem("system", Loc.T("Attach_VisionHint")));
+            }
         }
         finally
         {
@@ -344,7 +762,8 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             }
 
             IsBusy = false;
-            SaveHistory();
+            StatusText = string.Empty;
+            SaveChat();
         }
     }
 
@@ -359,10 +778,14 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
                 return (call, "Plan mode: this tool changes something and is not allowed. Describe the change in your plan instead.", true);
             }
 
-            var (result, pending) = await _tools.RunAsync(call).ConfigureAwait(true);
+            var (result, pending) = await Tools.RunAsync(call).ConfigureAwait(true);
             if (pending is null)
             {
-                Messages.Add(ToolRow(call, result ?? string.Empty));
+                if (call.Name is not ("update_todo" or "task_complete"))
+                {
+                    Messages.Add(ToolRow(call, result ?? string.Empty));
+                }
+
                 return (call, result ?? string.Empty, false);
             }
 
@@ -402,6 +825,8 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             "read_console" => Loc.T("Tool_ReadConsole"),
             "list_files" => Loc.F("Tool_ListFiles", Arg("path") is { Length: > 0 } p ? p : "/"),
             "read_file" => Loc.F("Tool_ReadFile", Arg("path")),
+            "find_files" => Loc.F("Tool_FindFiles", Arg("pattern")),
+            "search_files" => Loc.F("Tool_SearchFiles", Arg("text")),
             "list_addons" => Loc.T("Tool_ListAddons"),
             "run_validation" => Loc.T("Tool_Validate"),
             _ => call.Name,

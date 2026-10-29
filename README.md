@@ -7,12 +7,14 @@
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
 </p>
 
+<p align="center"><b>Current version: 3.3.0</b> · <a href="CHANGELOG.md">changelog</a></p>
+
 <p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/X1NPAR1/PackCheck?label=download&color=5E9A3E"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/X1NPAR1/PackCheck?label=download&color=5E9A3E&cacheSeconds=600"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
@@ -122,11 +124,20 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 **AI assistant**
 - Choose a provider (Anthropic Claude, OpenAI, Google Gemini, xAI Grok, DeepSeek, Mistral, Groq, OpenRouter, Ollama, LM Studio) and pick one of its models from a list; the key is stored encrypted with Windows DPAPI.
-- Answers stream in as they are written, with Markdown formatting; each server keeps its own chat history.
+- Answers stream in as they are written, with Markdown formatting. Claude models think between steps (adaptive thinking).
+- Works through long jobs like an agent: for "translate every plugin" it first finds all message files, keeps a visible task list (one item per file), works through every item, and reports with a "Task complete" summary. If it stops while items are still open, PackCheck tells it to carry on.
+- Tools: find files by pattern, search text across the server, read large files in parts, change exact parts of a file, write files, read the console, run validation, send commands, start/stop and create servers.
+- Pick the server it works on right in the assistant, independent of the Servers page.
+- Chat history: every conversation is saved; open, search (titles and message text) or delete earlier chats.
+- Attachments: add screenshots and log or config files with the + File button, paste a screenshot with Ctrl+V, or drop files on the page. Images go to the model as pictures (vision models), text files are added to the message.
+- Busy or rate-limited providers (HTTP 429/5xx) are retried automatically.
 - Four modes: ask before every change, plan first (nothing changes until you run the plan), auto-edit files, or bypass approvals.
 - Every step it takes is listed with a readable title; click a step to see what was sent and what came back.
-- It reads the console, files and validation results, and can edit configs, translate plugin message files, send commands or create several servers at once.
-- Every change waits for your approval with a preview; it cannot leave the server folder and has no shell.
+- It cannot leave the server folder and has no shell; edited files are backed up to `.packcheck/edits`.
+
+**Keyboard and mouse**
+- F11 full screen · Alt+←/→ or the mouse back/forward buttons move through pages, servers and tabs like a browser.
+- Middle click or Ctrl+W closes the open dialog, panel or server tab · Ctrl+Tab cycles server tabs · Ctrl+1…9 opens side-menu pages · Ctrl+, settings · F1 lists all shortcuts.
 
 **Online**
 - Open a server to the internet: a firewall rule (after you approve the Windows prompt) and UPnP forwarding on the router.
@@ -190,7 +201,7 @@ packcheck version
 Example output:
 
 ```text
-PackCheck 3.1.1 - demo-pack
+PackCheck 3.3.0 - demo-pack
   [FAIL ] PC040 Missing dependency: 'EconomyShop' requires 'ProtocolLib', which is not installed. The plugin will not enable.
            plugin.yml: depend: [Vault, ProtocolLib]
            fix: Install 'ProtocolLib' or remove 'EconomyShop'.

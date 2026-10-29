@@ -245,7 +245,8 @@ TR = {
 <li>Modrinth, Hangar ve CurseForge'dan eklenti ve mod; uyumsuz olanlar nedeniyle gösterilir</li>
 <li>Eklenti ve mod paketlerini çalıştırmadan denetleme (eksik bağımlılık, yanlış sürüm, bozuk jar)</li>
 <li>Otomasyon: zamanlanmış yeniden başlatma ve yedek, çökme sonrası başlatma, sunucular arası tetikleyiciler</li>
-<li>Yapay zeka asistanı (Claude, ChatGPT, Gemini, Grok…): plan modu ve onaylı değişiklikler</li>
+<li>Yapay zeka asistanı (Claude, ChatGPT, Gemini, Grok…): uzun işleri görev listesiyle sonuna kadar yapar (ör. bütün eklentileri Türkçeleştirme), ekran görüntüsü ve log ekleme, sohbet geçmişi, sunucu seçimi, plan modu ve onaylı değişiklikler</li>
+<li>F11 tam ekran, farenin ileri/geri tuşlarıyla gezinme, orta tıkla sekme kapatma ve klavye kısayolları (F1)</li>
 </ul>
 <p>Ayrıntılı rehberler (İngilizce): <a href="../guides/host-minecraft-server-windows.html">Windows'ta sunucu kurma</a>, <a href="../guides/minecraft-port-forwarding.html">port yönlendirme</a>, <a href="../guides/paper-vs-fabric-vs-forge.html">Paper, Fabric ve Forge karşılaştırması</a>, <a href="../guides/check-minecraft-plugins.html">eklenti ve mod denetleme</a>, <a href="../guides/minecraft-server-automation.html">sunucu otomasyonu</a>.</p>
 """,

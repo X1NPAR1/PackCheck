@@ -138,9 +138,11 @@ public static class PropertiesText
     /// <summary>
     /// Newer servers write server.properties as UTF-8, older ones as ISO-8859-1. Strict UTF-8 first, Latin-1 if the bytes are not valid UTF-8.
     /// </summary>
-    public static string ReadFile(string path)
+    public static string ReadFile(string path) => Decode(File.ReadAllBytes(path));
+
+    /// <summary>Strict UTF-8 (BOM removed), Latin-1 when the bytes are not valid UTF-8.</summary>
+    public static string Decode(byte[] bytes)
     {
-        var bytes = File.ReadAllBytes(path);
         try
         {
             return new UTF8Encoding(false, throwOnInvalidBytes: true).GetString(bytes).TrimStart('﻿');

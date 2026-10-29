@@ -27,6 +27,9 @@ public enum AiProviderKind
 
 public sealed record AiToolSpec(string Name, string Description, JsonObject Schema);
 
+/// <summary>An image sent with a user message (screenshots); <paramref name="MediaType"/> is image/png, image/jpeg, image/gif or image/webp.</summary>
+public sealed record AiImage(string MediaType, byte[] Data);
+
 public sealed record AiToolCall(string Id, string Name, JsonObject Arguments);
 
 /// <summary>What the model produced in one turn: text for the user and/or tool calls to run.</summary>
@@ -38,13 +41,19 @@ public interface IAiConversation
     /// <summary>Receives answer text as it streams in.</summary>
     Action<string>? TextDelta { get; set; }
 
-    Task<AiStep> SendAsync(string userText, CancellationToken ct);
+    /// <summary>Called before a retry after a busy/overloaded answer (attempt number, wait).</summary>
+    Action<int, TimeSpan>? Retrying { get; set; }
+
+    Task<AiStep> SendAsync(string userText, IReadOnlyList<AiImage> images, CancellationToken ct);
 
     Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct);
 }
 
 public static class AiProviders
 {
+    /// <summary>Waits between retries of busy (429/5xx) answers; tests set them to zero.</summary>
+    public static TimeSpan[] RetryDelays { get; set; } = [TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(30)];
+
     public static bool IsLocal(AiProviderKind k) => k is AiProviderKind.Ollama or AiProviderKind.LmStudio;
 
     /// <summary>OpenAI-compatible base URLs (Gemini and the local servers expose the same chat API).</summary>
@@ -139,6 +148,10 @@ public static class AiProviders
             .Select(id => id.StartsWith("models/", StringComparison.Ordinal) ? id[7..] : id).Where(IsChatModel).Order(StringComparer.OrdinalIgnoreCase).ToList();
     }
 
+    /// <summary>Claude models from 4.6 on think between tool calls (adaptive thinking); older ones reject the setting.</summary>
+    public static bool SupportsAdaptiveThinking(string model) =>
+        System.Text.RegularExpressions.Regex.IsMatch(model, @"(opus|sonnet|fable)-(4-[6-9]|[5-9])", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
     public static IAiConversation Start(AiProviderKind kind, string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools, HttpClient http) =>
         kind == AiProviderKind.Anthropic
             ? new AnthropicConversation(apiKey, model, system, tools)
@@ -150,7 +163,10 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
 {
     public Action<string>? TextDelta { get; set; }
 
-    private readonly AnthropicClient _client = new() { ApiKey = apiKey };
+    public Action<int, TimeSpan>? Retrying { get; set; }
+
+    // The SDK retries overloaded (529) and rate-limited answers itself.
+    private readonly AnthropicClient _client = new() { ApiKey = apiKey, MaxRetries = 5 };
     private readonly List<MessageParam> _messages = [];
 
     private readonly List<ToolUnion> _tools = tools.Select(t => (ToolUnion)new Tool
@@ -164,9 +180,24 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
         },
     }).ToList();
 
-    public Task<AiStep> SendAsync(string userText, CancellationToken ct)
+    public Task<AiStep> SendAsync(string userText, IReadOnlyList<AiImage> images, CancellationToken ct)
     {
-        _messages.Add(new UserMessageParam { Content = userText });
+        if (images.Count == 0)
+        {
+            _messages.Add(new UserMessageParam { Content = userText });
+        }
+        else
+        {
+            List<ContentBlockParam> blocks = [];
+            foreach (var img in images)
+            {
+                blocks.Add(new ImageBlockParam { Source = new Base64ImageSource { Data = Convert.ToBase64String(img.Data), MediaType = img.MediaType } });
+            }
+
+            blocks.Add(new TextBlockParam { Text = userText });
+            _messages.Add(new UserMessageParam { Content = blocks });
+        }
+
         return RunAsync(ct);
     }
 
@@ -187,7 +218,8 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
         var stream = _client.Messages.CreateStreaming(new MessageCreateParams
         {
             Model = model,
-            MaxTokens = 16000,
+            MaxTokens = 32000,
+            Thinking = AiProviders.SupportsAdaptiveThinking(model) ? (ThinkingConfigParam)new ThinkingConfigAdaptive() : null,
             System = system,
             Tools = _tools,
             Messages = [.. _messages],
@@ -257,6 +289,8 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
 
     public Action<string>? TextDelta { get; set; }
 
+    public Action<int, TimeSpan>? Retrying { get; set; }
+
     public OpenAiCompatibleConversation(string baseUrl, string? apiKey, string model, string system, IReadOnlyList<AiToolSpec> tools, HttpClient http)
     {
         _baseUrl = baseUrl;
@@ -274,9 +308,23 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         }
     }
 
-    public Task<AiStep> SendAsync(string userText, CancellationToken ct)
+    public Task<AiStep> SendAsync(string userText, IReadOnlyList<AiImage> images, CancellationToken ct)
     {
-        _messages.Add(new JsonObject { ["role"] = "user", ["content"] = userText });
+        if (images.Count == 0)
+        {
+            _messages.Add(new JsonObject { ["role"] = "user", ["content"] = userText });
+        }
+        else
+        {
+            var parts = new JsonArray { new JsonObject { ["type"] = "text", ["text"] = userText } };
+            foreach (var img in images)
+            {
+                parts.Add(new JsonObject { ["type"] = "image_url", ["image_url"] = new JsonObject { ["url"] = $"data:{img.MediaType};base64,{Convert.ToBase64String(img.Data)}" } });
+            }
+
+            _messages.Add(new JsonObject { ["role"] = "user", ["content"] = parts });
+        }
+
         return RunAsync(ct);
     }
 
@@ -313,9 +361,29 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         return await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
     }
 
+    /// <summary>Busy or overloaded providers (429, 5xx) are retried with growing waits, honouring Retry-After.</summary>
+    private async Task<HttpResponseMessage> PostWithRetryAsync(CancellationToken ct)
+    {
+        for (var attempt = 0; ; attempt++)
+        {
+            var res = await PostAsync(ct).ConfigureAwait(false);
+            if (!IsTransient(res.StatusCode) || attempt >= AiProviders.RetryDelays.Length)
+            {
+                return res;
+            }
+
+            var wait = res.Headers.RetryAfter?.Delta is { } d && d < TimeSpan.FromMinutes(2) ? d : AiProviders.RetryDelays[attempt];
+            res.Dispose();
+            Retrying?.Invoke(attempt + 1, wait);
+            await Task.Delay(wait, ct).ConfigureAwait(false);
+        }
+    }
+
+    public static bool IsTransient(System.Net.HttpStatusCode code) => (int)code is 429 or 500 or 502 or 503 or 504 or 529;
+
     private async Task<AiStep> RunAsync(CancellationToken ct)
     {
-        var res = await PostAsync(ct).ConfigureAwait(false);
+        var res = await PostWithRetryAsync(ct).ConfigureAwait(false);
         if (!res.IsSuccessStatusCode && !_noUsageOption)
         {
             var first = await res.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
@@ -323,7 +391,7 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
             {
                 res.Dispose();
                 _noUsageOption = true;
-                res = await PostAsync(ct).ConfigureAwait(false);
+                res = await PostWithRetryAsync(ct).ConfigureAwait(false);
             }
             else
             {

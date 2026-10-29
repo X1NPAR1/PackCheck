@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
-             AutomationProperties.AutomationId="AssistantPage">
+             AutomationProperties.AutomationId="AssistantPage" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
         <l:NullToVisibility x:Key="NullVis" />
@@ -19,11 +19,16 @@
                 <TextBlock Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" Margin="0,0,12,0">
                     <Run Text="{Binding ModelText, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding TokensText, Mode=OneWay}" />
                 </TextBlock>
-                <Button Content="{l:Loc Assistant_New}" Command="{Binding NewChatCommand}" />
+                <Button Content="{l:Loc Assistant_History}" Command="{Binding ToggleHistoryCommand}" Margin="0,0,8,0" AutomationProperties.AutomationId="AssistantHistory" ToolTip="Ctrl+H" />
+                <Button Content="{l:Loc Assistant_New}" Command="{Binding NewChatCommand}" AutomationProperties.AutomationId="AssistantNew" ToolTip="Ctrl+N" />
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="{l:Loc Assistant_Title}" Style="{StaticResource H1}" />
-                <TextBlock Style="{StaticResource Muted}" Margin="0,4,0,0"><Run Text="{l:Loc Assistant_Subtitle}" /><Run Text=" " /><Run Text="{Binding ServerText, Mode=OneWay}" FontWeight="SemiBold" /></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                    <TextBlock Text="{l:Loc Assistant_ServerLabel}" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox ItemsSource="{Binding ServerChoices}" SelectedItem="{Binding SelectedServer}" DisplayMemberPath="Name" MinWidth="220" IsEnabled="{Binding IsBusy, Converter={x:Static l:Inverse.Bool}}"
+                              AutomationProperties.AutomationId="AssistantServer" AutomationProperties.Name="{l:Loc Assistant_ServerLabel}" ToolTip="{l:Loc Assistant_ServerTip}" />
+                </StackPanel>
             </StackPanel>
         </DockPanel>
 
@@ -37,7 +42,62 @@
         </Border>
 
         <!-- conversation -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0" Visibility="{Binding IsConfigured, Converter={StaticResource BoolVis}}">
+        <Grid Grid.Row="1" Visibility="{Binding IsConfigured, Converter={StaticResource BoolVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!-- history -->
+            <Border Style="{StaticResource Card}" Padding="10" Width="300" Margin="0,0,12,0" Visibility="{Binding IsHistoryOpen, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="{l:Loc Assistant_HistoryTitle}" Style="{StaticResource H2}" Margin="4,0,0,8" />
+                    <TextBox DockPanel.Dock="Top" Text="{Binding HistorySearch, UpdateSourceTrigger=PropertyChanged, Delay=250}" Tag="{l:Loc Assistant_HistorySearch}" Margin="0,0,0,8"
+                             AutomationProperties.AutomationId="AssistantHistorySearch" />
+                    <Grid>
+                        <TextBlock Text="{l:Loc Assistant_HistoryEmpty}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="4,6"
+                                   Visibility="{Binding History.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ListBox ItemsSource="{Binding History}" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 AutomationProperties.AutomationId="AssistantHistoryList">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="Bd" Background="Transparent" CornerRadius="8" Padding="8,7" Margin="0,0,0,2"><ContentPresenter /></Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2Brush}" /></Trigger>
+                                                    <DataTrigger Binding="{Binding IsCurrent}" Value="True"><Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimarySoftBrush}" /></DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Background="Transparent" Cursor="Hand">
+                                        <DockPanel.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.OpenChatCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </DockPanel.InputBindings>
+                                        <Button DockPanel.Dock="Right" Content="✕" Padding="6,1" MinWidth="0" VerticalAlignment="Top" ToolTip="{l:Loc Assistant_DeleteTitle}"
+                                                AutomationProperties.Name="{l:Loc Assistant_DeleteTitle}"
+                                                Command="{Binding DataContext.DeleteChatCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        <StackPanel Margin="0,0,6,0">
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{Binding Detail}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </DockPanel>
+            </Border>
+
+        <Border Grid.Column="1" Style="{StaticResource Card}" Padding="0">
             <Grid>
                 <TextBlock Text="{l:Loc Assistant_Empty}" Style="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" MaxWidth="460"
                            Visibility="{Binding Messages.Count, Converter={x:Static l:Inverse.Visibility}}" />
@@ -67,7 +127,27 @@
                                                         <Setter.Value>
                                                             <DataTemplate>
                                                                 <Border Margin="80,0,0,10" Padding="14,10" CornerRadius="10" Background="{DynamicResource PrimarySoftBrush}" HorizontalAlignment="Right">
-                                                                    <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Padding="0" MinHeight="0" />
+                                                                    <StackPanel>
+                                                                        <ItemsControl ItemsSource="{Binding Files}" Visibility="{Binding HasFiles, Converter={StaticResource BoolVis}}" Margin="0,0,0,6">
+                                                                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Button Command="{Binding OpenCommand}" Cursor="Hand" Margin="0,0,6,6" ToolTip="{Binding Name}" AutomationProperties.Name="{Binding Name}">
+                                                                                        <Button.Template>
+                                                                                            <ControlTemplate TargetType="Button">
+                                                                                                <Border CornerRadius="8" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Padding="4"><ContentPresenter /></Border>
+                                                                                            </ControlTemplate>
+                                                                                        </Button.Template>
+                                                                                        <Grid>
+                                                                                            <Image Source="{Binding Thumbnail}" MaxWidth="240" MaxHeight="160" Stretch="Uniform" Visibility="{Binding IsImage, Converter={StaticResource BoolVis}}" />
+                                                                                            <TextBlock Text="{Binding Name, StringFormat='📄 {0}'}" Margin="6,3" Visibility="{Binding IsImage, Converter={x:Static l:Inverse.Visibility}}" />
+                                                                                        </Grid>
+                                                                                    </Button>
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                        <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Padding="0" MinHeight="0" />
+                                                                    </StackPanel>
                                                                 </Border>
                                                             </DataTemplate>
                                                         </Setter.Value>
@@ -132,6 +212,20 @@
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding Role}" Value="done">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <Border Margin="0,0,80,12" Padding="14,10" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource PassBrush}" Background="{DynamicResource SurfaceBrush}" HorizontalAlignment="Left">
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{l:Loc Assistant_TaskDone}" FontWeight="SemiBold" Foreground="{DynamicResource PassBrush}" />
+                                                                        <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Padding="0" MinHeight="0" Margin="0,4,0,0" />
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding Role}" Value="system">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
@@ -189,20 +283,71 @@
                 </ScrollViewer>
             </Grid>
         </Border>
-
-        <!-- bypass warning -->
-        <Border Grid.Row="2" VerticalAlignment="Top" Margin="0,-30,0,0" Padding="10,4" CornerRadius="6" Background="{DynamicResource FailBrush}" HorizontalAlignment="Left"
-                Visibility="{Binding IsBypass, Converter={StaticResource BoolVis}}">
-            <TextBlock Text="{l:Loc Mode_BypassBanner}" Foreground="White" FontSize="12" FontWeight="SemiBold" />
-        </Border>
+        </Grid>
 
         <!-- input -->
-        <DockPanel Grid.Row="2" Margin="0,12,0,0" Visibility="{Binding IsConfigured, Converter={StaticResource BoolVis}}">
+        <StackPanel Grid.Row="2" Margin="0,12,0,0" Visibility="{Binding IsConfigured, Converter={StaticResource BoolVis}}">
+        <!-- task list -->
+        <Border Style="{StaticResource Card}" Padding="12,8" Margin="0,0,0,8" Visibility="{Binding HasTodo, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="AssistantTodo">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" FontWeight="SemiBold" Margin="0,0,0,4"><Run Text="{l:Loc Assistant_TodoTitle}" /><Run Text=" · " /><Run Text="{Binding TodoProgress, Mode=OneWay}" /></TextBlock>
+                <ScrollViewer MaxHeight="130" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Todo}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Margin="0,1">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding Text, StringFormat='○  {0}'}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                    <Setter Property="Text" Value="{Binding Text, StringFormat='◐  {0}'}" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+                                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                                    <Setter Property="Text" Value="{Binding Text, StringFormat='✓  {0}'}" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+        <!-- attachments waiting to be sent -->
+        <ItemsControl ItemsSource="{Binding PendingFiles}" Margin="198,0,0,6" AutomationProperties.AutomationId="AssistantAttachments">
+            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="8" Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Padding="4" Margin="0,0,6,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Thumbnail}" Height="44" MaxWidth="80" Stretch="Uniform" Margin="0,0,6,0" Visibility="{Binding IsImage, Converter={StaticResource BoolVis}}" />
+                            <StackPanel VerticalAlignment="Center" MaxWidth="180">
+                                <TextBlock Text="{Binding Name}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{Binding SizeText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" />
+                            </StackPanel>
+                            <Button Content="✕" Padding="5,0" MinWidth="0" Margin="6,0,0,0" VerticalAlignment="Center" ToolTip="{l:Loc Attach_Remove}" AutomationProperties.Name="{l:Loc Attach_Remove}"
+                                    Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <DockPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCommand}" Margin="8,0,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
                 <Button Content="{l:Loc Console_Send}" Style="{StaticResource PrimaryButton}" Command="{Binding SendCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="AssistantSend" />
             </StackPanel>
             <StackPanel DockPanel.Dock="Left" Margin="0,0,8,0" VerticalAlignment="Bottom" Width="190">
+                <Border Padding="8,3" CornerRadius="6" Background="{DynamicResource FailBrush}" Margin="0,0,0,6" HorizontalAlignment="Left" Visibility="{Binding IsBypass, Converter={StaticResource BoolVis}}">
+                    <TextBlock Text="{l:Loc Mode_BypassBanner}" Foreground="White" FontSize="11.5" FontWeight="SemiBold" TextWrapping="Wrap" />
+                </Border>
                 <TextBlock Text="{Binding ModeHint}" FontSize="11.5" TextWrapping="Wrap" Margin="2,0,0,6" Foreground="{DynamicResource TextMutedBrush}" />
                 <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode}" AutomationProperties.AutomationId="AssistantMode" AutomationProperties.Name="{l:Loc Mode_Label}" ToolTip="{l:Loc Mode_Label}">
                     <ComboBox.ItemTemplate>
@@ -211,11 +356,17 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Content="{l:Loc Assistant_AttachConsole}" Command="{Binding AttachConsoleCommand}" Margin="0,6,0,0" />
+                <UniformGrid Columns="2" Margin="0,6,0,0">
+                    <Button Content="{l:Loc Attach_Button}" Command="{Binding AttachFilesCommand}" Margin="0,0,3,0" ToolTip="{l:Loc Attach_Tip}" AutomationProperties.AutomationId="AssistantAttach" />
+                    <Button Content="{l:Loc Assistant_AttachConsole}" Command="{Binding AttachConsoleCommand}" Margin="3,0,0,0" />
+                </UniformGrid>
             </StackPanel>
             <TextBox x:Name="InputBox" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Assistant_InputHint}" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="160"
                      VerticalScrollBarVisibility="Auto" PreviewKeyDown="OnKey" AutomationProperties.AutomationId="AssistantInput" />
         </DockPanel>
+        </StackPanel>
         <ProgressBar Grid.Row="2" IsIndeterminate="True" VerticalAlignment="Top" Margin="0,4,0,0" Height="3" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+        <TextBlock Grid.Row="1" Text="{Binding StatusText}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,14,6"
+                   Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
     </Grid>
 </UserControl>

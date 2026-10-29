@@ -1046,4 +1046,52 @@ Ils passeront en mode hors ligne, n'écouteront que 127.0.0.1 et feront confianc
   <data name="About_Disclaimer" xml:space="preserve"><value>Produit non officiel de Minecraft. Non approuvé par Mojang ou Microsoft et non associé à eux.</value></data>
   <data name="About_Licenses" xml:space="preserve"><value>Licences open source</value></data>
   <data name="About_Repo" xml:space="preserve"><value>Code source sur GitHub</value></data>
+  <data name="Assistant_History" xml:space="preserve"><value>Historique</value></data>
+  <data name="Assistant_HistoryTitle" xml:space="preserve"><value>Discussions précédentes</value></data>
+  <data name="Assistant_HistorySearch" xml:space="preserve"><value>Rechercher…</value></data>
+  <data name="Assistant_HistoryEmpty" xml:space="preserve"><value>Aucune discussion enregistrée. Chaque conversation est enregistrée ici automatiquement.</value></data>
+  <data name="Assistant_ServerLabel" xml:space="preserve"><value>Serveur :</value></data>
+  <data name="Assistant_ServerTip" xml:space="preserve"><value>Le serveur que l'assistant lit, modifie et pilote. La page Serveurs n'est pas modifiée.</value></data>
+  <data name="Assistant_General" xml:space="preserve"><value>Aucun serveur (général)</value></data>
+  <data name="Assistant_RemovedServer" xml:space="preserve"><value>serveur supprimé</value></data>
+  <data name="Assistant_Untitled" xml:space="preserve"><value>Discussion sans titre</value></data>
+  <data name="Assistant_MessageCount" xml:space="preserve"><value>{0} messages</value></data>
+  <data name="Assistant_DeleteTitle" xml:space="preserve"><value>Supprimer la discussion</value></data>
+  <data name="Assistant_DeleteBody" xml:space="preserve"><value>Supprimer « {0} » et ses pièces jointes ? Action irréversible.</value></data>
+  <data name="Assistant_DeleteConfirm" xml:space="preserve"><value>Supprimer</value></data>
+  <data name="Assistant_ServerSwitched" xml:space="preserve"><value>Travaille maintenant sur : {0}</value></data>
+  <data name="Assistant_TodoTitle" xml:space="preserve"><value>Liste des tâches</value></data>
+  <data name="Assistant_TodoProgress" xml:space="preserve"><value>{0}/{1} faites</value></data>
+  <data name="Assistant_Working" xml:space="preserve"><value>En cours… étape {0}</value></data>
+  <data name="Assistant_Continuing" xml:space="preserve"><value>Des tâches restent ouvertes, on continue…</value></data>
+  <data name="Assistant_RoundLimit" xml:space="preserve"><value>Arrêté après {0} étapes. Écrivez « continue » pour reprendre.</value></data>
+  <data name="Assistant_TaskDone" xml:space="preserve"><value>✓ Tâche terminée</value></data>
+  <data name="Tool_FindFiles" xml:space="preserve"><value>Fichiers cherchés : {0}</value></data>
+  <data name="Tool_SearchFiles" xml:space="preserve"><value>A cherché « {0} »</value></data>
+  <data name="Attach_Button" xml:space="preserve"><value>+ Fichier</value></data>
+  <data name="Attach_Tip" xml:space="preserve"><value>Joindre captures, logs ou fichiers de config (Ctrl+O). Vous pouvez aussi coller une capture avec Ctrl+V ou déposer des fichiers ici.</value></data>
+  <data name="Attach_Title" xml:space="preserve"><value>Joindre des fichiers</value></data>
+  <data name="Attach_Filter" xml:space="preserve"><value>Images et fichiers texte</value></data>
+  <data name="Attach_Remove" xml:space="preserve"><value>Retirer la pièce jointe</value></data>
+  <data name="Attach_ScreenshotName" xml:space="preserve"><value>Capture</value></data>
+  <data name="Attach_Limit" xml:space="preserve"><value>{0} pièces jointes maximum par message.</value></data>
+  <data name="Attach_ReadFailed" xml:space="preserve"><value>Impossible de lire {0} : {1}</value></data>
+  <data name="Attach_Unsupported" xml:space="preserve"><value>{0} : seules les images (PNG, JPG, GIF, WebP, BMP) et les fichiers texte (log, yml, json, properties, txt…) sont acceptés.</value></data>
+  <data name="Attach_TooLarge" xml:space="preserve"><value>{0} dépasse 20 Mo.</value></data>
+  <data name="Attach_BadImage" xml:space="preserve"><value>{0} n'est pas une image lisible.</value></data>
+  <data name="Attach_DefaultPrompt" xml:space="preserve"><value>Regarde les fichiers joints.</value></data>
+  <data name="Attach_VisionHint" xml:space="preserve"><value>Si l'erreur concerne les images : ce modèle n'accepte peut-être pas d'images. Choisissez un modèle qui les gère (Claude, GPT-4o/5, Gemini, Grok-4) dans les paramètres.</value></data>
+  <data name="Shell_FullscreenHint" xml:space="preserve"><value>Plein écran · F11 pour quitter</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Raccourcis clavier et souris</value></data>
+  <data name="Shortcuts_Body" xml:space="preserve"><value>F11 · plein écran
+Alt+← / bouton précédent de la souris · retour
+Alt+→ / bouton suivant de la souris · avancer
+Clic molette / Ctrl+W · fermer la fenêtre, le panneau ou l'onglet serveur ouvert
+Ctrl+Tab / Ctrl+Maj+Tab · onglet serveur suivant / précédent
+Ctrl+1…9 · pages du menu latéral
+Ctrl+, · paramètres
+F1 · cette liste
+
+Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une capture · Ctrl+O joindre un fichier · Ctrl+H historique · Ctrl+N nouvelle discussion</value></data>
+  <data name="Assistant_Retrying" xml:space="preserve"><value>Le service IA est saturé, nouvel essai ({0}) dans {1} s…</value></data>
 </root>

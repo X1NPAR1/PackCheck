@@ -1046,4 +1046,52 @@
   <data name="About_Disclaimer" xml:space="preserve"><value>Не является официальным продуктом Minecraft. Не одобрено Mojang или Microsoft и не связано с ними.</value></data>
   <data name="About_Licenses" xml:space="preserve"><value>Лицензии открытого ПО</value></data>
   <data name="About_Repo" xml:space="preserve"><value>Исходный код на GitHub</value></data>
+  <data name="Assistant_History" xml:space="preserve"><value>История</value></data>
+  <data name="Assistant_HistoryTitle" xml:space="preserve"><value>Прошлые чаты</value></data>
+  <data name="Assistant_HistorySearch" xml:space="preserve"><value>Поиск по чатам…</value></data>
+  <data name="Assistant_HistoryEmpty" xml:space="preserve"><value>Сохранённых чатов пока нет. Каждый разговор сохраняется здесь автоматически.</value></data>
+  <data name="Assistant_ServerLabel" xml:space="preserve"><value>Сервер:</value></data>
+  <data name="Assistant_ServerTip" xml:space="preserve"><value>Сервер, который ассистент читает, правит и запускает. Страница серверов не меняется.</value></data>
+  <data name="Assistant_General" xml:space="preserve"><value>Без сервера (общий)</value></data>
+  <data name="Assistant_RemovedServer" xml:space="preserve"><value>удалённый сервер</value></data>
+  <data name="Assistant_Untitled" xml:space="preserve"><value>Чат без названия</value></data>
+  <data name="Assistant_MessageCount" xml:space="preserve"><value>сообщений: {0}</value></data>
+  <data name="Assistant_DeleteTitle" xml:space="preserve"><value>Удалить чат</value></data>
+  <data name="Assistant_DeleteBody" xml:space="preserve"><value>Удалить «{0}» вместе с вложениями? Это нельзя отменить.</value></data>
+  <data name="Assistant_DeleteConfirm" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Assistant_ServerSwitched" xml:space="preserve"><value>Теперь работает с: {0}</value></data>
+  <data name="Assistant_TodoTitle" xml:space="preserve"><value>Список задач</value></data>
+  <data name="Assistant_TodoProgress" xml:space="preserve"><value>выполнено {0}/{1}</value></data>
+  <data name="Assistant_Working" xml:space="preserve"><value>Работает… шаг {0}</value></data>
+  <data name="Assistant_Continuing" xml:space="preserve"><value>В списке есть незавершённые задачи, продолжаю…</value></data>
+  <data name="Assistant_RoundLimit" xml:space="preserve"><value>Остановлено после {0} шагов. Напишите «продолжай», чтобы продолжить.</value></data>
+  <data name="Assistant_TaskDone" xml:space="preserve"><value>✓ Задача выполнена</value></data>
+  <data name="Tool_FindFiles" xml:space="preserve"><value>Поиск файлов: {0}</value></data>
+  <data name="Tool_SearchFiles" xml:space="preserve"><value>Искал «{0}»</value></data>
+  <data name="Attach_Button" xml:space="preserve"><value>+ Файл</value></data>
+  <data name="Attach_Tip" xml:space="preserve"><value>Прикрепить скриншоты, логи или конфиги (Ctrl+O). Скриншот можно вставить через Ctrl+V или перетащить файлы сюда.</value></data>
+  <data name="Attach_Title" xml:space="preserve"><value>Прикрепить файлы</value></data>
+  <data name="Attach_Filter" xml:space="preserve"><value>Изображения и текстовые файлы</value></data>
+  <data name="Attach_Remove" xml:space="preserve"><value>Убрать вложение</value></data>
+  <data name="Attach_ScreenshotName" xml:space="preserve"><value>Скриншот</value></data>
+  <data name="Attach_Limit" xml:space="preserve"><value>Не больше {0} вложений на сообщение.</value></data>
+  <data name="Attach_ReadFailed" xml:space="preserve"><value>Не удалось прочитать {0}: {1}</value></data>
+  <data name="Attach_Unsupported" xml:space="preserve"><value>{0}: можно прикреплять только изображения (PNG, JPG, GIF, WebP, BMP) и текстовые файлы (log, yml, json, properties, txt…).</value></data>
+  <data name="Attach_TooLarge" xml:space="preserve"><value>{0} больше 20 МБ.</value></data>
+  <data name="Attach_BadImage" xml:space="preserve"><value>{0} — нечитаемое изображение.</value></data>
+  <data name="Attach_DefaultPrompt" xml:space="preserve"><value>Посмотри прикреплённые файлы.</value></data>
+  <data name="Attach_VisionHint" xml:space="preserve"><value>Если ошибка про изображения: эта модель может не принимать картинки. Выберите в настройках модель с поддержкой изображений (Claude, GPT-4o/5, Gemini, Grok-4).</value></data>
+  <data name="Shell_FullscreenHint" xml:space="preserve"><value>Полный экран · F11 для выхода</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Сочетания клавиш и мыши</value></data>
+  <data name="Shortcuts_Body" xml:space="preserve"><value>F11 · полный экран
+Alt+← / кнопка «назад» мыши · назад
+Alt+→ / кнопка «вперёд» мыши · вперёд
+Средний клик / Ctrl+W · закрыть открытое окно, панель или вкладку сервера
+Ctrl+Tab / Ctrl+Shift+Tab · следующая / предыдущая вкладка сервера
+Ctrl+1…9 · страницы бокового меню
+Ctrl+, · настройки
+F1 · этот список
+
+Ассистент: Enter отправить · Shift+Enter новая строка · Ctrl+V вставить скриншот · Ctrl+O прикрепить файл · Ctrl+H история · Ctrl+N новый чат</value></data>
+  <data name="Assistant_Retrying" xml:space="preserve"><value>Сервис ИИ перегружен, повтор ({0}) через {1} с…</value></data>
 </root>

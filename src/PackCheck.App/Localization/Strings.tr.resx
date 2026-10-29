@@ -1046,4 +1046,52 @@ Bunlar çevrimdışı modda çalışacak, sadece 127.0.0.1'i dinleyecek ve proxy
   <data name="About_Disclaimer" xml:space="preserve"><value>Resmi bir Minecraft ürünü değildir. Mojang veya Microsoft tarafından onaylanmamıştır ve onlarla ilişkili değildir.</value></data>
   <data name="About_Licenses" xml:space="preserve"><value>Açık kaynak lisansları</value></data>
   <data name="About_Repo" xml:space="preserve"><value>GitHub'daki kaynak kod</value></data>
+  <data name="Assistant_History" xml:space="preserve"><value>Geçmiş</value></data>
+  <data name="Assistant_HistoryTitle" xml:space="preserve"><value>Geçmiş sohbetler</value></data>
+  <data name="Assistant_HistorySearch" xml:space="preserve"><value>Sohbetlerde ara…</value></data>
+  <data name="Assistant_HistoryEmpty" xml:space="preserve"><value>Henüz kayıtlı sohbet yok. Her sohbet buraya otomatik kaydedilir.</value></data>
+  <data name="Assistant_ServerLabel" xml:space="preserve"><value>Sunucu:</value></data>
+  <data name="Assistant_ServerTip" xml:space="preserve"><value>Asistanın okuyup düzenlediği ve yönettiği sunucu. Değiştirmek Sunucular sayfasını etkilemez.</value></data>
+  <data name="Assistant_General" xml:space="preserve"><value>Sunucu yok (genel)</value></data>
+  <data name="Assistant_RemovedServer" xml:space="preserve"><value>silinmiş sunucu</value></data>
+  <data name="Assistant_Untitled" xml:space="preserve"><value>Başlıksız sohbet</value></data>
+  <data name="Assistant_MessageCount" xml:space="preserve"><value>{0} mesaj</value></data>
+  <data name="Assistant_DeleteTitle" xml:space="preserve"><value>Sohbeti sil</value></data>
+  <data name="Assistant_DeleteBody" xml:space="preserve"><value>"{0}" sohbeti ve ekleri silinsin mi? Bu geri alınamaz.</value></data>
+  <data name="Assistant_DeleteConfirm" xml:space="preserve"><value>Sil</value></data>
+  <data name="Assistant_ServerSwitched" xml:space="preserve"><value>Artık bu sunucuda çalışıyor: {0}</value></data>
+  <data name="Assistant_TodoTitle" xml:space="preserve"><value>Görev listesi</value></data>
+  <data name="Assistant_TodoProgress" xml:space="preserve"><value>{0}/{1} tamamlandı</value></data>
+  <data name="Assistant_Working" xml:space="preserve"><value>Çalışıyor… adım {0}</value></data>
+  <data name="Assistant_Continuing" xml:space="preserve"><value>Görev listesinde açık işler var, devam ediyor…</value></data>
+  <data name="Assistant_RoundLimit" xml:space="preserve"><value>{0} adımdan sonra durdu. Devam etmesi için "devam et" yaz.</value></data>
+  <data name="Assistant_TaskDone" xml:space="preserve"><value>✓ Görev tamamlandı</value></data>
+  <data name="Tool_FindFiles" xml:space="preserve"><value>Dosya aradı: {0}</value></data>
+  <data name="Tool_SearchFiles" xml:space="preserve"><value>"{0}" metnini aradı</value></data>
+  <data name="Attach_Button" xml:space="preserve"><value>+ Dosya</value></data>
+  <data name="Attach_Tip" xml:space="preserve"><value>Ekran görüntüsü, log veya ayar dosyası ekle (Ctrl+O). Ekran görüntüsünü Ctrl+V ile yapıştırabilir ya da dosyaları buraya sürükleyebilirsin.</value></data>
+  <data name="Attach_Title" xml:space="preserve"><value>Dosya ekle</value></data>
+  <data name="Attach_Filter" xml:space="preserve"><value>Görseller ve metin dosyaları</value></data>
+  <data name="Attach_Remove" xml:space="preserve"><value>Eki kaldır</value></data>
+  <data name="Attach_ScreenshotName" xml:space="preserve"><value>Ekran görüntüsü</value></data>
+  <data name="Attach_Limit" xml:space="preserve"><value>Bir mesaja en fazla {0} ek eklenebilir.</value></data>
+  <data name="Attach_ReadFailed" xml:space="preserve"><value>{0} okunamadı: {1}</value></data>
+  <data name="Attach_Unsupported" xml:space="preserve"><value>{0}: yalnızca görseller (PNG, JPG, GIF, WebP, BMP) ve metin dosyaları (log, yml, json, properties, txt…) eklenebilir.</value></data>
+  <data name="Attach_TooLarge" xml:space="preserve"><value>{0} 20 MB'tan büyük.</value></data>
+  <data name="Attach_BadImage" xml:space="preserve"><value>{0} okunabilir bir görsel değil.</value></data>
+  <data name="Attach_DefaultPrompt" xml:space="preserve"><value>Ekteki dosyalara bak.</value></data>
+  <data name="Attach_VisionHint" xml:space="preserve"><value>Hata görsellerle ilgiliyse: bu model resim kabul etmiyor olabilir. Ayarlar'dan resim görebilen bir model seç (Claude, GPT-4o/5, Gemini, Grok-4).</value></data>
+  <data name="Shell_FullscreenHint" xml:space="preserve"><value>Tam ekran · çıkmak için F11</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Klavye ve fare kısayolları</value></data>
+  <data name="Shortcuts_Body" xml:space="preserve"><value>F11 · tam ekran
+Alt+← / farenin geri tuşu · geri git
+Alt+→ / farenin ileri tuşu · ileri git
+Orta tık / Ctrl+W · açık pencereyi, paneli veya sunucu sekmesini kapat
+Ctrl+Tab / Ctrl+Shift+Tab · sonraki / önceki sunucu sekmesi
+Ctrl+1…9 · yan menüdeki sayfalar
+Ctrl+, · ayarlar
+F1 · bu liste
+
+Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü yapıştır · Ctrl+O dosya ekle · Ctrl+H geçmiş · Ctrl+N yeni sohbet</value></data>
+  <data name="Assistant_Retrying" xml:space="preserve"><value>Yapay zeka servisi yoğun, {1} sn sonra yeniden deniyor ({0})…</value></data>
 </root>

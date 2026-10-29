@@ -1046,4 +1046,52 @@ Sie laufen offline, lauschen nur auf 127.0.0.1 und vertrauen dem Weiterleitungss
   <data name="About_Disclaimer" xml:space="preserve"><value>Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.</value></data>
   <data name="About_Licenses" xml:space="preserve"><value>Open-Source-Lizenzen</value></data>
   <data name="About_Repo" xml:space="preserve"><value>Quellcode auf GitHub</value></data>
+  <data name="Assistant_History" xml:space="preserve"><value>Verlauf</value></data>
+  <data name="Assistant_HistoryTitle" xml:space="preserve"><value>Frühere Chats</value></data>
+  <data name="Assistant_HistorySearch" xml:space="preserve"><value>Chats durchsuchen…</value></data>
+  <data name="Assistant_HistoryEmpty" xml:space="preserve"><value>Noch keine gespeicherten Chats. Jede Unterhaltung wird hier automatisch gespeichert.</value></data>
+  <data name="Assistant_ServerLabel" xml:space="preserve"><value>Server:</value></data>
+  <data name="Assistant_ServerTip" xml:space="preserve"><value>Der Server, den der Assistent liest, bearbeitet und steuert. Die Serverseite bleibt unverändert.</value></data>
+  <data name="Assistant_General" xml:space="preserve"><value>Kein Server (allgemein)</value></data>
+  <data name="Assistant_RemovedServer" xml:space="preserve"><value>entfernter Server</value></data>
+  <data name="Assistant_Untitled" xml:space="preserve"><value>Chat ohne Titel</value></data>
+  <data name="Assistant_MessageCount" xml:space="preserve"><value>{0} Nachrichten</value></data>
+  <data name="Assistant_DeleteTitle" xml:space="preserve"><value>Chat löschen</value></data>
+  <data name="Assistant_DeleteBody" xml:space="preserve"><value>"{0}" samt Anhängen löschen? Das lässt sich nicht rückgängig machen.</value></data>
+  <data name="Assistant_DeleteConfirm" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Assistant_ServerSwitched" xml:space="preserve"><value>Arbeitet jetzt an: {0}</value></data>
+  <data name="Assistant_TodoTitle" xml:space="preserve"><value>Aufgabenliste</value></data>
+  <data name="Assistant_TodoProgress" xml:space="preserve"><value>{0}/{1} erledigt</value></data>
+  <data name="Assistant_Working" xml:space="preserve"><value>Arbeitet… Schritt {0}</value></data>
+  <data name="Assistant_Continuing" xml:space="preserve"><value>Die Aufgabenliste hat noch offene Punkte, es geht weiter…</value></data>
+  <data name="Assistant_RoundLimit" xml:space="preserve"><value>Nach {0} Schritten angehalten. Schreibe "weiter", um fortzufahren.</value></data>
+  <data name="Assistant_TaskDone" xml:space="preserve"><value>✓ Aufgabe erledigt</value></data>
+  <data name="Tool_FindFiles" xml:space="preserve"><value>Dateien gesucht: {0}</value></data>
+  <data name="Tool_SearchFiles" xml:space="preserve"><value>Nach "{0}" gesucht</value></data>
+  <data name="Attach_Button" xml:space="preserve"><value>+ Datei</value></data>
+  <data name="Attach_Tip" xml:space="preserve"><value>Screenshots, Logs oder Konfigurationsdateien anhängen (Strg+O). Screenshots lassen sich auch mit Strg+V einfügen oder Dateien hierher ziehen.</value></data>
+  <data name="Attach_Title" xml:space="preserve"><value>Dateien anhängen</value></data>
+  <data name="Attach_Filter" xml:space="preserve"><value>Bilder und Textdateien</value></data>
+  <data name="Attach_Remove" xml:space="preserve"><value>Anhang entfernen</value></data>
+  <data name="Attach_ScreenshotName" xml:space="preserve"><value>Bildschirmfoto</value></data>
+  <data name="Attach_Limit" xml:space="preserve"><value>Höchstens {0} Anhänge pro Nachricht.</value></data>
+  <data name="Attach_ReadFailed" xml:space="preserve"><value>{0} konnte nicht gelesen werden: {1}</value></data>
+  <data name="Attach_Unsupported" xml:space="preserve"><value>{0}: Nur Bilder (PNG, JPG, GIF, WebP, BMP) und Textdateien (log, yml, json, properties, txt…) können angehängt werden.</value></data>
+  <data name="Attach_TooLarge" xml:space="preserve"><value>{0} ist größer als 20 MB.</value></data>
+  <data name="Attach_BadImage" xml:space="preserve"><value>{0} ist kein lesbares Bild.</value></data>
+  <data name="Attach_DefaultPrompt" xml:space="preserve"><value>Sieh dir die angehängten Dateien an.</value></data>
+  <data name="Attach_VisionHint" xml:space="preserve"><value>Falls es um Bilder geht: Dieses Modell nimmt eventuell keine Bilder an. Wähle in den Einstellungen ein Modell mit Bildverständnis (Claude, GPT-4o/5, Gemini, Grok-4).</value></data>
+  <data name="Shell_FullscreenHint" xml:space="preserve"><value>Vollbild · F11 zum Beenden</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Tastatur- und Maus-Kürzel</value></data>
+  <data name="Shortcuts_Body" xml:space="preserve"><value>F11 · Vollbild
+Alt+← / Maus-Zurück-Taste · zurück
+Alt+→ / Maus-Vor-Taste · vorwärts
+Mittelklick / Strg+W · offenen Dialog, Bereich oder Server-Tab schließen
+Strg+Tab / Strg+Umschalt+Tab · nächster / vorheriger Server-Tab
+Strg+1…9 · Seiten im Seitenmenü
+Strg+, · Einstellungen
+F1 · diese Liste
+
+Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfügen · Strg+O Datei anhängen · Strg+H Verlauf · Strg+N neuer Chat</value></data>
+  <data name="Assistant_Retrying" xml:space="preserve"><value>Der KI-Dienst ist ausgelastet, neuer Versuch ({0}) in {1} s…</value></data>
 </root>

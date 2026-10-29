@@ -1046,4 +1046,52 @@ They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's fo
   <data name="About_Disclaimer" xml:space="preserve"><value>Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</value></data>
   <data name="About_Licenses" xml:space="preserve"><value>Open-source licenses</value></data>
   <data name="About_Repo" xml:space="preserve"><value>Source code on GitHub</value></data>
+  <data name="Assistant_History" xml:space="preserve"><value>History</value></data>
+  <data name="Assistant_HistoryTitle" xml:space="preserve"><value>Earlier chats</value></data>
+  <data name="Assistant_HistorySearch" xml:space="preserve"><value>Search chats…</value></data>
+  <data name="Assistant_HistoryEmpty" xml:space="preserve"><value>No saved chats yet. Every conversation is saved here automatically.</value></data>
+  <data name="Assistant_ServerLabel" xml:space="preserve"><value>Server:</value></data>
+  <data name="Assistant_ServerTip" xml:space="preserve"><value>The server the assistant reads, edits and controls. Changing it does not change the Servers page.</value></data>
+  <data name="Assistant_General" xml:space="preserve"><value>No server (general)</value></data>
+  <data name="Assistant_RemovedServer" xml:space="preserve"><value>removed server</value></data>
+  <data name="Assistant_Untitled" xml:space="preserve"><value>Untitled chat</value></data>
+  <data name="Assistant_MessageCount" xml:space="preserve"><value>{0} messages</value></data>
+  <data name="Assistant_DeleteTitle" xml:space="preserve"><value>Delete chat</value></data>
+  <data name="Assistant_DeleteBody" xml:space="preserve"><value>Delete "{0}" and its attachments? This cannot be undone.</value></data>
+  <data name="Assistant_DeleteConfirm" xml:space="preserve"><value>Delete</value></data>
+  <data name="Assistant_ServerSwitched" xml:space="preserve"><value>Now working on: {0}</value></data>
+  <data name="Assistant_TodoTitle" xml:space="preserve"><value>Task list</value></data>
+  <data name="Assistant_TodoProgress" xml:space="preserve"><value>{0}/{1} done</value></data>
+  <data name="Assistant_Working" xml:space="preserve"><value>Working… step {0}</value></data>
+  <data name="Assistant_Continuing" xml:space="preserve"><value>The task list still has open items, continuing…</value></data>
+  <data name="Assistant_RoundLimit" xml:space="preserve"><value>Stopped after {0} steps. Send "continue" to carry on.</value></data>
+  <data name="Assistant_TaskDone" xml:space="preserve"><value>✓ Task complete</value></data>
+  <data name="Tool_FindFiles" xml:space="preserve"><value>Found files: {0}</value></data>
+  <data name="Tool_SearchFiles" xml:space="preserve"><value>Searched for "{0}"</value></data>
+  <data name="Attach_Button" xml:space="preserve"><value>+ File</value></data>
+  <data name="Attach_Tip" xml:space="preserve"><value>Attach screenshots, logs or config files (Ctrl+O). You can also paste a screenshot with Ctrl+V or drop files here.</value></data>
+  <data name="Attach_Title" xml:space="preserve"><value>Attach files</value></data>
+  <data name="Attach_Filter" xml:space="preserve"><value>Images and text files</value></data>
+  <data name="Attach_Remove" xml:space="preserve"><value>Remove attachment</value></data>
+  <data name="Attach_ScreenshotName" xml:space="preserve"><value>Screenshot</value></data>
+  <data name="Attach_Limit" xml:space="preserve"><value>Up to {0} attachments per message.</value></data>
+  <data name="Attach_ReadFailed" xml:space="preserve"><value>Could not read {0}: {1}</value></data>
+  <data name="Attach_Unsupported" xml:space="preserve"><value>{0}: only images (PNG, JPG, GIF, WebP, BMP) and text files (log, yml, json, properties, txt…) can be attached.</value></data>
+  <data name="Attach_TooLarge" xml:space="preserve"><value>{0} is larger than 20 MB.</value></data>
+  <data name="Attach_BadImage" xml:space="preserve"><value>{0} is not a readable image.</value></data>
+  <data name="Attach_DefaultPrompt" xml:space="preserve"><value>Look at the attached files.</value></data>
+  <data name="Attach_VisionHint" xml:space="preserve"><value>If the error is about images: this model may not accept pictures. Pick a model that can see images (Claude, GPT-4o/5, Gemini, Grok-4) in Settings.</value></data>
+  <data name="Shell_FullscreenHint" xml:space="preserve"><value>Full screen · press F11 to exit</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Keyboard and mouse shortcuts</value></data>
+  <data name="Shortcuts_Body" xml:space="preserve"><value>F11 · full screen
+Alt+← / mouse back button · go back
+Alt+→ / mouse forward button · go forward
+Middle click / Ctrl+W · close the open dialog, panel or server tab
+Ctrl+Tab / Ctrl+Shift+Tab · next / previous server tab
+Ctrl+1…9 · pages in the side menu
+Ctrl+, · settings
+F1 · this list
+
+Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl+O attach file · Ctrl+H history · Ctrl+N new chat</value></data>
+  <data name="Assistant_Retrying" xml:space="preserve"><value>The AI service is busy, trying again ({0}) in {1} s…</value></data>
 </root>

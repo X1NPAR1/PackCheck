@@ -34,6 +34,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
         };
         UpdateNavRules();
+        InitNavigation();
     }
 
     [ObservableProperty]

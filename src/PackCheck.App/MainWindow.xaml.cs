@@ -23,7 +23,153 @@ public partial class MainWindow : Window
                 vm.PropertyChanged += OnVmChanged;
             }
         };
-        StateChanged += (_, _) => RootGrid.Margin = WindowState == WindowState.Maximized ? new Thickness(7) : new Thickness(0);
+        StateChanged += (_, _) => RootGrid.Margin = WindowState == WindowState.Maximized && !_fullScreen ? new Thickness(7) : new Thickness(0);
+        PreviewMouseDown += OnMouseButtons;
+        PreviewKeyDown += OnShortcut;
+    }
+
+    private MainViewModel? Vm => DataContext as MainViewModel;
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    private struct MonitorInfo
+    {
+        public int Size;
+        public int L, T, R, B;
+        public int WL, WT, WR, WB;
+        public int Flags;
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern IntPtr MonitorFromWindow(IntPtr hwnd, int flags);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfo info);
+
+    /// <summary>The full area of the monitor the window is on, in WPF units (DPI-aware).</summary>
+    private Rect MonitorBounds()
+    {
+        var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+        var info = new MonitorInfo { Size = System.Runtime.InteropServices.Marshal.SizeOf<MonitorInfo>() };
+        if (!GetMonitorInfo(MonitorFromWindow(hwnd, 2), ref info))
+        {
+            return new Rect(0, 0, SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+        }
+
+        var m = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
+        var tl = m.Transform(new Point(info.L, info.T));
+        var br = m.Transform(new Point(info.R, info.B));
+        return new Rect(tl, br);
+    }
+
+    /// <summary>Mouse buttons 4/5 go back and forward, the middle button closes the open dialog, panel or server tab.</summary>
+    private void OnMouseButtons(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (Vm is not { } vm)
+        {
+            return;
+        }
+
+        switch (e.ChangedButton)
+        {
+            case System.Windows.Input.MouseButton.XButton1:
+                e.Handled = vm.GoBack();
+                break;
+            case System.Windows.Input.MouseButton.XButton2:
+                e.Handled = vm.GoForward();
+                break;
+            case System.Windows.Input.MouseButton.Middle when e.OriginalSource is not System.Windows.Controls.Primitives.TextBoxBase:
+                e.Handled = vm.CloseTopmost();
+                break;
+        }
+    }
+
+    private void OnShortcut(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (Vm is not { } vm)
+        {
+            return;
+        }
+
+        var mods = System.Windows.Input.Keyboard.Modifiers;
+        var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
+        const System.Windows.Input.ModifierKeys Ctrl = System.Windows.Input.ModifierKeys.Control;
+        const System.Windows.Input.ModifierKeys Alt = System.Windows.Input.ModifierKeys.Alt;
+        switch (key)
+        {
+            case System.Windows.Input.Key.F11 when mods == System.Windows.Input.ModifierKeys.None:
+                ToggleFullScreen();
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.F1 when mods == System.Windows.Input.ModifierKeys.None:
+                vm.ShowShortcuts();
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.Left when mods == Alt:
+            case System.Windows.Input.Key.BrowserBack:
+                e.Handled = vm.GoBack();
+                break;
+            case System.Windows.Input.Key.Right when mods == Alt:
+            case System.Windows.Input.Key.BrowserForward:
+                e.Handled = vm.GoForward();
+                break;
+            case System.Windows.Input.Key.W when mods == Ctrl:
+                e.Handled = vm.CloseTopmost();
+                break;
+            case System.Windows.Input.Key.Tab when (mods & Ctrl) == Ctrl:
+                e.Handled = vm.CycleServerTab((mods & System.Windows.Input.ModifierKeys.Shift) != 0 ? -1 : 1);
+                break;
+            case System.Windows.Input.Key.OemComma when mods == Ctrl:
+                vm.Navigate(vm.Settings);
+                e.Handled = true;
+                break;
+            case >= System.Windows.Input.Key.D1 and <= System.Windows.Input.Key.D9 when mods == Ctrl:
+                vm.GoToMenu(key - System.Windows.Input.Key.D1);
+                e.Handled = true;
+                break;
+        }
+    }
+
+    private bool _fullScreen;
+    private WindowState _stateBeforeFullScreen;
+    private Rect _boundsBeforeFullScreen;
+
+    /// <summary>F11: a borderless window over the whole monitor the window is on (taskbar included); F11 again returns.</summary>
+    public void ToggleFullScreen()
+    {
+        _fullScreen = !_fullScreen;
+        if (_fullScreen)
+        {
+            _stateBeforeFullScreen = WindowState;
+            _boundsBeforeFullScreen = WindowState == WindowState.Normal ? new Rect(Left, Top, Width, Height) : RestoreBounds;
+            WindowState = WindowState.Normal;
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            var screen = MonitorBounds();
+            Left = screen.Left;
+            Top = screen.Top;
+            Width = screen.Width;
+            Height = screen.Height;
+            Topmost = true;
+            Topmost = false;
+            Vm?.Toast(Loc.T("Shell_FullscreenHint"));
+        }
+        else
+        {
+            WindowStyle = WindowStyle.SingleBorderWindow;
+            ResizeMode = ResizeMode.CanResize;
+            Left = _boundsBeforeFullScreen.Left;
+            Top = _boundsBeforeFullScreen.Top;
+            Width = _boundsBeforeFullScreen.Width;
+            Height = _boundsBeforeFullScreen.Height;
+            WindowState = _stateBeforeFullScreen;
+        }
+
+        RootGrid.Margin = WindowState == WindowState.Maximized && !_fullScreen ? new Thickness(7) : new Thickness(0);
+        if (Vm is { } vm)
+        {
+            vm.IsFullScreen = _fullScreen;
+        }
     }
 
     public void FadeIn() => BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, Motion.D(260)));

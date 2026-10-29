@@ -18,6 +18,14 @@ public sealed record PendingAction(string Title, string Preview, Func<Task<strin
 /// <see cref="PendingAction"/> that needs the user's approval. All paths are confined to the selected server folder;
 /// there is no shell access.
 /// </summary>
+/// <summary>One line of the assistant's task list.</summary>
+public sealed record TodoItem(string Text, string Status)
+{
+    public bool IsDone => Status == "done";
+
+    public bool IsActive => Status == "in_progress";
+}
+
 public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemViewModel?> current)
 {
     private const int MaxRead = 60_000;
@@ -27,9 +35,20 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
         Spec("list_servers", "List all servers managed by PackCheck with platform, version, port and state.", []),
         Spec("read_console", "Read the last lines of the selected server's console.", [("lines", "integer", "How many lines (max 400)")]),
         Spec("list_files", "List files in a folder of the selected server (relative path, '' for the root).", [("path", "string", "Folder relative to the server root")]),
-        Spec("read_file", "Read a text file of the selected server (relative path).", [("path", "string", "File relative to the server root")], ["path"]),
+        Spec("find_files", "Find files of the selected server recursively by glob pattern, e.g. 'plugins/**/*.yml', '**/messages*.yml', 'plugins/*/lang/*'. Use it to find every file of a kind before working through them.",
+            [("pattern", "string", "Glob pattern relative to the server root; ** matches any folders, * any characters in a name")], ["pattern"]),
+        Spec("search_files", "Search text files of the selected server for a text (case-insensitive). Returns file:line: text.",
+            [("text", "string", "Text to look for"), ("path", "string", "Folder to search in ('' for the whole server)")], ["text"]),
+        Spec("read_file", "Read a text file of the selected server (relative path). Large files are returned in parts: pass start_line to continue where the previous part ended.",
+            [("path", "string", "File relative to the server root"), ("start_line", "integer", "First line to return (1-based, default 1)")], ["path"]),
         Spec("write_file", "Create or replace a text file in the selected server. Requires user approval; a backup is kept. Use it to fix configs or to write translated message files (keep keys, placeholders like %player% or {0}, and & or § color codes unchanged).",
             [("path", "string", "File relative to the server root"), ("content", "string", "Full new content")], ["path", "content"]),
+        Spec("edit_file", "Replace exact text in a file of the selected server (old_text must appear exactly once). Prefer it over write_file for changes in large files, and for translating big files part by part. A backup is kept.",
+            [("path", "string", "File relative to the server root"), ("old_text", "string", "Exact text to replace (unique in the file)"), ("new_text", "string", "Replacement text")], ["path", "old_text", "new_text"]),
+        Spec("update_todo", "Show and update your task list for multi-step work (for example one item per plugin to translate). Send the full list each time with every item's status. Keep it current as you work.",
+            [("items", "array", "List of {text, status} where status is pending, in_progress or done")], ["items"]),
+        Spec("task_complete", "Call when the whole task is finished and checked. Give a short summary of what was done (and anything left that needs the user). Do not call it while todo items are still open.",
+            [("summary", "string", "What was done")], ["summary"]),
         Spec("list_addons", "List installed plugins and mods of the selected server.", []),
         Spec("run_validation", "Run PackCheck's static validation on the selected server and return the findings.", []),
         Spec("send_command", "Send a console command to the selected (running) server. Requires approval.", [("command", "string", "Command without the leading slash")], ["command"]),
@@ -107,9 +126,55 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
                         return ("This is not a text file.", null);
                     }
 
-                    var text = await File.ReadAllTextAsync(file).ConfigureAwait(true);
-                    return (text.Length > MaxRead ? text[..MaxRead] + "\n[truncated]" : text, null);
+                    var start = Math.Max(1, int.TryParse(S(a, "start_line"), out var sl) ? sl : 1);
+                    var lines = PropertiesText.Decode(await File.ReadAllBytesAsync(file).ConfigureAwait(true)).Replace("\r\n", "\n").Split('\n');
+                    return (ReadPart(lines, start), null);
                 }
+
+            case "find_files":
+                return (FindFiles(S(a, "pattern")), null);
+
+            case "search_files":
+                return (SearchFiles(S(a, "text"), S(a, "path")), null);
+
+            case "edit_file":
+                {
+                    var path = S(a, "path");
+                    var full = Confine(path);
+                    var oldText = S(a, "old_text");
+                    var newText = S(a, "new_text");
+                    if (!File.Exists(full))
+                    {
+                        return ($"{path} does not exist. Use write_file to create it.", null);
+                    }
+
+                    var current = PropertiesText.Decode(await File.ReadAllBytesAsync(full).ConfigureAwait(true));
+                    var (found, normalized) = Locate(current, oldText);
+                    if (found != 1)
+                    {
+                        return (found == 0 ? "old_text was not found in the file. Read the file again and copy the text exactly." : $"old_text appears {found} times; include more surrounding lines so it is unique.", null);
+                    }
+
+                    var updated = ReplaceOnce(current, normalized, newText.Replace("\r\n", "\n").Replace("\n", current.Contains("\r\n", StringComparison.Ordinal) ? "\r\n" : "\n"));
+                    return (null, new PendingAction($"edit {path}", Diff(current, updated), async () =>
+                    {
+                        Backup(full);
+                        await File.WriteAllTextAsync(full, updated, new UTF8Encoding(false)).ConfigureAwait(true);
+                        return $"Edited {path}.";
+                    }));
+                }
+
+            case "update_todo":
+                {
+                    var items = (a["items"] as JsonArray ?? []).OfType<JsonObject>()
+                        .Select(o => new TodoItem(o["text"]?.ToString() ?? string.Empty, o["status"]?.ToString() ?? "pending")).Where(t => t.Text.Length > 0).ToList();
+                    TodoChanged?.Invoke(items);
+                    var open = items.Count(t => t.Status != "done");
+                    return ($"Task list updated: {items.Count - open} done, {open} open.", null);
+                }
+
+            case "task_complete":
+                return ("Task marked complete.", null);
 
             case "list_addons":
                 Server.RefreshPlugins();
@@ -142,12 +207,7 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
                     var old = File.Exists(full) ? await File.ReadAllTextAsync(full).ConfigureAwait(true) : string.Empty;
                     return (null, new PendingAction($"write {path}", Diff(old, content), async () =>
                     {
-                        if (File.Exists(full))
-                        {
-                            var backup = Path.Combine(Server.Definition.Directory, ".packcheck", "edits", DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
-                            Directory.CreateDirectory(backup);
-                            File.Copy(full, Path.Combine(backup, $"{DateTime.Now:HHmmss}-{Path.GetFileName(full)}"), overwrite: true);
-                        }
+                        Backup(full);
 
                         Directory.CreateDirectory(Path.GetDirectoryName(full)!);
                         await File.WriteAllTextAsync(full, content, new UTF8Encoding(false)).ConfigureAwait(true);
@@ -186,6 +246,198 @@ public sealed class AssistantTools(ServersViewModel servers, Func<ServerItemView
         }
 
         return ($"Unknown tool {call.Name}.", null);
+    }
+
+    /// <summary>Raised when the model sends its task list.</summary>
+    public event Action<IReadOnlyList<TodoItem>>? TodoChanged;
+
+    private const int ReadLines = 800;
+
+    /// <summary>Up to <see cref="ReadLines"/> lines (and <see cref="MaxRead"/> characters) from <paramref name="start"/>, with a note how to continue.</summary>
+    public static string ReadPart(string[] lines, int start)
+    {
+        if (start > lines.Length)
+        {
+            return $"The file has only {lines.Length} lines.";
+        }
+
+        var sb = new StringBuilder();
+        var i = start - 1;
+        for (; i < lines.Length && i - (start - 1) < ReadLines && sb.Length + lines[i].Length < MaxRead; i++)
+        {
+            sb.Append(lines[i]).Append('\n');
+        }
+
+        if (i < lines.Length)
+        {
+            sb.Append(CultureInfo.InvariantCulture, $"[lines {start}-{i} of {lines.Length}; call read_file with start_line {i + 1} for the rest]");
+        }
+
+        return sb.ToString();
+    }
+
+    private static readonly string[] SkipDirs = ["libraries", "versions", "cache", ".packcheck", ".packcheck-backups", "logs", "crash-reports", "world", "world_nether", "world_the_end", ".fabric", "bundler"];
+
+    private IEnumerable<string> WalkFiles(string dir)
+    {
+        var root = Path.GetFullPath(Server.Definition.Directory);
+        var stack = new Stack<string>([dir]);
+        while (stack.Count > 0)
+        {
+            var d = stack.Pop();
+            IEnumerable<string> files;
+            IEnumerable<string> subs;
+            try
+            {
+                files = Directory.EnumerateFiles(d).ToList();
+                subs = Directory.EnumerateDirectories(d).ToList();
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                continue;
+            }
+
+            foreach (var f in files)
+            {
+                yield return f;
+            }
+
+            foreach (var s in subs)
+            {
+                var rel = Path.GetRelativePath(root, s);
+                if (!SkipDirs.Contains(rel, StringComparer.OrdinalIgnoreCase) && !Directory.Exists(Path.Combine(s, "region")))
+                {
+                    stack.Push(s);
+                }
+            }
+        }
+    }
+
+    /// <summary>Glob to regex: ** any folders, * any characters within a name, ? one character.</summary>
+    public static System.Text.RegularExpressions.Regex GlobRegex(string pattern)
+    {
+        var p = pattern.Replace('\\', '/').TrimStart('/');
+        var sb = new StringBuilder("^");
+        for (var i = 0; i < p.Length; i++)
+        {
+            if (p[i] == '*' && i + 1 < p.Length && p[i + 1] == '*')
+            {
+                var slash = i + 2 < p.Length && p[i + 2] == '/';
+                sb.Append(slash ? "(?:.*/)?" : ".*");
+                i += slash ? 2 : 1;
+            }
+            else
+            {
+                sb.Append(p[i] switch
+                {
+                    '*' => "[^/]*",
+                    '?' => "[^/]",
+                    _ => System.Text.RegularExpressions.Regex.Escape(p[i].ToString()),
+                });
+            }
+        }
+
+        return new System.Text.RegularExpressions.Regex(sb.Append('$').ToString(), System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+    }
+
+    private string FindFiles(string pattern)
+    {
+        var root = Path.GetFullPath(Server.Definition.Directory);
+        var rx = GlobRegex(pattern.Length == 0 ? "**/*" : pattern);
+        var hits = WalkFiles(root).Select(f => Path.GetRelativePath(root, f).Replace('\\', '/')).Where(r => rx.IsMatch(r)).Order(StringComparer.OrdinalIgnoreCase).ToList();
+        if (hits.Count == 0)
+        {
+            return "No files match.";
+        }
+
+        var shown = hits.Take(500).Select(h => $"{h} ({new FileInfo(Path.Combine(root, h)).Length} bytes)");
+        return string.Join("\n", shown) + (hits.Count > 500 ? $"\n… {hits.Count - 500} more; use a narrower pattern." : $"\n({hits.Count} files)");
+    }
+
+    private string SearchFiles(string text, string path)
+    {
+        if (text.Length == 0)
+        {
+            return "Give a text to search for.";
+        }
+
+        var root = Path.GetFullPath(Server.Definition.Directory);
+        var sb = new StringBuilder();
+        var count = 0;
+        foreach (var f in WalkFiles(Confine(path)).Where(FilesViewModel.IsText))
+        {
+            try
+            {
+                if (new FileInfo(f).Length > 4_000_000)
+                {
+                    continue;
+                }
+
+                var lines = File.ReadAllLines(f);
+                for (var i = 0; i < lines.Length && count < 300; i++)
+                {
+                    if (lines[i].Contains(text, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var line = lines[i].Trim();
+                        sb.Append(CultureInfo.InvariantCulture, $"{Path.GetRelativePath(root, f).Replace('\\', '/')}:{i + 1}: {(line.Length > 200 ? line[..200] + "…" : line)}\n");
+                        count++;
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+            }
+        }
+
+        return count == 0 ? "No matches." : sb.ToString() + (count >= 300 ? "[first 300 matches]" : string.Empty);
+    }
+
+    /// <summary>Counts matches of <paramref name="oldText"/>, trying the file's own line endings too.</summary>
+    public static (int Count, string Text) Locate(string content, string oldText)
+    {
+        if (oldText.Length == 0)
+        {
+            return (0, oldText);
+        }
+
+        var variants = new[] { oldText, oldText.Replace("\r\n", "\n").Replace("\n", "\r\n"), oldText.Replace("\r\n", "\n") }.Distinct();
+        foreach (var v in variants)
+        {
+            var n = Count(content, v);
+            if (n > 0)
+            {
+                return (n, v);
+            }
+        }
+
+        return (0, oldText);
+    }
+
+    private static int Count(string s, string part)
+    {
+        var n = 0;
+        for (var i = s.IndexOf(part, StringComparison.Ordinal); i >= 0; i = s.IndexOf(part, i + part.Length, StringComparison.Ordinal))
+        {
+            n++;
+        }
+
+        return n;
+    }
+
+    private static string ReplaceOnce(string s, string oldText, string newText)
+    {
+        var i = s.IndexOf(oldText, StringComparison.Ordinal);
+        return s[..i] + newText + s[(i + oldText.Length)..];
+    }
+
+    private void Backup(string full)
+    {
+        if (File.Exists(full))
+        {
+            var backup = Path.Combine(Server.Definition.Directory, ".packcheck", "edits", DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
+            Directory.CreateDirectory(backup);
+            File.Copy(full, Path.Combine(backup, $"{DateTime.Now:HHmmss}-{Path.GetFileName(full)}"), overwrite: true);
+        }
     }
 
     private PendingAction CreateServers(JsonArray list)
