@@ -201,6 +201,11 @@ public partial class App : Application
         }
 
         // Opens the tray menu once without a click (screenshots, UI checks).
+        if (e.Args.Contains("--tray-open", StringComparer.OrdinalIgnoreCase))
+        {
+            _ = Task.Delay(4000).ContinueWith(_ => Dispatcher.Invoke(() => Tray?.ShowMenu()), TaskScheduler.Default);
+        }
+
         if (Array.IndexOf(e.Args, "--tray-preview") is var at and >= 0 && at + 1 < e.Args.Length)
         {
             var target = e.Args[at + 1];

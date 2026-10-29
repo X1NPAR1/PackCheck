@@ -83,9 +83,29 @@ public sealed class TrayIcon : IDisposable
         encoder.Save(file);
     }
 
+    /// <summary>
+    /// Closes the menu once. Closing deactivates the window, which would ask to close it again while it is
+    /// already closing ("cannot set Visibility while a window is closing").
+    /// </summary>
+    private void CloseMenu()
+    {
+        if (_menu is { } m)
+        {
+            _menu = null;
+            m.Close();
+        }
+    }
+
+    /// <summary>Runs a menu action after the menu has closed, so showing the main window cannot collide with it.</summary>
+    private void Run(Action action)
+    {
+        CloseMenu();
+        Application.Current.Dispatcher.BeginInvoke(action, System.Windows.Threading.DispatcherPriority.Background);
+    }
+
     public void ShowMenu()
     {
-        _menu?.Close();
+        CloseMenu();
         var content = BuildMenu();
         var window = new Window
         {
@@ -100,19 +120,12 @@ public sealed class TrayIcon : IDisposable
             Left = -10000,
             Top = -10000,
         };
-        window.Deactivated += (_, _) => window.Close();
+        window.Deactivated += (_, _) => CloseMenu();
         window.PreviewKeyDown += (_, e) =>
         {
             if (e.Key == Key.Escape)
             {
-                window.Close();
-            }
-        };
-        window.Closed += (_, _) =>
-        {
-            if (_menu == window)
-            {
-                _menu = null;
+                CloseMenu();
             }
         };
         _menu = window;
@@ -215,7 +228,7 @@ public sealed class TrayIcon : IDisposable
             Command = s.IsRunning ? s.StopCommand : s.StartCommand,
         };
         action.SetResourceReference(FrameworkElement.StyleProperty, s.IsRunning ? "BaseButton" : "PrimaryButton");
-        action.Click += (_, _) => _menu?.Close();
+        action.Click += (_, _) => CloseMenu();
         DockPanel.SetDock(action, Dock.Right);
 
         var info = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
@@ -261,8 +274,7 @@ public sealed class TrayIcon : IDisposable
                 return; // the row's own button handled it
             }
 
-            _menu?.Close();
-            click();
+            Run(click);
         };
         return b;
     }
@@ -305,7 +317,7 @@ public sealed class TrayIcon : IDisposable
 
     public void Dispose()
     {
-        _menu?.Close();
+        CloseMenu();
         _icon.Visible = false;
         _icon.Dispose();
     }

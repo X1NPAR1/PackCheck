@@ -53,6 +53,8 @@ public partial class MainWindow : Window
 
     protected override void OnClosing(CancelEventArgs e)
     {
+        _closing = true;
+        Dispatcher.BeginInvoke(() => _closing = false, System.Windows.Threading.DispatcherPriority.Background);
         base.OnClosing(e);
         if (!AllowClose && App.Tray is not null && App.Settings?.MinimizeToTray == true)
         {
@@ -99,8 +101,17 @@ public partial class MainWindow : Window
         Application.Current.Shutdown();
     }
 
+    private bool _closing;
+
     public void ShowFromTray()
     {
+        // Called from the tray while this window may be inside OnClosing (hide-to-tray); showing it then throws.
+        if (_closing)
+        {
+            Dispatcher.BeginInvoke(ShowFromTray, System.Windows.Threading.DispatcherPriority.Background);
+            return;
+        }
+
         Show();
         if (WindowState == WindowState.Minimized)
         {
