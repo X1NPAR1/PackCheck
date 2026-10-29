@@ -98,6 +98,7 @@ public sealed partial class ServerItemViewModel
         try
         {
             Metrics.Append(new MetricSample(DateTimeOffset.Now, _lastTps, _lastMspt, _lastCpuPct, _lastRamMb, Players.Count));
+            CheckLowTpsForDiscord();
             if (_tick % 3600 == 30)
             {
                 Metrics.Prune(DateTimeOffset.Now);

@@ -513,6 +513,38 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
+  <data name="Act_Discord" xml:space="preserve"><value>an Discord senden</value></data>
+  <data name="Discord_Title" xml:space="preserve"><value>Discord-Benachrichtigungen</value></data>
+  <data name="Discord_Hint" xml:space="preserve"><value>Discord-Kanal → Bearbeiten → Integrationen → Webhooks → Neuer Webhook → URL kopieren und hier einfügen.</value></data>
+  <data name="Discord_Url" xml:space="preserve"><value>Webhook-URL</value></data>
+  <data name="Discord_BadUrl" xml:space="preserve"><value>Das ist keine Discord-Webhook-URL (https://discord.com/api/webhooks/…).</value></data>
+  <data name="Discord_MentionHint" xml:space="preserve"><value>Bei Absturz/Lag erwähnen (optional), z. B. @here</value></data>
+  <data name="Discord_Test" xml:space="preserve"><value>Test senden</value></data>
+  <data name="Discord_Sending" xml:space="preserve"><value>Wird gesendet…</value></data>
+  <data name="Discord_TestOk" xml:space="preserve"><value>Gesendet. Sieh in deinem Discord-Kanal nach.</value></data>
+  <data name="Discord_TestFail" xml:space="preserve"><value>Nicht gesendet: {0}</value></data>
+  <data name="Discord_NotSet" xml:space="preserve"><value>Discord ist für diesen Server nicht eingerichtet.</value></data>
+  <data name="Discord_TestTitle" xml:space="preserve"><value>PackCheck ist verbunden</value></data>
+  <data name="Discord_TestBody" xml:space="preserve"><value>Server-Benachrichtigungen erscheinen in diesem Kanal.</value></data>
+  <data name="Discord_Started" xml:space="preserve"><value>🟢 Server ist online</value></data>
+  <data name="Discord_Stopped" xml:space="preserve"><value>⚪ Server gestoppt</value></data>
+  <data name="Discord_Crashed" xml:space="preserve"><value>🔴 Server abgestürzt</value></data>
+  <data name="Discord_Joined" xml:space="preserve"><value>➕ {0} ist beigetreten</value></data>
+  <data name="Discord_Left" xml:space="preserve"><value>➖ {0} hat verlassen</value></data>
+  <data name="Discord_LowTps" xml:space="preserve"><value>🟠 Lag: TPS bei {0}</value></data>
+  <data name="Discord_BackupDone" xml:space="preserve"><value>💾 Backup erstellt ({0})</value></data>
+  <data name="Discord_BackupFailed" xml:space="preserve"><value>❌ Backup fehlgeschlagen</value></data>
+  <data name="Discord_Address" xml:space="preserve"><value>Adresse</value></data>
+  <data name="Discord_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="DiscordEv_Started" xml:space="preserve"><value>Gestartet</value></data>
+  <data name="DiscordEv_Stopped" xml:space="preserve"><value>Gestoppt</value></data>
+  <data name="DiscordEv_Crashed" xml:space="preserve"><value>Abgestürzt</value></data>
+  <data name="DiscordEv_PlayerJoined" xml:space="preserve"><value>Spieler beigetreten</value></data>
+  <data name="DiscordEv_PlayerLeft" xml:space="preserve"><value>Spieler gegangen</value></data>
+  <data name="DiscordEv_LowTps" xml:space="preserve"><value>Lag (niedrige TPS)</value></data>
+  <data name="DiscordEv_BackupDone" xml:space="preserve"><value>Backup fertig</value></data>
+  <data name="DiscordEv_BackupFailed" xml:space="preserve"><value>Backup fehlgeschlagen</value></data>
+  <data name="DiscordEv_Automation" xml:space="preserve"><value>Automatisierung</value></data>
   <data name="Perf_Tab" xml:space="preserve"><value>Leistung</value></data>
   <data name="Perf_Hint" xml:space="preserve"><value>Eine Messung pro Minute während der Server läuft; 7 Tage gespeichert.</value></data>
   <data name="Perf_Range" xml:space="preserve"><value>Zeitraum</value></data>

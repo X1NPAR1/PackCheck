@@ -88,6 +88,9 @@ public sealed partial class ServerItemViewModel
             && (line.Message.EndsWith("left the game", StringComparison.Ordinal) || line.Message.EndsWith("joined the game", StringComparison.Ordinal)))
         {
             Tracker.Save();
+            var who = line.Message[..line.Message.IndexOf(' ', StringComparison.Ordinal)];
+            var joined = line.Message.EndsWith("joined the game", StringComparison.Ordinal);
+            PostDiscord(joined ? DiscordEvent.PlayerJoined : DiscordEvent.PlayerLeft, Loc.F(joined ? "Discord_Joined" : "Discord_Left", who));
             if (Tab == PlayersTab)
             {
                 RefreshPlayers();

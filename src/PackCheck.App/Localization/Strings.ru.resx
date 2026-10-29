@@ -513,6 +513,38 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Act_Discord" xml:space="preserve"><value>отправить в Discord</value></data>
+  <data name="Discord_Title" xml:space="preserve"><value>Уведомления Discord</value></data>
+  <data name="Discord_Hint" xml:space="preserve"><value>Канал Discord → Настройки → Интеграция → Вебхуки → Новый → Копировать URL и вставить сюда.</value></data>
+  <data name="Discord_Url" xml:space="preserve"><value>URL вебхука</value></data>
+  <data name="Discord_BadUrl" xml:space="preserve"><value>Это не URL вебхука Discord (https://discord.com/api/webhooks/…).</value></data>
+  <data name="Discord_MentionHint" xml:space="preserve"><value>Упоминание при сбое/лагах (необязательно), напр. @here</value></data>
+  <data name="Discord_Test" xml:space="preserve"><value>Отправить тест</value></data>
+  <data name="Discord_Sending" xml:space="preserve"><value>Отправка…</value></data>
+  <data name="Discord_TestOk" xml:space="preserve"><value>Отправлено. Проверьте канал Discord.</value></data>
+  <data name="Discord_TestFail" xml:space="preserve"><value>Не отправлено: {0}</value></data>
+  <data name="Discord_NotSet" xml:space="preserve"><value>Discord не настроен для этого сервера.</value></data>
+  <data name="Discord_TestTitle" xml:space="preserve"><value>PackCheck подключён</value></data>
+  <data name="Discord_TestBody" xml:space="preserve"><value>Уведомления сервера будут появляться здесь.</value></data>
+  <data name="Discord_Started" xml:space="preserve"><value>🟢 Сервер запущен</value></data>
+  <data name="Discord_Stopped" xml:space="preserve"><value>⚪ Сервер остановлен</value></data>
+  <data name="Discord_Crashed" xml:space="preserve"><value>🔴 Сервер упал</value></data>
+  <data name="Discord_Joined" xml:space="preserve"><value>➕ {0} зашёл</value></data>
+  <data name="Discord_Left" xml:space="preserve"><value>➖ {0} вышел</value></data>
+  <data name="Discord_LowTps" xml:space="preserve"><value>🟠 Лаги: TPS {0}</value></data>
+  <data name="Discord_BackupDone" xml:space="preserve"><value>💾 Копия создана ({0})</value></data>
+  <data name="Discord_BackupFailed" xml:space="preserve"><value>❌ Ошибка резервного копирования</value></data>
+  <data name="Discord_Address" xml:space="preserve"><value>Адрес</value></data>
+  <data name="Discord_Version" xml:space="preserve"><value>Версия</value></data>
+  <data name="DiscordEv_Started" xml:space="preserve"><value>Запуск</value></data>
+  <data name="DiscordEv_Stopped" xml:space="preserve"><value>Остановка</value></data>
+  <data name="DiscordEv_Crashed" xml:space="preserve"><value>Сбой</value></data>
+  <data name="DiscordEv_PlayerJoined" xml:space="preserve"><value>Игрок зашёл</value></data>
+  <data name="DiscordEv_PlayerLeft" xml:space="preserve"><value>Игрок вышел</value></data>
+  <data name="DiscordEv_LowTps" xml:space="preserve"><value>Лаги (низкий TPS)</value></data>
+  <data name="DiscordEv_BackupDone" xml:space="preserve"><value>Копия готова</value></data>
+  <data name="DiscordEv_BackupFailed" xml:space="preserve"><value>Ошибка копии</value></data>
+  <data name="DiscordEv_Automation" xml:space="preserve"><value>Действия автоматизации</value></data>
   <data name="Perf_Tab" xml:space="preserve"><value>Производительность</value></data>
   <data name="Perf_Hint" xml:space="preserve"><value>Одно измерение в минуту, пока сервер работает; хранится 7 дней.</value></data>
   <data name="Perf_Range" xml:space="preserve"><value>Период</value></data>

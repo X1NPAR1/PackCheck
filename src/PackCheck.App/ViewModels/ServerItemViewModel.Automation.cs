@@ -85,7 +85,7 @@ public sealed partial class AutomationRuleRow : ObservableObject
     /// <summary>Command / message boxes for trigger rules depend on the chosen action.</summary>
     public bool ShowsCommand => HasCommand || (IsTrigger && Action == RuleAction.Command);
 
-    public bool ShowsMessage => HasMessage || (IsTrigger && Action is RuleAction.Say or RuleAction.Notify);
+    public bool ShowsMessage => HasMessage || (IsTrigger && Action is RuleAction.Say or RuleAction.Notify or RuleAction.Discord);
 
     /// <summary>"This server" first, then every other server PackCheck manages.</summary>
     public static IReadOnlyList<ServerOption> ServerOptions =>
@@ -533,11 +533,25 @@ public sealed partial class ServerItemViewModel
                     text = "/" + cmd;
                     break;
 
+                case AutomationActionKind.Discord:
+                    text = a.Text ?? a.Reason;
+                    if (!PostDiscord(DiscordEvent.Automation, text, force: true))
+                    {
+                        throw new InvalidOperationException(Loc.T("Discord_NotSet"));
+                    }
+
+                    break;
+
                 default:
                     text = a.Text ?? a.Reason;
                     MainViewModel.Shell?.Toast($"{Name}: {text}", isError: true);
                     App.Tray?.Notify($"{Name}: {text}");
                     break;
+            }
+
+            if (a.Kind != AutomationActionKind.Discord)
+            {
+                PostDiscord(DiscordEvent.Automation, text);
             }
         }
         catch (Exception ex) when (ex is IOException or InvalidOperationException or UnauthorizedAccessException)

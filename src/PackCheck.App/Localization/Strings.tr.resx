@@ -513,6 +513,38 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Act_Discord" xml:space="preserve"><value>Discord'a gönder</value></data>
+  <data name="Discord_Title" xml:space="preserve"><value>Discord bildirimleri</value></data>
+  <data name="Discord_Hint" xml:space="preserve"><value>Discord kanalı → Düzenle → Entegrasyonlar → Webhook'lar → Yeni webhook → URL'yi kopyala, buraya yapıştır.</value></data>
+  <data name="Discord_Url" xml:space="preserve"><value>Webhook URL'si</value></data>
+  <data name="Discord_BadUrl" xml:space="preserve"><value>Bu bir Discord webhook URL'si değil (https://discord.com/api/webhooks/…).</value></data>
+  <data name="Discord_MentionHint" xml:space="preserve"><value>Çökme/kasmada etiketle (isteğe bağlı), ör. @here</value></data>
+  <data name="Discord_Test" xml:space="preserve"><value>Test gönder</value></data>
+  <data name="Discord_Sending" xml:space="preserve"><value>Gönderiliyor…</value></data>
+  <data name="Discord_TestOk" xml:space="preserve"><value>Gönderildi. Discord kanalına bak.</value></data>
+  <data name="Discord_TestFail" xml:space="preserve"><value>Gönderilemedi: {0}</value></data>
+  <data name="Discord_NotSet" xml:space="preserve"><value>Bu sunucu için Discord ayarlanmamış.</value></data>
+  <data name="Discord_TestTitle" xml:space="preserve"><value>PackCheck bağlandı</value></data>
+  <data name="Discord_TestBody" xml:space="preserve"><value>Sunucu bildirimleri bu kanalda görünecek.</value></data>
+  <data name="Discord_Started" xml:space="preserve"><value>🟢 Sunucu açıldı</value></data>
+  <data name="Discord_Stopped" xml:space="preserve"><value>⚪ Sunucu durdu</value></data>
+  <data name="Discord_Crashed" xml:space="preserve"><value>🔴 Sunucu çöktü</value></data>
+  <data name="Discord_Joined" xml:space="preserve"><value>➕ {0} katıldı</value></data>
+  <data name="Discord_Left" xml:space="preserve"><value>➖ {0} ayrıldı</value></data>
+  <data name="Discord_LowTps" xml:space="preserve"><value>🟠 Kasma: TPS {0}</value></data>
+  <data name="Discord_BackupDone" xml:space="preserve"><value>💾 Yedek alındı ({0})</value></data>
+  <data name="Discord_BackupFailed" xml:space="preserve"><value>❌ Yedek alınamadı</value></data>
+  <data name="Discord_Address" xml:space="preserve"><value>Adres</value></data>
+  <data name="Discord_Version" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="DiscordEv_Started" xml:space="preserve"><value>Açıldı</value></data>
+  <data name="DiscordEv_Stopped" xml:space="preserve"><value>Durdu</value></data>
+  <data name="DiscordEv_Crashed" xml:space="preserve"><value>Çöktü</value></data>
+  <data name="DiscordEv_PlayerJoined" xml:space="preserve"><value>Oyuncu girdi</value></data>
+  <data name="DiscordEv_PlayerLeft" xml:space="preserve"><value>Oyuncu çıktı</value></data>
+  <data name="DiscordEv_LowTps" xml:space="preserve"><value>Kasma (düşük TPS)</value></data>
+  <data name="DiscordEv_BackupDone" xml:space="preserve"><value>Yedek alındı</value></data>
+  <data name="DiscordEv_BackupFailed" xml:space="preserve"><value>Yedek başarısız</value></data>
+  <data name="DiscordEv_Automation" xml:space="preserve"><value>Otomasyon eylemleri</value></data>
   <data name="Perf_Tab" xml:space="preserve"><value>Performans</value></data>
   <data name="Perf_Hint" xml:space="preserve"><value>Sunucu çalışırken dakikada bir ölçüm; 7 gün saklanır.</value></data>
   <data name="Perf_Range" xml:space="preserve"><value>Zaman aralığı</value></data>

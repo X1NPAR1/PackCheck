@@ -59,6 +59,7 @@ public enum RuleAction
     Command,
     Say,
     Notify,
+    Discord,
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<AutomationReaction>))]
@@ -125,6 +126,7 @@ public enum AutomationActionKind
     Command,
     Say,
     Notify,
+    Discord,
 }
 
 /// <summary>Something the app should do now because of a rule.</summary>
@@ -176,11 +178,12 @@ public sealed class AutomationEngine
         RuleAction.Backup => AutomationActionKind.Backup,
         RuleAction.Command => AutomationActionKind.Command,
         RuleAction.Say => AutomationActionKind.Say,
+        RuleAction.Discord => AutomationActionKind.Discord,
         _ => AutomationActionKind.Notify,
     }, r.Id, reason, r.Action switch
     {
         RuleAction.Command => r.Command?.Trim().TrimStart('/'),
-        RuleAction.Say or RuleAction.Notify => r.Message,
+        RuleAction.Say or RuleAction.Notify or RuleAction.Discord => r.Message,
         _ => null,
     }, r.Action == RuleAction.Restart ? Math.Max(0, r.WarningSeconds) : 0)
     { DelaySeconds = Math.Max(0, r.DelaySeconds) };
