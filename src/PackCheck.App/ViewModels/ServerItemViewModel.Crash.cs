@@ -46,7 +46,7 @@ public sealed partial class ServerItemViewModel
     {
         try
         {
-            var console = _all.Skip(Math.Max(0, _all.Count - 400)).Select(e => e.Raw).ToList();
+            var console = _console.All.Skip(Math.Max(0, _console.All.Count - 400)).Select(e => e.Raw).ToList();
             Diagnosis = CrashAnalyzer.Analyze(Definition.Directory, console, _startedAt == default ? null : _startedAt.AddMinutes(-1));
             if (HasDiagnosis)
             {

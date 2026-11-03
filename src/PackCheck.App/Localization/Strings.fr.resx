@@ -173,6 +173,28 @@ Appliquer quand même ?</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Ouvrir PackCheck</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck reste actif dans la zone de notification. Vos serveurs continuent de tourner.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Logiciel serveur</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Rechercher sur Modrinth</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>Depuis un fichier…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Version du modpack</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>Le loader et la version de Minecraft viennent du modpack. Les mods client uniquement sont ignorés ; chaque fichier est vérifié par son hash.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Recherche de modpacks…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Modrinth est injoignable : {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>Aucun modpack trouvé.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Chargement des versions…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>Ce modpack n'a aucune version .mrpack.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpacks (.mrpack, .zip CurseForge)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Choisissez d'abord une version de modpack ou un fichier.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Téléchargement du modpack…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>Les modpacks CurseForge nécessitent votre clé API CurseForge. Ajoutez-la dans les Paramètres ou utilisez les fichiers serveur du pack.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Téléchargement des fichiers : {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>Recherche des fichiers sur CurseForge : {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>Le fichier CurseForge du projet {0} est introuvable : {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Téléchargement des fichiers…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Copie de la configuration du modpack…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>La version du loader du modpack est indisponible ; installation de la version par défaut (voir packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Exécution de l'installateur…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Vue d'ensemble</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
@@ -532,6 +554,29 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Ce PC n'a plus de mémoire libre.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} est prêt. Redémarrez le serveur.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} désactivé. Redémarrez le serveur.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Cloner</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Cloner le serveur</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Copie ce serveur dans un nouveau dossier à côté. Les journaux, rapports de plantage, caches et sauvegardes sont exclus.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Nom</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Inclure les mondes</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Cloner</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Copie…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} a été créé.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Clonage impossible : {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Choisissez un port entre 1024 et 65535.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>Le serveur est en marche : les mondes copiés peuvent manquer les dernières modifications ou mélanger des points de sauvegarde. Arrêtez le serveur pour une copie exacte, ou continuez quand même.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} copie</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Enregistrer comme modèle</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Nom du modèle</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Modèle {0} enregistré (sans mondes).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Échec du modèle : {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Modèles</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Partez d'un serveur enregistré : même plateforme, version, réglages, plugins et mods, sans mondes.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Créer depuis le modèle</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Supprimer</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Supprimer le modèle {0} ?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Les serveurs déjà créés à partir de celui-ci ne sont pas affectés.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Changer de version</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Mettre à niveau Minecraft</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Choisissez une version plus récente. PackCheck vérifie chaque plugin et mod, fait une sauvegarde complète épinglée, installe la version, met à jour via Modrinth et teste le démarrage. En cas d'échec, un clic remet tout en place.</value></data>
@@ -1041,6 +1086,11 @@ Ils passeront en mode hors ligne, n'écouteront que 127.0.0.1 et feront confianc
   <data name="Update_Starting" xml:space="preserve"><value>Lancement de l'installation ; PackCheck va se fermer puis rouvrir…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Téléchargement de la mise à jour… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>La mise à jour n'a pas pu être installée : {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>Nouveautés de la version {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck a été mis à jour. Voici ce qui a changé.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Notes de version complètes</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Compris</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Les notes de version n'ont pas pu être chargées. Ouvrez les notes complètes sur GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Nouveautés</value></data>
   <data name="About_Version" xml:space="preserve"><value>Version {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck crée, exécute et valide des serveurs Minecraft Java. Les contrôles statiques reposent sur des preuves et n'exécutent jamais le code des plugins.</value></data>
@@ -1118,6 +1168,37 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Mondes actuels conservés comme demandé.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Retour de version terminé.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Avant retour de version {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Exporter / Importer</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Enregistrez les paramètres, la liste des serveurs et les réglages d'automatisation et Discord de chaque serveur dans un seul fichier, puis chargez-les sur un autre PC. Les fichiers des serveurs et les mondes ne sont pas inclus.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Inclure les conversations de l'assistant</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Inclure les secrets (clé IA, clé CurseForge, jeton DuckDNS, webhooks Discord)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Attention : les clés ne sont chiffrées que pour votre utilisateur Windows ; elles sont donc écrites en clair dans le fichier et chiffrées à nouveau à l'import. Toute personne ayant le fichier peut les utiliser ; gardez-le privé.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Exporter…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>Importer…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Paramètres exportés.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>{0} serveur(s), {1} fichier(s) d'automatisation/Discord, {2} conversation(s) exportés.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Impossible de terminer : {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>{0} modification(s) de paramètre, {1} serveur(s) (dont {2} avec un dossier absent ici), {3} nouvelle(s) conversation(s). Rien ne change avant « Importer la sélection ».</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Ce fichier contient des secrets ; ils seront chiffrés pour votre utilisateur Windows.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Paramètres modifiés (décochez pour garder les vôtres)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Vos paramètres sont déjà identiques.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Serveurs</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>Aucun serveur dans ce fichier.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Ce dossier n'existe pas sur ce PC. Choisissez où se trouve le serveur ou ignorez-le.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>Remplacer les réglages d'automatisation et Discord déjà présents dans ce dossier</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Déjà présent ici sous « {0} ». Choisissez quoi faire.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>« {0} » utilise déjà ce dossier. Choisissez quoi faire.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Ajouter</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Ignorer</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Garder le mien (ignorer)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Remplacer le mien</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Ajouter comme copie</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Importer la sélection</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>Arrêtez « {0} » avant de le remplacer.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>Choisir le dossier de « {0} »</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>Importation terminée.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>{0} paramètre(s) appliqué(s) ; serveurs : {1} ajouté(s), {2} remplacé(s), {3} ignoré(s) ; {4} conversation(s) ajoutée(s).</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Redémarrez PackCheck pour appliquer la langue et le thème.</value></data>
   <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (sans redirection de port)</value></data>
   <data name="Tunnel_Hint" xml:space="preserve"><value>Utilise l'agent gratuit playit.gg (version officielle, vérifiée par SHA-256). Vos amis passent par l'adresse de playit, donc cela marche aussi derrière un CGNAT. L'agent ne tourne que tant que PackCheck est ouvert.</value></data>
   <data name="Tunnel_Start" xml:space="preserve"><value>Démarrer le tunnel</value></data>

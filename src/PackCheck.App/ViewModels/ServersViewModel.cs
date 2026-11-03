@@ -13,7 +13,7 @@ using PackCheck.Validation;
 
 namespace PackCheck.App.ViewModels;
 
-public sealed partial class ServersViewModel(ServerRegistry registry, AppSettings settings, ServerSources sources, ServerCreator creator, JavaRuntimes java, AppState state) : ObservableObject
+public sealed partial class ServersViewModel(ServerRegistry registry, AppSettings settings, ServerSources sources, ServerCreator creator, JavaRuntimes java, AppState state, ModpackServices? modpacks = null) : ObservableObject
 {
     public ObservableCollection<ServerItemViewModel> Items { get; } = [];
 
@@ -38,7 +38,35 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
     }
 
     [RelayCommand]
-    private void NewServer() => Wizard = new CreateServerViewModel(sources, creator, java, state, settings, OnCreated, () => Wizard = null);
+    private void NewServer()
+    {
+        var wizard = new CreateServerViewModel(sources, creator, java, state, settings, OnCreated, () => Wizard = null);
+        if (modpacks is not null)
+        {
+            wizard.UseModpacks(modpacks);
+        }
+
+        Wizard = wizard;
+    }
+
+    public ServerRegistry Registry => registry;
+
+    /// <summary>Shows servers an import added or replaced (already saved to the registry).</summary>
+    public void Reconcile(IEnumerable<ServerDefinition> changed)
+    {
+        foreach (var def in changed)
+        {
+            if (Items.FirstOrDefault(i => i.Definition.Id == def.Id) is { } old)
+            {
+                Items.Remove(old);
+            }
+
+            Items.Add(new ServerItemViewModel(def, registry, settings));
+        }
+
+        Selected ??= Items.FirstOrDefault();
+        OnPropertyChanged(nameof(IsEmpty));
+    }
 
     /// <summary>Registers a server created elsewhere (assistant, scripts).</summary>
     public void Add(ServerDefinition def) => OnCreated(def);

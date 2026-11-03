@@ -24,6 +24,9 @@ public sealed record UpdateState
     public DateOnly? FirstNotified { get; init; }
 
     public string? NotifiedVersion { get; init; }
+
+    /// <summary>Version that last ran on this machine; drives the one-time "what's new" dialog.</summary>
+    public string? LastRunVersion { get; init; }
 }
 
 /// <summary>
@@ -60,16 +63,36 @@ public static class UpdatePolicy
 
     /// <summary>State to persist after a prompt was shown.</summary>
     public static UpdateState AfterPrompt(UpdateState state, ReleaseInfo release, DateOnly today) =>
-        new() { FirstNotified = state.FirstNotified ?? today, NotifiedVersion = release.Tag };
+        state with { FirstNotified = state.FirstNotified ?? today, NotifiedVersion = release.Tag };
 
     /// <summary>State once the app runs a version at least as new as the notified one.</summary>
     public static UpdateState Reconcile(UpdateState state, Version current)
     {
         if (state.NotifiedVersion is not null && ReleaseInfo.TryParseTag(state.NotifiedVersion, out var v) && v <= current)
         {
-            return new UpdateState();
+            return state with { FirstNotified = null, NotifiedVersion = null };
         }
 
         return state;
+    }
+
+    /// <summary>
+    /// True when this launch is the first one on a newer version than the one that ran before.
+    /// A fresh install (no state file yet) shows nothing. An older install without
+    /// <see cref="UpdateState.LastRunVersion"/> did run before, so it counts as an update.
+    /// </summary>
+    public static bool ShouldShowWhatsNew(UpdateState state, bool stateExisted, Version current)
+    {
+        if (current <= new Version(0, 0, 0))
+        {
+            return false;
+        }
+
+        if (state.LastRunVersion is null)
+        {
+            return stateExisted;
+        }
+
+        return ReleaseInfo.TryParseTag(state.LastRunVersion, out var last) && last < current;
     }
 }

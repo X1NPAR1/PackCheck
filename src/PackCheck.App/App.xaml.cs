@@ -97,6 +97,12 @@ public partial class App : Application
                 s.AddSingleton<ICatalog>(sp => new ModrinthCatalog(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ICatalog>(sp => new HangarCatalog(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ICatalog>(sp => new CurseForgeCatalog(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey));
+                s.AddSingleton(sp => new ModpackServices(
+                    new ModrinthCatalog(sp.GetRequiredService<HttpClient>()),
+                    new ModrinthModpacks(sp.GetRequiredService<HttpClient>()),
+                    new CurseForgeMods(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey),
+                    new ModpackInstaller(sp.GetRequiredService<ServerCreator>(), sp.GetRequiredService<HttpClient>()),
+                    sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ModsViewModel>();
                 s.AddSingleton<AppState>();
                 s.AddSingleton<MainViewModel>();
@@ -165,6 +171,9 @@ public partial class App : Application
         // Step 5: updates (never blocks startup for long; offline = no update)
         splash.Report(0.76, Loc.T("Splash_Updates"));
         var updates = Services.GetRequiredService<UpdateService>();
+
+        // Read before the update check, which rewrites the state file.
+        var whatsNew = await updates.TakeWhatsNewAsync(TimeSpan.FromSeconds(4), CancellationToken.None).ConfigureAwait(true);
         var decision = await updates.CheckAsync(settings.AutoUpdate, TimeSpan.FromSeconds(6), CancellationToken.None).ConfigureAwait(true);
         Log.Information("Update check: {Action} {Tag}", decision.Action, decision.Release?.Tag);
 
@@ -238,7 +247,37 @@ public partial class App : Application
             main.FadeIn();
         }
 
-        await Services.GetRequiredService<MainViewModel>().HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
+        if (whatsNew is not null)
+        {
+            Log.Information("Showing what's new for {Version}", whatsNew.Version);
+            var closed = shell.ShowWhatsNewAsync(whatsNew);
+
+            // A minimized start (with Windows) must not hold back a pending update until the window opens.
+            // Hiding the window to the tray also lets the update go ahead, so a silent install does not wait for a restore.
+            if (!minimized)
+            {
+                var hidden = new TaskCompletionSource();
+                void OnVisible(object s, DependencyPropertyChangedEventArgs a)
+                {
+                    if (!main.IsVisible)
+                    {
+                        hidden.TrySetResult();
+                    }
+                }
+
+                main.IsVisibleChanged += OnVisible;
+                try
+                {
+                    await Task.WhenAny(closed, hidden.Task).ConfigureAwait(true);
+                }
+                finally
+                {
+                    main.IsVisibleChanged -= OnVisible;
+                }
+            }
+        }
+
+        await shell.HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
     }
 
     private void OnUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)

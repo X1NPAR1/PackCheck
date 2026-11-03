@@ -175,9 +175,10 @@ public sealed partial class ServerCreator
     }
 
     /// <summary>Runs the Quilt installer in server mode; it downloads the vanilla server and writes quilt-server-launch.jar.</summary>
-    public static async Task<string> RunQuiltInstallerAsync(string javaPath, string dir, string version, CancellationToken ct)
+    public static async Task<string> RunQuiltInstallerAsync(string javaPath, string dir, string version, CancellationToken ct, string? loaderVersion = null)
     {
-        await RunJavaAsync(javaPath, dir, ["-jar", "quilt-installer.jar", "install", "server", version, "--download-server", $"--install-dir={dir}"],
+        string[] loader = loaderVersion is { Length: > 0 } ? [loaderVersion] : [];
+        await RunJavaAsync(javaPath, dir, ["-jar", "quilt-installer.jar", "install", "server", version, .. loader, "--download-server", $"--install-dir={dir}"],
             Path.Combine(dir, "installer-output.log"), TimeSpan.FromMinutes(20), null, ct).ConfigureAwait(false);
         File.Delete(Path.Combine(dir, "quilt-installer.jar"));
         return File.Exists(Path.Combine(dir, "quilt-server-launch.jar")) ? "quilt-server-launch.jar" : throw new InvalidOperationException("The Quilt installer produced no launcher.");
@@ -239,6 +240,9 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
     public sealed record Request(string Name, string ParentFolder, ServerPlatform Platform, string Version, string JavaPath, int MaxMemoryMb, int Port, string? Seed, bool AcceptEula)
     {
         public int CpuCores { get; init; }
+
+        /// <summary>Mod loader version to install (Fabric, Quilt, Forge, NeoForge); null installs the default one.</summary>
+        public string? LoaderVersion { get; init; }
 
         /// <summary>Extra server.properties values chosen in the wizard (game mode, difficulty, players, ...).</summary>
         public IReadOnlyDictionary<string, string>? Properties { get; init; }
@@ -335,7 +339,14 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
     public async Task<(string Jar, string? ArgsFile)> InstallAsync(Request r, string dir, IProgress<(double Progress, string Step)>? progress, CancellationToken ct)
     {
         progress?.Report((0.05, "resolve"));
-        var dl = await sources.ResolveAsync(r.Platform, r.Version, ct).ConfigureAwait(false);
+        var dl = await sources.ResolveAsync(r.Platform, r.Version, ct, r.LoaderVersion).ConfigureAwait(false);
+        if (dl.LoaderWarning is { } warning)
+        {
+            System.Diagnostics.Trace.TraceWarning(warning);
+            await File.AppendAllTextAsync(Path.Combine(dir, "packcheck-install.log"), $"{DateTimeOffset.Now:u} WARNING {warning}\n", ct).ConfigureAwait(false);
+            progress?.Report((0.07, "loader_fallback"));
+        }
+
         var jar = dl.IsInstaller ? dl.FileName : r.Platform switch
         {
             ServerPlatform.Paper => "paper.jar",
@@ -356,7 +367,7 @@ public sealed partial class ServerCreator(ServerSources sources, HttpClient http
             (jar, argsFile) = r.Platform switch
             {
                 ServerPlatform.Spigot or ServerPlatform.CraftBukkit => (await RunBuildToolsAsync(await JdkForAsync(r, ct).ConfigureAwait(false), dir, r.Version, r.Platform, progress, ct).ConfigureAwait(false), null),
-                ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct).ConfigureAwait(false), null),
+                ServerPlatform.Quilt => (await RunQuiltInstallerAsync(r.JavaPath, dir, r.Version, ct, dl.LoaderVersion).ConfigureAwait(false), null),
                 _ => await RunInstallerAsync(r.JavaPath, dir, jar, ct).ConfigureAwait(false),
             };
         }
