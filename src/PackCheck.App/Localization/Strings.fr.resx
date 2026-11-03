@@ -173,6 +173,27 @@ Appliquer quand même ?</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Ouvrir PackCheck</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck reste actif dans la zone de notification. Vos serveurs continuent de tourner.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Logiciel serveur</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Rechercher sur Modrinth</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>Depuis un fichier…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Version du modpack</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>Le loader et la version de Minecraft viennent du modpack. Les mods client uniquement sont ignorés ; chaque fichier est vérifié par son hash.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Recherche de modpacks…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Modrinth est injoignable : {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>Aucun modpack trouvé.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Chargement des versions…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>Ce modpack n'a aucune version .mrpack.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpacks (.mrpack, .zip CurseForge)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Choisissez d'abord une version de modpack ou un fichier.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Téléchargement du modpack…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>Les modpacks CurseForge nécessitent votre clé API CurseForge. Ajoutez-la dans les Paramètres ou utilisez les fichiers serveur du pack.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Téléchargement des fichiers : {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>Recherche des fichiers sur CurseForge : {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>Le fichier CurseForge du projet {0} est introuvable : {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Téléchargement des fichiers…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Copie de la configuration du modpack…</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Exécution de l'installateur…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Vue d'ensemble</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>

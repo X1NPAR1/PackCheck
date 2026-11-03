@@ -184,7 +184,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
     public int RecommendedGb => IsProxy ? 1 : PlatformInfo.UsesMods(Platform) ? 6 : Platform == ServerPlatform.Vanilla ? 3 : 4;
 
     public string SummaryText =>
-        $"{Platform} {Version ?? "…"} · {MemoryGb:0.#} GB · {CoresText}\n:{Port} · {(IsProxy ? "proxy" : $"{GameMode} · {Difficulty} · {(int)MaxPlayers} {Loc.T("Card_Players").ToLower(Loc.Instance.Culture)}")}";
+        $"{(IsModpackMode ? PackSummary ?? Loc.T("Modpack_Section") : $"{Platform} {Version ?? "…"}")} · {MemoryGb:0.#} GB · {CoresText}\n:{Port} · {(IsProxy ? "proxy" : $"{GameMode} · {Difficulty} · {(int)MaxPlayers} {Loc.T("Card_Players").ToLower(Loc.Instance.Culture)}")}";
 
     partial void OnSelectedPlatformChanged(PlatformOption? value)
     {
@@ -385,6 +385,12 @@ public sealed partial class CreateServerViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanCreate))]
     private async Task CreateAsync()
     {
+        if (IsModpackMode)
+        {
+            await CreateFromModpackAsync().ConfigureAwait(true);
+            return;
+        }
+
         if (Version is null)
         {
             return;

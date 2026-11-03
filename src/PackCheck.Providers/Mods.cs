@@ -84,6 +84,54 @@ public sealed class ModrinthMods(HttpClient http, TimeSpan? timeout = null) : Pr
     }
 }
 
+/// <summary>A published version of a Modrinth modpack with its .mrpack file.</summary>
+public sealed record ModpackVersion(string Id, string Name, string VersionNumber, IReadOnlyList<string> GameVersions, IReadOnlyList<string> Loaders, string FileName, Uri Url, string Sha512, long Size)
+{
+    public string Display => $"{VersionNumber} · {string.Join(", ", Loaders)} · {string.Join(", ", GameVersions)}";
+}
+
+/// <summary>Lists the versions of a Modrinth modpack (search goes through <see cref="ModrinthCatalog"/>).</summary>
+public sealed class ModrinthModpacks(HttpClient http, TimeSpan? timeout = null) : ProviderBase(http, timeout)
+{
+    public async Task<ProviderResult<IReadOnlyList<ModpackVersion>>> GetVersionsAsync(string projectId, CancellationToken ct)
+    {
+        var r = await GetAsync(new Uri($"https://api.modrinth.com/v2/project/{Uri.EscapeDataString(projectId)}/version"), ct).ConfigureAwait(false);
+        if (!r.Ok)
+        {
+            return new(null, r.Error);
+        }
+
+        using var doc = r.Value!;
+        try
+        {
+            return new(Parse(doc.RootElement), null);
+        }
+        catch (Exception ex) when (ex is KeyNotFoundException or InvalidOperationException or UriFormatException)
+        {
+            return new(null, "unexpected response shape");
+        }
+    }
+
+    /// <summary>Versions that ship a .mrpack file, newest first as the API returns them.</summary>
+    public static IReadOnlyList<ModpackVersion> Parse(JsonElement versions) =>
+        versions.EnumerateArray().Select(v =>
+        {
+            var files = v.GetProperty("files").EnumerateArray().ToList();
+            var file = files.FirstOrDefault(f => f.GetProperty("primary").GetBoolean() && f.GetProperty("filename").GetString()!.EndsWith(".mrpack", StringComparison.OrdinalIgnoreCase));
+            if (file.ValueKind == JsonValueKind.Undefined)
+            {
+                file = files.FirstOrDefault(f => f.GetProperty("filename").GetString()!.EndsWith(".mrpack", StringComparison.OrdinalIgnoreCase));
+            }
+
+            return file.ValueKind == JsonValueKind.Undefined ? null : new ModpackVersion(
+                v.GetProperty("id").GetString()!, v.GetProperty("name").GetString() ?? string.Empty, v.GetProperty("version_number").GetString()!,
+                v.GetProperty("game_versions").EnumerateArray().Select(x => x.GetString()!).ToList(),
+                v.GetProperty("loaders").EnumerateArray().Select(x => x.GetString()!).ToList(),
+                file.GetProperty("filename").GetString()!, new Uri(file.GetProperty("url").GetString()!),
+                file.GetProperty("hashes").GetProperty("sha512").GetString()!, file.GetProperty("size").GetInt64());
+        }).OfType<ModpackVersion>().ToList();
+}
+
 /// <summary>CurseForge needs a personal API key (console.curseforge.com). Without one the provider is unavailable.</summary>
 public sealed class CurseForgeMods(HttpClient http, Func<string?> apiKey, TimeSpan? timeout = null) : IModProvider
 {
@@ -185,6 +233,19 @@ public sealed class CurseForgeMods(HttpClient http, Func<string?> apiKey, TimeSp
         }
 
         return new(null, kind == ModKind.Modpack ? "This modpack has no server pack for this version." : $"No file for Minecraft {minecraftVersion} / {loader}.");
+    }
+
+    /// <summary>One exact file (a CurseForge modpack manifest names project and file ids).</summary>
+    public async Task<ProviderResult<ModFile>> GetFileByIdAsync(int projectId, int fileId, CancellationToken ct)
+    {
+        var r = await GetAsync(FormattableString.Invariant($"/v1/mods/{projectId}/files/{fileId}"), ct).ConfigureAwait(false);
+        if (!r.Ok)
+        {
+            return new(null, r.Error);
+        }
+
+        using var doc = r.Value!;
+        return Map(doc.RootElement.GetProperty("data"), isServerPack: false);
     }
 
     private static ProviderResult<ModFile> Map(JsonElement f, bool isServerPack)
