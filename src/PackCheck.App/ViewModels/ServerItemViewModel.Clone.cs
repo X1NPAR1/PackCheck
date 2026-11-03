@@ -55,6 +55,13 @@ public sealed partial class ServerItemViewModel
             return;
         }
 
+        // A running server keeps writing region files; a copy taken now may mix save points.
+        if (CloneWorlds && IsBusy && MainViewModel.Shell is { } shell
+            && !await shell.ConfirmAsync(Loc.T("Clone_Title"), Loc.T("Clone_RunningWarn"), Loc.T("Clone_Start")).ConfigureAwait(true))
+        {
+            return;
+        }
+
         IsCloning = true;
         try
         {

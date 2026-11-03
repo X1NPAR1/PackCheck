@@ -542,6 +542,7 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Clone_Done" xml:space="preserve"><value>{0} a été créé.</value></data>
   <data name="Clone_Failed" xml:space="preserve"><value>Clonage impossible : {0}</value></data>
   <data name="Clone_BadPort" xml:space="preserve"><value>Choisissez un port entre 1024 et 65535.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>Le serveur est en marche : les mondes copiés peuvent manquer les dernières modifications ou mélanger des points de sauvegarde. Arrêtez le serveur pour une copie exacte, ou continuez quand même.</value></data>
   <data name="Clone_Copy" xml:space="preserve"><value>{0} copie</value></data>
   <data name="Template_Save" xml:space="preserve"><value>Enregistrer comme modèle</value></data>
   <data name="Template_NamePrompt" xml:space="preserve"><value>Nom du modèle</value></data>

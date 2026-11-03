@@ -40,11 +40,23 @@ public sealed partial class CreateServerViewModel
             ?? Runtime?.JavaExe ?? "java.exe";
         IsWorking = true;
         Status = Loc.T("Clone_Working");
+        _cts = new CancellationTokenSource();
+        var ct = _cts.Token;
         try
         {
             var name = string.IsNullOrWhiteSpace(Name) ? template.Name : Name;
-            var def = await Task.Run(() => _templates.CreateServerAsync(template, Folder, name, Port, java, CancellationToken.None)).ConfigureAwait(true);
+            var def = await Task.Run(() => _templates.CreateServerAsync(template, Folder, name, Port, java, ct), ct).ConfigureAwait(true);
+            if (ct.IsCancellationRequested)
+            {
+                // The wizard was closed while extracting; do not register a server the user walked away from.
+                ServerCloner.TryDelete(def.Directory);
+                return;
+            }
+
             _done(def);
+        }
+        catch (OperationCanceledException)
+        {
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or InvalidDataException)
         {

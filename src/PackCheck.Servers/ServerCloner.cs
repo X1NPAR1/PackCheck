@@ -67,6 +67,19 @@ public static class ServerCloner
         return dir;
     }
 
+    private static readonly Lock ReserveGate = new();
+
+    /// <summary>Picks a unique folder and creates it under one lock, so two copies never get the same folder.</summary>
+    public static string ReserveFolder(string parent, string name)
+    {
+        lock (ReserveGate)
+        {
+            var dir = UniqueFolder(parent, name);
+            Directory.CreateDirectory(dir);
+            return dir;
+        }
+    }
+
     /// <summary>First port from <paramref name="start"/> that no registered server uses and nothing listens on.</summary>
     public static int FreePort(IEnumerable<int> taken, int start = 25565)
     {
@@ -113,8 +126,7 @@ public static class ServerCloner
     {
         var src = Path.GetFullPath(source.Directory);
         var parent = Path.GetDirectoryName(src) ?? throw new InvalidOperationException("The server folder has no parent.");
-        var target = UniqueFolder(parent, name);
-        Directory.CreateDirectory(target);
+        var target = ReserveFolder(parent, name);
         try
         {
             foreach (var rel in SelectFiles(src, includeWorlds))
@@ -147,7 +159,7 @@ public static class ServerCloner
         };
     }
 
-    internal static void TryDelete(string dir)
+    public static void TryDelete(string dir)
     {
         try
         {
@@ -211,7 +223,7 @@ public sealed class ServerTemplates(string? root = null)
                     result.Add(t);
                 }
             }
-            catch (JsonException)
+            catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
             {
             }
         }
@@ -295,9 +307,8 @@ public sealed class ServerTemplates(string? root = null)
         }
 
         Directory.CreateDirectory(parentFolder);
-        var target = ServerCloner.UniqueFolder(parentFolder, name);
+        var target = ServerCloner.ReserveFolder(parentFolder, name);
         var full = Path.GetFullPath(target) + Path.DirectorySeparatorChar;
-        Directory.CreateDirectory(target);
         try
         {
             await using var zipStream = new FileStream(archive, FileMode.Open, FileAccess.Read, FileShare.Read);
