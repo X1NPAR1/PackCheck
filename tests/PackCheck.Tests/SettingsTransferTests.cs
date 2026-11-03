@@ -310,4 +310,43 @@ public sealed class SettingsTransferTests : IDisposable
         Assert.Equal("mine", File.ReadAllText(Path.Combine(b, "assistant", "chats", "keep.json")));
         Assert.False(File.Exists(Path.Combine(_root, "evil.json")));
     }
+
+    [Fact]
+    public void Imported_java_path_must_be_java_and_bad_settings_are_not_written()
+    {
+        Assert.Equal("java", SettingsTransfer.SafeJava(@"C:\Windows\System32\calc.exe"));
+        Assert.Equal(@"C:\jdk\bin\java.exe", SettingsTransfer.SafeJava(@"C:\jdk\bin\java.exe"));
+
+        var zip = Path.Combine(_root, "bad" + SettingsTransfer.Extension);
+        using (var z = ZipFile.Open(zip, ZipArchiveMode.Create))
+        {
+            using (var w = new StreamWriter(z.CreateEntry("manifest.json").Open()))
+            {
+                w.Write("""{ "format": 1, "appVersion": 5 }""");
+            }
+
+            using (var w = new StreamWriter(z.CreateEntry("settings.json").Open()))
+            {
+                w.Write("""{ "Theme": "abc", "AiKey": 7 }""");
+            }
+        }
+
+        var p = SettingsTransfer.Read(zip);
+        Assert.Null(p.AppVersion);
+        var b = Data("b");
+        File.WriteAllText(Path.Combine(b, "settings.json"), """{ "Language": "de" }""");
+        var plan = SettingsTransfer.Plan(p, null, [], b);
+        Assert.Throws<InvalidDataException>(() => SettingsTransfer.Apply(p, plan, b, new ServerRegistry(Path.Combine(b, "servers.json")), FakeProtect, m =>
+        {
+            try
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<AppSettings>(m.ToJsonString()) is not null;
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                return false;
+            }
+        }));
+        Assert.Equal("""{ "Language": "de" }""", File.ReadAllText(Path.Combine(b, "settings.json")));
+    }
 }

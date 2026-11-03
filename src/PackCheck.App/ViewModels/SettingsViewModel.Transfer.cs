@@ -106,7 +106,7 @@ public sealed partial class SettingsViewModel
             TransferStatus = null;
             ImportSource = Path.GetFileName(dlg.FileName);
         }
-        catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException)
+        catch (Exception ex) when (ex is IOException or InvalidDataException or InvalidOperationException or UnauthorizedAccessException or JsonException)
         {
             TransferStatus = Loc.F("Transfer_Failed", ex.Message);
         }
@@ -149,7 +149,7 @@ public sealed partial class SettingsViewModel
         try
         {
             var registry = servers?.Registry ?? new ServerRegistry();
-            var r = SettingsTransfer.Apply(_package, _plan, AppPaths.DataRoot, registry, Secrets.Protect);
+            var r = SettingsTransfer.Apply(_package, _plan, AppPaths.DataRoot, registry, Secrets.Protect, IsValidSettings);
             if (r.MergedSettings is { } merged && JsonSerializer.Deserialize<AppSettings>(merged.ToJsonString()) is { } loaded)
             {
                 _settings.CopyFrom(loaded);
@@ -160,9 +160,21 @@ public sealed partial class SettingsViewModel
             TransferStatus = Loc.F("Transfer_Imported", r.SettingsApplied, r.Added, r.Replaced, r.Skipped, r.Chats) + (r.SettingsApplied > 0 ? " " + Loc.T("Transfer_Restart") : string.Empty);
             MainViewModel.Shell?.Toast(Loc.T("Transfer_ImportDone"));
         }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
+        catch (Exception ex) when (ex is IOException or InvalidDataException or InvalidOperationException or UnauthorizedAccessException or JsonException)
         {
             TransferStatus = Loc.F("Transfer_Failed", ex.Message);
+        }
+    }
+
+    private static bool IsValidSettings(System.Text.Json.Nodes.JsonObject merged)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<AppSettings>(merged.ToJsonString()) is not null;
+        }
+        catch (JsonException)
+        {
+            return false;
         }
     }
 }

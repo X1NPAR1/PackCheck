@@ -141,7 +141,7 @@ public static class SettingsTransfer
 
         foreach (var key in ProtectedKeys)
         {
-            var plain = options.IncludeSecrets ? unprotect(settings[key]?.GetValue<string>()) : null;
+            var plain = options.IncludeSecrets ? unprotect(Str(settings[key])) : null;
             settings.Remove(key);
             if (!string.IsNullOrEmpty(plain))
             {
@@ -233,6 +233,11 @@ public static class SettingsTransfer
             throw new InvalidDataException("The server list in this file is damaged.", ex);
         }
 
+        if (servers.Any(s => s is null || string.IsNullOrWhiteSpace(s.Id)))
+        {
+            throw new InvalidDataException("The server list in this file is damaged.");
+        }
+
         var files = new Dictionary<string, ServerConfigFiles>(StringComparer.Ordinal);
         foreach (var s in servers)
         {
@@ -256,7 +261,7 @@ public static class SettingsTransfer
         }
 
         var secrets = manifest?["includesSecrets"] is JsonValue v && v.TryGetValue<bool>(out var b) && b;
-        return new(format, manifest?["appVersion"]?.GetValue<string>(), secrets, settings, servers, files, chats);
+        return new(format, Str(manifest?["appVersion"]), secrets, settings, servers, files, chats);
     }
 
     /// <summary>Compares the package with what is here. Nothing is written.</summary>
@@ -305,7 +310,8 @@ public static class SettingsTransfer
     /// Applies the plan: merges the ticked settings, registers servers as decided and writes their automation/Discord files.
     /// Settings missing from the package keep their current value; existing chats are never replaced.
     /// </summary>
-    public static SettingsImportResult Apply(SettingsPackage package, SettingsImportPlan plan, string dataRoot, ServerRegistry registry, Func<string?, string?> protect)
+    /// <param name="validate">Checks the merged settings before they are written; a rejected merge leaves settings.json untouched.</param>
+    public static SettingsImportResult Apply(SettingsPackage package, SettingsImportPlan plan, string dataRoot, ServerRegistry registry, Func<string?, string?> protect, Func<JsonObject, bool>? validate = null)
     {
         var settingsFile = Path.Combine(dataRoot, "settings.json");
         JsonObject? merged = null;
@@ -319,7 +325,7 @@ public static class SettingsTransfer
                 var value = imported[c.Key]?.DeepClone();
                 if (ProtectedKeys.Contains(c.Key))
                 {
-                    value = protect(value?.GetValue<string>()) is { } p ? JsonValue.Create(p) : null;
+                    value = protect(Str(value)) is { } p ? JsonValue.Create(p) : null;
                     if (value is null)
                     {
                         continue;
@@ -328,6 +334,11 @@ public static class SettingsTransfer
 
                 merged[c.Key] = value;
                 applied++;
+            }
+
+            if (validate is not null && !validate(merged))
+            {
+                throw new InvalidDataException("The settings in this file are not valid for this version of PackCheck.");
             }
 
             Directory.CreateDirectory(dataRoot);
@@ -348,7 +359,7 @@ public static class SettingsTransfer
                 continue;
             }
 
-            var def = item.Imported with { Directory = Path.GetFullPath(dir) };
+            var def = item.Imported with { Directory = Path.GetFullPath(dir), JavaPath = SafeJava(item.Imported.JavaPath), JarFile = Path.GetFileName(item.Imported.JarFile) };
             switch (item.Action)
             {
                 case ServerImportAction.Replace:
@@ -434,6 +445,18 @@ public static class SettingsTransfer
 
         return written;
     }
+
+    /// <summary>
+    /// The package decides which program runs when the server starts, so only a path to java(w).exe is kept;
+    /// anything else falls back to "java" and the user picks a runtime in the server settings.
+    /// </summary>
+    public static string SafeJava(string? javaPath)
+    {
+        var name = Path.GetFileName(javaPath ?? string.Empty);
+        return name.Equals("java.exe", StringComparison.OrdinalIgnoreCase) || name.Equals("javaw.exe", StringComparison.OrdinalIgnoreCase) ? javaPath! : "java";
+    }
+
+    private static string? Str(JsonNode? n) => n is JsonValue v && v.TryGetValue<string>(out var s) ? s : null;
 
     private static string UniqueName(string name, List<ServerDefinition> list)
     {
