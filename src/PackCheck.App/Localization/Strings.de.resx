@@ -531,6 +531,28 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Dieser PC hat keinen freien Speicher mehr.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} ist bereit. Starte den Server erneut.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} deaktiviert. Starte den Server erneut.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Klonen</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Server klonen</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Kopiert diesen Server in einen neuen Ordner daneben. Logs, Absturzberichte, Caches und Backups werden ausgelassen.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Welten mitkopieren</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Klonen</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Wird kopiert…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} wurde erstellt.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Klonen fehlgeschlagen: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Wähle einen Port zwischen 1024 und 65535.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} Kopie</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Als Vorlage speichern</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Name der Vorlage</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Vorlage {0} gespeichert (ohne Welten).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Vorlage fehlgeschlagen: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Vorlagen</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Starte von einem gespeicherten Server: gleiche Plattform, Version, Einstellungen, Plugins und Mods, ohne Welten.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Aus Vorlage erstellen</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Vorlage {0} löschen?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Bereits daraus erstellte Server sind nicht betroffen.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Version ändern</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft-Version upgraden</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Wähle eine neuere Version. PackCheck prüft zuerst alle Plugins und Mods, erstellt ein angeheftetes Komplett-Backup, installiert die neue Version, aktualisiert was möglich ist über Modrinth und startet den Server testweise. Schlägt der Test fehl, stellt ein Klick alles wieder her.</value></data>

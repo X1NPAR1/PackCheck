@@ -531,6 +531,28 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Клонировать</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Клонирование сервера</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Копирует сервер в новую папку рядом. Журналы, отчёты о сбоях, кэш и резервные копии не копируются.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Имя</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Копировать миры</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Порт</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Клонировать</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Копирование…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} создан.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Не удалось клонировать: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Выберите порт от 1024 до 65535.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} копия</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Сохранить как шаблон</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Имя шаблона</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Шаблон {0} сохранён (без миров).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Ошибка шаблона: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Шаблоны</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Начните с сохранённого сервера: та же платформа, версия, настройки, плагины и моды, без миров.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Создать из шаблона</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Удалить шаблон {0}?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Уже созданные из него серверы не затрагиваются.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Сменить версию</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Обновление версии Minecraft</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Выберите более новую версию. PackCheck проверит плагины и моды, сделает закреплённую полную копию, установит версию, обновит что сможет через Modrinth и выполнит тестовый запуск. Если тест не пройдёт, всё вернётся одним кликом.</value></data>
