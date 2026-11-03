@@ -25,7 +25,13 @@ public sealed class UpgradeTests : IDisposable
 
     private ServerDefinition Def(ServerPlatform p, string version) => new()
     {
-        Id = "u", Name = "U", Directory = _dir, Platform = p, MinecraftVersion = version, JarFile = "server.jar", JavaPath = "java",
+        Id = "u",
+        Name = "U",
+        Directory = _dir,
+        Platform = p,
+        MinecraftVersion = version,
+        JarFile = "server.jar",
+        JavaPath = "java",
     };
 
     [Theory]

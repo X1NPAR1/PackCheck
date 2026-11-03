@@ -1,0 +1,26 @@
+# CodeRabbit: automatic review of every pull request (free for public repositories).
+language: tr-TR
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  path_filters:
+    - "!site/media/**"
+    - "!docs/media/**"
+    - "!src/PackCheck.App/Localization/*.resx"
+    - "!**/*.png"
+    - "!**/*.webp"
+    - "!**/*.gif"
+  path_instructions:
+    - path: "src/**/*.cs"
+      instructions: "WPF MVVM app on .NET 10 with CommunityToolkit. Check thread safety (dispatcher), file paths staying inside the server folder, async exception handling and that every UI string goes through Loc."
+    - path: "tools/strings.py"
+      instructions: "Each key needs five translations in the order en, tr, de, fr, ru. Check that placeholders like {0} match in every language."
+  auto_review:
+    enabled: true
+    drafts: false
+chat:
+  auto_reply: true
