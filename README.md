@@ -7,14 +7,14 @@
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
 </p>
 
-<p align="center"><b>Current version: 3.3.1</b> · <a href="CHANGELOG.md">changelog</a></p>
+<p align="center"><b>Current version: 3.4.0</b> · <a href="CHANGELOG.md">changelog</a></p>
 
 <p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.3.1" src="https://img.shields.io/badge/download-v3.3.1-5E9A3E"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.4.0" src="https://img.shields.io/badge/download-v3.4.0-5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
@@ -91,6 +91,8 @@ Static checks never execute plugin code. A real startup test is available, but y
 - 18 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer, Arclight, and the proxies Velocity and BungeeCord. Version lists come from each project's own API, so only versions with a real download appear.
 - Downloads are hash-verified wherever the source publishes a hash; Forge, NeoForge, Quilt and BuildTools run automatically.
 - The right Java (8, 17, 21 or 25) is installed automatically from Eclipse Temurin before a server starts.
+- **Modpacks**: install a Modrinth modpack (search or a .mrpack file) or a CurseForge modpack zip (needs a CurseForge key) as a ready server with the loader version the pack asks for. Pack files are hash-verified and downloads are limited to the hosts the formats allow.
+- **Clone and templates**: clone a server with or without its worlds (new folder, free port), or save it as a template and create new servers from it in the wizard.
 - Create wizard with ready-made profiles (survival with friends, modded, creative, minigames, hardcore, low-end PC), platform cards, RAM slider (1–256 GB, warns when it leaves too little for Windows), CPU core limit (up to 64), game rules (game mode, difficulty, players, view distance, PvP, whitelist, online mode, hardcore, MOTD), a free port chosen for you and a live capacity estimate.
 - Change memory, CPU cores and garbage-collector flags later; see PID, threads, handles and the exact Java start command.
 - Delete a server for good from its page, with two confirmations (backups are kept).
@@ -148,6 +150,7 @@ Static checks never execute plugin code. A real startup test is available, but y
 - Middle click or Ctrl+W closes the open dialog, panel or server tab · Ctrl+Tab cycles server tabs · Ctrl+1…9 opens side-menu pages · Ctrl+, settings · F1 lists all shortcuts.
 
 **Online**
+- **Tunnel without port forwarding**: start an official playit.gg agent from the Online page (verified download, its own private instance), link your playit account once and share the address. It works behind CGNAT.
 - Open a server to the internet: a firewall rule (after you approve the Windows prompt) and UPnP forwarding on the router.
 - Copy the public address, get A and SRV records for your own domain, optionally keep a DuckDNS name up to date.
 - When the router refuses automatic forwarding, a step-by-step guide shows the exact values to enter, links to the router page and explains CGNAT, double routers and NAT loopback.
@@ -165,6 +168,9 @@ Static checks never execute plugin code. A real startup test is available, but y
 
 **App**
 - EXE and MSI installers, per-user, no admin rights needed.
+- In-app updates resume an interrupted download and retry on network errors; after an update a "What's new" window shows the release notes once.
+- Export and import PackCheck's settings, server list, automations and Discord settings as one file. Secrets are left out unless you include them, and a preview shows what will change.
+- The console stays smooth with thousands of lines per second (lines are added in batches).
 - English, Turkish, German, French and Russian, switchable instantly.
 - Dark and light themes (or follow Windows); Full, Reduced or Off animations.
 - Runs in the system tray with a menu that shows every server's state and starts or stops them; optionally starts with Windows.
@@ -209,7 +215,7 @@ packcheck version
 Example output:
 
 ```text
-PackCheck 3.3.1 - demo-pack
+PackCheck 3.4.0 - demo-pack
   [FAIL ] PC040 Missing dependency: 'EconomyShop' requires 'ProtocolLib', which is not installed. The plugin will not enable.
            plugin.yml: depend: [Vault, ProtocolLib]
            fix: Install 'ProtocolLib' or remove 'EconomyShop'.
