@@ -197,7 +197,7 @@ public sealed partial class ServerItemViewModel
         {
         }
 
-        return _all.Count(e => e.Message.Contains("Can't keep up!", StringComparison.Ordinal));
+        return _console.All.Count(e => e.Message.Contains("Can't keep up!", StringComparison.Ordinal));
     }
 
     private string? SparkJar()

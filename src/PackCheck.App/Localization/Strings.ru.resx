@@ -483,6 +483,7 @@
   <data name="Tool_Empty" xml:space="preserve"><value>(пусто)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} токенов</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} токенов</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} токенов · {1:N0} из кэша</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Спрашивать</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>План</value></data>
@@ -1140,4 +1141,52 @@ F1 · этот список
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Текущие миры оставлены, как выбрано.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Понижение версии завершено.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Перед понижением {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Экспорт / импорт</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Сохраните настройки, список серверов и настройки автоматизации и Discord каждого сервера в один файл и загрузите их на другом ПК. Файлы серверов и миры не входят.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Включить чаты ассистента</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Включить секреты (ключ ИИ, ключ CurseForge, токен DuckDNS, вебхуки Discord)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Внимание: ключи зашифрованы только для вашего пользователя Windows, поэтому в файл они записываются открытым текстом и снова шифруются при импорте. Любой, у кого есть файл, сможет их использовать; храните его в тайне.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Экспорт…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>Импорт…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Настройки экспортированы.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>Экспортировано серверов: {0}, файлов автоматизации/Discord: {1}, чатов: {2}.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Не удалось завершить: {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>Изменений настроек: {0}, серверов: {1} (без папки на этом ПК: {2}), новых чатов: {3}. Ничего не меняется, пока вы не нажмёте «Импортировать выбранное».</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Файл содержит секреты; они будут зашифрованы для вашего пользователя Windows.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Изменяемые настройки (снимите флажок, чтобы оставить свои)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Ваши настройки уже совпадают.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Серверы</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>В файле нет серверов.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Этой папки нет на этом ПК. Укажите, где находится сервер, или пропустите его.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>Заменить настройки автоматизации и Discord, уже имеющиеся в этой папке</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Уже есть здесь как «{0}». Выберите действие.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>«{0}» уже использует эту папку. Выберите действие.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Добавить</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Пропустить</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Оставить мой (пропустить)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Заменить мой</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Добавить как копию</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Импортировать выбранное</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>Остановите «{0}» перед заменой.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>Выберите папку для «{0}»</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>Импорт завершён.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>Применено настроек: {0}; серверы: добавлено {1}, заменено {2}, пропущено {3}; добавлено чатов: {4}.</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Перезапустите PackCheck, чтобы применить язык и тему.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Туннель (без проброса портов)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Использует бесплатный агент playit.gg (официальный релиз, проверка SHA-256). Друзья подключаются через адрес playit, поэтому это работает и за CGNAT. Агент работает, только пока открыт PackCheck.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Запустить туннель</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Остановить</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Не запущен</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Загрузка агента playit…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Запуск…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Ожидание привязки аккаунта playit (шаг 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Агент работает</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Остановлен с ошибкой; смотрите журнал</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Привяжите аккаунт (claim): откройте ссылку и подтвердите этот агент в аккаунте playit.gg (нужно только в первый раз).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Открыть ссылку ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>На playit.gg добавьте туннель «Minecraft Java», указывающий на</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>Туннели playit.gg ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Адрес для друзей (заполнится, когда агент его сообщит; иначе вставьте с playit.gg):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Показать / скрыть журнал агента</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Использовать туннель playit ↓</value></data>
 </root>

@@ -72,6 +72,15 @@ public sealed class AppSettings
         return new AppSettings();
     }
 
+    /// <summary>Takes every value from <paramref name="other"/>, so the shared instance reflects an imported settings file.</summary>
+    public void CopyFrom(AppSettings other)
+    {
+        foreach (var p in typeof(AppSettings).GetProperties().Where(p => p.CanRead && p.CanWrite))
+        {
+            p.SetValue(this, p.GetValue(other));
+        }
+    }
+
     public void Save()
     {
         Directory.CreateDirectory(AppPaths.DataRoot);

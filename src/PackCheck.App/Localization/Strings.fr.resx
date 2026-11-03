@@ -483,6 +483,7 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Tool_Empty" xml:space="preserve"><value>(vide)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} jetons</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} jetons</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} jetons · {1:N0} en cache</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Demander avant</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -1140,4 +1141,52 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Mondes actuels conservés comme demandé.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Retour de version terminé.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Avant retour de version {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Exporter / Importer</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Enregistrez les paramètres, la liste des serveurs et les réglages d'automatisation et Discord de chaque serveur dans un seul fichier, puis chargez-les sur un autre PC. Les fichiers des serveurs et les mondes ne sont pas inclus.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Inclure les conversations de l'assistant</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Inclure les secrets (clé IA, clé CurseForge, jeton DuckDNS, webhooks Discord)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Attention : les clés ne sont chiffrées que pour votre utilisateur Windows ; elles sont donc écrites en clair dans le fichier et chiffrées à nouveau à l'import. Toute personne ayant le fichier peut les utiliser ; gardez-le privé.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Exporter…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>Importer…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Paramètres exportés.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>{0} serveur(s), {1} fichier(s) d'automatisation/Discord, {2} conversation(s) exportés.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Impossible de terminer : {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>{0} modification(s) de paramètre, {1} serveur(s) (dont {2} avec un dossier absent ici), {3} nouvelle(s) conversation(s). Rien ne change avant « Importer la sélection ».</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Ce fichier contient des secrets ; ils seront chiffrés pour votre utilisateur Windows.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Paramètres modifiés (décochez pour garder les vôtres)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Vos paramètres sont déjà identiques.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Serveurs</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>Aucun serveur dans ce fichier.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Ce dossier n'existe pas sur ce PC. Choisissez où se trouve le serveur ou ignorez-le.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>Remplacer les réglages d'automatisation et Discord déjà présents dans ce dossier</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Déjà présent ici sous « {0} ». Choisissez quoi faire.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>« {0} » utilise déjà ce dossier. Choisissez quoi faire.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Ajouter</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Ignorer</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Garder le mien (ignorer)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Remplacer le mien</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Ajouter comme copie</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Importer la sélection</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>Arrêtez « {0} » avant de le remplacer.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>Choisir le dossier de « {0} »</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>Importation terminée.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>{0} paramètre(s) appliqué(s) ; serveurs : {1} ajouté(s), {2} remplacé(s), {3} ignoré(s) ; {4} conversation(s) ajoutée(s).</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Redémarrez PackCheck pour appliquer la langue et le thème.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (sans redirection de port)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Utilise l'agent gratuit playit.gg (version officielle, vérifiée par SHA-256). Vos amis passent par l'adresse de playit, donc cela marche aussi derrière un CGNAT. L'agent ne tourne que tant que PackCheck est ouvert.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Démarrer le tunnel</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Arrêté</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Téléchargement de l'agent playit…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Démarrage…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>En attente de la liaison de votre compte playit (étape 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent en marche</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Arrêté sur une erreur ; voir le journal</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Liez votre compte (claim) : ouvrez le lien et approuvez cet agent dans votre compte playit.gg (seulement la première fois).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Ouvrir le lien ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>Sur playit.gg, ajoutez un tunnel « Minecraft Java » qui pointe vers</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>Tunnels playit.gg ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse pour vos amis (remplie quand l'agent la signale ; sinon collez-la depuis playit.gg) :</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Afficher / masquer le journal de l'agent</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Utiliser le tunnel playit ↓</value></data>
 </root>
