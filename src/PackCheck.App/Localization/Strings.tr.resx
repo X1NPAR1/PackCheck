@@ -1040,6 +1040,11 @@ Bunlar çevrimdışı modda çalışacak, sadece 127.0.0.1'i dinleyecek ve proxy
   <data name="Update_Starting" xml:space="preserve"><value>Kurulum başlatılıyor; PackCheck kapanıp yeniden açılacak…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Güncelleme indiriliyor… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Güncelleme kurulamadı: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>{0} sürümünde neler yeni</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck güncellendi. Değişenler aşağıda.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Tüm sürüm notları</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Tamam</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Sürüm notları yüklenemedi. Tüm notları GitHub'da açabilirsiniz.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Yenilikler</value></data>
   <data name="About_Version" xml:space="preserve"><value>Sürüm {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck Minecraft Java sunucularını oluşturur, çalıştırır ve doğrular. Statik kontroller kanıta dayanır ve eklenti kodunu asla çalıştırmaz.</value></data>

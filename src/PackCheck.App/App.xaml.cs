@@ -158,6 +158,9 @@ public partial class App : Application
         // Step 5: updates (never blocks startup for long; offline = no update)
         splash.Report(0.76, Loc.T("Splash_Updates"));
         var updates = Services.GetRequiredService<UpdateService>();
+
+        // Read before the update check, which rewrites the state file.
+        var whatsNew = await updates.TakeWhatsNewAsync(TimeSpan.FromSeconds(4), CancellationToken.None).ConfigureAwait(true);
         var decision = await updates.CheckAsync(settings.AutoUpdate, TimeSpan.FromSeconds(6), CancellationToken.None).ConfigureAwait(true);
         Log.Information("Update check: {Action} {Tag}", decision.Action, decision.Release?.Tag);
 
@@ -231,7 +234,19 @@ public partial class App : Application
             main.FadeIn();
         }
 
-        await Services.GetRequiredService<MainViewModel>().HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
+        if (whatsNew is not null)
+        {
+            Log.Information("Showing what's new for {Version}", whatsNew.Version);
+            var closed = shell.ShowWhatsNewAsync(whatsNew);
+
+            // A minimized start (with Windows) must not hold back a pending update until the window opens.
+            if (!minimized)
+            {
+                await closed.ConfigureAwait(true);
+            }
+        }
+
+        await shell.HandleUpdateDecisionAsync(decision).ConfigureAwait(true);
     }
 
     private void OnUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)

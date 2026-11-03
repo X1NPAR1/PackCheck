@@ -63,9 +63,16 @@ public sealed class GitHubReleaseClient(HttpClient http, string owner = GitHubRe
         _ => assetName.Equals(AssetName, StringComparison.OrdinalIgnoreCase),
     };
 
-    public async Task<ReleaseInfo?> GetLatestAsync(CancellationToken ct)
+    public Task<ReleaseInfo?> GetLatestAsync(CancellationToken ct) =>
+        GetAsync(new Uri($"https://api.github.com/repos/{owner}/{repo}/releases/latest"), ct);
+
+    /// <summary>The release published for one version tag (v1.2.3), or null when it does not exist.</summary>
+    public Task<ReleaseInfo?> GetByVersionAsync(Version version, CancellationToken ct) =>
+        GetAsync(new Uri($"https://api.github.com/repos/{owner}/{repo}/releases/tags/v{version.ToString(3)}"), ct);
+
+    private async Task<ReleaseInfo?> GetAsync(Uri url, CancellationToken ct)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"https://api.github.com/repos/{owner}/{repo}/releases/latest"));
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PackCheck", UpdateService.CurrentVersion.ToString(3)));
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
         using var response = await http.SendAsync(request, ct).ConfigureAwait(false);

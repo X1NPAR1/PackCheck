@@ -1040,6 +1040,11 @@
   <data name="Update_Starting" xml:space="preserve"><value>Запуск установки; PackCheck закроется и откроется снова…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Загрузка обновления… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Не удалось установить обновление: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>Что нового в {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck обновлён. Вот что изменилось.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Полные примечания к выпуску</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Понятно</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Не удалось загрузить примечания к выпуску. Откройте полные примечания на GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Что нового</value></data>
   <data name="About_Version" xml:space="preserve"><value>Версия {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck создаёт, запускает и проверяет серверы Minecraft Java. Статические проверки основаны на фактах и никогда не запускают код плагинов.</value></data>

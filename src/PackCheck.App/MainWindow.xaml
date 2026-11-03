@@ -205,6 +205,32 @@
             </Border>
         </Grid>
 
+        <!-- What's new (once after an update) -->
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource OverlayBrush}" Visibility="{Binding WhatsNew, Converter={StaticResource NullVis}}"
+              AutomationProperties.AutomationId="WhatsNewDialog">
+            <Border Style="{StaticResource Card}" Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="26" l:Anim.PopIn="True">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/cube-256.png" Width="40" Height="40" />
+                        <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding WhatsNewTitle}" Style="{StaticResource H2}" />
+                            <TextBlock Text="{l:Loc WhatsNew_Subtitle}" Style="{StaticResource Muted}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Border Background="{DynamicResource Surface2Brush}" CornerRadius="7" Padding="12" Margin="0,18,0,0" MaxHeight="340">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <RichTextBox l:Markdown.Source="{Binding WhatsNewNotes, Mode=OneWay}" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0" Background="Transparent"
+                                         Padding="0" MinHeight="0" FontSize="13" VerticalScrollBarVisibility="Disabled" AutomationProperties.AutomationId="WhatsNewNotes" />
+                        </ScrollViewer>
+                    </Border>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                        <Button Content="{l:Loc WhatsNew_FullNotes}" Style="{StaticResource GhostButton}" Command="{Binding OpenWhatsNewPageCommand}" Margin="0,0,8,0" AutomationProperties.AutomationId="WhatsNewLink" />
+                        <Button Content="{l:Loc WhatsNew_Close}" Style="{StaticResource PrimaryButton}" Command="{Binding CloseWhatsNewCommand}" IsDefault="True" IsCancel="True" AutomationProperties.AutomationId="WhatsNewClose" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <!-- Text prompt -->
         <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource OverlayBrush}" Visibility="{Binding Prompt, Converter={StaticResource NullVis}}">
             <Border Style="{StaticResource Card}" Width="440" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="24" l:Anim.PopIn="True">

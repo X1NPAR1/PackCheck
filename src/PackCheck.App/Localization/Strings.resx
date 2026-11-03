@@ -1040,6 +1040,11 @@ They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's fo
   <data name="Update_Starting" xml:space="preserve"><value>Starting the installer; PackCheck will close and reopen…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Downloading update… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>The update could not be installed: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>What's new in {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck was updated. Here is what changed.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Full release notes</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Got it</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>The release notes could not be loaded. Open the full release notes on GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>What's new</value></data>
   <data name="About_Version" xml:space="preserve"><value>Version {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck creates, runs and validates Minecraft Java servers. Static checks are evidence-based and never execute plugin code.</value></data>
