@@ -173,6 +173,28 @@ Yine de uygulansın mı?</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>PackCheck'i aç</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Çıkış</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck tepside çalışmaya devam ediyor. Sunucuların çalışmayı sürdürüyor.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Sunucu yazılımı</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Modrinth'te ara</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>Dosyadan…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Modpack sürümü</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>Loader ve Minecraft sürümü modpack'ten alınır. Yalnız istemci modları atlanır; her dosya hash ile doğrulanır.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Modpack'ler aranıyor…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Modrinth'e ulaşılamadı: {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>Modpack bulunamadı.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Sürümler yükleniyor…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>Bu modpack'in .mrpack sürümü yok.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpack'ler (.mrpack, CurseForge .zip)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Önce bir modpack sürümü ya da dosya seç.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Modpack indiriliyor…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge modpack'leri için CurseForge API anahtarın gerekir. Ayarlar'dan ekle ya da paketin sunucu dosyalarını kullan.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Mod dosyaları indiriliyor: {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>CurseForge'da dosyalar bulunuyor: {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>{0} projesinin CurseForge dosyası bulunamadı: {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Mod dosyaları indiriliyor…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Modpack yapılandırması kopyalanıyor…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>Modpack'in loader sürümü bulunamadı; varsayılan sürüm kuruluyor (packcheck-install.log'a bak).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Platform kurulumu çalışıyor…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Genel bakış</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
@@ -483,6 +505,7 @@ Hayır: açık bırakıp çık.
   <data name="Tool_Empty" xml:space="preserve"><value>(boş)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} token</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} token</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} token · {1:N0} önbellekten</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Değişiklikte sor</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -531,6 +554,29 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Sunucuyu kopyala</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Bu sunucuyu yanındaki yeni bir klasöre kopyalar. Günlükler, çökme raporları, önbellekler ve yedekler kopyalanmaz.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Dünyaları da kopyala</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Kopyalanıyor…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} oluşturuldu.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Kopyalanamadı: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>1024 ile 65535 arasında bir port seç.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>Sunucu çalışıyor; kopyalanan dünyalarda son değişiklikler eksik olabilir veya farklı kayıt anları karışabilir. Tam bir kopya için önce sunucuyu durdur ya da yine de devam et.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} kopya</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Şablon olarak kaydet</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Şablon adı</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>{0} şablonu kaydedildi (dünyalar hariç).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Şablon işlemi başarısız: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Şablonlar</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Kayıtlı bir sunucudan başla: aynı platform, sürüm, ayarlar, eklentiler ve modlar, dünyalar olmadan.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Şablondan oluştur</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>{0} şablonu silinsin mi?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Bu şablondan oluşturulmuş sunucular etkilenmez.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Sürüm değiştir</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft sürümünü yükselt</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Daha yeni bir sürüm seç. PackCheck önce her eklentiyi ve modu kontrol eder, sabitlenmiş tam yedek alır, yeni sürümü kurar, Modrinth'ten güncellenebilenleri günceller ve sunucuyu deneme olarak başlatır. Deneme başarısız olursa tek tıkla her şey geri alınır.</value></data>
@@ -1040,6 +1086,11 @@ Bunlar çevrimdışı modda çalışacak, sadece 127.0.0.1'i dinleyecek ve proxy
   <data name="Update_Starting" xml:space="preserve"><value>Kurulum başlatılıyor; PackCheck kapanıp yeniden açılacak…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Güncelleme indiriliyor… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Güncelleme kurulamadı: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>{0} sürümünde neler yeni</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck güncellendi. Değişenler aşağıda.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Tüm sürüm notları</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Tamam</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Sürüm notları yüklenemedi. Tüm notları GitHub'da açabilirsiniz.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Yenilikler</value></data>
   <data name="About_Version" xml:space="preserve"><value>Sürüm {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck Minecraft Java sunucularını oluşturur, çalıştırır ve doğrular. Statik kontroller kanıta dayanır ve eklenti kodunu asla çalıştırmaz.</value></data>
@@ -1117,4 +1168,52 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>İstendiği gibi mevcut dünyalar tutuluyor.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Sürüm düşürme tamamlandı.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Sürüm düşürmeden önce {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Dışa / İçe aktar</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Ayarları, sunucu listesini ve her sunucunun otomasyon ve Discord ayarlarını tek dosyaya kaydedin, başka bir bilgisayarda yükleyin. Sunucu dosyaları ve dünyalar dahil değildir.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Asistan sohbetlerini dahil et</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Gizli bilgileri dahil et (AI anahtarı, CurseForge anahtarı, DuckDNS jetonu, Discord webhook'ları)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Uyarı: anahtarlar yalnızca sizin Windows kullanıcınız için şifrelidir, bu yüzden dosyaya düz metin olarak yazılır ve içe aktarırken yeniden şifrelenir. Dosyaya sahip olan herkes bunları kullanabilir; dosyayı gizli tutun.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>İçe aktar…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Ayarlar dışa aktarıldı.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>{0} sunucu, {1} otomasyon/Discord dosyası, {2} sohbet dışa aktarıldı.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Tamamlanamadı: {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>{0} ayar değişikliği, {1} sunucu (bu bilgisayarda klasörü olmayan {2}), {3} yeni sohbet. Seçilenleri içe aktar'a basana kadar hiçbir şey değişmez.</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Bu dosya gizli bilgiler içeriyor; Windows kullanıcınız için şifrelenecek.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Değişecek ayarlar (sizinkini korumak için işareti kaldırın)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Ayarlarınız zaten aynı.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Sunucular</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>Bu dosyada sunucu yok.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Bu klasör bu bilgisayarda yok. Sunucunun nerede olduğunu seçin ya da atlayın.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>O klasördeki mevcut otomasyon ve Discord ayarlarının yerine yaz</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Burada zaten "{0}" olarak var. Ne yapılacağını seçin.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>"{0}" bu klasörü zaten kullanıyor. Ne yapılacağını seçin.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Ekle</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Atla</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Benimkini koru (atla)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Benimkinin yerine yaz</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Kopya olarak ekle</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Seçilenleri içe aktar</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>"{0}" sunucusunu yerine yazmadan önce durdurun.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>"{0}" için klasör seçin</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>İçe aktarma tamamlandı.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>{0} ayar uygulandı; sunucular: {1} eklendi, {2} yerine yazıldı, {3} atlandı; {4} sohbet eklendi.</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Dil ve temanın uygulanması için PackCheck'i yeniden başlatın.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tünel (port yönlendirmesiz)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Ücretsiz playit.gg programını kullanır (resmi sürüm, SHA-256 ile doğrulanır). Arkadaşların playit'in verdiği adresle bağlanır; bu yüzden CGNAT arkasında da çalışır. Program yalnız PackCheck açıkken çalışır.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Tüneli başlat</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Durdur</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Çalışmıyor</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>playit programı indiriliyor…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Başlatılıyor…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>playit hesabını bağlaman bekleniyor (1. adım)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Program çalışıyor</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Hatayla durdu; günlüğe bak</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Hesabını bağla (claim): bağlantıyı aç ve bu programı playit.gg hesabında onayla (yalnız ilk seferde gerekir).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Bağlantıyı aç ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>playit.gg'de şu adrese giden bir "Minecraft Java" tüneli ekle:</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg tünelleri ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Arkadaşlarının adresi (program bildirince dolar; bildirmezse playit.gg'den yapıştır):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Program günlüğünü göster / gizle</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit tünelini kullan ↓</value></data>
 </root>

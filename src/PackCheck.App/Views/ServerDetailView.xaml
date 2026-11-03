@@ -117,6 +117,8 @@
                 <Button Command="{Binding KillCommand}" Content="{l:Loc Servers_Kill}" Style="{StaticResource DangerButton}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
                 <Button Command="{Binding OpenUpgradeCommand}" Content="{l:Loc Upgrade_Button}" Margin="0,0,6,0" Visibility="{Binding IsBusy, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="OpenUpgrade" />
                 <Button Command="{Binding ValidateServerCommand}" Content="{l:Loc Servers_Validate}" Margin="0,0,6,0" />
+                <Button Command="{Binding OpenCloneCommand}" Content="{l:Loc Clone_Button}" Margin="0,0,6,0" AutomationProperties.AutomationId="CloneServer" />
+                <Button Command="{Binding SaveTemplateCommand}" Content="{l:Loc Template_Save}" Margin="0,0,6,0" AutomationProperties.AutomationId="SaveTemplate" />
                 <Button Command="{Binding OpenFolderCommand}" Style="{StaticResource GhostButton}" ToolTip="{l:Loc Common_OpenFolder}" AutomationProperties.Name="{l:Loc Common_OpenFolder}">
                     <Path Data="{StaticResource IconFolder}" Style="{StaticResource IconPath}" Stroke="{DynamicResource TextMutedBrush}" />
                 </Button>
@@ -1418,5 +1420,24 @@
                 </Border>
             </StackPanel>
         </ScrollViewer>
+        <!-- Clone dialog -->
+        <Grid Grid.RowSpan="3" Background="{DynamicResource OverlayBrush}" Visibility="{Binding IsCloneOpen, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="CloneDialog">
+            <Border Style="{StaticResource Card}" Width="440" HorizontalAlignment="Center" VerticalAlignment="Center" l:Anim.PopIn="True">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Clone_Title}" Style="{StaticResource H2}" FontSize="18" />
+                    <TextBlock Text="{l:Loc Clone_Hint}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,12" />
+                    <TextBlock Text="{l:Loc Clone_Name}" Style="{StaticResource Label}" />
+                    <TextBox Text="{Binding CloneName, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{l:Loc Clone_Name}" AutomationProperties.AutomationId="CloneName" Margin="0,0,0,10" />
+                    <TextBlock Text="{l:Loc Clone_Port}" Style="{StaticResource Label}" />
+                    <TextBox Text="{Binding ClonePort, UpdateSourceTrigger=PropertyChanged}" Width="120" HorizontalAlignment="Left" AutomationProperties.Name="{l:Loc Clone_Port}" AutomationProperties.AutomationId="ClonePort" Margin="0,0,0,10" />
+                    <CheckBox Content="{l:Loc Clone_Worlds}" IsChecked="{Binding CloneWorlds}" AutomationProperties.AutomationId="CloneWorlds" Margin="0,0,0,14" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="{l:Loc Clone_Working}" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,12,0" Visibility="{Binding IsCloning, Converter={StaticResource BoolVis}}" />
+                        <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCloneCommand}" Margin="0,0,8,0" />
+                        <Button Content="{l:Loc Clone_Start}" Style="{StaticResource PrimaryButton}" Command="{Binding ConfirmCloneCommand}" AutomationProperties.AutomationId="CloneConfirm" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

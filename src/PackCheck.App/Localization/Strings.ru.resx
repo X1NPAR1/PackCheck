@@ -173,6 +173,28 @@
   <data name="Tray_Open" xml:space="preserve"><value>Открыть PackCheck</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Выход</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck продолжает работать в трее. Ваши серверы продолжают работу.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Серверное ПО</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Сборка модов</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Сборка модов</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Искать на Modrinth</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>Из файла…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Версия сборки</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>Загрузчик и версия Minecraft берутся из сборки. Клиентские моды пропускаются; каждый файл проверяется по хешу.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Поиск сборок…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Не удалось связаться с Modrinth: {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>Сборки не найдены.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Загрузка версий…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>У этой сборки нет версии .mrpack.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Сборки (.mrpack, CurseForge .zip)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Сначала выберите версию сборки или файл.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Загрузка сборки…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>Для сборок CurseForge нужен ваш API-ключ CurseForge. Добавьте его в настройках или используйте серверные файлы сборки.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Загрузка файлов модов: {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>Поиск файлов на CurseForge: {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>Не удалось получить файл CurseForge проекта {0}: {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Загрузка файлов модов…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Копирование настроек сборки…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>Версия загрузчика из сборки недоступна; устанавливается версия по умолчанию (см. packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Запуск установщика платформы…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Обзор</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
@@ -483,6 +505,7 @@
   <data name="Tool_Empty" xml:space="preserve"><value>(пусто)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} токенов</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} токенов</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} токенов · {1:N0} из кэша</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Спрашивать</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>План</value></data>
@@ -531,6 +554,29 @@
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>На этом ПК больше нет свободной памяти.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} готова. Запустите сервер снова.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} отключён. Запустите сервер снова.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Клонировать</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Клонирование сервера</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Копирует сервер в новую папку рядом. Журналы, отчёты о сбоях, кэш и резервные копии не копируются.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Имя</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Копировать миры</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Порт</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Клонировать</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Копирование…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} создан.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Не удалось клонировать: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Выберите порт от 1024 до 65535.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>Сервер запущен, поэтому в скопированных мирах могут отсутствовать последние изменения или смешаться точки сохранения. Остановите сервер для точной копии или продолжите всё равно.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} копия</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Сохранить как шаблон</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Имя шаблона</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Шаблон {0} сохранён (без миров).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Ошибка шаблона: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Шаблоны</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Начните с сохранённого сервера: та же платформа, версия, настройки, плагины и моды, без миров.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Создать из шаблона</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Удалить шаблон {0}?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Уже созданные из него серверы не затрагиваются.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Сменить версию</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Обновление версии Minecraft</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Выберите более новую версию. PackCheck проверит плагины и моды, сделает закреплённую полную копию, установит версию, обновит что сможет через Modrinth и выполнит тестовый запуск. Если тест не пройдёт, всё вернётся одним кликом.</value></data>
@@ -1040,6 +1086,11 @@
   <data name="Update_Starting" xml:space="preserve"><value>Запуск установки; PackCheck закроется и откроется снова…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Загрузка обновления… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Не удалось установить обновление: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>Что нового в {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck обновлён. Вот что изменилось.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Полные примечания к выпуску</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Понятно</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Не удалось загрузить примечания к выпуску. Откройте полные примечания на GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Что нового</value></data>
   <data name="About_Version" xml:space="preserve"><value>Версия {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck создаёт, запускает и проверяет серверы Minecraft Java. Статические проверки основаны на фактах и никогда не запускают код плагинов.</value></data>
@@ -1117,4 +1168,52 @@ F1 · этот список
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Текущие миры оставлены, как выбрано.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Понижение версии завершено.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Перед понижением {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Экспорт / импорт</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Сохраните настройки, список серверов и настройки автоматизации и Discord каждого сервера в один файл и загрузите их на другом ПК. Файлы серверов и миры не входят.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Включить чаты ассистента</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Включить секреты (ключ ИИ, ключ CurseForge, токен DuckDNS, вебхуки Discord)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Внимание: ключи зашифрованы только для вашего пользователя Windows, поэтому в файл они записываются открытым текстом и снова шифруются при импорте. Любой, у кого есть файл, сможет их использовать; храните его в тайне.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Экспорт…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>Импорт…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Настройки экспортированы.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>Экспортировано серверов: {0}, файлов автоматизации/Discord: {1}, чатов: {2}.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Не удалось завершить: {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>Изменений настроек: {0}, серверов: {1} (без папки на этом ПК: {2}), новых чатов: {3}. Ничего не меняется, пока вы не нажмёте «Импортировать выбранное».</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Файл содержит секреты; они будут зашифрованы для вашего пользователя Windows.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Изменяемые настройки (снимите флажок, чтобы оставить свои)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Ваши настройки уже совпадают.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Серверы</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>В файле нет серверов.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Этой папки нет на этом ПК. Укажите, где находится сервер, или пропустите его.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>Заменить настройки автоматизации и Discord, уже имеющиеся в этой папке</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Уже есть здесь как «{0}». Выберите действие.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>«{0}» уже использует эту папку. Выберите действие.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Добавить</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Пропустить</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Оставить мой (пропустить)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Заменить мой</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Добавить как копию</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Импортировать выбранное</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>Остановите «{0}» перед заменой.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>Выберите папку для «{0}»</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>Импорт завершён.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>Применено настроек: {0}; серверы: добавлено {1}, заменено {2}, пропущено {3}; добавлено чатов: {4}.</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Перезапустите PackCheck, чтобы применить язык и тему.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Туннель (без проброса портов)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Использует бесплатный агент playit.gg (официальный релиз, проверка SHA-256). Друзья подключаются через адрес playit, поэтому это работает и за CGNAT. Агент работает, только пока открыт PackCheck.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Запустить туннель</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Остановить</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Не запущен</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Загрузка агента playit…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Запуск…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Ожидание привязки аккаунта playit (шаг 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Агент работает</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Остановлен с ошибкой; смотрите журнал</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Привяжите аккаунт (claim): откройте ссылку и подтвердите этот агент в аккаунте playit.gg (нужно только в первый раз).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Открыть ссылку ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>На playit.gg добавьте туннель «Minecraft Java», указывающий на</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>Туннели playit.gg ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Адрес для друзей (заполнится, когда агент его сообщит; иначе вставьте с playit.gg):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Показать / скрыть журнал агента</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Использовать туннель playit ↓</value></data>
 </root>

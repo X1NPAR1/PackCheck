@@ -51,6 +51,7 @@
                 <ListBoxItem Tag="SecUpdates"><TextBlock Text="{l:Loc Settings_Updates}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
                 <ListBoxItem Tag="SecServers"><TextBlock Text="{l:Loc Settings_SecServers}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
                 <ListBoxItem Tag="SecIntegrations"><TextBlock Text="{l:Loc Settings_SecIntegrations}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
+                <ListBoxItem Tag="SecTransfer"><TextBlock Text="{l:Loc Transfer_Title}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
                 <ListBoxItem Tag="SecJava"><TextBlock Text="Java" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" /></ListBoxItem>
             </ListBox>
             <TextBlock x:Name="NoMatch" Text="{l:Loc Settings_NoMatch}" Style="{StaticResource Muted}" FontSize="12.5" Margin="4,8,0,0" Visibility="Collapsed" TextWrapping="Wrap" />
@@ -177,6 +178,81 @@
                         <TextBlock Text="{l:Loc Settings_Network}" TextWrapping="Wrap" />
                     </CheckBox>
                     <TextBlock Text="{l:Loc Settings_Telemetry}" Style="{StaticResource Muted}" FontSize="12" Margin="0,18,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="SecTransfer" Style="{StaticResource Card}" Margin="0,0,0,14" AutomationProperties.AutomationId="TransferSettings">
+                <StackPanel>
+                    <TextBlock Text="{l:Loc Transfer_Title}" Style="{StaticResource H2}" FontSize="15" Margin="0,0,0,8" />
+                    <TextBlock Text="{l:Loc Transfer_Hint}" Style="{StaticResource Muted}" FontSize="12.5" TextWrapping="Wrap" Margin="0,0,0,12" />
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ExportIncludeChats}" AutomationProperties.AutomationId="TransferChats">
+                        <TextBlock Text="{l:Loc Transfer_IncludeChats}" TextWrapping="Wrap" />
+                    </CheckBox>
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ExportIncludeSecrets}" Margin="0,12,0,0" AutomationProperties.AutomationId="TransferSecrets">
+                        <TextBlock Text="{l:Loc Transfer_IncludeSecrets}" TextWrapping="Wrap" />
+                    </CheckBox>
+                    <TextBlock Text="{l:Loc Transfer_SecretsWarn}" Foreground="{DynamicResource WarnBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="{Binding ExportIncludeSecrets, Converter={StaticResource BoolVis}}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                        <Button Content="{l:Loc Transfer_Export}" Command="{Binding ExportSettingsCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.AutomationId="TransferExport" />
+                        <Button Content="{l:Loc Transfer_Import}" Command="{Binding ImportSettingsCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="TransferImport" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding TransferStatus}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0" Visibility="{Binding TransferStatus, Converter={StaticResource NullVis}}" AutomationProperties.AutomationId="TransferStatus" />
+
+                    <!-- Import preview: nothing is written until the import button below is pressed. -->
+                    <Border Visibility="{Binding HasImportPreview, Converter={StaticResource BoolVis}}" Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="14" Margin="0,14,0,0" AutomationProperties.AutomationId="TransferPreview">
+                        <StackPanel>
+                            <TextBlock Text="{Binding ImportSource}" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}" />
+                            <TextBlock Text="{Binding ImportSummary}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,10" AutomationProperties.AutomationId="TransferSummary" />
+
+                            <TextBlock Text="{l:Loc Transfer_SettingsHeader}" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                            <TextBlock Text="{l:Loc Transfer_NoSettingChanges}" Style="{StaticResource Muted}" FontSize="12" Visibility="{Binding ImportSettingChanges.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                            <ItemsControl ItemsSource="{Binding ImportSettingChanges}" AutomationProperties.AutomationId="TransferSettingList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Apply}" Margin="0,2" AutomationProperties.Name="{Binding Key}">
+                                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextBrush}">
+                                                <Run Text="{Binding Key, Mode=OneWay}" FontWeight="Medium" /><Run Text=": " /><Run Text="{Binding Current, Mode=OneWay, TargetNullValue=-}" Foreground="{DynamicResource TextMutedBrush}" /><Run Text=" → " /><Run Text="{Binding Imported, Mode=OneWay}" Foreground="{DynamicResource PrimaryBrush}" />
+                                            </TextBlock>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <TextBlock Text="{l:Loc Transfer_ServersHeader}" Style="{StaticResource Label}" Margin="0,12,0,4" />
+                            <TextBlock Text="{l:Loc Transfer_NoServers}" Style="{StaticResource Muted}" FontSize="12" Visibility="{Binding ImportServers.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                            <ItemsControl ItemsSource="{Binding ImportServers}" AutomationProperties.AutomationId="TransferServerList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{DynamicResource TextMutedBrush}" BorderThickness="0,0,0,0.5" Padding="0,6">
+                                            <StackPanel>
+                                                <DockPanel>
+                                                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Actions}" SelectedItem="{Binding SelectedAction}" Width="190" AutomationProperties.Name="{Binding Name}" />
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="{DynamicResource TextBrush}" />
+                                                        <TextBlock Text="{Binding Detail}" Style="{StaticResource Muted}" FontSize="11.5" />
+                                                    </StackPanel>
+                                                </DockPanel>
+                                                <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource WarnBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" Visibility="{Binding StatusText, Converter={StaticResource NullVis}}" />
+                                                <DockPanel Margin="0,6,0,0">
+                                                    <Button DockPanel.Dock="Right" Content="{l:Loc Common_Browse}" Command="{Binding BrowseCommand}" Margin="8,0,0,0" />
+                                                    <TextBox Text="{Binding TargetDirectory, Mode=OneWay}" IsReadOnly="True" FontFamily="{StaticResource MonoFont}" FontSize="11.5" />
+                                                </DockPanel>
+                                                <TextBlock Text="{l:Loc Transfer_FolderMissing}" Foreground="{DynamicResource FailBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" Visibility="{Binding IsMissing, Converter={StaticResource BoolVis}}" />
+                                                <CheckBox IsChecked="{Binding OverwriteConfig}" Margin="0,6,0,0" Visibility="{Binding HasConfig, Converter={StaticResource BoolVis}}">
+                                                    <TextBlock Text="{l:Loc Transfer_OverwriteConfig}" TextWrapping="Wrap" FontSize="12" />
+                                                </CheckBox>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                                <Button Content="{l:Loc Transfer_Apply}" Command="{Binding ApplyImportCommand}" Style="{StaticResource PrimaryButton}" AutomationProperties.AutomationId="TransferApply" />
+                                <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelImportCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="TransferCancel" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </Border>
 
