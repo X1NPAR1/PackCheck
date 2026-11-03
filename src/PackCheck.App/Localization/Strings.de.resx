@@ -483,6 +483,7 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Tool_Empty" xml:space="preserve"><value>(leer)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} Tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} Tokens</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} Tokens · {1:N0} aus dem Cache</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Vor Änderungen fragen</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>

@@ -431,7 +431,14 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
     [NotifyPropertyChangedFor(nameof(TokensText))]
     private bool _tokensEstimated;
 
-    public string TokensText => Loc.F(TokensEstimated ? "Assistant_TokensApprox" : "Assistant_Tokens", Tokens);
+    /// <summary>Input tokens read from the prompt cache in this chat (billed at a fraction of normal input).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TokensText))]
+    private int _cachedTokens;
+
+    public string TokensText => CachedTokens > 0
+        ? Loc.F("Assistant_TokensCached", Tokens, CachedTokens)
+        : Loc.F(TokensEstimated ? "Assistant_TokensApprox" : "Assistant_Tokens", Tokens);
 
     public void Activate()
     {
@@ -512,6 +519,7 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
         Messages.Clear();
         ClearTodo();
         Tokens = 0;
+        CachedTokens = 0;
         TokensEstimated = false;
         _chatId = ChatStore.NewId();
     }
@@ -680,10 +688,12 @@ public sealed partial class AssistantViewModel(ServersViewModel servers, AppSett
             {
                 StatusText = Loc.F("Assistant_Working", round + 1);
                 // Some OpenAI-compatible providers send no usage while streaming; estimate (~4 characters per token) instead of showing 0.
-                Tokens += step.InputTokens + step.OutputTokens > 0
-                    ? step.InputTokens + step.OutputTokens
+                var used = step.InputTokens + step.CacheReadTokens + step.CacheCreationTokens + step.OutputTokens;
+                Tokens += used > 0
+                    ? used
                     : (text.Length + step.Text.Length + step.ToolCalls.Sum(c => c.Arguments.ToJsonString().Length)) / 4;
-                TokensEstimated |= step.InputTokens + step.OutputTokens == 0;
+                TokensEstimated |= used == 0;
+                CachedTokens += step.CacheReadTokens;
 
                 // Let queued deltas land, then make the streamed bubble the final text.
                 await System.Windows.Application.Current.Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Background);
