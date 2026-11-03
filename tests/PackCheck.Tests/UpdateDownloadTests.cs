@@ -247,6 +247,21 @@ public sealed class UpdateDownloadTests : IDisposable
     }
 
     [Fact]
+    public async Task TruncatedDownload_IsRetried_AndResumes()
+    {
+        var calls = 0;
+        var handler = new StubHandler(req => req.RequestUri == SumUrl ? Sum(Package)
+            : ++calls == 1 ? Full(Package[..300])
+            : Partial(Package, req.Headers.Range!.Ranges.Single().From!.Value));
+        using var http = new HttpClient(handler);
+
+        var path = await Service(http).DownloadAndStageAsync(Release(), null, CancellationToken.None);
+
+        Assert.Equal(Package, await File.ReadAllBytesAsync(path));
+        Assert.Equal(300, handler.Requests.Last().Headers.Range!.Ranges.Single().From);
+    }
+
+    [Fact]
     public async Task WhatsNew_UnwritableCache_StillReturnsNotes()
     {
         Directory.CreateDirectory(Path.Combine(_root, "cache"));

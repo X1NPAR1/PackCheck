@@ -187,6 +187,12 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
             var n = await input.ReadAsync(buffer, stall.Token).ConfigureAwait(false);
             if (n == 0)
             {
+                // A connection closed early is retried and resumes from the .part file.
+                if (read < asset.Size)
+                {
+                    throw new IOException("The download ended before the full package arrived.");
+                }
+
                 break;
             }
 
