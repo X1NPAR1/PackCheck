@@ -204,6 +204,49 @@
                 </StackPanel>
             </Border>
 
+            <!-- playit.gg tunnel: no port forwarding needed -->
+            <Border x:Name="TunnelCard" Style="{StaticResource Card}" Margin="0,14,0,0" AutomationProperties.AutomationId="TunnelCard">
+                <StackPanel>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource PrimaryButton}" Content="{l:Loc Tunnel_Start}" Command="{Binding StartTunnelCommand}" AutomationProperties.AutomationId="TunnelStart" />
+                            <Button Style="{StaticResource DangerButton}" Content="{l:Loc Tunnel_Stop}" Command="{Binding StopTunnelCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="TunnelStop" />
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc Tunnel_Title}" Style="{StaticResource H2}" FontSize="15" />
+                            <TextBlock Text="{Binding TunnelStatusText}" Style="{StaticResource Muted}" Margin="0,4,0,0" AutomationProperties.AutomationId="TunnelStatus" />
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Text="{l:Loc Tunnel_Hint}" TextWrapping="Wrap" Margin="0,10,0,0" Style="{StaticResource Muted}" FontSize="12.5" />
+                    <TextBlock Text="{Binding TunnelError}" Foreground="{DynamicResource FailBrush}" TextWrapping="Wrap" Margin="0,8,0,0"
+                               Visibility="{Binding TunnelError, Converter={StaticResource NullVis}}" />
+
+                    <!-- step 1: claim -->
+                    <TextBlock TextWrapping="Wrap" Margin="0,12,0,4"><Run Text="1. " FontWeight="SemiBold" /><Run Text="{l:Loc Tunnel_Step1}" /></TextBlock>
+                    <DockPanel Visibility="{Binding TunnelClaimUrl, Converter={StaticResource NullVis}}" Margin="16,0,0,0">
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Tunnel_OpenClaim}" Command="{Binding OpenTunnelClaimCommand}" Padding="10,5" AutomationProperties.AutomationId="TunnelOpenClaim" />
+                        <TextBlock Text="{Binding TunnelClaimUrl}" FontFamily="{StaticResource MonoFont}" VerticalAlignment="Center" TextWrapping="Wrap" AutomationProperties.AutomationId="TunnelClaimUrl" />
+                    </DockPanel>
+                    <!-- step 2: add the tunnel -->
+                    <DockPanel Margin="0,10,0,4">
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Tunnel_Dashboard}" Command="{Binding OpenPlayitDashboardCommand}" Padding="10,5" />
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center"><Run Text="2. " FontWeight="SemiBold" /><Run Text="{l:Loc Tunnel_Step2}" /><Run Text=" " /><Run Text="{Binding TunnelTarget, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" /></TextBlock>
+                    </DockPanel>
+                    <!-- step 3: the address -->
+                    <TextBlock TextWrapping="Wrap" Margin="0,10,0,4"><Run Text="3. " FontWeight="SemiBold" /><Run Text="{l:Loc Tunnel_Step3}" /></TextBlock>
+                    <DockPanel Margin="16,0,0,0">
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Console_Copy}" Command="{Binding CopyTunnelAddressCommand}" Padding="10,5" Margin="8,0,0,0" AutomationProperties.AutomationId="TunnelCopy" />
+                        <TextBox Tag="name.joinmc.link" Text="{Binding TunnelAddress, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}"
+                                 AutomationProperties.AutomationId="TunnelAddress" AutomationProperties.Name="{l:Loc Tunnel_Step3}" />
+                    </DockPanel>
+
+                    <Button Content="{l:Loc Tunnel_ShowLog}" Command="{Binding ToggleTunnelLogCommand}" HorizontalAlignment="Left" Margin="0,12,0,0" Padding="10,5" />
+                    <TextBox Text="{Binding TunnelLog, Mode=OneWay}" IsReadOnly="True" FontFamily="{StaticResource MonoFont}" FontSize="11.5" MaxHeight="220" Margin="0,8,0,0"
+                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Visibility="{Binding ShowTunnelLog, Converter={StaticResource BoolVis}}"
+                             AutomationProperties.AutomationId="TunnelLog" />
+                </StackPanel>
+            </Border>
+
             <!-- CGNAT: why forwarding cannot work and what to do instead -->
             <Border Margin="0,14,0,0" AutomationProperties.AutomationId="CgnatGuide">
                 <Border.Style>
@@ -218,7 +261,7 @@
                 </Border.Style>
                 <StackPanel>
                     <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="playit.gg ↗" Command="{Binding OpenPlayitCommand}" />
+                        <Button DockPanel.Dock="Right" Content="{l:Loc Tunnel_GoToCard}" Command="{Binding OpenPlayitCommand}" />
                         <TextBlock Text="{l:Loc Online_CgnatTitle}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
                     </DockPanel>
                     <TextBlock Text="{l:Loc Online_CgnatDetected}" Foreground="{DynamicResource WarnBrush}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,6,0,0"
