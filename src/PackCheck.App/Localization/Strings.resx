@@ -173,6 +173,28 @@ Apply anyway?</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Open PackCheck</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Exit</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck is still running in the tray. Your servers keep running.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Server software</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Search Modrinth</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>From file…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Modpack version</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>The loader and Minecraft version come from the modpack. Client-only mods are skipped; every file is checked with its hash.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Searching modpacks…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Modrinth could not be reached: {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>No modpacks found.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Loading versions…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>This modpack has no .mrpack version.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpacks (.mrpack, CurseForge .zip)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Choose a modpack version or a file first.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Downloading the modpack…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge modpacks need your CurseForge API key. Add it in Settings, or use the pack's server files instead.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Downloading mod files: {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>Looking up files on CurseForge: {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>CurseForge file of project {0} could not be resolved: {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Downloading mod files…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Copying the modpack's configuration…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>The modpack's loader version is not available; installing the default one (see packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Running the platform installer…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Overview</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>

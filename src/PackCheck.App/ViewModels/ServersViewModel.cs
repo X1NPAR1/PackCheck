@@ -13,7 +13,7 @@ using PackCheck.Validation;
 
 namespace PackCheck.App.ViewModels;
 
-public sealed partial class ServersViewModel(ServerRegistry registry, AppSettings settings, ServerSources sources, ServerCreator creator, JavaRuntimes java, AppState state) : ObservableObject
+public sealed partial class ServersViewModel(ServerRegistry registry, AppSettings settings, ServerSources sources, ServerCreator creator, JavaRuntimes java, AppState state, ModpackServices? modpacks = null) : ObservableObject
 {
     public ObservableCollection<ServerItemViewModel> Items { get; } = [];
 
@@ -38,7 +38,16 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
     }
 
     [RelayCommand]
-    private void NewServer() => Wizard = new CreateServerViewModel(sources, creator, java, state, settings, OnCreated, () => Wizard = null);
+    private void NewServer()
+    {
+        var wizard = new CreateServerViewModel(sources, creator, java, state, settings, OnCreated, () => Wizard = null);
+        if (modpacks is not null)
+        {
+            wizard.UseModpacks(modpacks);
+        }
+
+        Wizard = wizard;
+    }
 
     public ServerRegistry Registry => registry;
 

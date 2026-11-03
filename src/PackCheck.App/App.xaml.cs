@@ -97,6 +97,12 @@ public partial class App : Application
                 s.AddSingleton<ICatalog>(sp => new ModrinthCatalog(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ICatalog>(sp => new HangarCatalog(sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ICatalog>(sp => new CurseForgeCatalog(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey));
+                s.AddSingleton(sp => new ModpackServices(
+                    new ModrinthCatalog(sp.GetRequiredService<HttpClient>()),
+                    new ModrinthModpacks(sp.GetRequiredService<HttpClient>()),
+                    new CurseForgeMods(sp.GetRequiredService<HttpClient>(), () => sp.GetRequiredService<AppSettings>().CurseForgeApiKey),
+                    new ModpackInstaller(sp.GetRequiredService<ServerCreator>(), sp.GetRequiredService<HttpClient>()),
+                    sp.GetRequiredService<HttpClient>()));
                 s.AddSingleton<ModsViewModel>();
                 s.AddSingleton<AppState>();
                 s.AddSingleton<MainViewModel>();
