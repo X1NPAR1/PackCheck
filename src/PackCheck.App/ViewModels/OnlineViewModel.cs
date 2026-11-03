@@ -8,14 +8,14 @@ using PackCheck.Servers;
 namespace PackCheck.App.ViewModels;
 
 /// <summary>Makes a server reachable from the internet (firewall + UPnP) and back to local-only.</summary>
-public sealed partial class OnlineViewModel(ServersViewModel servers, AppSettings settings, HttpClient http) : ObservableObject
+public sealed partial class OnlineViewModel(ServersViewModel servers, AppSettings settings, HttpClient http, PlayitTunnel tunnel) : ObservableObject
 {
     private readonly Upnp _upnp = new(http);
 
     public ServersViewModel Servers { get; } = servers;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasServer), nameof(Port))]
+    [NotifyPropertyChangedFor(nameof(HasServer), nameof(Port), nameof(TunnelTarget))]
     private ServerItemViewModel? _server;
 
     [ObservableProperty]
@@ -168,6 +168,7 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
         DuckDomain = settings.DuckDnsDomain ?? string.Empty;
         DuckToken = Secrets.Unprotect(settings.DuckDnsToken) ?? string.Empty;
         Server ??= Servers.Selected ?? Servers.Items.FirstOrDefault();
+        HookTunnel();
         _ = RefreshAsync();
     }
 
@@ -389,8 +390,11 @@ public sealed partial class OnlineViewModel(ServersViewModel servers, AppSetting
     [ObservableProperty]
     private bool _cgnatDetected;
 
+    /// <summary>Asks the view to bring the tunnel card into sight.</summary>
+    public event Action? TunnelCardRequested;
+
     [RelayCommand]
-    private static void OpenPlayit() => Shell32.Open("https://playit.gg/");
+    private void OpenPlayit() => TunnelCardRequested?.Invoke();
 }
 
 /// <summary>Windows DPAPI (current user) for small secrets such as DNS tokens and API keys.</summary>
