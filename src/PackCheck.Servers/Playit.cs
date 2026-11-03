@@ -355,6 +355,8 @@ public sealed class PlayitTunnel(string toolsDir, IPlayitLauncher launcher, Func
         }
         catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
         {
+            // The process already exited or cannot be signalled any more; the job object still ends it with PackCheck.
+            System.Diagnostics.Debug.WriteLine($"playit kill: {ex.Message}");
         }
         finally
         {
