@@ -90,6 +90,55 @@ public class AssistantCostTests
         Assert.Equal("system", body["system"]!.GetValue<string>());
     }
 
+    [Fact]
+    public async Task Conversation_TrimsOnlyAfterTheBatchWasSent()
+    {
+        var handler = new ChatHandler();
+        using var http = new HttpClient(handler);
+        var conv = AiProviders.Start(AiProviderKind.OpenAI, "test", "m", "system", [], http);
+        await conv.SendAsync("hi", [], CancellationToken.None);
+
+        string ToolContent(string id) => JsonNode.Parse(handler.Bodies[^1])!["messages"]!.AsArray()
+            .Single(m => m!["tool_call_id"]?.GetValue<string>() == id)!["content"]!.GetValue<string>();
+        (AiToolCall, string, bool) Result(int i) => (new AiToolCall($"call_{i}", "read_file", new JsonObject { ["path"] = $"logs/{i}.log" }), new string('x', 3000), false);
+
+        for (var i = 0; i < 8; i++)
+        {
+            await conv.ContinueAsync([Result(i)], CancellationToken.None);
+            Assert.Equal(3000, ToolContent($"call_{i}").Length); // each result reaches the model whole
+        }
+
+        // Seven results existed before the eighth request, so the oldest one was stubbed after the seventh succeeded.
+        Assert.StartsWith("[earlier result of read_file logs/0.log", ToolContent("call_0"));
+        Assert.Equal(3000, ToolContent("call_1").Length);
+
+        // A failed request trims nothing.
+        handler.Fail = true;
+        await Assert.ThrowsAnyAsync<HttpRequestException>(() => conv.ContinueAsync([Result(8)], CancellationToken.None));
+        handler.Fail = false;
+        await conv.SendAsync("again", [], CancellationToken.None);
+        Assert.Equal(3000, ToolContent("call_2").Length);
+        Assert.Equal(3000, ToolContent("call_8").Length);
+    }
+
+    private sealed class ChatHandler : HttpMessageHandler
+    {
+        public List<string> Bodies { get; } = [];
+
+        public bool Fail { get; set; }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Bodies.Add(await request.Content!.ReadAsStringAsync(cancellationToken));
+            return Fail
+                ? new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest) { Content = new StringContent("bad request") }
+                : new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent("""{"choices":[{"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}""", System.Text.Encoding.UTF8, "application/json"),
+                };
+        }
+    }
+
     private sealed class CaptureHandler : HttpMessageHandler
     {
         public string? Body { get; private set; }

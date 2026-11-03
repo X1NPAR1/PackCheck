@@ -234,7 +234,7 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
     // Tool results with the index of the user message that carries them, so old ones can be stubbed in place.
     private readonly List<(ToolResultEntry Entry, int Message)> _results = [];
 
-    public Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
+    public async Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
     {
         var index = _messages.Count;
         foreach (var (call, result, isError) in results)
@@ -243,14 +243,16 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
         }
 
         _messages.Add(AnthropicRequests.ToolResultMessage(results.Select(r => new ToolResultEntry(r.Call.Id, r.Call.Name, string.Empty, r.Result, r.IsError))));
-        TrimHistory(results.Count);
-        return RunAsync(ct);
+        // The model gets every result of this batch in full; old long results are trimmed only once the request succeeded.
+        var step = await RunAsync(ct).ConfigureAwait(false);
+        TrimHistory();
+        return step;
     }
 
     /// <summary>Rebuilds the user messages whose old tool results were stubbed; assistant turns (tool_use, thinking) are untouched.</summary>
-    private void TrimHistory(int newCount)
+    private void TrimHistory()
     {
-        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList(), newCount);
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
         var changed = new HashSet<int>();
         for (var i = 0; i < trimmed.Count; i++)
         {
@@ -379,7 +381,7 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
         return RunAsync(ct);
     }
 
-    public Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
+    public async Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
     {
         foreach (var (call, result, isError) in results)
         {
@@ -388,16 +390,18 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
             _results.Add((new ToolResultEntry(call.Id, call.Name, HistoryTrimmer.ArgSummary(call.Arguments), result, isError), message));
         }
 
-        TrimHistory(results.Count);
-        return RunAsync(ct);
+        // The model gets every result of this batch in full; old long results are trimmed only once the request succeeded.
+        var step = await RunAsync(ct).ConfigureAwait(false);
+        TrimHistory();
+        return step;
     }
 
     // Each tool result with the "tool" message that carries it; only its content is replaced when trimmed.
     private readonly List<(ToolResultEntry Entry, JsonObject Message)> _results = [];
 
-    private void TrimHistory(int newCount)
+    private void TrimHistory()
     {
-        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList(), newCount);
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
         for (var i = 0; i < trimmed.Count; i++)
         {
             if (!ReferenceEquals(trimmed[i], _results[i].Entry))
