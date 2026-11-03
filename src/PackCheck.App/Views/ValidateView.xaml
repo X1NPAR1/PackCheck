@@ -212,7 +212,7 @@
 
                 <!-- Inventory -->
                 <Border Style="{StaticResource Card}" Padding="0" Visibility="{Binding ResultsTab, Converter={StaticResource IndexVis}, ConverterParameter=1}">
-                    <ListView ItemsSource="{Binding Inventory}" BorderThickness="0" Background="Transparent" AutomationProperties.AutomationId="ValidateInventory">
+                    <ListView ItemsSource="{Binding Inventory}" BorderThickness="0" Background="Transparent" VirtualizingPanel.IsVirtualizing="False" AutomationProperties.AutomationId="ValidateInventory">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{l:Loc Validate_ColName}" Width="170">

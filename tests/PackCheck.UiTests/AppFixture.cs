@@ -45,7 +45,7 @@ public sealed class AppFixture : IDisposable
             {
                 main = App.GetAllTopLevelWindows(Automation).FirstOrDefault(w => w.AutomationId == "MainWindow");
             }
-            catch (System.Runtime.InteropServices.COMException ex)
+            catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or TimeoutException)
             {
                 last = ex;
             }
@@ -57,6 +57,9 @@ public sealed class AppFixture : IDisposable
         }
 
         Main = main ?? throw new TimeoutException("Main window did not appear within 120 seconds.", last);
+
+        // CI screens are small; a maximized window shows every page section the tests look at.
+        Main.Patterns.Window.PatternOrDefault?.SetWindowVisualState(FlaUI.Core.Definitions.WindowVisualState.Maximized);
     }
 
     /// <summary>Temporary data folder used by this test run (removed on dispose).</summary>
