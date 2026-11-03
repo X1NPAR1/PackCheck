@@ -29,10 +29,34 @@ public sealed class AppFixture : IDisposable
         Automation = new UIA3Automation();
 
         // The splash is a separate window; wait for the main window.
-        Main = Retry.WhileNull(
-            () => App.GetAllTopLevelWindows(Automation).FirstOrDefault(w => w.AutomationId == "MainWindow"),
-            TimeSpan.FromSeconds(120), TimeSpan.FromMilliseconds(500), throwOnTimeout: false, ignoreException: true).Result
-            ?? throw new TimeoutException("Main window did not appear.");
+        // UI Automation can time out while the app is still starting (slow CI runners), so those errors are retried;
+        // if the app exits, the test fails at once with the last error.
+        Exception? last = null;
+        var deadline = DateTime.UtcNow.AddSeconds(120);
+        Window? main = null;
+        while (main is null && DateTime.UtcNow < deadline)
+        {
+            if (App.HasExited)
+            {
+                throw new InvalidOperationException($"PackCheck exited during startup (exit code {App.ExitCode}).", last);
+            }
+
+            try
+            {
+                main = App.GetAllTopLevelWindows(Automation).FirstOrDefault(w => w.AutomationId == "MainWindow");
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                last = ex;
+            }
+
+            if (main is null)
+            {
+                Thread.Sleep(500);
+            }
+        }
+
+        Main = main ?? throw new TimeoutException("Main window did not appear within 120 seconds.", last);
     }
 
     /// <summary>Temporary data folder used by this test run (removed on dispose).</summary>
