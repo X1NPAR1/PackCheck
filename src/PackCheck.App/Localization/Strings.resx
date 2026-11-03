@@ -1118,4 +1118,21 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Keeping the current worlds as requested.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Downgrade finished.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Before downgrade {0} → {1}</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (no port forwarding)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Uses the free playit.gg agent (official release, checked by SHA-256). Friends join through playit's address, so it also works behind CGNAT. The agent runs only while PackCheck is open.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Start tunnel</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Not running</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Downloading the playit agent…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Starting…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Waiting for you to link your playit account (step 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent running</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Stopped with an error; see the log</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Claim / link your account: open the link and approve this agent in your playit.gg account (only needed the first time).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Open link ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>On playit.gg add a "Minecraft Java" tunnel that points to</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg tunnels ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Address for your friends (filled in when the agent reports it; otherwise paste it from playit.gg):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Show / hide agent log</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Use the playit tunnel ↓</value></data>
 </root>
