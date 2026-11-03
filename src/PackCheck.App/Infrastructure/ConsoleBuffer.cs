@@ -55,7 +55,8 @@ public sealed class ConsoleBuffer
     /// <summary>Takes every queued line; lines queued afterwards schedule a new flush.</summary>
     public List<string> DrainPending()
     {
-        Volatile.Write(ref _flushScheduled, 0);
+        // Full fence: the reset must be visible before the queue is read, or a line queued in between is never flushed.
+        Interlocked.Exchange(ref _flushScheduled, 0);
         var lines = new List<string>();
         while (_pending.TryDequeue(out var line))
         {

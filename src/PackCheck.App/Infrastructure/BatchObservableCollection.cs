@@ -31,7 +31,17 @@ public sealed class BatchObservableCollection<T> : ObservableCollection<T>
         }
 
         CheckReentrancy();
-        ((List<T>)Items).AddRange(items);
+        if (Items is List<T> list)
+        {
+            list.AddRange(items);
+        }
+        else
+        {
+            foreach (var item in items)
+            {
+                Items.Add(item);
+            }
+        }
         RaiseReset();
     }
 
@@ -53,7 +63,17 @@ public sealed class BatchObservableCollection<T> : ObservableCollection<T>
         }
 
         CheckReentrancy();
-        ((List<T>)Items).RemoveRange(index, count);
+        if (Items is List<T> list)
+        {
+            list.RemoveRange(index, count);
+        }
+        else
+        {
+            for (var i = 0; i < count; i++)
+            {
+                Items.RemoveAt(index);
+            }
+        }
         RaiseReset();
     }
 

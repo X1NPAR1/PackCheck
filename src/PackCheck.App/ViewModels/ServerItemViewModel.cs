@@ -456,14 +456,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             return;
         }
 
-        var entries = new List<ConsoleEntry>(lines.Count);
-        foreach (var raw in lines)
-        {
-            if (ParseOutput(raw) is { } entry)
-            {
-                entries.Add(entry);
-            }
-        }
+        var entries = lines.Select(ParseOutput).OfType<ConsoleEntry>().ToList();
 
         AppendEntries(entries);
     }
@@ -902,6 +895,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [RelayCommand]
     private void ClearConsole()
     {
+        FlushConsole(); // queued lines belong before the clear
         _console.Clear();
         SyncCounters();
         UpdateMatchPosition();
