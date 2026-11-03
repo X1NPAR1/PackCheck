@@ -247,9 +247,27 @@ public partial class App : Application
             var closed = shell.ShowWhatsNewAsync(whatsNew);
 
             // A minimized start (with Windows) must not hold back a pending update until the window opens.
+            // Hiding the window to the tray also lets the update go ahead, so a silent install does not wait for a restore.
             if (!minimized)
             {
-                await closed.ConfigureAwait(true);
+                var hidden = new TaskCompletionSource();
+                void OnVisible(object s, DependencyPropertyChangedEventArgs a)
+                {
+                    if (!main.IsVisible)
+                    {
+                        hidden.TrySetResult();
+                    }
+                }
+
+                main.IsVisibleChanged += OnVisible;
+                try
+                {
+                    await Task.WhenAny(closed, hidden.Task).ConfigureAwait(true);
+                }
+                finally
+                {
+                    main.IsVisibleChanged -= OnVisible;
+                }
             }
         }
 
