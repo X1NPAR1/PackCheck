@@ -1117,4 +1117,21 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Aktuelle Welten bleiben wie gewünscht.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Downgrade abgeschlossen.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Vor dem Downgrade {0} → {1}</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (ohne Portweiterleitung)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Nutzt den kostenlosen playit.gg-Agenten (offizielles Release, per SHA-256 geprüft). Freunde verbinden sich über die Adresse von playit, daher klappt es auch hinter CGNAT. Der Agent läuft nur, solange PackCheck offen ist.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Tunnel starten</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Läuft nicht</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>playit-Agent wird heruntergeladen…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Wird gestartet…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Wartet darauf, dass du dein playit-Konto verknüpfst (Schritt 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent läuft</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Mit Fehler beendet; siehe Protokoll</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Konto verknüpfen (Claim): Öffne den Link und bestätige diesen Agenten in deinem playit.gg-Konto (nur beim ersten Mal).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Link öffnen ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>Lege auf playit.gg einen „Minecraft Java“-Tunnel an, der zeigt auf</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg-Tunnel ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse für deine Freunde (wird ausgefüllt, wenn der Agent sie meldet; sonst von playit.gg einfügen):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Agent-Protokoll ein-/ausblenden</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit-Tunnel nutzen ↓</value></data>
 </root>
