@@ -173,6 +173,28 @@ Apply anyway?</value></data>
   <data name="Tray_Open" xml:space="preserve"><value>Open PackCheck</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Exit</value></data>
   <data name="Tray_Running" xml:space="preserve"><value>PackCheck is still running in the tray. Your servers keep running.</value></data>
+  <data name="Modpack_SourcePlatform" xml:space="preserve"><value>Server software</value></data>
+  <data name="Modpack_SourceModpack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Section" xml:space="preserve"><value>Modpack</value></data>
+  <data name="Modpack_Search" xml:space="preserve"><value>Search Modrinth</value></data>
+  <data name="Modpack_FromFile" xml:space="preserve"><value>From file…</value></data>
+  <data name="Modpack_Version" xml:space="preserve"><value>Modpack version</value></data>
+  <data name="Modpack_Hint" xml:space="preserve"><value>The loader and Minecraft version come from the modpack. Client-only mods are skipped; every file is checked with its hash.</value></data>
+  <data name="Modpack_Searching" xml:space="preserve"><value>Searching modpacks…</value></data>
+  <data name="Modpack_SearchFailed" xml:space="preserve"><value>Modrinth could not be reached: {0}</value></data>
+  <data name="Modpack_NoResults" xml:space="preserve"><value>No modpacks found.</value></data>
+  <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Loading versions…</value></data>
+  <data name="Modpack_NoVersions" xml:space="preserve"><value>This modpack has no .mrpack version.</value></data>
+  <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpacks (.mrpack, CurseForge .zip)</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Choose a modpack version or a file first.</value></data>
+  <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Downloading the modpack…</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge modpacks need your CurseForge API key. Add it in Settings, or use the pack's server files instead.</value></data>
+  <data name="Modpack_Files" xml:space="preserve"><value>Downloading mod files: {0}/{1}</value></data>
+  <data name="Modpack_Resolving" xml:space="preserve"><value>Looking up files on CurseForge: {0}/{1}</value></data>
+  <data name="Modpack_ResolveFailed" xml:space="preserve"><value>CurseForge file of project {0} could not be resolved: {1}</value></data>
+  <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Downloading mod files…</value></data>
+  <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Copying the modpack's configuration…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>The modpack's loader version is not available; installing the default one (see packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Running the platform installer…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Overview</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
@@ -483,6 +505,7 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Tool_Empty" xml:space="preserve"><value>(empty)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} tokens</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} tokens · {1:N0} cached</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Ask before changes</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -531,6 +554,29 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>This PC has no more free memory to give.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} is ready. Start the server again.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} disabled. Start the server again.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Clone</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Clone server</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Copies this server into a new folder next to it. Logs, crash reports, caches and backups are left out.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Include worlds</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Clone</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Copying…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} was created.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Could not clone: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Pick a port between 1024 and 65535.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>The server is running, so the copied worlds may miss the latest changes or mix save points. Stop the server first for an exact copy, or continue anyway.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} copy</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Save as template</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Template name</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Template {0} saved (without worlds).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Template failed: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Templates</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Start from a saved server: same platform, version, settings, plugins and mods, without worlds.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Create from template</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Delete template {0}?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Servers already created from it are not affected.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Change version</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Upgrade Minecraft version</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Pick a newer version. PackCheck checks every plugin and mod first, takes a pinned full backup, installs the new version, updates what it can from Modrinth and test-starts the server. If the test fails, one click puts everything back.</value></data>
@@ -1040,6 +1086,11 @@ They will run in offline mode, listen only on 127.0.0.1 and trust the proxy's fo
   <data name="Update_Starting" xml:space="preserve"><value>Starting the installer; PackCheck will close and reopen…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Downloading update… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>The update could not be installed: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>What's new in {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck was updated. Here is what changed.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Full release notes</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Got it</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>The release notes could not be loaded. Open the full release notes on GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>What's new</value></data>
   <data name="About_Version" xml:space="preserve"><value>Version {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck creates, runs and validates Minecraft Java servers. Static checks are evidence-based and never execute plugin code.</value></data>
@@ -1117,4 +1168,52 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Keeping the current worlds as requested.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Downgrade finished.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Before downgrade {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Export / Import</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Save settings, the server list and each server's automation and Discord settings to one file, and load them on another PC. Server files and worlds are not included.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Include assistant chats</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Include secrets (AI key, CurseForge key, DuckDNS token, Discord webhooks)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Warning: keys are encrypted only for your Windows user, so they are written to the file as plain text and encrypted again on import. Anyone with the file can use them; keep it private.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>Import…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Settings exported.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>Exported {0} server(s), {1} automation/Discord file(s), {2} chat(s).</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Could not complete: {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>{0} setting change(s), {1} server(s) ({2} with a folder that is missing here), {3} new chat(s). Nothing is changed until you press Import selected.</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>This file contains secrets; they will be encrypted for your Windows user.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Settings that change (untick to keep yours)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Your settings already match.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Servers</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>No servers in this file.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>This folder does not exist on this PC. Choose where the server is, or skip it.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>Replace automation and Discord settings already in that folder</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Already here as "{0}". Choose what to do.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>"{0}" already uses this folder. Choose what to do.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Add</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Skip</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Keep mine (skip)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Replace mine</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Add as a copy</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Import selected</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>Stop "{0}" before replacing it.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>Choose the folder for "{0}"</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>Import finished.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>Applied {0} setting(s); servers: {1} added, {2} replaced, {3} skipped; {4} chat(s) added.</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Restart PackCheck to apply language and theme.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (no port forwarding)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Uses the free playit.gg agent (official release, checked by SHA-256). Friends join through playit's address, so it also works behind CGNAT. The agent runs only while PackCheck is open.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Start tunnel</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Not running</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Downloading the playit agent…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Starting…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Waiting for you to link your playit account (step 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent running</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Stopped with an error; see the log</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Claim / link your account: open the link and approve this agent in your playit.gg account (only needed the first time).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Open link ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>On playit.gg add a "Minecraft Java" tunnel that points to</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg tunnels ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Address for your friends (filled in when the agent reports it; otherwise paste it from playit.gg):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Show / hide agent log</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Use the playit tunnel ↓</value></data>
 </root>

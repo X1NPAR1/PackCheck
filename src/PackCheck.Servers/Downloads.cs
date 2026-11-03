@@ -28,7 +28,14 @@ public enum ServerPlatform
 }
 
 /// <summary>A file to fetch. Installers (Forge/NeoForge) are run with --installServer after download.</summary>
-public sealed record ServerDownload(string FileName, Uri Url, string? Hash, HashAlgorithmName Algorithm, long Size, bool IsInstaller = false);
+public sealed record ServerDownload(string FileName, Uri Url, string? Hash, HashAlgorithmName Algorithm, long Size, bool IsInstaller = false)
+{
+    /// <summary>The mod loader version this download installs, when the platform has one (Fabric, Quilt, Forge, NeoForge).</summary>
+    public string? LoaderVersion { get; init; }
+
+    /// <summary>Set when a specific loader version was asked for but is not published, so the default one is used instead.</summary>
+    public string? LoaderWarning { get; init; }
+}
 
 public static class PlatformInfo
 {
@@ -158,8 +165,35 @@ public sealed class ServerSources(HttpClient http)
     private async Task<string> Sha1Async(Uri file, CancellationToken ct) =>
         (await http.GetStringAsync(new Uri(file + ".sha1"), ct).ConfigureAwait(false)).Trim().Split(' ')[0];
 
-    public async Task<ServerDownload> ResolveAsync(ServerPlatform platform, string version, CancellationToken ct)
+    /// <summary>The requested loader version when it is published, otherwise null (the caller then uses its default).</summary>
+    public static string? PickLoader(IEnumerable<string> available, string? requested) =>
+        !string.IsNullOrWhiteSpace(requested) && available.Contains(requested, StringComparer.Ordinal) ? requested : null;
+
+    /// <summary>Forge's Maven version is "minecraft-forge" (1.20.1-47.3.0); packs usually name only the Forge part.</summary>
+    public static string ForgeFullVersion(string minecraft, string loader) =>
+        loader.StartsWith(minecraft + "-", StringComparison.Ordinal) ? loader : $"{minecraft}-{loader}";
+
+    /// <summary>Text for the fallback when a pack's loader version is not published.</summary>
+    public static string LoaderFallbackWarning(ServerPlatform platform, string requested, string used) =>
+        $"{platform} loader {requested} is not available; installing {used} instead.";
+
+    private static readonly Uri ForgeMetadata = new("https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml");
+
+    /// <summary>
+    /// Resolves the server download. <paramref name="loaderVersion"/> pins Fabric, Quilt, Forge or NeoForge to that loader;
+    /// when it is not published the default loader is used and <see cref="ServerDownload.LoaderWarning"/> says so.
+    /// </summary>
+    public async Task<ServerDownload> ResolveAsync(ServerPlatform platform, string version, CancellationToken ct, string? loaderVersion = null)
     {
+        if (platform == ServerPlatform.Quilt && !string.IsNullOrWhiteSpace(loaderVersion))
+        {
+            var installer = (await new MorePlatforms(http).ResolveAsync(platform, version, ct).ConfigureAwait(false))!;
+            using var loaders = await GetJsonAsync(new Uri($"https://meta.quiltmc.org/v3/versions/loader/{Uri.EscapeDataString(version)}"), ct).ConfigureAwait(false);
+            var pick = PickLoader(loaders.RootElement.EnumerateArray().Select(l => l.GetProperty("loader").GetProperty("version").GetString()!), loaderVersion);
+            return pick is not null ? installer with { LoaderVersion = pick }
+                : installer with { LoaderWarning = LoaderFallbackWarning(platform, loaderVersion, "the default version") };
+        }
+
         if (await new MorePlatforms(http).ResolveAsync(platform, version, ct).ConfigureAwait(false) is { } more)
         {
             return more;
@@ -179,12 +213,18 @@ public sealed class ServerSources(HttpClient http)
             case ServerPlatform.Fabric:
                 {
                     using var loaders = await GetJsonAsync(new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}"), ct).ConfigureAwait(false);
-                    var loader = loaders.RootElement.EnumerateArray().First(l => l.GetProperty("loader").GetProperty("stable").GetBoolean()).GetProperty("loader").GetProperty("version").GetString();
+                    var stable = loaders.RootElement.EnumerateArray().First(l => l.GetProperty("loader").GetProperty("stable").GetBoolean()).GetProperty("loader").GetProperty("version").GetString()!;
+                    var loader = PickLoader(loaders.RootElement.EnumerateArray().Select(l => l.GetProperty("loader").GetProperty("version").GetString()!), loaderVersion) ?? stable;
+                    var fabricWarning = loaderVersion is { Length: > 0 } && loader != loaderVersion ? LoaderFallbackWarning(platform, loaderVersion, loader) : null;
                     using var installers = await GetJsonAsync(new Uri("https://meta.fabricmc.net/v2/versions/installer"), ct).ConfigureAwait(false);
                     var installer = installers.RootElement.EnumerateArray().First(i => i.GetProperty("stable").GetBoolean()).GetProperty("version").GetString();
 
                     // The Fabric meta server builds a ready-to-run server launcher and publishes no checksum for it.
-                    return new ServerDownload("fabric-server-launch.jar", new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}/{loader}/{installer}/server/jar"), null, HashAlgorithmName.SHA256, 0);
+                    return new ServerDownload("fabric-server-launch.jar", new Uri($"https://meta.fabricmc.net/v2/versions/loader/{v}/{Uri.EscapeDataString(loader)}/{installer}/server/jar"), null, HashAlgorithmName.SHA256, 0)
+                    {
+                        LoaderVersion = loader,
+                        LoaderWarning = fabricWarning,
+                    };
                 }
 
             case ServerPlatform.Forge:
@@ -193,17 +233,41 @@ public sealed class ServerSources(HttpClient http)
                     var promos = doc.RootElement.GetProperty("promos");
                     var forge = (promos.TryGetProperty($"{version}-recommended", out var r) ? r : promos.GetProperty($"{version}-latest")).GetString()!;
                     var full = $"{version}-{forge}";
+                    string? forgeWarning = null;
+                    if (loaderVersion is { Length: > 0 })
+                    {
+                        var xml = await http.GetStringAsync(ForgeMetadata, ct).ConfigureAwait(false);
+                        var wanted = ForgeFullVersion(version, loaderVersion);
+                        if (PickLoader(System.Xml.Linq.XDocument.Parse(xml).Descendants("version").Select(x => x.Value), wanted) is { } exact)
+                        {
+                            full = exact;
+                        }
+                        else
+                        {
+                            forgeWarning = LoaderFallbackWarning(platform, loaderVersion, forge);
+                        }
+                    }
                     var url = new Uri($"https://maven.minecraftforge.net/net/minecraftforge/forge/{full}/forge-{full}-installer.jar");
-                    return new ServerDownload($"forge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+                    return new ServerDownload($"forge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true)
+                    {
+                        LoaderVersion = full[(version.Length + 1)..],
+                        LoaderWarning = forgeWarning,
+                    };
                 }
 
             case ServerPlatform.NeoForge:
                 {
                     var matching = (await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Where(n => PlatformInfo.NeoForgeToMinecraft(n) == version).ToList();
-                    var neo = matching.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? matching.LastOrDefault()
+                    var neo = PickLoader(matching, loaderVersion)
+                        ?? matching.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? matching.LastOrDefault()
                         ?? throw new InvalidOperationException($"No NeoForge build for Minecraft {version}.");
+                    var neoWarning = loaderVersion is { Length: > 0 } && neo != loaderVersion ? LoaderFallbackWarning(platform, loaderVersion, neo) : null;
                     var url = new Uri($"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neo}/neoforge-{neo}-installer.jar");
-                    return new ServerDownload($"neoforge-{neo}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true);
+                    return new ServerDownload($"neoforge-{neo}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true)
+                    {
+                        LoaderVersion = neo,
+                        LoaderWarning = neoWarning,
+                    };
                 }
         }
 

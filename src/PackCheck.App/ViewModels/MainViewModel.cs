@@ -295,6 +295,42 @@ public sealed partial class MainViewModel : ObservableObject
         }
     }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(WhatsNewTitle), nameof(WhatsNewNotes))]
+    private WhatsNew? _whatsNew;
+
+    private TaskCompletionSource? _whatsNewClosed;
+
+    public string WhatsNewTitle => WhatsNew is null ? string.Empty : Loc.F("WhatsNew_Title", WhatsNew.Version.ToString(3));
+
+    public string WhatsNewNotes => WhatsNew is null ? string.Empty
+        : string.IsNullOrWhiteSpace(WhatsNew.Notes) ? Loc.T("WhatsNew_Offline")
+        : WhatsNew.Notes;
+
+    /// <summary>Shows the release notes of the version that just started and waits until the dialog closes.</summary>
+    public Task ShowWhatsNewAsync(WhatsNew notes)
+    {
+        _whatsNewClosed = new TaskCompletionSource();
+        WhatsNew = notes;
+        return _whatsNewClosed.Task;
+    }
+
+    [RelayCommand]
+    private void CloseWhatsNew()
+    {
+        WhatsNew = null;
+        _whatsNewClosed?.TrySetResult();
+    }
+
+    [RelayCommand]
+    private void OpenWhatsNewPage()
+    {
+        if (WhatsNew is not null)
+        {
+            Shell32.Open(WhatsNew.PageUrl.ToString());
+        }
+    }
+
     [RelayCommand]
     private void OpenReleasePage()
     {
