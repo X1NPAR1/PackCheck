@@ -298,6 +298,10 @@ public static class Modpacks
 /// <summary>Creates a server from a modpack: loader server through <see cref="ServerCreator"/>, then pack files and overrides.</summary>
 public sealed class ModpackInstaller(ServerCreator creator, HttpClient http)
 {
+    /// <summary>The wizard's request with the pack's platform, Minecraft version and exact loader version.</summary>
+    public static ServerCreator.Request RequestFor(ServerCreator.Request request, ModpackManifest manifest) =>
+        request with { Platform = manifest.Platform, Version = manifest.MinecraftVersion, LoaderVersion = manifest.LoaderVersion };
+
     /// <summary>
     /// <paramref name="request"/> supplies name, folder, Java, memory, port and properties; platform and version come from
     /// the pack. For CurseForge packs <paramref name="resolvedFiles"/> holds the files the API resolved.
@@ -311,7 +315,7 @@ public sealed class ModpackInstaller(ServerCreator creator, HttpClient http)
             throw new InvalidOperationException("The modpack does not name a supported mod loader.");
         }
 
-        var r = request with { Platform = manifest.Platform, Version = manifest.MinecraftVersion };
+        var r = RequestFor(request, manifest);
         var def = await creator.CreateAsync(r, new Progress<(double Progress, string Step)>(p =>
         {
             // The creator's "done" is only half of this job.

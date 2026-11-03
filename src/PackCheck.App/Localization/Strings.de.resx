@@ -194,6 +194,7 @@ Trotzdem anwenden?</value></data>
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>CurseForge-Datei von Projekt {0} nicht auflösbar: {1}</value></data>
   <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Mod-Dateien werden geladen…</value></data>
   <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Konfiguration des Modpacks wird kopiert…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>Die Loader-Version des Modpacks ist nicht verfügbar; die Standardversion wird installiert (siehe packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Plattform-Installer läuft…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Übersicht</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>

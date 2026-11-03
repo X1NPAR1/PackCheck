@@ -194,6 +194,7 @@ Yine de uygulansın mı?</value></data>
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>{0} projesinin CurseForge dosyası bulunamadı: {1}</value></data>
   <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Mod dosyaları indiriliyor…</value></data>
   <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Modpack yapılandırması kopyalanıyor…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>Modpack'in loader sürümü bulunamadı; varsayılan sürüm kuruluyor (packcheck-install.log'a bak).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Platform kurulumu çalışıyor…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Genel bakış</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>

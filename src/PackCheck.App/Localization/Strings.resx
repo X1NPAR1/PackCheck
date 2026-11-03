@@ -194,6 +194,7 @@ Apply anyway?</value></data>
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>CurseForge file of project {0} could not be resolved: {1}</value></data>
   <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Downloading mod files…</value></data>
   <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Copying the modpack's configuration…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>The modpack's loader version is not available; installing the default one (see packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Running the platform installer…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Overview</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>

@@ -192,6 +192,50 @@ public class ModpackTests
     public void WithPortReplacesThePort() =>
         Assert.Equal("motd=x\nserver-port=25570\n", Modpacks.WithPort("server-port=25565\nmotd=x\n", 25570));
 
+    [Fact]
+    public void RequestCarriesPackPlatformVersionAndLoader()
+    {
+        var wizard = new ServerCreator.Request("S", "D:/x", ServerPlatform.Paper, "1.21.4", "java", 4096, 25570, null, true) { CpuCores = 4 };
+        var r = ModpackInstaller.RequestFor(wizard, Modpacks.ParseModrinthIndex(Index));
+        Assert.Equal(ServerPlatform.Fabric, r.Platform);
+        Assert.Equal("1.21.1", r.Version);
+        Assert.Equal("0.16.9", r.LoaderVersion);
+        Assert.Equal(25570, r.Port);
+        Assert.Equal(4, r.CpuCores);
+    }
+
+    [Fact]
+    public void RequestCarriesCurseForgeLoader()
+    {
+        var m = Modpacks.ParseCurseForgeManifest("""{ "minecraft": { "version": "1.21.1", "modLoaders": [ { "id": "neoforge-21.1.77", "primary": true } ] }, "files": [] }""");
+        var r = ModpackInstaller.RequestFor(new ServerCreator.Request("S", "D:/x", ServerPlatform.Paper, "1.21.4", "java", 4096, 25565, null, true), m);
+        Assert.Equal(ServerPlatform.NeoForge, r.Platform);
+        Assert.Equal("21.1.77", r.LoaderVersion);
+    }
+
+    [Fact]
+    public void PickLoaderUsesExactVersionOrFallsBack()
+    {
+        string[] published = ["0.16.10", "0.16.9", "0.15.11"];
+        Assert.Equal("0.16.9", ServerSources.PickLoader(published, "0.16.9"));
+        Assert.Null(ServerSources.PickLoader(published, "0.99.0"));
+        Assert.Null(ServerSources.PickLoader(published, null));
+        Assert.Null(ServerSources.PickLoader(published, " "));
+    }
+
+    [Theory]
+    [InlineData("1.20.1", "47.3.0", "1.20.1-47.3.0")]
+    [InlineData("1.20.1", "1.20.1-47.3.0", "1.20.1-47.3.0")]
+    public void ForgeFullVersion(string mc, string loader, string full) => Assert.Equal(full, ServerSources.ForgeFullVersion(mc, loader));
+
+    [Fact]
+    public void FallbackWarningNamesBothVersions()
+    {
+        var w = ServerSources.LoaderFallbackWarning(ServerPlatform.Fabric, "0.99.0", "0.16.10");
+        Assert.Contains("0.99.0", w, StringComparison.Ordinal);
+        Assert.Contains("0.16.10", w, StringComparison.Ordinal);
+    }
+
     private static void Write(ZipArchive zip, string name, string text)
     {
         using var w = new StreamWriter(zip.CreateEntry(name).Open());

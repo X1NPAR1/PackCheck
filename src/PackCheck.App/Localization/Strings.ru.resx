@@ -194,6 +194,7 @@
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>Не удалось получить файл CurseForge проекта {0}: {1}</value></data>
   <data name="Wizard_Step_modpack_files" xml:space="preserve"><value>Загрузка файлов модов…</value></data>
   <data name="Wizard_Step_modpack_overrides" xml:space="preserve"><value>Копирование настроек сборки…</value></data>
+  <data name="Wizard_Step_loader_fallback" xml:space="preserve"><value>Версия загрузчика из сборки недоступна; устанавливается версия по умолчанию (см. packcheck-install.log).</value></data>
   <data name="Wizard_Step_install" xml:space="preserve"><value>Запуск установщика платформы…</value></data>
   <data name="Tab_Overview" xml:space="preserve"><value>Обзор</value></data>
   <data name="Gauge_Tps" xml:space="preserve"><value>TPS</value></data>
