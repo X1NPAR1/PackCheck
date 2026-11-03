@@ -155,7 +155,7 @@ public sealed class PlayitTunnel(string toolsDir, IPlayitLauncher launcher, Func
     private readonly List<string> _log = [];
     private IPlayitProcess? _daemon;
     private IPlayitProcess? _cli;
-    private bool _stopping;
+    private int _generation;
 
     public PlayitState State { get; private set; } = PlayitState.Stopped;
 
@@ -192,22 +192,25 @@ public sealed class PlayitTunnel(string toolsDir, IPlayitLauncher launcher, Func
 
     public async Task StartAsync(TimeSpan pipeTimeout, CancellationToken ct)
     {
-        if (IsActive)
+        int gen;
+        lock (_gate)
         {
-            return;
+            if (IsActive)
+            {
+                return;
+            }
+
+            gen = ++_generation;
+            _log.Clear();
         }
 
-        _stopping = false;
         ClaimUrl = null;
         Address = null;
         Error = null;
         OutputUnrecognized = false;
         _recognizedAny = false;
-        lock (_gate)
-        {
-            _log.Clear();
-        }
-
+        IPlayitProcess? daemon = null;
+        IPlayitProcess? cli = null;
         try
         {
             if (download is not null)
@@ -216,15 +219,29 @@ public sealed class PlayitTunnel(string toolsDir, IPlayitLauncher launcher, Func
                 await download(ct).ConfigureAwait(false);
             }
 
+            if (!IsCurrent(gen))
+            {
+                return;
+            }
+
             SetState(PlayitState.Starting);
             var pipe = $@"\\.\pipe\{PipeName}";
-            _daemon = launcher.Start(Path.Combine(toolsDir, PlayitAgent.Daemon.FileName), ["--secret-path", SecretPath, "--socket-path", pipe]);
-            Hook(_daemon);
+            daemon = launcher.Start(Path.Combine(toolsDir, PlayitAgent.Daemon.FileName), ["--secret-path", SecretPath, "--socket-path", pipe]);
+            if (!Adopt(gen, daemon, isDaemon: true))
+            {
+                return;
+            }
 
             var deadline = DateTime.UtcNow + pipeTimeout;
             while (!launcher.PipeExists(PipeName))
             {
-                if (_daemon.HasExited || _stopping)
+                // The Exited handler may already have failed this start and disposed the daemon.
+                if (!IsCurrent(gen) || State != PlayitState.Starting)
+                {
+                    return;
+                }
+
+                if (daemon.HasExited)
                 {
                     throw new InvalidOperationException("playitd exited before it was ready.");
                 }
@@ -237,57 +254,120 @@ public sealed class PlayitTunnel(string toolsDir, IPlayitLauncher launcher, Func
                 await Task.Delay(100, ct).ConfigureAwait(false);
             }
 
-            _cli = launcher.Start(Path.Combine(toolsDir, PlayitAgent.Cli.FileName), ["--stdout", "--socket-path", pipe]);
-            Hook(_cli);
+            if (!IsCurrent(gen) || State != PlayitState.Starting)
+            {
+                return;
+            }
+
+            cli = launcher.Start(Path.Combine(toolsDir, PlayitAgent.Cli.FileName), ["--stdout", "--socket-path", pipe]);
+            Adopt(gen, cli, isDaemon: false);
         }
-        catch (Exception ex) when (ex is IOException or InvalidOperationException or TimeoutException or HttpRequestException or UnauthorizedAccessException or System.ComponentModel.Win32Exception)
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
-            Error = ex.Message;
-            KillAll();
-            SetState(PlayitState.Failed);
+            Fail(gen, null);
+            throw;
         }
+        catch (Exception ex) when (ex is IOException or InvalidOperationException or TimeoutException or HttpRequestException or UnauthorizedAccessException
+            or System.ComponentModel.Win32Exception or OperationCanceledException or ObjectDisposedException)
+        {
+            Fail(gen, ex.Message);
+        }
+    }
+
+    private bool IsCurrent(int gen) => Volatile.Read(ref _generation) == gen;
+
+    /// <summary>Stores a freshly started process, or kills it when Stop invalidated this start meanwhile.</summary>
+    private bool Adopt(int gen, IPlayitProcess process, bool isDaemon)
+    {
+        lock (_gate)
+        {
+            if (_generation == gen)
+            {
+                if (isDaemon)
+                {
+                    _daemon = process;
+                }
+                else
+                {
+                    _cli = process;
+                }
+
+                Hook(process, gen);
+                return true;
+            }
+        }
+
+        KillOne(process);
+        return false;
+    }
+
+    private void Fail(int gen, string? message)
+    {
+        if (!IsCurrent(gen))
+        {
+            return;
+        }
+
+        if (message is not null)
+        {
+            Error ??= message;
+        }
+
+        KillAll();
+        SetState(message is null ? PlayitState.Stopped : PlayitState.Failed);
     }
 
     public void Stop()
     {
-        _stopping = true;
+        Interlocked.Increment(ref _generation);
         KillAll();
         SetState(PlayitState.Stopped);
     }
 
     private void KillAll()
     {
-        foreach (var p in new[] { _cli, _daemon })
+        IPlayitProcess? cli;
+        IPlayitProcess? daemon;
+        lock (_gate)
         {
-            if (p is null)
-            {
-                continue;
-            }
-
-            try
-            {
-                if (!p.HasExited)
-                {
-                    p.Kill();
-                }
-            }
-            catch (InvalidOperationException)
-            {
-            }
-
-            p.Dispose();
+            (cli, daemon) = (_cli, _daemon);
+            _cli = null;
+            _daemon = null;
         }
 
-        _cli = null;
-        _daemon = null;
+        KillOne(cli);
+        KillOne(daemon);
     }
 
-    private void Hook(IPlayitProcess process)
+    private static void KillOne(IPlayitProcess? p)
+    {
+        if (p is null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (!p.HasExited)
+            {
+                p.Kill();
+            }
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
+        {
+        }
+        finally
+        {
+            p.Dispose();
+        }
+    }
+
+    private void Hook(IPlayitProcess process, int gen)
     {
         process.Output += OnOutput;
         process.Exited += () =>
         {
-            if (!_stopping && IsActive)
+            if (IsCurrent(gen) && IsActive)
             {
                 Error ??= "playit exited.";
                 KillAll();

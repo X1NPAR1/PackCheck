@@ -93,6 +93,49 @@ public class PlayitTests
     }
 
     [Fact]
+    public async Task DaemonExitedEvent_WhilePipeMissing_Fails_AndDisposesDaemon()
+    {
+        var launcher = new FakeLauncher { PipeAfterChecks = int.MaxValue };
+        launcher.OnPipeCheck = () => launcher.Started[0].Process.Exit();
+        using var tunnel = new PlayitTunnel("C:\\tools", launcher);
+        await tunnel.StartAsync(TimeSpan.FromSeconds(5), CancellationToken.None);
+
+        Assert.Equal(PlayitState.Failed, tunnel.State);
+        Assert.NotNull(tunnel.Error);
+        Assert.Single(launcher.Started);
+        Assert.True(launcher.Started[0].Process.Disposed);
+    }
+
+    [Fact]
+    public async Task StopDuringDownload_StartsNothing()
+    {
+        var launcher = new FakeLauncher();
+        PlayitTunnel? tunnel = null;
+        tunnel = new PlayitTunnel("C:\\tools", launcher, _ => { tunnel!.Stop(); return Task.CompletedTask; });
+        using (tunnel)
+        {
+            await tunnel.StartAsync(TimeSpan.FromSeconds(5), CancellationToken.None);
+            Assert.Empty(launcher.Started);
+            Assert.Equal(PlayitState.Stopped, tunnel.State);
+        }
+    }
+
+    [Fact]
+    public async Task DownloadTimeout_IsAFailure_ButCallerCancelPropagates()
+    {
+        var launcher = new FakeLauncher();
+        using var timedOut = new PlayitTunnel("C:\\tools", launcher, _ => throw new TaskCanceledException("timeout"));
+        await timedOut.StartAsync(TimeSpan.FromSeconds(5), CancellationToken.None);
+        Assert.Equal(PlayitState.Failed, timedOut.State);
+
+        using var cts = new CancellationTokenSource();
+        await cts.CancelAsync();
+        using var cancelled = new PlayitTunnel("C:\\tools", launcher, ct => { ct.ThrowIfCancellationRequested(); return Task.CompletedTask; });
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => cancelled.StartAsync(TimeSpan.FromSeconds(5), cts.Token));
+        Assert.Equal(PlayitState.Stopped, cancelled.State);
+    }
+
+    [Fact]
     public async Task UnexpectedExit_MarksFailed_AndKillsTheOther()
     {
         var launcher = new FakeLauncher();
@@ -136,7 +179,13 @@ public class PlayitTests
             return p;
         }
 
-        public bool PipeExists(string pipeName) => ++_checks > PipeAfterChecks;
+        public Action? OnPipeCheck { get; set; }
+
+        public bool PipeExists(string pipeName)
+        {
+            OnPipeCheck?.Invoke();
+            return ++_checks > PipeAfterChecks;
+        }
     }
 
     private sealed class FakeProcess : IPlayitProcess
