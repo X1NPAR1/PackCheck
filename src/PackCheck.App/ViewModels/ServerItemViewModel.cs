@@ -79,14 +79,14 @@ public sealed partial class Gauge(string labelKey) : ObservableObject
 
 public sealed partial class ServerItemViewModel : ObservableObject
 {
-    private const int MaxConsoleLines = 10_000;
+    private static readonly TimeSpan ConsoleFlushDelay = TimeSpan.FromMilliseconds(100);
     private static readonly TimeSpan TpsWindow = TimeSpan.FromSeconds(3);
 
     private readonly ServerRegistry _registry;
     private readonly AppSettings _settings;
     private readonly ServerProcess _process;
     private readonly DispatcherTimer _statsTimer;
-    private readonly List<ConsoleEntry> _all = [];
+    private readonly ConsoleBuffer _console = new();
     private readonly List<string> _history = [];
     private readonly HashSet<string> _players = new(StringComparer.OrdinalIgnoreCase);
     private int _historyIndex;
@@ -105,8 +105,13 @@ public sealed partial class ServerItemViewModel : ObservableObject
         _registry = registry;
         _settings = settings;
         _process = new ServerProcess(def);
-        _process.Output += (_, line) => Application.Current?.Dispatcher.BeginInvoke(DispatcherPriority.Background, () => OnOutput(line));
-        _process.StateChanged += (_, s) => Application.Current?.Dispatcher.BeginInvoke(() => State = s);
+        _console.SetFilter(Visible, IsMatch);
+        _process.Output += (_, line) => QueueOutput(line);
+        _process.StateChanged += (_, s) => Application.Current?.Dispatcher.BeginInvoke(() =>
+        {
+            FlushConsole(); // lines written before the state change (crash output) come first
+            State = s;
+        });
         _statsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _statsTimer.Tick += async (_, _) => await SampleAsync().ConfigureAwait(true);
         LoadProperties();
@@ -219,7 +224,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     public string ContentTabKey => UsesMods ? "Nav_Mods" : "Nav_Plugins";
 
     // ----- console -----
-    public ObservableCollection<ConsoleEntry> Console { get; } = [];
+    public BatchObservableCollection<ConsoleEntry> Console => _console.View;
 
     public ObservableCollection<string> Suggestions { get; } = [];
 
@@ -271,8 +276,6 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [ObservableProperty]
     private IReadOnlyList<string> _knownPlayers = [];
 
-    private readonly List<ConsoleEntry> _matches = [];
-    private int _matchIndex = -1;
     private readonly HashSet<string> _seenPlayers = new(StringComparer.OrdinalIgnoreCase);
 
     [ObservableProperty]
@@ -373,7 +376,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
         if (value == ServerState.Crashed)
         {
-            CrashSummary = _all.LastOrDefault(e => e.Level == "Error")?.Message ?? Loc.T("Console_CrashNoDetail");
+            CrashSummary = _console.All.LastOrDefault(e => e.Level == "Error")?.Message ?? Loc.T("Console_CrashNoDetail");
             DiagnoseCrash();
         }
         else if (value == ServerState.Starting)
@@ -429,7 +432,73 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [GeneratedRegex(@"^(?<name>[A-Za-z0-9_]{3,16}) (joined|left) the game$")]
     private static partial Regex JoinLeave();
 
-    private void OnOutput(string raw)
+    /// <summary>Output thread: queue the line; the first line of a batch schedules one flush 100 ms later.</summary>
+    private void QueueOutput(string raw)
+    {
+        if (!_console.Enqueue(raw))
+        {
+            return;
+        }
+
+        _ = Task.Delay(ConsoleFlushDelay).ContinueWith(
+            _ => Application.Current?.Dispatcher.BeginInvoke(DispatcherPriority.Background, FlushConsole),
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
+    }
+
+    /// <summary>UI thread: parse every queued line and show them with one collection change and one scroll.</summary>
+    private void FlushConsole()
+    {
+        var lines = _console.DrainPending();
+        if (lines.Count == 0)
+        {
+            return;
+        }
+
+        var entries = new List<ConsoleEntry>(lines.Count);
+        foreach (var raw in lines)
+        {
+            if (ParseOutput(raw) is { } entry)
+            {
+                entries.Add(entry);
+            }
+        }
+
+        AppendEntries(entries);
+    }
+
+    /// <summary>Adds a line written by PackCheck itself, after any server output still waiting in the queue.</summary>
+    private void Add(ConsoleEntry entry)
+    {
+        FlushConsole();
+        AppendEntries([entry]);
+    }
+
+    private void AppendEntries(IReadOnlyList<ConsoleEntry> entries)
+    {
+        var result = _console.Append(entries, Paused);
+        SyncCounters();
+        if (result.MatchesChanged)
+        {
+            UpdateMatchPosition();
+        }
+
+        if (result.ViewChanged)
+        {
+            ScrollRequested?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void SyncCounters()
+    {
+        InfoCount = _console.InfoCount;
+        WarnCount = _console.WarnCount;
+        ErrorCount = _console.ErrorCount;
+        MatchCount = _console.Matches.Count;
+    }
+
+    private ConsoleEntry? ParseOutput(string raw)
     {
         var text = AnsiStripper.Strip(raw);
 
@@ -446,12 +515,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
                 Tps.Set(tps / 20, tps.ToString("0.0", Loc.Instance.Culture), Health.Tps(tps), historyValue: tps);
                 _tpsRequestedAt = DateTime.MinValue;
-                return;
+                return null;
             }
 
             if (text.Contains("Mean tick time", StringComparison.Ordinal) || text.Contains("TPS from last", StringComparison.Ordinal))
             {
-                return;
+                return null;
             }
         }
 
@@ -460,21 +529,21 @@ public sealed partial class ServerItemViewModel : ObservableObject
         {
             if (MsptParser.IsPaperHeader(text))
             {
-                return;
+                return null;
             }
 
             if (MsptParser.TryParse(text) is { } mspt)
             {
                 _lastMspt = mspt;
                 _msptRequestedAt = DateTime.MinValue;
-                return;
+                return null;
             }
         }
 
         var parsed = LogParser.Parse(text);
         var entry = new ConsoleEntry(parsed.Time, LevelName(parsed.Level), parsed.Source, parsed.Message, text);
         Track(parsed);
-        Add(entry);
+        return entry;
     }
 
     private void Track(LogLine line)
@@ -517,54 +586,6 @@ public sealed partial class ServerItemViewModel : ObservableObject
         }
     }
 
-    private void Add(ConsoleEntry entry)
-    {
-        _all.Add(entry);
-        switch (entry.Level)
-        {
-            case "Warn":
-                WarnCount++;
-                break;
-            case "Error":
-                ErrorCount++;
-                break;
-            default:
-                InfoCount++;
-                break;
-        }
-
-        if (_all.Count > MaxConsoleLines)
-        {
-            _all.RemoveRange(0, _all.Count - MaxConsoleLines);
-        }
-
-        if (Paused || !Visible(entry))
-        {
-            return;
-        }
-
-        Console.Add(entry);
-        if (Console.Count > MaxConsoleLines)
-        {
-            if (_matches.Count > 0 && ReferenceEquals(_matches[0], Console[0]))
-            {
-                _matches.RemoveAt(0);
-                _matchIndex--;
-            }
-
-            Console.RemoveAt(0);
-        }
-
-        if (IsMatch(entry))
-        {
-            _matches.Add(entry);
-            MatchCount = _matches.Count;
-            UpdateMatchPosition();
-        }
-
-        ScrollRequested?.Invoke(this, EventArgs.Empty);
-    }
-
     private bool Visible(ConsoleEntry e)
     {
         var levelOk = e.Level switch
@@ -580,19 +601,8 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     private void Rebuild()
     {
-        Console.Clear();
-        _matches.Clear();
-        _matchIndex = -1;
-        foreach (var e in _all.Where(Visible))
-        {
-            Console.Add(e);
-            if (IsMatch(e))
-            {
-                _matches.Add(e);
-            }
-        }
-
-        MatchCount = _matches.Count;
+        _console.Rebuild();
+        MatchCount = _console.Matches.Count;
         UpdateMatchPosition();
         ScrollRequested?.Invoke(this, EventArgs.Empty);
     }
@@ -600,7 +610,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     partial void OnFilterSearchChanged(bool value) => Rebuild();
 
     private void UpdateMatchPosition() =>
-        MatchPosition = Search.Length == 0 ? null : _matchIndex < 0 ? $"{_matches.Count}" : $"{_matchIndex + 1}/{_matches.Count}";
+        MatchPosition = Search.Length == 0 ? null : _console.MatchIndex < 0 ? $"{_console.Matches.Count}" : $"{_console.MatchIndex + 1}/{_console.Matches.Count}";
 
     [RelayCommand]
     private void NextMatch() => StepMatch(1);
@@ -610,23 +620,18 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     private void StepMatch(int delta)
     {
-        if (_matches.Count == 0)
+        if (_console.StepMatch(delta) is { } entry)
         {
-            return;
+            UpdateMatchPosition();
+            FocusRequested?.Invoke(this, entry);
         }
-
-        _matchIndex = _matchIndex < 0
-            ? (delta > 0 ? 0 : _matches.Count - 1)
-            : (_matchIndex + delta + _matches.Count) % _matches.Count;
-        UpdateMatchPosition();
-        FocusRequested?.Invoke(this, _matches[_matchIndex]);
     }
 
     /// <summary>Crash banner: hands the error and the last console lines to the assistant.</summary>
     [RelayCommand]
     private void AskAi()
     {
-        var tail = string.Join("\n", _all.Skip(Math.Max(0, _all.Count - 80)).Select(e => e.Raw));
+        var tail = string.Join("\n", _console.All.Skip(Math.Max(0, _console.All.Count - 80)).Select(e => e.Raw));
         MainViewModel.Shell?.Assistant.Ask(
             $"My server \"{Name}\" ({Definition.Platform} {Definition.MinecraftVersion}) crashed. Find the cause and tell me how to fix it.{DiagnosisForAi()}\n\nLast console lines:\n```\n{tail}\n```");
     }
@@ -897,9 +902,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [RelayCommand]
     private void ClearConsole()
     {
-        _all.Clear();
-        Console.Clear();
-        InfoCount = WarnCount = ErrorCount = MatchCount = 0;
+        _console.Clear();
+        SyncCounters();
+        UpdateMatchPosition();
     }
 
     [RelayCommand]
@@ -919,7 +924,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         var dlg = new SaveFileDialog { FileName = $"{Name}-{DateTime.Now:yyyyMMdd-HHmmss}.log", Filter = "Log (*.log)|*.log|Text (*.txt)|*.txt" };
         if (dlg.ShowDialog() == true)
         {
-            File.WriteAllLines(dlg.FileName, _all.Select(e => e.Raw));
+            File.WriteAllLines(dlg.FileName, _console.All.Select(e => e.Raw));
             MainViewModel.Shell?.Toast(Loc.T("Console_Saved"));
         }
     }
