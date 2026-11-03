@@ -483,6 +483,7 @@ Mondes, plugins, mods, configs et journaux disparaîtront. Les sauvegardes PackC
   <data name="Tool_Empty" xml:space="preserve"><value>(vide)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} jetons</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} jetons</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} jetons · {1:N0} en cache</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Demander avant</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -1117,4 +1118,21 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>Mondes actuels conservés comme demandé.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Retour de version terminé.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Avant retour de version {0} → {1}</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (sans redirection de port)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Utilise l'agent gratuit playit.gg (version officielle, vérifiée par SHA-256). Vos amis passent par l'adresse de playit, donc cela marche aussi derrière un CGNAT. L'agent ne tourne que tant que PackCheck est ouvert.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Démarrer le tunnel</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Arrêté</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Téléchargement de l'agent playit…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Démarrage…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>En attente de la liaison de votre compte playit (étape 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent en marche</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Arrêté sur une erreur ; voir le journal</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Liez votre compte (claim) : ouvrez le lien et approuvez cet agent dans votre compte playit.gg (seulement la première fois).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Ouvrir le lien ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>Sur playit.gg, ajoutez un tunnel « Minecraft Java » qui pointe vers</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>Tunnels playit.gg ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse pour vos amis (remplie quand l'agent la signale ; sinon collez-la depuis playit.gg) :</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Afficher / masquer le journal de l'agent</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Utiliser le tunnel playit ↓</value></data>
 </root>

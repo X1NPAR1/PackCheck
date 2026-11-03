@@ -483,6 +483,7 @@ Hayır: açık bırakıp çık.
   <data name="Tool_Empty" xml:space="preserve"><value>(boş)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} token</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} token</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} token · {1:N0} önbellekten</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Değişiklikte sor</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -1117,4 +1118,21 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>İstendiği gibi mevcut dünyalar tutuluyor.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Sürüm düşürme tamamlandı.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Sürüm düşürmeden önce {0} → {1}</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tünel (port yönlendirmesiz)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Ücretsiz playit.gg programını kullanır (resmi sürüm, SHA-256 ile doğrulanır). Arkadaşların playit'in verdiği adresle bağlanır; bu yüzden CGNAT arkasında da çalışır. Program yalnız PackCheck açıkken çalışır.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Tüneli başlat</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Durdur</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Çalışmıyor</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>playit programı indiriliyor…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Başlatılıyor…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>playit hesabını bağlaman bekleniyor (1. adım)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Program çalışıyor</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Hatayla durdu; günlüğe bak</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Hesabını bağla (claim): bağlantıyı aç ve bu programı playit.gg hesabında onayla (yalnız ilk seferde gerekir).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Bağlantıyı aç ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>playit.gg'de şu adrese giden bir "Minecraft Java" tüneli ekle:</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg tünelleri ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Arkadaşlarının adresi (program bildirince dolar; bildirmezse playit.gg'den yapıştır):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Program günlüğünü göster / gizle</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit tünelini kullan ↓</value></data>
 </root>
