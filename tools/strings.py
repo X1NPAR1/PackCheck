@@ -1093,6 +1093,11 @@ S = {
     "Update_Starting": ["Starting the installer; PackCheck will close and reopen…", "Kurulum başlatılıyor; PackCheck kapanıp yeniden açılacak…", "Installation startet; PackCheck schließt und öffnet sich wieder…", "Lancement de l'installation ; PackCheck va se fermer puis rouvrir…", "Запуск установки; PackCheck закроется и откроется снова…"],
     "Update_Downloading": ["Downloading update… {0:P0}", "Güncelleme indiriliyor… {0:P0}", "Update wird heruntergeladen… {0:P0}", "Téléchargement de la mise à jour… {0:P0}", "Загрузка обновления… {0:P0}"],
     "Update_Failed": ["The update could not be installed: {0}", "Güncelleme kurulamadı: {0}", "Das Update konnte nicht installiert werden: {0}", "La mise à jour n'a pas pu être installée : {0}", "Не удалось установить обновление: {0}"],
+    "WhatsNew_Title": ["What's new in {0}", "{0} sürümünde neler yeni", "Neu in {0}", "Nouveautés de la version {0}", "Что нового в {0}"],
+    "WhatsNew_Subtitle": ["PackCheck was updated. Here is what changed.", "PackCheck güncellendi. Değişenler aşağıda.", "PackCheck wurde aktualisiert. Das hat sich geändert.", "PackCheck a été mis à jour. Voici ce qui a changé.", "PackCheck обновлён. Вот что изменилось."],
+    "WhatsNew_FullNotes": ["Full release notes", "Tüm sürüm notları", "Vollständige Versionshinweise", "Notes de version complètes", "Полные примечания к выпуску"],
+    "WhatsNew_Close": ["Got it", "Tamam", "Verstanden", "Compris", "Понятно"],
+    "WhatsNew_Offline": ["The release notes could not be loaded. Open the full release notes on GitHub.", "Sürüm notları yüklenemedi. Tüm notları GitHub'da açabilirsiniz.", "Die Versionshinweise konnten nicht geladen werden. Öffne die vollständigen Hinweise auf GitHub.", "Les notes de version n'ont pas pu être chargées. Ouvrez les notes complètes sur GitHub.", "Не удалось загрузить примечания к выпуску. Откройте полные примечания на GitHub."],
     "Update_Notes": ["What's new", "Yenilikler", "Neuigkeiten", "Nouveautés", "Что нового"],
     # about
     "About_Version": ["Version {0}", "Sürüm {0}", "Version {0}", "Version {0}", "Версия {0}"],

@@ -1086,6 +1086,11 @@ Sie laufen offline, lauschen nur auf 127.0.0.1 und vertrauen dem Weiterleitungss
   <data name="Update_Starting" xml:space="preserve"><value>Installation startet; PackCheck schließt und öffnet sich wieder…</value></data>
   <data name="Update_Downloading" xml:space="preserve"><value>Update wird heruntergeladen… {0:P0}</value></data>
   <data name="Update_Failed" xml:space="preserve"><value>Das Update konnte nicht installiert werden: {0}</value></data>
+  <data name="WhatsNew_Title" xml:space="preserve"><value>Neu in {0}</value></data>
+  <data name="WhatsNew_Subtitle" xml:space="preserve"><value>PackCheck wurde aktualisiert. Das hat sich geändert.</value></data>
+  <data name="WhatsNew_FullNotes" xml:space="preserve"><value>Vollständige Versionshinweise</value></data>
+  <data name="WhatsNew_Close" xml:space="preserve"><value>Verstanden</value></data>
+  <data name="WhatsNew_Offline" xml:space="preserve"><value>Die Versionshinweise konnten nicht geladen werden. Öffne die vollständigen Hinweise auf GitHub.</value></data>
   <data name="Update_Notes" xml:space="preserve"><value>Neuigkeiten</value></data>
   <data name="About_Version" xml:space="preserve"><value>Version {0}</value></data>
   <data name="About_Body" xml:space="preserve"><value>PackCheck erstellt, betreibt und prüft Minecraft-Java-Server. Statische Prüfungen sind nachweisbasiert und führen nie Plugin-Code aus.</value></data>
