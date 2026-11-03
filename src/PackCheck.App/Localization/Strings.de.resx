@@ -483,6 +483,7 @@ Welten, Plugins, Mods, Configs und Logs sind danach weg. Backups aus PackCheck (
   <data name="Tool_Empty" xml:space="preserve"><value>(leer)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} Tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} Tokens</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} Tokens · {1:N0} aus dem Cache</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Vor Änderungen fragen</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
@@ -1148,4 +1149,21 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Transfer_ImportDone" xml:space="preserve"><value>Import abgeschlossen.</value></data>
   <data name="Transfer_Imported" xml:space="preserve"><value>{0} Einstellung(en) übernommen; Server: {1} hinzugefügt, {2} ersetzt, {3} übersprungen; {4} Chat(s) hinzugefügt.</value></data>
   <data name="Transfer_Restart" xml:space="preserve"><value>Starten Sie PackCheck neu, um Sprache und Design zu übernehmen.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Tunnel (ohne Portweiterleitung)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Nutzt den kostenlosen playit.gg-Agenten (offizielles Release, per SHA-256 geprüft). Freunde verbinden sich über die Adresse von playit, daher klappt es auch hinter CGNAT. Der Agent läuft nur, solange PackCheck offen ist.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Tunnel starten</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Läuft nicht</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>playit-Agent wird heruntergeladen…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Wird gestartet…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Wartet darauf, dass du dein playit-Konto verknüpfst (Schritt 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Agent läuft</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Mit Fehler beendet; siehe Protokoll</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Konto verknüpfen (Claim): Öffne den Link und bestätige diesen Agenten in deinem playit.gg-Konto (nur beim ersten Mal).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Link öffnen ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>Lege auf playit.gg einen „Minecraft Java“-Tunnel an, der zeigt auf</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>playit.gg-Tunnel ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse für deine Freunde (wird ausgefüllt, wenn der Agent sie meldet; sonst von playit.gg einfügen):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Agent-Protokoll ein-/ausblenden</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit-Tunnel nutzen ↓</value></data>
 </root>

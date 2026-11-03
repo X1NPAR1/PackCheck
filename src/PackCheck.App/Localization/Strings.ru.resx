@@ -483,6 +483,7 @@
   <data name="Tool_Empty" xml:space="preserve"><value>(пусто)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} токенов</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} токенов</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} токенов · {1:N0} из кэша</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Спрашивать</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>План</value></data>
@@ -1148,4 +1149,21 @@ F1 · этот список
   <data name="Transfer_ImportDone" xml:space="preserve"><value>Импорт завершён.</value></data>
   <data name="Transfer_Imported" xml:space="preserve"><value>Применено настроек: {0}; серверы: добавлено {1}, заменено {2}, пропущено {3}; добавлено чатов: {4}.</value></data>
   <data name="Transfer_Restart" xml:space="preserve"><value>Перезапустите PackCheck, чтобы применить язык и тему.</value></data>
+  <data name="Tunnel_Title" xml:space="preserve"><value>Туннель (без проброса портов)</value></data>
+  <data name="Tunnel_Hint" xml:space="preserve"><value>Использует бесплатный агент playit.gg (официальный релиз, проверка SHA-256). Друзья подключаются через адрес playit, поэтому это работает и за CGNAT. Агент работает, только пока открыт PackCheck.</value></data>
+  <data name="Tunnel_Start" xml:space="preserve"><value>Запустить туннель</value></data>
+  <data name="Tunnel_Stop" xml:space="preserve"><value>Остановить</value></data>
+  <data name="Tunnel_StateStopped" xml:space="preserve"><value>Не запущен</value></data>
+  <data name="Tunnel_StateDownloading" xml:space="preserve"><value>Загрузка агента playit…</value></data>
+  <data name="Tunnel_StateStarting" xml:space="preserve"><value>Запуск…</value></data>
+  <data name="Tunnel_StateClaim" xml:space="preserve"><value>Ожидание привязки аккаунта playit (шаг 1)</value></data>
+  <data name="Tunnel_StateRunning" xml:space="preserve"><value>Агент работает</value></data>
+  <data name="Tunnel_StateFailed" xml:space="preserve"><value>Остановлен с ошибкой; смотрите журнал</value></data>
+  <data name="Tunnel_Step1" xml:space="preserve"><value>Привяжите аккаунт (claim): откройте ссылку и подтвердите этот агент в аккаунте playit.gg (нужно только в первый раз).</value></data>
+  <data name="Tunnel_OpenClaim" xml:space="preserve"><value>Открыть ссылку ↗</value></data>
+  <data name="Tunnel_Step2" xml:space="preserve"><value>На playit.gg добавьте туннель «Minecraft Java», указывающий на</value></data>
+  <data name="Tunnel_Dashboard" xml:space="preserve"><value>Туннели playit.gg ↗</value></data>
+  <data name="Tunnel_Step3" xml:space="preserve"><value>Адрес для друзей (заполнится, когда агент его сообщит; иначе вставьте с playit.gg):</value></data>
+  <data name="Tunnel_ShowLog" xml:space="preserve"><value>Показать / скрыть журнал агента</value></data>
+  <data name="Tunnel_GoToCard" xml:space="preserve"><value>Использовать туннель playit ↓</value></data>
 </root>
