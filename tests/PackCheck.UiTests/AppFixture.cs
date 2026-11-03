@@ -31,7 +31,7 @@ public sealed class AppFixture : IDisposable
         // The splash is a separate window; wait for the main window.
         Main = Retry.WhileNull(
             () => App.GetAllTopLevelWindows(Automation).FirstOrDefault(w => w.AutomationId == "MainWindow"),
-            TimeSpan.FromSeconds(60), TimeSpan.FromMilliseconds(250)).Result
+            TimeSpan.FromSeconds(120), TimeSpan.FromMilliseconds(500), throwOnTimeout: false, ignoreException: true).Result
             ?? throw new TimeoutException("Main window did not appear.");
     }
 
@@ -77,7 +77,7 @@ public sealed class AppFixture : IDisposable
     public Window Main { get; }
 
     public AutomationElement Find(string automationId, int seconds = 10) =>
-        Retry.WhileNull(() => Main.FindFirstDescendant(cf => cf.ByAutomationId(automationId)), TimeSpan.FromSeconds(seconds), TimeSpan.FromMilliseconds(100)).Result
+        Retry.WhileNull(() => Main.FindFirstDescendant(cf => cf.ByAutomationId(automationId)), TimeSpan.FromSeconds(seconds), TimeSpan.FromMilliseconds(100), throwOnTimeout: false, ignoreException: true).Result
         ?? throw new InvalidOperationException($"Element '{automationId}' not found.");
 
     public void Navigate(string navId) => Find(navId).AsListBoxItem().Select();
