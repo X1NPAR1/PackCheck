@@ -26,7 +26,13 @@ public sealed class BackupTests : IDisposable
         Write(dir, "libraries/lib.json", "{}");
         _def = new ServerDefinition
         {
-            Id = "t", Name = "Test", Directory = dir, Platform = ServerPlatform.Paper, MinecraftVersion = "1.21.4", JarFile = "paper.jar", JavaPath = "java",
+            Id = "t",
+            Name = "Test",
+            Directory = dir,
+            Platform = ServerPlatform.Paper,
+            MinecraftVersion = "1.21.4",
+            JarFile = "paper.jar",
+            JavaPath = "java",
         };
     }
 

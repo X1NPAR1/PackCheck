@@ -8,20 +8,69 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  windows:
+    name: windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: 10.0.x
-      - name: Build
-        run: dotnet build PackCheck.sln -c Release
-      - name: Test
+      - name: Build (warnings as errors)
+        run: dotnet build PackCheck.sln -c Release -warnaserror
+      - name: Unit tests
         run: dotnet test tests/PackCheck.Tests -c Release --no-build --filter "Category!=Network&Category!=EndToEnd"
       - name: CLI smoke test
         shell: pwsh
         run: |
           dotnet run --project src/PackCheck.Cli -c Release --no-build -- version
           dotnet run --project src/PackCheck.Cli -c Release --no-build -- doctor
+
+  ui-tests:
+    name: ui-tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Build the app
+        run: dotnet build src/PackCheck.App -c Release
+      - name: UI tests (FlaUI)
+        env:
+          # Isolated data folder so the tests never see a real server list.
+          PACKCHECK_DATA: ${{ runner.temp }}\packcheck-data
+        run: dotnet test tests/PackCheck.UiTests -c Release
+
+  format:
+    name: format
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Check formatting
+        run: dotnet format whitespace PackCheck.sln --verify-no-changes
+
+  security:
+    name: security
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore PackCheck.sln
+      - name: Vulnerable NuGet packages
+        shell: pwsh
+        run: |
+          $out = dotnet list PackCheck.sln package --vulnerable --include-transitive 2>&1 | Out-String
+          Write-Output $out
+          if ($out -match 'has the following vulnerable packages') { Write-Error 'Vulnerable packages found.'; exit 1 }
