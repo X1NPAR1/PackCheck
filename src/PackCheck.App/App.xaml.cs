@@ -110,6 +110,13 @@ public partial class App : Application
                 s.AddSingleton<ValidateViewModel>();
                 s.AddSingleton<PluginsViewModel>();
                 s.AddSingleton<SettingsViewModel>();
+                s.AddSingleton<PlayitLauncher>();
+                s.AddSingleton(sp =>
+                {
+                    var dir = Path.Combine(AppPaths.DataRoot, "tools", "playit");
+                    var http = sp.GetRequiredService<HttpClient>();
+                    return new PlayitTunnel(dir, sp.GetRequiredService<PlayitLauncher>(), ct => PlayitAgent.EnsureDownloadedAsync(http, dir, ct));
+                });
                 s.AddSingleton<OnlineViewModel>();
                 s.AddSingleton<ProxyViewModel>();
                 s.AddSingleton<AssistantViewModel>();
@@ -253,6 +260,7 @@ public partial class App : Application
     protected override async void OnExit(ExitEventArgs e)
     {
         Tray?.Dispose();
+        Services?.GetService<PlayitTunnel>()?.Stop();
         if (Services?.GetService<ServersViewModel>() is { } servers)
         {
             await servers.StopAllAsync().ConfigureAwait(true);

@@ -49,6 +49,25 @@ public sealed partial class ServersViewModel(ServerRegistry registry, AppSetting
         Wizard = wizard;
     }
 
+    public ServerRegistry Registry => registry;
+
+    /// <summary>Shows servers an import added or replaced (already saved to the registry).</summary>
+    public void Reconcile(IEnumerable<ServerDefinition> changed)
+    {
+        foreach (var def in changed)
+        {
+            if (Items.FirstOrDefault(i => i.Definition.Id == def.Id) is { } old)
+            {
+                Items.Remove(old);
+            }
+
+            Items.Add(new ServerItemViewModel(def, registry, settings));
+        }
+
+        Selected ??= Items.FirstOrDefault();
+        OnPropertyChanged(nameof(IsEmpty));
+    }
+
     /// <summary>Registers a server created elsewhere (assistant, scripts).</summary>
     public void Add(ServerDefinition def) => OnCreated(def);
 
