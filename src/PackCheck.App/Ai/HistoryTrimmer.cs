@@ -16,11 +16,14 @@ public static class HistoryTrimmer
 
     public const int MaxLength = 2000;
 
-    /// <summary>Returns the entries with old, long results stubbed; ids, order and count stay the same.</summary>
-    public static IReadOnlyList<ToolResultEntry> Trim(IReadOnlyList<ToolResultEntry> entries, int keepRecent = KeepRecent, int maxLength = MaxLength)
+    /// <summary>
+    /// Returns the entries with old, long results stubbed; ids, order and count stay the same.
+    /// <paramref name="newCount"/> is the size of the batch just added: those results are always kept so the model sees each one at least once.
+    /// </summary>
+    public static IReadOnlyList<ToolResultEntry> Trim(IReadOnlyList<ToolResultEntry> entries, int newCount = 0, int keepRecent = KeepRecent, int maxLength = MaxLength)
     {
         ArgumentNullException.ThrowIfNull(entries);
-        var cutoff = entries.Count - keepRecent;
+        var cutoff = entries.Count - Math.Max(keepRecent, newCount);
         return entries.Select((e, i) => i < cutoff && e.Content.Length > maxLength ? e with { Content = Stub(e.Tool, e.Arg) } : e).ToList();
     }
 

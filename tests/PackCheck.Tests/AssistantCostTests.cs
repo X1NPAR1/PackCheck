@@ -35,6 +35,16 @@ public class AssistantCostTests
     }
 
     [Fact]
+    public void Trim_KeepsTheNewBatchUntilTheModelHasSeenIt()
+    {
+        var entries = Enumerable.Range(0, 9).Select(i => Entry(i, 3000)).ToList();
+        var trimmed = HistoryTrimmer.Trim(entries, newCount: 8);
+
+        Assert.StartsWith("[earlier result", trimmed[0].Content);
+        Assert.All(trimmed.Skip(1), e => Assert.Equal(3000, e.Content.Length));
+    }
+
+    [Fact]
     public void Trim_IsStableOnSecondPass()
     {
         var once = HistoryTrimmer.Trim(Enumerable.Range(0, 8).Select(i => Entry(i, 3000)).ToList());
@@ -72,7 +82,7 @@ public class AssistantCostTests
 
         // The SDK writes the request through a stub handler, so the real JSON body is checked without any network call.
         var handler = new CaptureHandler();
-        var client = new AnthropicClient { ApiKey = "test", MaxRetries = 0, HttpClient = new HttpClient(handler) };
+        using var client = new AnthropicClient { ApiKey = "test", MaxRetries = 0, HttpClient = new HttpClient(handler) };
         await Assert.ThrowsAnyAsync<Exception>(() => client.Messages.Create(p));
 
         var body = JsonNode.Parse(handler.Body!)!;

@@ -243,14 +243,14 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
         }
 
         _messages.Add(AnthropicRequests.ToolResultMessage(results.Select(r => new ToolResultEntry(r.Call.Id, r.Call.Name, string.Empty, r.Result, r.IsError))));
-        TrimHistory();
+        TrimHistory(results.Count);
         return RunAsync(ct);
     }
 
     /// <summary>Rebuilds the user messages whose old tool results were stubbed; assistant turns (tool_use, thinking) are untouched.</summary>
-    private void TrimHistory()
+    private void TrimHistory(int newCount)
     {
-        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList(), newCount);
         var changed = new HashSet<int>();
         for (var i = 0; i < trimmed.Count; i++)
         {
@@ -388,16 +388,16 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
             _results.Add((new ToolResultEntry(call.Id, call.Name, HistoryTrimmer.ArgSummary(call.Arguments), result, isError), message));
         }
 
-        TrimHistory();
+        TrimHistory(results.Count);
         return RunAsync(ct);
     }
 
     // Each tool result with the "tool" message that carries it; only its content is replaced when trimmed.
     private readonly List<(ToolResultEntry Entry, JsonObject Message)> _results = [];
 
-    private void TrimHistory()
+    private void TrimHistory(int newCount)
     {
-        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList(), newCount);
         for (var i = 0; i < trimmed.Count; i++)
         {
             if (!ReferenceEquals(trimmed[i], _results[i].Entry))
