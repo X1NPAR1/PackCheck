@@ -1117,4 +1117,35 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Downgrade_StepKeep" xml:space="preserve"><value>İstendiği gibi mevcut dünyalar tutuluyor.</value></data>
   <data name="Downgrade_Done" xml:space="preserve"><value>✔ Sürüm düşürme tamamlandı.</value></data>
   <data name="Downgrade_BackupNote" xml:space="preserve"><value>Sürüm düşürmeden önce {0} → {1}</value></data>
+  <data name="Transfer_Title" xml:space="preserve"><value>Dışa / İçe aktar</value></data>
+  <data name="Transfer_Hint" xml:space="preserve"><value>Ayarları, sunucu listesini ve her sunucunun otomasyon ve Discord ayarlarını tek dosyaya kaydedin, başka bir bilgisayarda yükleyin. Sunucu dosyaları ve dünyalar dahil değildir.</value></data>
+  <data name="Transfer_IncludeChats" xml:space="preserve"><value>Asistan sohbetlerini dahil et</value></data>
+  <data name="Transfer_IncludeSecrets" xml:space="preserve"><value>Gizli bilgileri dahil et (AI anahtarı, CurseForge anahtarı, DuckDNS jetonu, Discord webhook'ları)</value></data>
+  <data name="Transfer_SecretsWarn" xml:space="preserve"><value>Uyarı: anahtarlar yalnızca sizin Windows kullanıcınız için şifrelidir, bu yüzden dosyaya düz metin olarak yazılır ve içe aktarırken yeniden şifrelenir. Dosyaya sahip olan herkes bunları kullanabilir; dosyayı gizli tutun.</value></data>
+  <data name="Transfer_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="Transfer_Import" xml:space="preserve"><value>İçe aktar…</value></data>
+  <data name="Transfer_ExportDone" xml:space="preserve"><value>Ayarlar dışa aktarıldı.</value></data>
+  <data name="Transfer_Exported" xml:space="preserve"><value>{0} sunucu, {1} otomasyon/Discord dosyası, {2} sohbet dışa aktarıldı.</value></data>
+  <data name="Transfer_Failed" xml:space="preserve"><value>Tamamlanamadı: {0}</value></data>
+  <data name="Transfer_PreviewSummary" xml:space="preserve"><value>{0} ayar değişikliği, {1} sunucu (bu bilgisayarda klasörü olmayan {2}), {3} yeni sohbet. Seçilenleri içe aktar'a basana kadar hiçbir şey değişmez.</value></data>
+  <data name="Transfer_HasSecrets" xml:space="preserve"><value>Bu dosya gizli bilgiler içeriyor; Windows kullanıcınız için şifrelenecek.</value></data>
+  <data name="Transfer_SettingsHeader" xml:space="preserve"><value>Değişecek ayarlar (sizinkini korumak için işareti kaldırın)</value></data>
+  <data name="Transfer_NoSettingChanges" xml:space="preserve"><value>Ayarlarınız zaten aynı.</value></data>
+  <data name="Transfer_ServersHeader" xml:space="preserve"><value>Sunucular</value></data>
+  <data name="Transfer_NoServers" xml:space="preserve"><value>Bu dosyada sunucu yok.</value></data>
+  <data name="Transfer_FolderMissing" xml:space="preserve"><value>Bu klasör bu bilgisayarda yok. Sunucunun nerede olduğunu seçin ya da atlayın.</value></data>
+  <data name="Transfer_OverwriteConfig" xml:space="preserve"><value>O klasördeki mevcut otomasyon ve Discord ayarlarının yerine yaz</value></data>
+  <data name="Transfer_SameId" xml:space="preserve"><value>Burada zaten "{0}" olarak var. Ne yapılacağını seçin.</value></data>
+  <data name="Transfer_SameDir" xml:space="preserve"><value>"{0}" bu klasörü zaten kullanıyor. Ne yapılacağını seçin.</value></data>
+  <data name="Transfer_ActAdd" xml:space="preserve"><value>Ekle</value></data>
+  <data name="Transfer_ActSkip" xml:space="preserve"><value>Atla</value></data>
+  <data name="Transfer_ActKeep" xml:space="preserve"><value>Benimkini koru (atla)</value></data>
+  <data name="Transfer_ActReplace" xml:space="preserve"><value>Benimkinin yerine yaz</value></data>
+  <data name="Transfer_ActCopy" xml:space="preserve"><value>Kopya olarak ekle</value></data>
+  <data name="Transfer_Apply" xml:space="preserve"><value>Seçilenleri içe aktar</value></data>
+  <data name="Transfer_StopFirst" xml:space="preserve"><value>"{0}" sunucusunu yerine yazmadan önce durdurun.</value></data>
+  <data name="Transfer_PickFolder" xml:space="preserve"><value>"{0}" için klasör seçin</value></data>
+  <data name="Transfer_ImportDone" xml:space="preserve"><value>İçe aktarma tamamlandı.</value></data>
+  <data name="Transfer_Imported" xml:space="preserve"><value>{0} ayar uygulandı; sunucular: {1} eklendi, {2} yerine yazıldı, {3} atlandı; {4} sohbet eklendi.</value></data>
+  <data name="Transfer_Restart" xml:space="preserve"><value>Dil ve temanın uygulanması için PackCheck'i yeniden başlatın.</value></data>
 </root>
