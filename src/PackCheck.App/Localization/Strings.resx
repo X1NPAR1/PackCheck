@@ -532,6 +532,29 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>This PC has no more free memory to give.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} is ready. Start the server again.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} disabled. Start the server again.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Clone</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Clone server</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Copies this server into a new folder next to it. Logs, crash reports, caches and backups are left out.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Include worlds</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Clone</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Copying…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} was created.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Could not clone: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>Pick a port between 1024 and 65535.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>The server is running, so the copied worlds may miss the latest changes or mix save points. Stop the server first for an exact copy, or continue anyway.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} copy</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Save as template</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Template name</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>Template {0} saved (without worlds).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Template failed: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Templates</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Start from a saved server: same platform, version, settings, plugins and mods, without worlds.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Create from template</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>Delete template {0}?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Servers already created from it are not affected.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Change version</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Upgrade Minecraft version</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Pick a newer version. PackCheck checks every plugin and mod first, takes a pinned full backup, installs the new version, updates what it can from Modrinth and test-starts the server. If the test fails, one click puts everything back.</value></data>

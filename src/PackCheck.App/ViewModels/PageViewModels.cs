@@ -70,6 +70,7 @@ public sealed partial class CreateServerViewModel : ObservableObject
         _selectedPlatform = PlatformOptions.First(o => o.Platform == _platform);
         _memoryGb = Math.Min(4, MaxRamGb);
         _port = FreePort(new ServerRegistry().Load().Select(d => d.Port));
+        LoadTemplates();
         _ = LoadVersionsAsync();
     }
 

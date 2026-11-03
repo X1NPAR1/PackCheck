@@ -532,6 +532,29 @@ Hayır: açık bırakıp çık.
   <data name="CrashDone_NoMoreMemory" xml:space="preserve"><value>Bu bilgisayarda verilebilecek boş bellek kalmadı.</value></data>
   <data name="CrashDone_Java" xml:space="preserve"><value>Java {0} hazır. Sunucuyu yeniden başlat.</value></data>
   <data name="CrashDone_Disabled" xml:space="preserve"><value>{0} devre dışı bırakıldı. Sunucuyu yeniden başlat.</value></data>
+  <data name="Clone_Button" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Clone_Title" xml:space="preserve"><value>Sunucuyu kopyala</value></data>
+  <data name="Clone_Hint" xml:space="preserve"><value>Bu sunucuyu yanındaki yeni bir klasöre kopyalar. Günlükler, çökme raporları, önbellekler ve yedekler kopyalanmaz.</value></data>
+  <data name="Clone_Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="Clone_Worlds" xml:space="preserve"><value>Dünyaları da kopyala</value></data>
+  <data name="Clone_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="Clone_Start" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Clone_Working" xml:space="preserve"><value>Kopyalanıyor…</value></data>
+  <data name="Clone_Done" xml:space="preserve"><value>{0} oluşturuldu.</value></data>
+  <data name="Clone_Failed" xml:space="preserve"><value>Kopyalanamadı: {0}</value></data>
+  <data name="Clone_BadPort" xml:space="preserve"><value>1024 ile 65535 arasında bir port seç.</value></data>
+  <data name="Clone_RunningWarn" xml:space="preserve"><value>Sunucu çalışıyor; kopyalanan dünyalarda son değişiklikler eksik olabilir veya farklı kayıt anları karışabilir. Tam bir kopya için önce sunucuyu durdur ya da yine de devam et.</value></data>
+  <data name="Clone_Copy" xml:space="preserve"><value>{0} kopya</value></data>
+  <data name="Template_Save" xml:space="preserve"><value>Şablon olarak kaydet</value></data>
+  <data name="Template_NamePrompt" xml:space="preserve"><value>Şablon adı</value></data>
+  <data name="Template_Saved" xml:space="preserve"><value>{0} şablonu kaydedildi (dünyalar hariç).</value></data>
+  <data name="Template_Failed" xml:space="preserve"><value>Şablon işlemi başarısız: {0}</value></data>
+  <data name="Template_Section" xml:space="preserve"><value>Şablonlar</value></data>
+  <data name="Template_SectionHint" xml:space="preserve"><value>Kayıtlı bir sunucudan başla: aynı platform, sürüm, ayarlar, eklentiler ve modlar, dünyalar olmadan.</value></data>
+  <data name="Template_Use" xml:space="preserve"><value>Şablondan oluştur</value></data>
+  <data name="Template_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Template_DeleteTitle" xml:space="preserve"><value>{0} şablonu silinsin mi?</value></data>
+  <data name="Template_DeleteBody" xml:space="preserve"><value>Bu şablondan oluşturulmuş sunucular etkilenmez.</value></data>
   <data name="Upgrade_Button" xml:space="preserve"><value>Sürüm değiştir</value></data>
   <data name="Upgrade_Title" xml:space="preserve"><value>Minecraft sürümünü yükselt</value></data>
   <data name="Upgrade_Hint" xml:space="preserve"><value>Daha yeni bir sürüm seç. PackCheck önce her eklentiyi ve modu kontrol eder, sabitlenmiş tam yedek alır, yeni sürümü kurar, Modrinth'ten güncellenebilenleri günceller ve sunucuyu deneme olarak başlatır. Deneme başarısız olursa tek tıkla her şey geri alınır.</value></data>
