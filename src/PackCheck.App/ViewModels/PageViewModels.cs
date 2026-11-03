@@ -155,7 +155,10 @@ public sealed partial class CreateServerViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(SummaryText))]
     private int _port = 25565;
 
-    public bool IsProxy => ProxyConfigurator.IsProxy(Platform);
+    public bool IsProxy => !IsModpackMode && ProxyConfigurator.IsProxy(Platform);
+
+    /// <summary>Modpacks always run mods, whatever platform was picked before switching to modpack mode.</summary>
+    private bool UsesModsNow => IsModpackMode || PlatformInfo.UsesMods(Platform);
 
     public string MemoryText => Loc.F("Wizard_MemoryValue", MemoryGb, SystemRamGb);
 
@@ -176,13 +179,13 @@ public sealed partial class CreateServerViewModel : ObservableObject
     {
         get
         {
-            var perGb = IsProxy ? 250 : PlatformInfo.UsesMods(Platform) ? 3 : 8;
+            var perGb = IsProxy ? 250 : UsesModsNow ? 3 : 8;
             var players = Math.Max(1, (int)((MemoryGb - (PlatformInfo.UsesMods(Platform) ? 2 : 1)) * perGb));
             return Loc.F("Wizard_Capacity", players);
         }
     }
 
-    public int RecommendedGb => IsProxy ? 1 : PlatformInfo.UsesMods(Platform) ? 6 : Platform == ServerPlatform.Vanilla ? 3 : 4;
+    public int RecommendedGb => IsProxy ? 1 : UsesModsNow ? 6 : Platform == ServerPlatform.Vanilla ? 3 : 4;
 
     public string SummaryText =>
         $"{(IsModpackMode ? PackSummary ?? Loc.T("Modpack_Section") : $"{Platform} {Version ?? "…"}")} · {MemoryGb:0.#} GB · {CoresText}\n:{Port} · {(IsProxy ? "proxy" : $"{GameMode} · {Difficulty} · {(int)MaxPlayers} {Loc.T("Card_Players").ToLower(Loc.Instance.Culture)}")}";

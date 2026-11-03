@@ -27,7 +27,7 @@ public sealed partial class CreateServerViewModel
     public ObservableCollection<ModpackVersion> PackVersions { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsPlatformMode), nameof(SummaryText))]
+    [NotifyPropertyChangedFor(nameof(IsPlatformMode), nameof(SummaryText), nameof(IsProxy), nameof(Capacity), nameof(RecommendedGb), nameof(MemoryWarning))]
     private bool _isModpackMode;
 
     public bool IsPlatformMode
@@ -239,6 +239,7 @@ public sealed partial class CreateServerViewModel
     private async Task<IReadOnlyList<ModpackFile>?> ResolveCurseForgeAsync(ModpackManifest manifest, CancellationToken ct)
     {
         var list = new List<ModpackFile>();
+        var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var done = 0;
         foreach (var f in manifest.CurseForgeFiles.Where(f => f.Required))
         {
@@ -259,7 +260,15 @@ public sealed partial class CreateServerViewModel
                 return null;
             }
 
-            list.Add(new ModpackFile("mods/" + Path.GetFileName(m.FileName), [m.Url], m.Hash, m.Algorithm, m.Size));
+            var target = "mods/" + Path.GetFileName(m.FileName);
+            if (!paths.Add(target))
+            {
+                // Two files with the same name would overwrite each other.
+                Status = Loc.F("Modpack_ResolveFailed", f.ProjectId, "duplicate file name " + Path.GetFileName(m.FileName));
+                return null;
+            }
+
+            list.Add(new ModpackFile(target, [m.Url], m.Hash, m.Algorithm, m.Size));
         }
 
         return list;
