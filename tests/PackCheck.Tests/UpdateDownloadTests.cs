@@ -175,6 +175,115 @@ public sealed class UpdateDownloadTests : IDisposable
         Assert.False(File.Exists(PartFile[..^5]));
     }
 
+    /// <summary>Sends a few bytes, then keeps the connection open without data until the read is cancelled.</summary>
+    private sealed class StallingStream(byte[] head) : Stream
+    {
+        private bool _sent;
+
+        public override bool CanRead => true;
+
+        public override bool CanSeek => false;
+
+        public override bool CanWrite => false;
+
+        public override long Length => throw new NotSupportedException();
+
+        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (!_sent)
+            {
+                _sent = true;
+                head.CopyTo(buffer);
+                return head.Length;
+            }
+
+            await Task.Delay(Timeout.Infinite, cancellationToken);
+            return 0;
+        }
+
+        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+        public override void Flush()
+        {
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+        public override void SetLength(long value) => throw new NotSupportedException();
+
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+    }
+
+    [Fact]
+    public async Task StalledDownload_IsRetried_AndResumes()
+    {
+        var calls = 0;
+        var handler = new StubHandler(req =>
+        {
+            if (req.RequestUri == SumUrl)
+            {
+                return Sum(Package);
+            }
+
+            if (++calls == 1)
+            {
+                var content = new StreamContent(new StallingStream(Package[..300]));
+                content.Headers.ContentLength = Package.Length;
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
+            }
+
+            return Partial(Package, req.Headers.Range!.Ranges.Single().From!.Value);
+        });
+        using var http = new HttpClient(handler);
+        var service = new UpdateService(new GitHubReleaseClient(http), http, StateFile) { RetryDelays = [TimeSpan.Zero], StallTimeout = TimeSpan.FromMilliseconds(200) };
+
+        var path = await service.DownloadAndStageAsync(Release(), null, CancellationToken.None);
+
+        Assert.Equal(Package, await File.ReadAllBytesAsync(path));
+        Assert.Equal(2, calls);
+        Assert.Equal(300, handler.Requests.Last().Headers.Range!.Ranges.Single().From);
+    }
+
+    [Fact]
+    public async Task WhatsNew_UnwritableCache_StillReturnsNotes()
+    {
+        Directory.CreateDirectory(Path.Combine(_root, "cache"));
+        await File.WriteAllTextAsync(StateFile, """{"LastRunVersion":"0.0.1"}""");
+
+        // A file where the cache folder should be makes the cache write fail.
+        await File.WriteAllTextAsync(Path.Combine(_root, "cache", "release-notes"), "x");
+        var current = UpdateService.CurrentVersion.ToString(3);
+        var body = $$"""{"tag_name":"v{{current}}","name":"x","body":"notes","html_url":"https://github.com/X1NPAR1/PackCheck/releases/tag/v{{current}}","assets":[]}""";
+        using var http = new HttpClient(new StubHandler(_ => StubHandler.Json(body)));
+
+        var w = await Service(http).TakeWhatsNewAsync(TimeSpan.FromSeconds(5), CancellationToken.None);
+
+        Assert.Equal("notes", w!.Notes);
+    }
+
+    [Fact]
+    public async Task WhatsNew_UnreadableCache_FallsBackToDownload()
+    {
+        var current = UpdateService.CurrentVersion.ToString(3);
+        var cache = Path.Combine(_root, "cache", "release-notes");
+        Directory.CreateDirectory(cache);
+        await File.WriteAllTextAsync(StateFile, """{"LastRunVersion":"0.0.1"}""");
+        var cacheFile = Path.Combine(cache, "v" + current + ".md");
+        await File.WriteAllTextAsync(cacheFile, "old");
+        var body = $$"""{"tag_name":"v{{current}}","name":"x","body":"fresh","html_url":"https://github.com/X1NPAR1/PackCheck/releases/tag/v{{current}}","assets":[]}""";
+        using var http = new HttpClient(new StubHandler(_ => StubHandler.Json(body)));
+
+        WhatsNew? w;
+        using (new FileStream(cacheFile, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            w = await Service(http).TakeWhatsNewAsync(TimeSpan.FromSeconds(5), CancellationToken.None);
+        }
+
+        Assert.Equal("fresh", w!.Notes);
+    }
+
     private static HttpResponseMessage Count(ref int calls, HttpResponseMessage response)
     {
         calls++;

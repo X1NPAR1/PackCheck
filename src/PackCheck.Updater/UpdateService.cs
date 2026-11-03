@@ -25,6 +25,9 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
     /// <summary>Waits between download attempts; one retry per entry.</summary>
     public IReadOnlyList<TimeSpan> RetryDelays { get; init; } = [TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10)];
 
+    /// <summary>A download that receives no data for this long is aborted and retried.</summary>
+    public TimeSpan StallTimeout { get; init; } = TimeSpan.FromSeconds(30);
+
     private DateOnly Today => DateOnly.FromDateTime(_clock.GetLocalNow().DateTime);
 
     public static Version CurrentVersion { get; } =
@@ -168,7 +171,7 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
 
         var length = response.Content.Headers.ContentLength;
         var total = append
-            ? range?.Length ?? (length is { } l ? existing + l : asset.Size)
+            ? range!.Length ?? (length is { } l ? existing + l : asset.Size)
             : length ?? asset.Size;
 
         await using var input = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
@@ -176,9 +179,17 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
         var buffer = new byte[81920];
         var read = existing;
         progress?.Report(total > 0 ? Math.Min(1, (double)read / total) : 0);
-        int n;
-        while ((n = await input.ReadAsync(buffer, ct).ConfigureAwait(false)) > 0)
+        // A connection that stays open without sending data would block forever; a stall becomes a retry that resumes.
+        using var stall = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        while (true)
         {
+            stall.CancelAfter(StallTimeout);
+            var n = await input.ReadAsync(buffer, stall.Token).ConfigureAwait(false);
+            if (n == 0)
+            {
+                break;
+            }
+
             read += n;
             if (read > MaxPackageBytes)
             {
@@ -212,7 +223,7 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
     {
         HttpRequestException { StatusCode: null } => true,
         HttpRequestException { StatusCode: { } code } => (int)code >= 500 || code is HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests or HttpStatusCode.RequestedRangeNotSatisfiable,
-        IOException or TaskCanceledException => true,
+        IOException or OperationCanceledException => true,
         _ => false,
     };
 
@@ -240,28 +251,46 @@ public sealed class UpdateService(GitHubReleaseClient client, HttpClient http, s
         var tag = "v" + current.ToString(3);
         var page = new Uri($"https://github.com/{GitHubReleaseClient.DefaultOwner}/{GitHubReleaseClient.DefaultRepo}/releases/tag/{tag}");
         var cacheFile = Path.Combine(_notesCache, tag + ".md");
-        if (File.Exists(cacheFile))
+        try
         {
-            return new WhatsNew(current, await File.ReadAllTextAsync(cacheFile, ct).ConfigureAwait(false), page);
+            if (File.Exists(cacheFile))
+            {
+                return new WhatsNew(current, await File.ReadAllTextAsync(cacheFile, ct).ConfigureAwait(false), page);
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // An unreadable cache falls through to a fresh download.
         }
 
+        ReleaseInfo? release = null;
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
         cts.CancelAfter(timeout);
         try
         {
-            if (await client.GetByVersionAsync(current, cts.Token).ConfigureAwait(false) is { } release)
-            {
-                Directory.CreateDirectory(_notesCache);
-                await File.WriteAllTextAsync(cacheFile, release.Notes, ct).ConfigureAwait(false);
-                return new WhatsNew(current, release.Notes, release.PageUrl);
-            }
+            release = await client.GetByVersionAsync(current, cts.Token).ConfigureAwait(false);
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException or InvalidOperationException or UriFormatException or IOException)
         {
             // Offline or rate limited: the dialog still links to the release page.
         }
 
-        return new WhatsNew(current, string.Empty, page);
+        if (release is null)
+        {
+            return new WhatsNew(current, string.Empty, page);
+        }
+
+        try
+        {
+            Directory.CreateDirectory(_notesCache);
+            await File.WriteAllTextAsync(cacheFile, release.Notes, ct).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // The cache is only a convenience; the notes are shown either way.
+        }
+
+        return new WhatsNew(current, release.Notes, release.PageUrl);
     }
 
     /// <summary>
