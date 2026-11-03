@@ -97,6 +97,8 @@ public sealed partial class CreateServerViewModel
         }
         catch (OperationCanceledException)
         {
+            // A newer search replaced this one; its results win.
+            return;
         }
     }
 

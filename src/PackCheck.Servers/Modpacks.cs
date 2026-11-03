@@ -190,6 +190,18 @@ public static class Modpacks
     /// <summary>Reads the manifest of a .mrpack or a CurseForge modpack zip.</summary>
     public static ModpackManifest Read(string archive)
     {
+        try
+        {
+            return ReadUnchecked(archive);
+        }
+        catch (Exception ex) when (ex is KeyNotFoundException or FormatException or InvalidOperationException or JsonException)
+        {
+            throw new InvalidDataException("The modpack manifest is malformed.", ex);
+        }
+    }
+
+    private static ModpackManifest ReadUnchecked(string archive)
+    {
         using var zip = ZipFile.OpenRead(archive);
         if (zip.GetEntry("modrinth.index.json") is { } mr)
         {
@@ -339,6 +351,8 @@ public sealed class ModpackInstaller(ServerCreator creator, HttpClient http)
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
+                // Leftovers are harmless; the original error is what the user needs to see.
+                System.Diagnostics.Trace.WriteLine($"Modpack cleanup failed: {ex.Message}");
             }
 
             throw;

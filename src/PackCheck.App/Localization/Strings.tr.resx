@@ -186,9 +186,9 @@ Yine de uygulansın mı?</value></data>
   <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Sürümler yükleniyor…</value></data>
   <data name="Modpack_NoVersions" xml:space="preserve"><value>Bu modpack'in .mrpack sürümü yok.</value></data>
   <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpack'ler (.mrpack, CurseForge .zip)</value></data>
-  <data name="Modpack_PickFirst" xml:space="preserve"><value>Önce bir modpack sürümü ya da dosya seçin.</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Önce bir modpack sürümü ya da dosya seç.</value></data>
   <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Modpack indiriliyor…</value></data>
-  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge modpack'leri için CurseForge API anahtarınız gerekir. Ayarlar'dan ekleyin ya da paketin sunucu dosyalarını kullanın.</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge modpack'leri için CurseForge API anahtarın gerekir. Ayarlar'dan ekle ya da paketin sunucu dosyalarını kullan.</value></data>
   <data name="Modpack_Files" xml:space="preserve"><value>Mod dosyaları indiriliyor: {0}/{1}</value></data>
   <data name="Modpack_Resolving" xml:space="preserve"><value>CurseForge'da dosyalar bulunuyor: {0}/{1}</value></data>
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>{0} projesinin CurseForge dosyası bulunamadı: {1}</value></data>

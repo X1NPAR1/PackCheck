@@ -186,9 +186,9 @@ Trotzdem anwenden?</value></data>
   <data name="Modpack_LoadingVersions" xml:space="preserve"><value>Versionen werden geladen…</value></data>
   <data name="Modpack_NoVersions" xml:space="preserve"><value>Dieses Modpack hat keine .mrpack-Version.</value></data>
   <data name="Modpack_FileFilter" xml:space="preserve"><value>Modpacks (.mrpack, CurseForge .zip)</value></data>
-  <data name="Modpack_PickFirst" xml:space="preserve"><value>Wählen Sie zuerst eine Modpack-Version oder eine Datei.</value></data>
+  <data name="Modpack_PickFirst" xml:space="preserve"><value>Wähle zuerst eine Modpack-Version oder eine Datei.</value></data>
   <data name="Modpack_DownloadingPack" xml:space="preserve"><value>Modpack wird heruntergeladen…</value></data>
-  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge-Modpacks benötigen Ihren CurseForge-API-Schlüssel. Tragen Sie ihn in den Einstellungen ein oder nutzen Sie die Serverdateien des Packs.</value></data>
+  <data name="Modpack_CurseForgeKeyNeeded" xml:space="preserve"><value>CurseForge-Modpacks benötigen deinen CurseForge-API-Schlüssel. Trag ihn in den Einstellungen ein oder nutze die Serverdateien des Packs.</value></data>
   <data name="Modpack_Files" xml:space="preserve"><value>Mod-Dateien werden geladen: {0}/{1}</value></data>
   <data name="Modpack_Resolving" xml:space="preserve"><value>Dateien auf CurseForge werden gesucht: {0}/{1}</value></data>
   <data name="Modpack_ResolveFailed" xml:space="preserve"><value>CurseForge-Datei von Projekt {0} nicht auflösbar: {1}</value></data>
