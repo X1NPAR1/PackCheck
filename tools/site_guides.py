@@ -238,6 +238,8 @@ TR = {
 <li>Canlı panel: TPS, CPU, RAM ve ping; konsol ve dosya düzenleyici</li>
 <li>Performans sekmesi: 7 günlük TPS, tick süresi, CPU, RAM ve oyuncu grafikleri, öneriler ve spark profili</li>
 <li>Çökme teşhisi: nedeni (eklenti, mod, Java, bozuk ayar dosyası ve satırı, port) bulur ve tek tıkla düzeltir</li>
+<li>Modpack kurulumu (Modrinth ve CurseForge), sunucu kopyalama ve şablonlar</li>
+<li>Port yönlendirmesiz playit.gg tüneli (CGNAT arkasında da çalışır), ayarları dışa/içe aktarma</li>
 <li>Sürüm yükseltme ve düşürme: eklenti/mod uyumluluk raporu, Modrinth güncellemeleri, yedek, dünyalar için seçenekler (o sürümün yedeğinden geri yükleme veya yeni dünya), deneme başlatması ve geri alma</li>
 <li>Yedekler: tam, sadece dünyalar veya sadece ayarlar; günlük/haftalık saklama, sabitleme, ikinci klasöre kopya, dünya bazında geri yükleme</li>
 <li>Oyuncular: oynama süresi, IP geçmişi, beyaz liste, OP ve yasaklama; sunucu logosu ve renkli MOTD düzenleyici</li>
