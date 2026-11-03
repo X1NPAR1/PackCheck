@@ -483,6 +483,7 @@ Hayır: açık bırakıp çık.
   <data name="Tool_Empty" xml:space="preserve"><value>(boş)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} token</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} token</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} token · {1:N0} önbellekten</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Değişiklikte sor</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
