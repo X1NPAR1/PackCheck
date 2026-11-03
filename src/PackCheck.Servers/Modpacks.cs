@@ -40,6 +40,12 @@ public static class Modpacks
     /// <summary>Largest single pack file accepted.</summary>
     public const long MaxFileBytes = 512L * 1024 * 1024;
 
+    /// <summary>Largest manifest (modrinth.index.json / manifest.json) read into memory.</summary>
+    public const long MaxManifestBytes = 16L * 1024 * 1024;
+
+    /// <summary>Largest total size of all override files together (guards against zip bombs).</summary>
+    public const long MaxOverrideBytes = 4L * 1024 * 1024 * 1024;
+
     /// <summary>A stand-in folder for checking relative paths while parsing.</summary>
     private static readonly string CheckRoot = Path.Combine(Path.GetTempPath(), "packcheck-modpack-check");
 
@@ -123,6 +129,7 @@ public static class Modpacks
         }
 
         var (platform, loader) = MapDependencies(deps);
+        var unknown = platform == ServerPlatform.Vanilla ? deps.Keys.Where(k => k != "minecraft").ToList() : [];
         var files = new List<ModpackFile>();
         foreach (var f in Items(root, "files"))
         {
@@ -149,6 +156,11 @@ public static class Modpacks
             }
 
             files.Add(new ModpackFile(path.Replace('\\', '/'), urls, sha512, HashAlgorithmName.SHA512, f.TryGetProperty("fileSize", out var size) ? size.GetInt64() : 0));
+        }
+
+        if (unknown.Count > 0 && files.Count > 0)
+        {
+            throw new InvalidDataException("The modpack asks for a mod loader PackCheck does not support: " + string.Join(", ", unknown));
         }
 
         return new ModpackManifest(ModpackFormat.Modrinth,
@@ -200,17 +212,27 @@ public static class Modpacks
         }
     }
 
+    private static void CheckManifestSize(ZipArchiveEntry entry)
+    {
+        if (entry.Length > MaxManifestBytes)
+        {
+            throw new InvalidDataException("The modpack manifest is too large.");
+        }
+    }
+
     private static ModpackManifest ReadUnchecked(string archive)
     {
         using var zip = ZipFile.OpenRead(archive);
         if (zip.GetEntry("modrinth.index.json") is { } mr)
         {
+            CheckManifestSize(mr);
             using var r = new StreamReader(mr.Open());
             return ParseModrinthIndex(r.ReadToEnd());
         }
 
         if (zip.GetEntry("manifest.json") is { } cf)
         {
+            CheckManifestSize(cf);
             using var r = new StreamReader(cf.Open());
             return ParseCurseForgeManifest(r.ReadToEnd());
         }
@@ -238,11 +260,31 @@ public static class Modpacks
         return plan;
     }
 
+    /// <summary>Rejects override sets with a file over <see cref="MaxFileBytes"/> or more than <see cref="MaxOverrideBytes"/> in total, before anything is written.</summary>
+    public static void CheckOverrideSizes(IEnumerable<long> sizes)
+    {
+        long total = 0;
+        foreach (var size in sizes)
+        {
+            if (size > MaxFileBytes)
+            {
+                throw new InvalidDataException("A modpack override file is too large.");
+            }
+
+            total += size;
+            if (total > MaxOverrideBytes)
+            {
+                throw new InvalidDataException("The modpack overrides are too large.");
+            }
+        }
+    }
+
     /// <summary>Copies the pack's override folders into the server; returns how many files were written.</summary>
     public static int ApplyOverrides(string archive, ModpackManifest manifest, string serverDir)
     {
         using var zip = ZipFile.OpenRead(archive);
         var plan = PlanOverrides(zip.Entries.Select(e => e.FullName), manifest.OverrideFolders, serverDir);
+        CheckOverrideSizes(plan.Select(p => zip.GetEntry(p.Entry)!.Length));
         foreach (var (entry, target) in plan)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
@@ -310,11 +352,6 @@ public sealed class ModpackInstaller(ServerCreator creator, HttpClient http)
     public async Task<ServerDefinition> InstallAsync(ServerCreator.Request request, string archive, ModpackManifest manifest, IReadOnlyList<ModpackFile>? resolvedFiles,
         IProgress<(double Progress, string Step)>? progress, IProgress<(int Done, int Total)>? files, CancellationToken ct)
     {
-        if (manifest.Platform == ServerPlatform.Vanilla && manifest.Format == ModpackFormat.Modrinth && manifest.Files.Count > 0)
-        {
-            throw new InvalidOperationException("The modpack does not name a supported mod loader.");
-        }
-
         var r = RequestFor(request, manifest);
         var def = await creator.CreateAsync(r, new Progress<(double Progress, string Step)>(p =>
         {

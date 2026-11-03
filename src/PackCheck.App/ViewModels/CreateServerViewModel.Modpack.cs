@@ -252,6 +252,13 @@ public sealed partial class CreateServerViewModel
             }
 
             var m = r.Value!;
+            if (string.IsNullOrWhiteSpace(m.Hash))
+            {
+                // Without a hash the download could not be verified.
+                Status = Loc.F("Modpack_ResolveFailed", f.ProjectId, "no file hash");
+                return null;
+            }
+
             list.Add(new ModpackFile("mods/" + Path.GetFileName(m.FileName), [m.Url], m.Hash, m.Algorithm, m.Size));
         }
 

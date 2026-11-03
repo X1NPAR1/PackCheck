@@ -241,4 +241,26 @@ public class ModpackTests
         using var w = new StreamWriter(zip.CreateEntry(name).Open());
         w.Write(text);
     }
+
+    private const string FileJson = """{"path":"datapacks/a.zip","hashes":{"sha512":"aa"},"downloads":["https://cdn.modrinth.com/a.zip"],"fileSize":1}""";
+
+    [Fact]
+    public void MinecraftOnlyPackWithFiles_IsAccepted() =>
+        Assert.Equal(ServerPlatform.Vanilla, Modpacks.ParseModrinthIndex($$"""{"formatVersion":1,"game":"minecraft","name":"v","dependencies":{"minecraft":"1.21.1"},"files":[{{FileJson}}]}""").Platform);
+
+    [Fact]
+    public void UnknownLoaderWithFiles_IsRejected() =>
+        Assert.Throws<InvalidDataException>(() => Modpacks.ParseModrinthIndex($$"""{"formatVersion":1,"game":"minecraft","name":"v","dependencies":{"minecraft":"1.21.1","weird-loader":"1"},"files":[{{FileJson}}]}"""));
+
+    [Fact]
+    public void UnknownLoaderWithoutFiles_KeepsWorking() =>
+        Assert.Equal(ServerPlatform.Vanilla, Modpacks.ParseModrinthIndex("""{"formatVersion":1,"game":"minecraft","name":"v","dependencies":{"minecraft":"1.21.1","weird-loader":"1"},"files":[]}""").Platform);
+
+    [Fact]
+    public void OverrideSizes_AreLimited()
+    {
+        Modpacks.CheckOverrideSizes([1, 2, 3]);
+        Assert.Throws<InvalidDataException>(() => Modpacks.CheckOverrideSizes([Modpacks.MaxFileBytes + 1]));
+        Assert.Throws<InvalidDataException>(() => Modpacks.CheckOverrideSizes(Enumerable.Repeat(Modpacks.MaxFileBytes, 9).ToArray()));
+    }
 }
