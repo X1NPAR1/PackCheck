@@ -42,9 +42,6 @@ jobs:
       - name: Build the app
         run: dotnet build src/PackCheck.App -c Release
       - name: UI tests (FlaUI)
-        env:
-          # Isolated data folder so the tests never see a real server list.
-          PACKCHECK_DATA: ${{ runner.temp }}\packcheck-data
         run: dotnet test tests/PackCheck.UiTests -c Release
 
   format:

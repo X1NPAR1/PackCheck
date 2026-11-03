@@ -64,7 +64,10 @@ public sealed class PageTests(AppFixture app)
             Assert.Contains("PC040", AllText(list), StringComparison.Ordinal); // missing Vault
 
             app.Find("ValidateInventoryTab").AsRadioButton().IsChecked = true;
-            Assert.Contains("Shop.jar", AllText(app.Find("ValidateInventory")), StringComparison.Ordinal);
+            // Rows appear after the tab switch has rendered (slower on CI runners).
+            Assert.True(
+                Retry.WhileFalse(() => AllText(app.Find("ValidateInventory")).Contains("Shop.jar", StringComparison.Ordinal), TimeSpan.FromSeconds(15)).Result,
+                "Shop.jar missing from the inventory");
         }
         finally
         {
