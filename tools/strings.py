@@ -484,6 +484,7 @@ S = {
     "Tool_Empty": ["(empty)", "(boş)", "(leer)", "(vide)", "(пусто)"],
     "Assistant_Tokens": ["{0:N0} tokens", "{0:N0} token", "{0:N0} Tokens", "{0:N0} jetons", "{0:N0} токенов"],
     "Assistant_TokensApprox": ["≈ {0:N0} tokens", "≈ {0:N0} token", "≈ {0:N0} Tokens", "≈ {0:N0} jetons", "≈ {0:N0} токенов"],
+    "Assistant_TokensCached": ["≈ {0:N0} tokens · {1:N0} cached", "≈ {0:N0} token · {1:N0} önbellekten", "≈ {0:N0} Tokens · {1:N0} aus dem Cache", "≈ {0:N0} jetons · {1:N0} en cache", "≈ {0:N0} токенов · {1:N0} из кэша"],
     "Mode_Label": ["Mode", "Mod", "Modus", "Mode", "Режим"],
     "Mode_Normal": ["Ask before changes", "Değişiklikte sor", "Vor Änderungen fragen", "Demander avant", "Спрашивать"],
     "Mode_Plan": ["Plan", "Plan", "Plan", "Plan", "План"],

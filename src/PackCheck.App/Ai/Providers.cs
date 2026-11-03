@@ -33,7 +33,37 @@ public sealed record AiImage(string MediaType, byte[] Data);
 public sealed record AiToolCall(string Id, string Name, JsonObject Arguments);
 
 /// <summary>What the model produced in one turn: text for the user and/or tool calls to run.</summary>
-public sealed record AiStep(string Text, IReadOnlyList<AiToolCall> ToolCalls, int InputTokens, int OutputTokens, string? StopReason);
+public sealed record AiStep(string Text, IReadOnlyList<AiToolCall> ToolCalls, int InputTokens, int OutputTokens, string? StopReason)
+{
+    /// <summary>Input tokens served from the prompt cache (Anthropic); not part of <see cref="InputTokens"/>.</summary>
+    public int CacheReadTokens { get; init; }
+
+    /// <summary>Input tokens written to the prompt cache (Anthropic); not part of <see cref="InputTokens"/>.</summary>
+    public int CacheCreationTokens { get; init; }
+}
+
+/// <summary>Builds Anthropic request parts; kept separate so the request shape can be tested without calling the API.</summary>
+public static class AnthropicRequests
+{
+    /// <summary>
+    /// The request for one turn. Top-level cache control lets the API mark the last cacheable block, so the system prompt,
+    /// tools and earlier turns are read from the cache on the next round instead of billed in full.
+    /// </summary>
+    public static MessageCreateParams Build(string model, string system, IReadOnlyList<ToolUnion> tools, IReadOnlyList<MessageParam> messages) => new()
+    {
+        Model = model,
+        MaxTokens = 32000,
+        Thinking = AiProviders.SupportsAdaptiveThinking(model) ? (ThinkingConfigParam)new ThinkingConfigAdaptive() : null,
+        System = system,
+        Tools = [.. tools],
+        Messages = [.. messages],
+        CacheControl = new CacheControlEphemeral(),
+    };
+
+    /// <summary>One user message with a tool_result block per entry, in order.</summary>
+    public static MessageParam ToolResultMessage(IEnumerable<ToolResultEntry> entries) =>
+        new UserMessageParam { Content = entries.Select(e => (ContentBlockParam)new ToolResultBlockParam { ToolUseID = e.Id, Content = e.Content, IsError = e.IsError }).ToList() };
+}
 
 /// <summary>One chat with its native history; tool results are fed back with <see cref="ContinueAsync"/>.</summary>
 public interface IAiConversation
@@ -201,29 +231,45 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
         return RunAsync(ct);
     }
 
+    // Tool results with the index of the user message that carries them, so old ones can be stubbed in place.
+    private readonly List<(ToolResultEntry Entry, int Message)> _results = [];
+
     public Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
     {
-        List<ContentBlockParam> blocks = [];
+        var index = _messages.Count;
         foreach (var (call, result, isError) in results)
         {
-            blocks.Add(new ToolResultBlockParam { ToolUseID = call.Id, Content = result, IsError = isError });
+            _results.Add((new ToolResultEntry(call.Id, call.Name, HistoryTrimmer.ArgSummary(call.Arguments), result, isError), index));
         }
 
-        _messages.Add(new UserMessageParam { Content = blocks });
+        _messages.Add(AnthropicRequests.ToolResultMessage(results.Select(r => new ToolResultEntry(r.Call.Id, r.Call.Name, string.Empty, r.Result, r.IsError))));
+        TrimHistory();
         return RunAsync(ct);
+    }
+
+    /// <summary>Rebuilds the user messages whose old tool results were stubbed; assistant turns (tool_use, thinking) are untouched.</summary>
+    private void TrimHistory()
+    {
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
+        var changed = new HashSet<int>();
+        for (var i = 0; i < trimmed.Count; i++)
+        {
+            if (!ReferenceEquals(trimmed[i], _results[i].Entry))
+            {
+                _results[i] = (trimmed[i], _results[i].Message);
+                changed.Add(_results[i].Message);
+            }
+        }
+
+        foreach (var m in changed)
+        {
+            _messages[m] = AnthropicRequests.ToolResultMessage(_results.Where(r => r.Message == m).Select(r => r.Entry));
+        }
     }
 
     private async Task<AiStep> RunAsync(CancellationToken ct)
     {
-        var stream = _client.Messages.CreateStreaming(new MessageCreateParams
-        {
-            Model = model,
-            MaxTokens = 32000,
-            Thinking = AiProviders.SupportsAdaptiveThinking(model) ? (ThinkingConfigParam)new ThinkingConfigAdaptive() : null,
-            System = system,
-            Tools = _tools,
-            Messages = [.. _messages],
-        }, ct);
+        var stream = _client.Messages.CreateStreaming(AnthropicRequests.Build(model, system, _tools, _messages), ct);
         var response = await Tee(stream, TextDelta).Aggregate().ConfigureAwait(false);
 
         List<ContentBlockParam> echo = [];
@@ -259,7 +305,12 @@ internal sealed class AnthropicConversation(string? apiKey, string model, string
             text.Append("(The model declined this request.)");
         }
 
-        return new AiStep(text.ToString(), calls, (int)response.Usage.InputTokens, (int)response.Usage.OutputTokens, stop);
+        var usage = response.Usage;
+        return new AiStep(text.ToString(), calls, (int)usage.InputTokens, (int)usage.OutputTokens, stop)
+        {
+            CacheReadTokens = (int)(usage.CacheReadInputTokens ?? 0),
+            CacheCreationTokens = (int)(usage.CacheCreationInputTokens ?? 0),
+        };
     }
 
     /// <summary>Passes text deltas to the UI while the SDK's aggregator builds the full message.</summary>
@@ -330,12 +381,31 @@ internal sealed class OpenAiCompatibleConversation : IAiConversation
 
     public Task<AiStep> ContinueAsync(IReadOnlyList<(AiToolCall Call, string Result, bool IsError)> results, CancellationToken ct)
     {
-        foreach (var (call, result, _) in results)
+        foreach (var (call, result, isError) in results)
         {
-            _messages.Add(new JsonObject { ["role"] = "tool", ["tool_call_id"] = call.Id, ["content"] = result });
+            var message = new JsonObject { ["role"] = "tool", ["tool_call_id"] = call.Id, ["content"] = result };
+            _messages.Add(message);
+            _results.Add((new ToolResultEntry(call.Id, call.Name, HistoryTrimmer.ArgSummary(call.Arguments), result, isError), message));
         }
 
+        TrimHistory();
         return RunAsync(ct);
+    }
+
+    // Each tool result with the "tool" message that carries it; only its content is replaced when trimmed.
+    private readonly List<(ToolResultEntry Entry, JsonObject Message)> _results = [];
+
+    private void TrimHistory()
+    {
+        var trimmed = HistoryTrimmer.Trim(_results.Select(r => r.Entry).ToList());
+        for (var i = 0; i < trimmed.Count; i++)
+        {
+            if (!ReferenceEquals(trimmed[i], _results[i].Entry))
+            {
+                _results[i].Message["content"] = trimmed[i].Content;
+                _results[i] = (trimmed[i], _results[i].Message);
+            }
+        }
     }
 
     /// <summary>Set when the provider rejects "stream_options"; usage is then estimated by the caller.</summary>

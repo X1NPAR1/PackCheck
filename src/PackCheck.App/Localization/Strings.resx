@@ -483,6 +483,7 @@ Worlds, plugins, mods, configs and logs in it are gone afterwards. Backups made 
   <data name="Tool_Empty" xml:space="preserve"><value>(empty)</value></data>
   <data name="Assistant_Tokens" xml:space="preserve"><value>{0:N0} tokens</value></data>
   <data name="Assistant_TokensApprox" xml:space="preserve"><value>≈ {0:N0} tokens</value></data>
+  <data name="Assistant_TokensCached" xml:space="preserve"><value>≈ {0:N0} tokens · {1:N0} cached</value></data>
   <data name="Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Mode_Normal" xml:space="preserve"><value>Ask before changes</value></data>
   <data name="Mode_Plan" xml:space="preserve"><value>Plan</value></data>
