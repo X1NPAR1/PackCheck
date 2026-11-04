@@ -1304,4 +1304,29 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap installed. Start the server, then open the map.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>Opened {0}. The first render can take a few minutes.</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Start the server so BlueMap can serve the map.</value></data>
+  <data name="Content_LinkHint" xml:space="preserve"><value>Paste a Modrinth, Hangar, SpigotMC or GitHub link, a Modrinth slug or a .jar URL</value></data>
+  <data name="Content_AddLink" xml:space="preserve"><value>Add</value></data>
+  <data name="Content_Check" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="Content_LinkUnknown" xml:space="preserve"><value>This link is not recognized. Use a Modrinth, Hangar, SpigotMC or GitHub page, a Modrinth slug or a direct .jar URL.</value></data>
+  <data name="Content_Resolving" xml:space="preserve"><value>Looking it up on {0}…</value></data>
+  <data name="Content_Added" xml:space="preserve"><value>Added {0} ({1}).</value></data>
+  <data name="Content_NoHash" xml:space="preserve"><value>The source publishes no hash, so the file was checked only for being a plugin/mod jar.</value></data>
+  <data name="Content_Checking" xml:space="preserve"><value>Checking Modrinth for newer builds…</value></data>
+  <data name="Content_UpToDate" xml:space="preserve"><value>Everything Modrinth knows is up to date.</value></data>
+  <data name="Content_UpdatesFound" xml:space="preserve"><value>{0} updates available.</value></data>
+  <data name="Content_UpdatesTitle" xml:space="preserve"><value>Updates</value></data>
+  <data name="Content_UpdateAll" xml:space="preserve"><value>Update all</value></data>
+  <data name="Content_Update" xml:space="preserve"><value>Update</value></data>
+  <data name="Content_Updating" xml:space="preserve"><value>Updating {0} ({1}/{2})…</value></data>
+  <data name="Content_Updated" xml:space="preserve"><value>{0} updated. The old jars are kept, so you can revert.</value></data>
+  <data name="Content_Revert" xml:space="preserve"><value>Revert</value></data>
+  <data name="Content_Reverted" xml:space="preserve"><value>Restored {0}.</value></data>
+  <data name="Content_StopFirst" xml:space="preserve"><value>Stop the server before changing its jars.</value></data>
+  <data name="Mclogs_Share" xml:space="preserve"><value>Share on mclo.gs</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Uploads the latest crash report (or the latest log when there is none) as a public paste and shows mclo.gs's automatic analysis.</value></data>
+  <data name="Mclogs_Title" xml:space="preserve"><value>Share on mclo.gs?</value></data>
+  <data name="Mclogs_Body" xml:space="preserve"><value>{0} will be uploaded to mclo.gs and anyone with the link can read it. mclo.gs hides IP addresses, but check that it contains nothing private.</value></data>
+  <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs found no known problem in this log.</value></data>
+  <data name="Mclogs_Copied" xml:space="preserve"><value>Shared: {0} (link copied)</value></data>
+  <data name="Mclogs_Open" xml:space="preserve"><value>Open on mclo.gs</value></data>
 </root>
