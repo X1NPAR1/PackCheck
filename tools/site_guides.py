@@ -238,6 +238,9 @@ TR = {
 <li>Canlı panel: TPS, CPU, RAM ve ping; konsol ve dosya düzenleyici</li>
 <li>Performans sekmesi: 7 günlük TPS, tick süresi, CPU, RAM ve oyuncu grafikleri, öneriler ve spark profili</li>
 <li>Çökme teşhisi: nedeni (eklenti, mod, Java, bozuk ayar dosyası ve satırı, port) bulur ve tek tıkla düzeltir</li>
+<li>4.0: Özet sayfası, yeni Dünya sekmesi (saat, hava, oyun kuralları, dünya kütüphanesi, envanter görüntüleyici, BlueMap canlı harita)</li>
+<li>4.0: Linkle eklenti/mod ekleme (Modrinth, Hangar, SpigotMC, GitHub), hepsini güncelle ve geri al, mclo.gs ile çökme paylaşımı</li>
+<li>4.0: Analiz sekmesi (aktivite çizelgesi, oyuncu skor tablosu, depolama temizliği) ve mod-önce sunucu sihirbazı</li>
 <li>Modpack kurulumu (Modrinth ve CurseForge), sunucu kopyalama ve şablonlar</li>
 <li>Port yönlendirmesiz playit.gg tüneli (CGNAT arkasında da çalışır), ayarları dışa/içe aktarma</li>
 <li>Sürüm yükseltme ve düşürme: eklenti/mod uyumluluk raporu, Modrinth güncellemeleri, yedek, dünyalar için seçenekler (o sürümün yedeğinden geri yükleme veya yeni dünya), deneme başlatması ve geri alma</li>
