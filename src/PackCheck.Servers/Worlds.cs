@@ -122,24 +122,59 @@ public sealed class WorldLibrary(string root)
     /// </summary>
     public string? Install(LibraryWorld w, ServerDefinition server)
     {
-        var aside = UpgradeAdvisor.MoveWorldsAside(server.Directory, server.MinecraftVersion, DateTime.Now);
-        var root = Path.GetFullPath(server.Directory);
         using var zip = ZipFile.OpenRead(ZipPath(w));
-        var flat = zip.GetEntry("level.dat") is not null;
-        foreach (var e in zip.Entries.Where(e => e.Name.Length > 0))
-        {
-            var rel = flat ? "world/" + e.FullName : e.FullName;
-            var dest = Path.GetFullPath(Path.Combine(root, rel));
-            if (!dest.StartsWith(root + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidDataException("Unsafe path in world zip: " + e.FullName);
-            }
+        var plan = PlanInstall(zip.Entries.Where(e => e.Name.Length > 0).Select(e => e.FullName).ToList(), server.Directory);
 
+        // Only after the whole archive checked out are the current worlds moved aside.
+        var aside = UpgradeAdvisor.MoveWorldsAside(server.Directory, server.MinecraftVersion, DateTime.Now);
+        foreach (var (entry, dest) in plan)
+        {
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            e.ExtractToFile(dest, overwrite: true);
+            zip.GetEntry(entry)!.ExtractToFile(dest, overwrite: true);
         }
 
         return aside;
+    }
+
+    /// <summary>
+    /// Maps zip entries to destinations. A zip with level.dat at its top is one world ("world"); otherwise every entry must
+    /// sit in a top-level folder that holds a level.dat. Any other entry, or a path leaving its world folder, rejects the archive.
+    /// </summary>
+    public static IReadOnlyList<(string Entry, string Dest)> PlanInstall(IReadOnlyList<string> entries, string serverDir)
+    {
+        var root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(serverDir));
+        var flat = entries.Any(e => e.Equals("level.dat", StringComparison.OrdinalIgnoreCase));
+        var worlds = flat
+            ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "world" }
+            : entries.Where(e => e.Count(c => c == '/') == 1 && e.EndsWith("/level.dat", StringComparison.OrdinalIgnoreCase))
+                .Select(e => e[..e.IndexOf('/')]).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (worlds.Count == 0)
+        {
+            throw new InvalidDataException("The zip does not contain a Minecraft world (no level.dat).");
+        }
+
+        var plan = new List<(string, string)>();
+        foreach (var e in entries)
+        {
+            var rel = flat ? "world/" + e : e;
+            var slash = rel.IndexOf('/');
+            var folder = slash > 0 ? rel[..slash] : string.Empty;
+            if (!worlds.Contains(folder))
+            {
+                throw new InvalidDataException("The zip holds a file outside its world folders: " + e);
+            }
+
+            var worldRoot = Path.Combine(root, folder);
+            var dest = Path.GetFullPath(Path.Combine(root, rel));
+            if (!dest.StartsWith(worldRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException("Unsafe path in world zip: " + e);
+            }
+
+            plan.Add((e, dest));
+        }
+
+        return plan;
     }
 
     /// <summary>Moves the current worlds aside and sets <c>level-seed</c> so the next start generates a fresh world.</summary>
@@ -179,13 +214,20 @@ public static class Nbt
         return ReadCompound(r, 0);
     }
 
-    private static short I16(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt16BigEndian(r.ReadBytes(2));
+    /// <summary>Reads exactly <paramref name="n"/> bytes; truncated data is an error, never silently short.</summary>
+    private static byte[] Exact(BinaryReader r, int n)
+    {
+        var b = r.ReadBytes(n);
+        return b.Length == n ? b : throw new EndOfStreamException("The NBT data ends early.");
+    }
 
-    private static int I32(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(r.ReadBytes(4));
+    private static short I16(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt16BigEndian(Exact(r, 2));
 
-    private static long I64(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt64BigEndian(r.ReadBytes(8));
+    private static int I32(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(Exact(r, 4));
 
-    private static string ReadString(BinaryReader r) => Encoding.UTF8.GetString(r.ReadBytes((ushort)I16(r)));
+    private static long I64(BinaryReader r) => System.Buffers.Binary.BinaryPrimitives.ReadInt64BigEndian(Exact(r, 8));
+
+    private static string ReadString(BinaryReader r) => Encoding.UTF8.GetString(Exact(r, (ushort)I16(r)));
 
     private static Dictionary<string, object?> ReadCompound(BinaryReader r, int depth)
     {
@@ -216,7 +258,7 @@ public static class Nbt
         4 => I64(r),
         5 => BitConverter.Int32BitsToSingle(I32(r)),
         6 => BitConverter.Int64BitsToDouble(I64(r)),
-        7 => r.ReadBytes(Count(I32(r))),
+        7 => Exact(r, Count(I32(r))),
         8 => ReadString(r),
         9 => ReadList(r, depth),
         10 => ReadCompound(r, depth),
@@ -229,12 +271,17 @@ public static class Nbt
 
     private static List<object?> ReadList(BinaryReader r, int depth)
     {
+        if (depth > 64)
+        {
+            throw new InvalidDataException("NBT nesting is too deep.");
+        }
+
         var type = r.ReadByte();
         var n = Count(I32(r));
         var list = new List<object?>(Math.Min(n, 4096));
         for (var i = 0; i < n; i++)
         {
-            list.Add(ReadPayload(r, type, depth));
+            list.Add(ReadPayload(r, type, depth + 1));
         }
 
         return list;
