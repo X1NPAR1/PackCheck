@@ -1356,4 +1356,12 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Storage_CleanTitle" xml:space="preserve"><value>Nettoyer le stockage</value></data>
   <data name="Storage_CleanBody" xml:space="preserve"><value>Supprimer vieux logs, rapports de plantage et caches ({0}) ? Mondes, configs et log actuel ne sont pas touchés.</value></data>
   <data name="Storage_Freed" xml:space="preserve"><value>{0} libérés.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Partir des mods voulus</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Listez des mods Modrinth (noms ou liens). PackCheck choisit la version de Minecraft et le loader les plus récents qu'ils supportent tous et les installe avec le serveur.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Trouver la version</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Indiquez au moins un mod Modrinth.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>Vérification de {0} mods sur Modrinth…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>Ces mods n'ont ni version ni loader en commun. Retirez-en un et réessayez.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} prend en charge les {2} mods ; ils seront installés à la création.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>Installation de {0} ({1}/{2})…</value></data>
 </root>

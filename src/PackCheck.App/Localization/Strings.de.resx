@@ -1356,4 +1356,12 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Storage_CleanTitle" xml:space="preserve"><value>Speicher aufräumen</value></data>
   <data name="Storage_CleanBody" xml:space="preserve"><value>Alte Logs, Absturzberichte und Caches ({0}) löschen? Welten, Konfigurationen und das aktuelle Log bleiben.</value></data>
   <data name="Storage_Freed" xml:space="preserve"><value>{0} freigegeben.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Mit den gewünschten Mods beginnen</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Modrinth-Mods auflisten (Namen oder Links). PackCheck wählt die neueste Minecraft-Version und den Loader, die alle unterstützen, und installiert sie mit dem Server.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Version finden</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Gib mindestens einen Modrinth-Mod ein.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>{0} Mods werden auf Modrinth geprüft…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>Diese Mods haben keine gemeinsame Version und keinen gemeinsamen Loader. Entferne einen und versuche es erneut.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} unterstützt alle {2} Mods; sie werden beim Erstellen installiert.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>{0} wird installiert ({1}/{2})…</value></data>
 </root>

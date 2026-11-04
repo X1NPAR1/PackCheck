@@ -1356,4 +1356,12 @@ F1 · этот список
   <data name="Storage_CleanTitle" xml:space="preserve"><value>Очистить хранилище</value></data>
   <data name="Storage_CleanBody" xml:space="preserve"><value>Удалить старые логи, отчёты о сбоях и кэш ({0})? Миры, настройки и текущий лог не затрагиваются.</value></data>
   <data name="Storage_Freed" xml:space="preserve"><value>Освобождено {0}.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Начните с нужных модов</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Перечислите моды Modrinth (названия или ссылки). PackCheck выберет новейшую версию Minecraft и загрузчик, которые поддерживают все, и установит их вместе с сервером.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Подобрать версию</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Укажите хотя бы один мод Modrinth.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>Проверка модов на Modrinth: {0}…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>У этих модов нет общей версии и загрузчика. Уберите один и попробуйте снова.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} поддерживает все моды ({2}); они установятся при создании сервера.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>Установка {0} ({1}/{2})…</value></data>
 </root>

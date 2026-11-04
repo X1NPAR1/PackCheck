@@ -1356,4 +1356,12 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Storage_CleanTitle" xml:space="preserve"><value>Clean up storage</value></data>
   <data name="Storage_CleanBody" xml:space="preserve"><value>Delete old logs, crash reports and caches ({0})? Worlds, configs and the current log are not touched.</value></data>
   <data name="Storage_Freed" xml:space="preserve"><value>Freed {0}.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Start from the mods you want</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>List Modrinth mods (names or links). PackCheck picks the newest Minecraft version and loader they all support and installs them with the server.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Find version</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Enter at least one Modrinth mod.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>Checking {0} mods on Modrinth…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>These mods share no Minecraft version and loader. Remove one and try again.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} supports all {2} mods; they are installed when the server is created.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>Installing {0} ({1}/{2})…</value></data>
 </root>
