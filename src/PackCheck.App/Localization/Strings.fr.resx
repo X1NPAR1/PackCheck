@@ -1323,7 +1323,7 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Content_Reverted" xml:space="preserve"><value>{0} restauré.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Arrêtez le serveur avant de changer ses jars.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Partager sur mclo.gs</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Envoie le rapport de plantage en paste publique et affiche l'analyse automatique de mclo.gs.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Envoie le dernier rapport de plantage (ou le dernier log s'il n'y en a pas) en paste publique et affiche l'analyse automatique de mclo.gs.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Partager sur mclo.gs ?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} sera envoyé sur mclo.gs et lisible par toute personne ayant le lien. mclo.gs masque les adresses IP, mais vérifiez qu'il ne contient rien de privé.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs n'a trouvé aucun problème connu dans ce log.</value></data>

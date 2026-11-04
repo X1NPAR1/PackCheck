@@ -1323,7 +1323,7 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Content_Reverted" xml:space="preserve"><value>{0} wiederhergestellt.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Stoppe den Server, bevor du Jars änderst.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Auf mclo.gs teilen</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Lädt den Absturzbericht als öffentliche Paste hoch und zeigt die automatische Analyse von mclo.gs.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Lädt den neuesten Absturzbericht (oder, falls keiner existiert, das neueste Log) als öffentliche Paste hoch und zeigt die automatische Analyse von mclo.gs.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Auf mclo.gs teilen?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} wird auf mclo.gs hochgeladen; jeder mit dem Link kann es lesen. mclo.gs verbirgt IP-Adressen, prüfe aber, dass nichts Privates enthalten ist.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs hat in diesem Log kein bekanntes Problem gefunden.</value></data>

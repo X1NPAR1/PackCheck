@@ -1323,7 +1323,7 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Content_Reverted" xml:space="preserve"><value>{0} geri yüklendi.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Jar'ları değiştirmeden önce sunucuyu durdur.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>mclo.gs'te paylaş</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Çökme raporunu herkese açık bir paste olarak yükler ve mclo.gs'in otomatik analizini gösterir.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Son çökme raporunu (yoksa son logu) herkese açık bir paste olarak yükler ve mclo.gs'in otomatik analizini gösterir.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>mclo.gs'te paylaşılsın mı?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} mclo.gs'e yüklenecek ve linki olan herkes okuyabilecek. mclo.gs IP adreslerini gizler ama özel bilgi olmadığından emin ol.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs bu logda bilinen bir sorun bulmadı.</value></data>

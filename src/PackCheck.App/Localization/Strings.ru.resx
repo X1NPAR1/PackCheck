@@ -1323,7 +1323,7 @@ F1 · этот список
   <data name="Content_Reverted" xml:space="preserve"><value>Восстановлено: {0}.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Остановите сервер перед заменой jar.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Поделиться в mclo.gs</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Загружает отчёт о сбое как публичную вставку и показывает автоанализ mclo.gs.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Загружает последний отчёт о сбое (или последний лог, если отчёта нет) как публичную вставку и показывает автоанализ mclo.gs.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Поделиться в mclo.gs?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} будет загружен в mclo.gs, и любой со ссылкой сможет его прочитать. mclo.gs скрывает IP-адреса, но проверьте, что там нет личного.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs не нашёл известных проблем в этом логе.</value></data>

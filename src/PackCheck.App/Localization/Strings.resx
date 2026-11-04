@@ -1323,7 +1323,7 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Content_Reverted" xml:space="preserve"><value>Restored {0}.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Stop the server before changing its jars.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Share on mclo.gs</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Uploads the crash report as a public paste and shows mclo.gs's automatic analysis.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Uploads the latest crash report (or the latest log when there is none) as a public paste and shows mclo.gs's automatic analysis.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Share on mclo.gs?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} will be uploaded to mclo.gs and anyone with the link can read it. mclo.gs hides IP addresses, but check that it contains nothing private.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs found no known problem in this log.</value></data>
