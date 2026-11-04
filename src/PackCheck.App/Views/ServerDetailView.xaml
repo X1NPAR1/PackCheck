@@ -1487,7 +1487,7 @@
                                 <TextBlock Text="{l:Loc Map_Hint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,8" />
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="{l:Loc Map_Install}" Command="{Binding InstallBlueMapCommand}" Margin="0,0,8,0" IsEnabled="{Binding BlueMapSupported}"
-                                            Visibility="{Binding HasBlueMap, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="MapInstall" />
+                                            Visibility="{Binding HasBlueMapJar, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="MapInstall" />
                                     <Button Content="{l:Loc Map_Open}" Style="{StaticResource PrimaryButton}" Command="{Binding OpenMapCommand}" Visibility="{Binding HasBlueMap, Converter={StaticResource BoolVis}}" />
                                 </StackPanel>
                                 <TextBlock Text="{Binding MapStatus}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="{Binding MapStatus, Converter={StaticResource NullVis}}" />

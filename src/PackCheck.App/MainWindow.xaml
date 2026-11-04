@@ -58,6 +58,7 @@
                     </StackPanel>
                 </Border>
 
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                 <StackPanel>
                     <RadioButton Style="{StaticResource NavButton}" GroupName="nav" AutomationProperties.AutomationId="NavDashboard"
                                  IsChecked="{Binding NavIndex, Converter={StaticResource IndexBool}, ConverterParameter=9}">
@@ -147,7 +148,6 @@
                     <!-- servers at a glance: logo, name and state; click opens the server -->
                     <TextBlock Text="{l:Loc Nav_ServersSection}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMutedBrush}" Margin="14,18,0,6"
                                Visibility="{Binding Servers.IsEmpty, Converter={x:Static l:Inverse.Visibility}}" />
-                    <ScrollViewer MaxHeight="260" VerticalScrollBarVisibility="Auto" Focusable="False">
                         <ItemsControl ItemsSource="{Binding Servers.Items}" AutomationProperties.AutomationId="SidebarServers">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -174,8 +174,8 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </ScrollViewer>
                 </StackPanel>
+                </ScrollViewer>
             </DockPanel>
         </Border>
 

@@ -188,4 +188,29 @@ public class WorldTests
         Assert.Contains("accept-download: true", File.ReadAllText(Path.Combine(cfg, "core.conf")), StringComparison.Ordinal);
         Assert.Equal(8123, BlueMapSetup.Port(s));
     }
+
+    [Fact]
+    public void Install_RejectsFilesOutsideWorldFolders_BeforeTouchingTheServer()
+    {
+        var srv = Temp();
+        MakeWorld(srv, "world", "keep");
+
+        Assert.Throws<InvalidDataException>(() => WorldLibrary.PlanInstall(["world/level.dat", "plugins/evil.jar"], srv));
+        Assert.Throws<InvalidDataException>(() => WorldLibrary.PlanInstall(["world/level.dat", "world/../../x.txt"], srv));
+        Assert.True(File.Exists(Path.Combine(srv, "world", "marker.txt")));
+    }
+
+    [Fact]
+    public void Nbt_RejectsTruncatedData()
+    {
+        var full = new NbtWriter().Begin(10, string.Empty).Int("XpLevel", 7).End().Gzip();
+        var raw = new MemoryStream();
+        using (var g = new GZipStream(new MemoryStream(full), CompressionMode.Decompress))
+        {
+            g.CopyTo(raw);
+        }
+
+        var cut = raw.ToArray()[..^3];
+        Assert.ThrowsAny<IOException>(() => Nbt.Read(new MemoryStream(cut)));
+    }
 }
