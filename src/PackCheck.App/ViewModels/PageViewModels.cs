@@ -419,6 +419,13 @@ public sealed partial class CreateServerViewModel : ObservableObject
                 Properties = WizardProperties(),
             };
             var def = await _creator.CreateAsync(req, new Progress<(double Progress, string Step)>(p => { Progress = p.Progress; Status = Loc.T("Wizard_Step_" + p.Step); }), _cts.Token).ConfigureAwait(true);
+            var failedMods = await InstallPendingModsAsync(def, _cts.Token).ConfigureAwait(true);
+            _cts.Token.ThrowIfCancellationRequested();
+            if (failedMods.Count > 0)
+            {
+                MainViewModel.Shell?.Toast(Loc.F("ModFirst_Partial", string.Join(", ", failedMods)), isError: true);
+            }
+
             _done(def);
         }
         catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or IOException or ArgumentException or OperationCanceledException or UnauthorizedAccessException)

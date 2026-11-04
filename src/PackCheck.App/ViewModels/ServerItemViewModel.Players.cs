@@ -81,6 +81,10 @@ public sealed partial class ServerItemViewModel
         {
             RefreshWorlds();
         }
+        else if (value == InsightsTab)
+        {
+            _ = RefreshInsightsAsync();
+        }
     }
 
     partial void OnPlayerSearchChanged(string value) => RefreshPlayers();

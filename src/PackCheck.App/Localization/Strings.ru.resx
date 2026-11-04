@@ -1323,10 +1323,47 @@ F1 · этот список
   <data name="Content_Reverted" xml:space="preserve"><value>Восстановлено: {0}.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Остановите сервер перед заменой jar.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Поделиться в mclo.gs</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Загружает последний отчёт о сбое (или последний лог, если отчёта нет) как публичную вставку и показывает автоанализ mclo.gs.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Загружает отчёт о сбое как публичную вставку и показывает автоанализ mclo.gs.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Поделиться в mclo.gs?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} будет загружен в mclo.gs, и любой со ссылкой сможет его прочитать. mclo.gs скрывает IP-адреса, но проверьте, что там нет личного.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs не нашёл известных проблем в этом логе.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Опубликовано: {0} (ссылка скопирована)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>Открыть в mclo.gs</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Аналитика</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Активность</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Поиск игрока или текста</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>За две недели в логах нет активности.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>Все</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Чат</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Вход</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Выход</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Смерть</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Достижение</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Команда</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Сервер</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Таблица лидеров</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>Статистики пока нет; игроки появятся после сохранения мира.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Игрок</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Часы</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Смерти</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Убито мобов</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Алмазы</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Прыжки</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Хранилище</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>Всего {0} · можно очистить {1} (старые логи, отчёты о сбоях, кэш)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>Самые большие файлы</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Очистить</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Очистить хранилище</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Удалить старые логи, отчёты о сбоях и кэш ({0})? Миры, настройки и текущий лог не затрагиваются.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>Освобождено {0}.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Начните с нужных модов</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Перечислите моды Modrinth (названия или ссылки). PackCheck выберет новейшую версию Minecraft и загрузчик, которые поддерживают все, и установит их вместе с сервером.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Подобрать версию</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Укажите хотя бы один мод Modrinth.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>Проверка модов на Modrinth: {0}…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>У этих модов нет общей версии и загрузчика. Уберите один и попробуйте снова.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} поддерживает все моды ({2}); они установятся при создании сервера.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>Установка {0} ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>Для {0} ещё нет сервера Minecraft {1}, поэтому моды не установить. Выберите версию вручную или уберите мод.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Сервер создан, но эти моды установить не удалось: {0}</value></data>
 </root>

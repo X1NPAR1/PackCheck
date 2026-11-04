@@ -1323,10 +1323,47 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Content_Reverted" xml:space="preserve"><value>{0} restauré.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Arrêtez le serveur avant de changer ses jars.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>Partager sur mclo.gs</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Envoie le dernier rapport de plantage (ou le dernier log s'il n'y en a pas) en paste publique et affiche l'analyse automatique de mclo.gs.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Envoie le rapport de plantage en paste publique et affiche l'analyse automatique de mclo.gs.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>Partager sur mclo.gs ?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} sera envoyé sur mclo.gs et lisible par toute personne ayant le lien. mclo.gs masque les adresses IP, mais vérifiez qu'il ne contient rien de privé.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs n'a trouvé aucun problème connu dans ce log.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Partagé : {0} (lien copié)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>Ouvrir sur mclo.gs</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Analyses</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Activité</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Chercher un joueur ou un texte</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Aucune activité dans les logs des deux dernières semaines.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>Tout</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Discussion</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Connexion</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Départ</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Mort</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Progrès</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Commande</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Serveur</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Classement</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>Pas encore de statistiques ; les joueurs apparaissent après une sauvegarde du monde.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Joueur</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Heures</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Morts</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Mobs tués</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Diamants</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Sauts</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Stockage</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>{0} au total · {1} peuvent être nettoyés (vieux logs, rapports de plantage, caches)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>Plus gros fichiers</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Nettoyer</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Nettoyer le stockage</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Supprimer vieux logs, rapports de plantage et caches ({0}) ? Mondes, configs et log actuel ne sont pas touchés.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>{0} libérés.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>Partir des mods voulus</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Listez des mods Modrinth (noms ou liens). PackCheck choisit la version de Minecraft et le loader les plus récents qu'ils supportent tous et les installe avec le serveur.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Trouver la version</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>Indiquez au moins un mod Modrinth.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>Vérification de {0} mods sur Modrinth…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>Ces mods n'ont ni version ni loader en commun. Retirez-en un et réessayez.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} prend en charge les {2} mods ; ils seront installés à la création.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>Installation de {0} ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>{0} n'a pas encore de serveur pour Minecraft {1} : impossible d'installer les mods. Choisissez la version vous-même ou retirez un mod.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Le serveur a été créé, mais ces mods n'ont pas pu être installés : {0}</value></data>
 </root>

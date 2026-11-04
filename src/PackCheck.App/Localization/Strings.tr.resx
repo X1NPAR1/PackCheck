@@ -1323,10 +1323,47 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Content_Reverted" xml:space="preserve"><value>{0} geri yüklendi.</value></data>
   <data name="Content_StopFirst" xml:space="preserve"><value>Jar'ları değiştirmeden önce sunucuyu durdur.</value></data>
   <data name="Mclogs_Share" xml:space="preserve"><value>mclo.gs'te paylaş</value></data>
-  <data name="Mclogs_Tip" xml:space="preserve"><value>Son çökme raporunu (yoksa son logu) herkese açık bir paste olarak yükler ve mclo.gs'in otomatik analizini gösterir.</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Çökme raporunu herkese açık bir paste olarak yükler ve mclo.gs'in otomatik analizini gösterir.</value></data>
   <data name="Mclogs_Title" xml:space="preserve"><value>mclo.gs'te paylaşılsın mı?</value></data>
   <data name="Mclogs_Body" xml:space="preserve"><value>{0} mclo.gs'e yüklenecek ve linki olan herkes okuyabilecek. mclo.gs IP adreslerini gizler ama özel bilgi olmadığından emin ol.</value></data>
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs bu logda bilinen bir sorun bulmadı.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Paylaşıldı: {0} (link kopyalandı)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>mclo.gs'te aç</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Analiz</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Aktivite</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Oyuncu veya metin ara</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Son iki haftanın loglarında aktivite yok.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>Tümü</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Sohbet</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Girdi</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Çıktı</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Ölüm</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Başarım</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Komut</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Sunucu</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Skor tablosu</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>Henüz istatistik yok; oyuncular dünya onlarla birlikte kaydedildikten sonra görünür.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Oyuncu</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Saat</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Ölüm</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Canavar</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Elmas</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Zıplama</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Depolama</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>Toplam {0} · {1} temizlenebilir (eski loglar, çökme raporları, önbellekler)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>En büyük dosyalar</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Temizle</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Depolamayı temizle</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Eski loglar, çökme raporları ve önbellekler ({0}) silinsin mi? Dünyalara, ayarlara ve güncel loga dokunulmaz.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>{0} boşaltıldı.</value></data>
+  <data name="ModFirst_Title" xml:space="preserve"><value>İstediğin modlarla başla</value></data>
+  <data name="ModFirst_Hint" xml:space="preserve"><value>Modrinth modlarını yaz (ad veya link). PackCheck hepsinin desteklediği en yeni Minecraft sürümünü ve loader'ı seçer, modları sunucuyla birlikte kurar.</value></data>
+  <data name="ModFirst_Solve" xml:space="preserve"><value>Sürümü bul</value></data>
+  <data name="ModFirst_NoMods" xml:space="preserve"><value>En az bir Modrinth modu gir.</value></data>
+  <data name="ModFirst_Checking" xml:space="preserve"><value>{0} mod Modrinth'te kontrol ediliyor…</value></data>
+  <data name="ModFirst_NoCommon" xml:space="preserve"><value>Bu modların ortak bir Minecraft sürümü ve loader'ı yok. Birini çıkarıp tekrar dene.</value></data>
+  <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} {2} modun hepsini destekliyor; sunucu oluşturulunca kurulacaklar.</value></data>
+  <data name="ModFirst_Installing" xml:space="preserve"><value>{0} kuruluyor ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>{0} için Minecraft {1} sunucu dosyası henüz yok; modlar kurulamaz. Sürümü kendin seç ya da bir modu çıkar.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Sunucu oluşturuldu ama şu modlar kurulamadı: {0}</value></data>
 </root>

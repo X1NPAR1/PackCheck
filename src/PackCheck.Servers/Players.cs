@@ -194,6 +194,10 @@ public sealed class PlayerLists
     public string? CachedUuid(string name) =>
         Read("usercache.json").FirstOrDefault(o => string.Equals(o?["name"]?.GetValue<string>(), name, StringComparison.OrdinalIgnoreCase))?["uuid"]?.GetValue<string>();
 
+    /// <summary>Known UUID → name from usercache.json.</summary>
+    public string? NameFor(string uuid) =>
+        Read("usercache.json").FirstOrDefault(o => string.Equals(o?["uuid"]?.GetValue<string>(), uuid, StringComparison.OrdinalIgnoreCase))?["name"]?.GetValue<string>();
+
     public IReadOnlyList<string> BannedIps => [.. Read("banned-ips.json").Select(o => o?["ip"]?.GetValue<string>()).OfType<string>()];
 
     /// <summary>Edits a list while the server is stopped (a running server would overwrite the file).</summary>

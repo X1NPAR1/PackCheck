@@ -7,14 +7,14 @@
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
 </p>
 
-<p align="center"><b>Current version: 3.4.0</b> · <a href="CHANGELOG.md">changelog</a></p>
+<p align="center"><b>Current version: 4.0.0</b> · <a href="CHANGELOG.md">changelog</a></p>
 
 <p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 3.4.0" src="https://img.shields.io/badge/download-v3.4.0-5E9A3E"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 4.0.0" src="https://img.shields.io/badge/download-v4.0.0-5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
@@ -40,6 +40,14 @@ PackCheck is a free, open-source Windows desktop app (WPF, .NET 10) for anyone w
 Static checks never execute plugin code. A real startup test is available, but you have to turn it on yourself, and it runs on a throw-away copy of the pack.
 
 ## Screenshots
+
+| Dashboard: every server at a glance | World tab: controls, library, inventory, live map |
+|---|---|
+| ![Dashboard with servers running, players online, memory, crashes and live usage per server; servers listed in the sidebar](docs/media/dashboard.png) | ![World tab with time, weather, difficulty and game-rule buttons, player inventory and BlueMap](docs/media/world.png) |
+
+| Insights: activity, scoreboard, storage | |
+|---|---|
+| ![Insights tab with the activity timeline, player scoreboard and storage analysis](docs/media/insights.png) | |
 
 | Server dashboard | Create a server |
 |---|---|
@@ -86,6 +94,23 @@ Static checks never execute plugin code. A real startup test is available, but y
 | ![Settings with section sidebar and search](docs/media/settings.png) | ![About with system information](docs/media/about.png) |
 
 ## Features
+
+**New in 4.0**
+- **Look**: pixel-font titles (Press Start 2P), Lucide icons, every server in the sidebar with its status, and a dashboard with players, memory, crashes and live TPS/CPU/RAM per server.
+- **World tab**:
+  - one-click time, weather, difficulty and 12 game rules;
+  - a world library (save, install on any server, import/export zips) and a fresh world from a seed;
+  - a player inventory viewer (inventory, armour, ender chest; works for offline players);
+  - BlueMap live map installed from Modrinth.
+- **Content**:
+  - add plugins and mods by pasting a Modrinth, Hangar, SpigotMC or GitHub link or a .jar URL (hash-checked where the source publishes one);
+  - update all with one-click revert;
+  - share crash reports on mclo.gs and get its automatic analysis.
+- **Insights tab**:
+  - an activity timeline (chat, joins, deaths, advancements, commands);
+  - a scoreboard from the game's statistics;
+  - storage analysis with a safe clean-up.
+- **Mods-first wizard**: list the mods you want; PackCheck picks the newest Minecraft version and loader they all support and installs them.
 
 **Servers**
 - 18 platforms: Paper, Purpur, Folia, Leaf, Leaves, Spigot and CraftBukkit (compiled with BuildTools), Vanilla, Fabric, Quilt, Forge, NeoForge, SpongeVanilla, Mohist, Youer, Arclight, and the proxies Velocity and BungeeCord. Version lists come from each project's own API, so only versions with a real download appear.
@@ -215,7 +240,7 @@ packcheck version
 Example output:
 
 ```text
-PackCheck 3.4.0 - demo-pack
+PackCheck 4.0.0 - demo-pack
   [FAIL ] PC040 Missing dependency: 'EconomyShop' requires 'ProtocolLib', which is not installed. The plugin will not enable.
            plugin.yml: depend: [Vault, ProtocolLib]
            fix: Install 'ProtocolLib' or remove 'EconomyShop'.
