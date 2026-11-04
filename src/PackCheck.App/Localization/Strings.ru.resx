@@ -1228,4 +1228,80 @@ F1 · этот список
   <data name="Dash_LiveUsage" xml:space="preserve"><value>Нагрузка по серверам</value></data>
   <data name="Dash_Open" xml:space="preserve"><value>Открыть</value></data>
   <data name="Dash_PlayersShort" xml:space="preserve"><value>Игроки</value></data>
+  <data name="World_Tab" xml:space="preserve"><value>Мир</value></data>
+  <data name="World_Controls" xml:space="preserve"><value>Управление миром</value></data>
+  <data name="World_ControlsHint" xml:space="preserve"><value>Отправляется командой консоли, поэтому сервер должен работать. Правила действуют сразу.</value></data>
+  <data name="World_Time" xml:space="preserve"><value>Время</value></data>
+  <data name="World_Day" xml:space="preserve"><value>День</value></data>
+  <data name="World_Noon" xml:space="preserve"><value>Полдень</value></data>
+  <data name="World_Night" xml:space="preserve"><value>Ночь</value></data>
+  <data name="World_Midnight" xml:space="preserve"><value>Полночь</value></data>
+  <data name="World_Weather" xml:space="preserve"><value>Погода</value></data>
+  <data name="World_Clear" xml:space="preserve"><value>Ясно</value></data>
+  <data name="World_Rain" xml:space="preserve"><value>Дождь</value></data>
+  <data name="World_Thunder" xml:space="preserve"><value>Гроза</value></data>
+  <data name="World_Difficulty" xml:space="preserve"><value>Сложность и сохранение</value></data>
+  <data name="Difficulty_peaceful" xml:space="preserve"><value>Мирная</value></data>
+  <data name="Difficulty_easy" xml:space="preserve"><value>Лёгкая</value></data>
+  <data name="Difficulty_normal" xml:space="preserve"><value>Обычная</value></data>
+  <data name="Difficulty_hard" xml:space="preserve"><value>Сложная</value></data>
+  <data name="World_SaveNow" xml:space="preserve"><value>Сохранить мир</value></data>
+  <data name="World_Rules" xml:space="preserve"><value>Правила игры</value></data>
+  <data name="World_On" xml:space="preserve"><value>Вкл</value></data>
+  <data name="World_Off" xml:space="preserve"><value>Выкл</value></data>
+  <data name="Rule_KeepInventory" xml:space="preserve"><value>Сохранять инвентарь</value></data>
+  <data name="Rule_DaylightCycle" xml:space="preserve"><value>Смена дня и ночи</value></data>
+  <data name="Rule_WeatherCycle" xml:space="preserve"><value>Смена погоды</value></data>
+  <data name="Rule_MobSpawning" xml:space="preserve"><value>Появление мобов</value></data>
+  <data name="Rule_MobGriefing" xml:space="preserve"><value>Разрушения мобами (криперы, эндермены)</value></data>
+  <data name="Rule_FireTick" xml:space="preserve"><value>Распространение огня</value></data>
+  <data name="Rule_NaturalRegeneration" xml:space="preserve"><value>Естественная регенерация</value></data>
+  <data name="Rule_Phantoms" xml:space="preserve"><value>Фантомы</value></data>
+  <data name="Rule_FallDamage" xml:space="preserve"><value>Урон от падения</value></data>
+  <data name="Rule_ImmediateRespawn" xml:space="preserve"><value>Мгновенное возрождение</value></data>
+  <data name="Rule_DeathMessages" xml:space="preserve"><value>Сообщения о смерти</value></data>
+  <data name="Rule_Advancements" xml:space="preserve"><value>Объявления о достижениях</value></data>
+  <data name="World_NeedsRunning" xml:space="preserve"><value>Сначала запустите сервер: это команды консоли.</value></data>
+  <data name="World_Sent" xml:space="preserve"><value>Отправлено: {0}</value></data>
+  <data name="World_StopFirst" xml:space="preserve"><value>Сначала остановите сервер.</value></data>
+  <data name="World_Library" xml:space="preserve"><value>Библиотека миров</value></data>
+  <data name="World_LibraryHint" xml:space="preserve"><value>Сохраняйте миры сервера, устанавливайте сохранённый мир на любой сервер, импортируйте и экспортируйте zip. При установке текущие миры сохраняются в old-worlds/.</value></data>
+  <data name="World_SaveToLibrary" xml:space="preserve"><value>Сохранить в библиотеку</value></data>
+  <data name="World_SaveNameHint" xml:space="preserve"><value>Название (необязательно)</value></data>
+  <data name="World_Import" xml:space="preserve"><value>Импорт zip…</value></data>
+  <data name="World_Export" xml:space="preserve"><value>Экспорт</value></data>
+  <data name="World_Install" xml:space="preserve"><value>Установить сюда</value></data>
+  <data name="World_Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="World_LibraryEmpty" xml:space="preserve"><value>Сохранённых миров пока нет.</value></data>
+  <data name="World_Saving" xml:space="preserve"><value>Сохранение мира…</value></data>
+  <data name="World_Saved" xml:space="preserve"><value>Сохранено в библиотеку: {0}</value></data>
+  <data name="World_InstallTitle" xml:space="preserve"><value>Установить мир</value></data>
+  <data name="World_InstallBody" xml:space="preserve"><value>Установить «{0}» на {1}? Текущие миры переносятся в old-worlds/, ничего не удаляется.</value></data>
+  <data name="World_Installed" xml:space="preserve"><value>{0} установлен.</value></data>
+  <data name="World_OldKept" xml:space="preserve"><value>Прежние миры в {0}.</value></data>
+  <data name="World_Exported" xml:space="preserve"><value>Экспортировано в {0}</value></data>
+  <data name="World_DeleteTitle" xml:space="preserve"><value>Удалить сохранённый мир</value></data>
+  <data name="World_DeleteBody" xml:space="preserve"><value>Удалить «{0}» из библиотеки? Это нельзя отменить.</value></data>
+  <data name="World_ResetTitle" xml:space="preserve"><value>Новый мир</value></data>
+  <data name="World_ResetHint" xml:space="preserve"><value>Начните с нового мира. Оставьте сид пустым для случайного. Текущие миры переносятся в old-worlds/.</value></data>
+  <data name="World_SeedHint" xml:space="preserve"><value>Сид (пусто = случайный)</value></data>
+  <data name="World_Reset" xml:space="preserve"><value>Создать новый мир</value></data>
+  <data name="World_ResetBody" xml:space="preserve"><value>Текущие миры переносятся в old-worlds/, при следующем запуске создастся новый мир с этим сидом. Продолжить?</value></data>
+  <data name="World_ResetDone" xml:space="preserve"><value>Готово. Новый мир создастся при следующем запуске.</value></data>
+  <data name="Inventory_Title" xml:space="preserve"><value>Инвентарь игрока</value></data>
+  <data name="Inventory_Reload" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Inventory_Ender" xml:space="preserve"><value>Сундук Края</value></data>
+  <data name="Inventory_NoData" xml:space="preserve"><value>Для {0} пока нет данных (игрок должен зайти хотя бы раз).</value></data>
+  <data name="Inventory_Summary" xml:space="preserve"><value>{0} предметов · сундук Края {1} · здоровье {2} · уровень {3}</value></data>
+  <data name="Inventory_LastSave" xml:space="preserve"><value>(по последнему сохранению)</value></data>
+  <data name="Map_Title" xml:space="preserve"><value>Живая карта (BlueMap)</value></data>
+  <data name="Map_Hint" xml:space="preserve"><value>Устанавливает BlueMap с Modrinth (проверка SHA-512) и открывает 3D-карту в браузере. При первой отрисовке текстуры Minecraft скачиваются у Mojang.</value></data>
+  <data name="Map_Install" xml:space="preserve"><value>Установить BlueMap</value></data>
+  <data name="Map_Open" xml:space="preserve"><value>Открыть карту</value></data>
+  <data name="Map_Unsupported" xml:space="preserve"><value>Для этой платформы BlueMap нет.</value></data>
+  <data name="Map_Installing" xml:space="preserve"><value>Загрузка BlueMap…</value></data>
+  <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap для Minecraft {0} пока нет.</value></data>
+  <data name="Map_Installed" xml:space="preserve"><value>BlueMap установлен. Запустите сервер и откройте карту.</value></data>
+  <data name="Map_Opened" xml:space="preserve"><value>Открыто {0}. Первая отрисовка может занять несколько минут.</value></data>
+  <data name="Map_StartFirst" xml:space="preserve"><value>Запустите сервер, чтобы BlueMap показал карту.</value></data>
 </root>

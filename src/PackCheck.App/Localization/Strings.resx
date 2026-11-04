@@ -1228,4 +1228,80 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Dash_LiveUsage" xml:space="preserve"><value>Live usage per server</value></data>
   <data name="Dash_Open" xml:space="preserve"><value>Open</value></data>
   <data name="Dash_PlayersShort" xml:space="preserve"><value>Players</value></data>
+  <data name="World_Tab" xml:space="preserve"><value>World</value></data>
+  <data name="World_Controls" xml:space="preserve"><value>World controls</value></data>
+  <data name="World_ControlsHint" xml:space="preserve"><value>Sent as console commands, so the server must be running. Game rules apply right away.</value></data>
+  <data name="World_Time" xml:space="preserve"><value>Time</value></data>
+  <data name="World_Day" xml:space="preserve"><value>Day</value></data>
+  <data name="World_Noon" xml:space="preserve"><value>Noon</value></data>
+  <data name="World_Night" xml:space="preserve"><value>Night</value></data>
+  <data name="World_Midnight" xml:space="preserve"><value>Midnight</value></data>
+  <data name="World_Weather" xml:space="preserve"><value>Weather</value></data>
+  <data name="World_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="World_Rain" xml:space="preserve"><value>Rain</value></data>
+  <data name="World_Thunder" xml:space="preserve"><value>Thunder</value></data>
+  <data name="World_Difficulty" xml:space="preserve"><value>Difficulty and saving</value></data>
+  <data name="Difficulty_peaceful" xml:space="preserve"><value>Peaceful</value></data>
+  <data name="Difficulty_easy" xml:space="preserve"><value>Easy</value></data>
+  <data name="Difficulty_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Difficulty_hard" xml:space="preserve"><value>Hard</value></data>
+  <data name="World_SaveNow" xml:space="preserve"><value>Save world</value></data>
+  <data name="World_Rules" xml:space="preserve"><value>Game rules</value></data>
+  <data name="World_On" xml:space="preserve"><value>On</value></data>
+  <data name="World_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Rule_KeepInventory" xml:space="preserve"><value>Keep inventory on death</value></data>
+  <data name="Rule_DaylightCycle" xml:space="preserve"><value>Day/night cycle</value></data>
+  <data name="Rule_WeatherCycle" xml:space="preserve"><value>Weather cycle</value></data>
+  <data name="Rule_MobSpawning" xml:space="preserve"><value>Mob spawning</value></data>
+  <data name="Rule_MobGriefing" xml:space="preserve"><value>Mob griefing (creepers, endermen)</value></data>
+  <data name="Rule_FireTick" xml:space="preserve"><value>Fire spread</value></data>
+  <data name="Rule_NaturalRegeneration" xml:space="preserve"><value>Natural regeneration</value></data>
+  <data name="Rule_Phantoms" xml:space="preserve"><value>Phantoms</value></data>
+  <data name="Rule_FallDamage" xml:space="preserve"><value>Fall damage</value></data>
+  <data name="Rule_ImmediateRespawn" xml:space="preserve"><value>Instant respawn</value></data>
+  <data name="Rule_DeathMessages" xml:space="preserve"><value>Death messages</value></data>
+  <data name="Rule_Advancements" xml:space="preserve"><value>Advancement announcements</value></data>
+  <data name="World_NeedsRunning" xml:space="preserve"><value>Start the server first; these are console commands.</value></data>
+  <data name="World_Sent" xml:space="preserve"><value>Sent: {0}</value></data>
+  <data name="World_StopFirst" xml:space="preserve"><value>Stop the server first.</value></data>
+  <data name="World_Library" xml:space="preserve"><value>World library</value></data>
+  <data name="World_LibraryHint" xml:space="preserve"><value>Save this server's worlds, install a saved world on any server, import a world zip or export one. Installing keeps the current worlds in old-worlds/.</value></data>
+  <data name="World_SaveToLibrary" xml:space="preserve"><value>Save to library</value></data>
+  <data name="World_SaveNameHint" xml:space="preserve"><value>Name (optional)</value></data>
+  <data name="World_Import" xml:space="preserve"><value>Import zip…</value></data>
+  <data name="World_Export" xml:space="preserve"><value>Export</value></data>
+  <data name="World_Install" xml:space="preserve"><value>Install here</value></data>
+  <data name="World_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="World_LibraryEmpty" xml:space="preserve"><value>No saved worlds yet.</value></data>
+  <data name="World_Saving" xml:space="preserve"><value>Saving the world…</value></data>
+  <data name="World_Saved" xml:space="preserve"><value>Saved to the library: {0}</value></data>
+  <data name="World_InstallTitle" xml:space="preserve"><value>Install world</value></data>
+  <data name="World_InstallBody" xml:space="preserve"><value>Install "{0}" on {1}? The current worlds are moved to old-worlds/, nothing is deleted.</value></data>
+  <data name="World_Installed" xml:space="preserve"><value>Installed {0}.</value></data>
+  <data name="World_OldKept" xml:space="preserve"><value>The previous worlds are in {0}.</value></data>
+  <data name="World_Exported" xml:space="preserve"><value>Exported to {0}</value></data>
+  <data name="World_DeleteTitle" xml:space="preserve"><value>Delete saved world</value></data>
+  <data name="World_DeleteBody" xml:space="preserve"><value>Delete "{0}" from the library? This cannot be undone.</value></data>
+  <data name="World_ResetTitle" xml:space="preserve"><value>New world</value></data>
+  <data name="World_ResetHint" xml:space="preserve"><value>Start over with a fresh world. Leave the seed empty for a random one. The current worlds are moved to old-worlds/.</value></data>
+  <data name="World_SeedHint" xml:space="preserve"><value>Seed (empty = random)</value></data>
+  <data name="World_Reset" xml:space="preserve"><value>Create new world</value></data>
+  <data name="World_ResetBody" xml:space="preserve"><value>The current worlds are moved to old-worlds/ and the next start generates a new world with this seed. Continue?</value></data>
+  <data name="World_ResetDone" xml:space="preserve"><value>Done. The next start generates the new world.</value></data>
+  <data name="Inventory_Title" xml:space="preserve"><value>Player inventory</value></data>
+  <data name="Inventory_Reload" xml:space="preserve"><value>Reload</value></data>
+  <data name="Inventory_Ender" xml:space="preserve"><value>Ender chest</value></data>
+  <data name="Inventory_NoData" xml:space="preserve"><value>No saved data for {0} yet (the player has to join once).</value></data>
+  <data name="Inventory_Summary" xml:space="preserve"><value>{0} items · ender chest {1} · health {2} · level {3}</value></data>
+  <data name="Inventory_LastSave" xml:space="preserve"><value>(as of the last world save)</value></data>
+  <data name="Map_Title" xml:space="preserve"><value>Live map (BlueMap)</value></data>
+  <data name="Map_Hint" xml:space="preserve"><value>Installs BlueMap from Modrinth (verified by SHA-512) and opens the 3D map in your browser. The first render downloads Minecraft's textures from Mojang.</value></data>
+  <data name="Map_Install" xml:space="preserve"><value>Install BlueMap</value></data>
+  <data name="Map_Open" xml:space="preserve"><value>Open map</value></data>
+  <data name="Map_Unsupported" xml:space="preserve"><value>BlueMap has no build for this platform.</value></data>
+  <data name="Map_Installing" xml:space="preserve"><value>Downloading BlueMap…</value></data>
+  <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap has no build for Minecraft {0} yet.</value></data>
+  <data name="Map_Installed" xml:space="preserve"><value>BlueMap installed. Start the server, then open the map.</value></data>
+  <data name="Map_Opened" xml:space="preserve"><value>Opened {0}. The first render can take a few minutes.</value></data>
+  <data name="Map_StartFirst" xml:space="preserve"><value>Start the server so BlueMap can serve the map.</value></data>
 </root>

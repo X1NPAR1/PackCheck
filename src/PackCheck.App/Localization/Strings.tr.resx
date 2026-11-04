@@ -1228,4 +1228,80 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Dash_LiveUsage" xml:space="preserve"><value>Sunucu başına canlı kullanım</value></data>
   <data name="Dash_Open" xml:space="preserve"><value>Aç</value></data>
   <data name="Dash_PlayersShort" xml:space="preserve"><value>Oyuncu</value></data>
+  <data name="World_Tab" xml:space="preserve"><value>Dünya</value></data>
+  <data name="World_Controls" xml:space="preserve"><value>Dünya kontrolleri</value></data>
+  <data name="World_ControlsHint" xml:space="preserve"><value>Konsol komutu olarak gönderilir, bu yüzden sunucu çalışıyor olmalı. Oyun kuralları hemen uygulanır.</value></data>
+  <data name="World_Time" xml:space="preserve"><value>Saat</value></data>
+  <data name="World_Day" xml:space="preserve"><value>Gündüz</value></data>
+  <data name="World_Noon" xml:space="preserve"><value>Öğle</value></data>
+  <data name="World_Night" xml:space="preserve"><value>Gece</value></data>
+  <data name="World_Midnight" xml:space="preserve"><value>Gece yarısı</value></data>
+  <data name="World_Weather" xml:space="preserve"><value>Hava</value></data>
+  <data name="World_Clear" xml:space="preserve"><value>Açık</value></data>
+  <data name="World_Rain" xml:space="preserve"><value>Yağmur</value></data>
+  <data name="World_Thunder" xml:space="preserve"><value>Fırtına</value></data>
+  <data name="World_Difficulty" xml:space="preserve"><value>Zorluk ve kaydetme</value></data>
+  <data name="Difficulty_peaceful" xml:space="preserve"><value>Barışçıl</value></data>
+  <data name="Difficulty_easy" xml:space="preserve"><value>Kolay</value></data>
+  <data name="Difficulty_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Difficulty_hard" xml:space="preserve"><value>Zor</value></data>
+  <data name="World_SaveNow" xml:space="preserve"><value>Dünyayı kaydet</value></data>
+  <data name="World_Rules" xml:space="preserve"><value>Oyun kuralları</value></data>
+  <data name="World_On" xml:space="preserve"><value>Açık</value></data>
+  <data name="World_Off" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Rule_KeepInventory" xml:space="preserve"><value>Ölünce eşyaları koru</value></data>
+  <data name="Rule_DaylightCycle" xml:space="preserve"><value>Gece/gündüz döngüsü</value></data>
+  <data name="Rule_WeatherCycle" xml:space="preserve"><value>Hava döngüsü</value></data>
+  <data name="Rule_MobSpawning" xml:space="preserve"><value>Canavar doğması</value></data>
+  <data name="Rule_MobGriefing" xml:space="preserve"><value>Canavar tahribatı (creeper, enderman)</value></data>
+  <data name="Rule_FireTick" xml:space="preserve"><value>Ateş yayılması</value></data>
+  <data name="Rule_NaturalRegeneration" xml:space="preserve"><value>Doğal can yenilenmesi</value></data>
+  <data name="Rule_Phantoms" xml:space="preserve"><value>Phantomlar</value></data>
+  <data name="Rule_FallDamage" xml:space="preserve"><value>Düşme hasarı</value></data>
+  <data name="Rule_ImmediateRespawn" xml:space="preserve"><value>Anında yeniden doğma</value></data>
+  <data name="Rule_DeathMessages" xml:space="preserve"><value>Ölüm mesajları</value></data>
+  <data name="Rule_Advancements" xml:space="preserve"><value>Başarım duyuruları</value></data>
+  <data name="World_NeedsRunning" xml:space="preserve"><value>Önce sunucuyu başlat; bunlar konsol komutları.</value></data>
+  <data name="World_Sent" xml:space="preserve"><value>Gönderildi: {0}</value></data>
+  <data name="World_StopFirst" xml:space="preserve"><value>Önce sunucuyu durdur.</value></data>
+  <data name="World_Library" xml:space="preserve"><value>Dünya kütüphanesi</value></data>
+  <data name="World_LibraryHint" xml:space="preserve"><value>Bu sunucunun dünyalarını kaydet, kayıtlı bir dünyayı herhangi bir sunucuya kur, dünya zip'i içe veya dışa aktar. Kurulumda mevcut dünyalar old-worlds/ klasöründe saklanır.</value></data>
+  <data name="World_SaveToLibrary" xml:space="preserve"><value>Kütüphaneye kaydet</value></data>
+  <data name="World_SaveNameHint" xml:space="preserve"><value>Ad (isteğe bağlı)</value></data>
+  <data name="World_Import" xml:space="preserve"><value>Zip içe aktar…</value></data>
+  <data name="World_Export" xml:space="preserve"><value>Dışa aktar</value></data>
+  <data name="World_Install" xml:space="preserve"><value>Buraya kur</value></data>
+  <data name="World_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="World_LibraryEmpty" xml:space="preserve"><value>Henüz kayıtlı dünya yok.</value></data>
+  <data name="World_Saving" xml:space="preserve"><value>Dünya kaydediliyor…</value></data>
+  <data name="World_Saved" xml:space="preserve"><value>Kütüphaneye kaydedildi: {0}</value></data>
+  <data name="World_InstallTitle" xml:space="preserve"><value>Dünyayı kur</value></data>
+  <data name="World_InstallBody" xml:space="preserve"><value>"{0}" dünyası {1} sunucusuna kurulsun mu? Mevcut dünyalar old-worlds/ klasörüne taşınır, hiçbir şey silinmez.</value></data>
+  <data name="World_Installed" xml:space="preserve"><value>{0} kuruldu.</value></data>
+  <data name="World_OldKept" xml:space="preserve"><value>Önceki dünyalar {0} klasöründe.</value></data>
+  <data name="World_Exported" xml:space="preserve"><value>Dışa aktarıldı: {0}</value></data>
+  <data name="World_DeleteTitle" xml:space="preserve"><value>Kayıtlı dünyayı sil</value></data>
+  <data name="World_DeleteBody" xml:space="preserve"><value>"{0}" kütüphaneden silinsin mi? Bu geri alınamaz.</value></data>
+  <data name="World_ResetTitle" xml:space="preserve"><value>Yeni dünya</value></data>
+  <data name="World_ResetHint" xml:space="preserve"><value>Yeni bir dünyayla baştan başla. Rastgele dünya için seed'i boş bırak. Mevcut dünyalar old-worlds/ klasörüne taşınır.</value></data>
+  <data name="World_SeedHint" xml:space="preserve"><value>Seed (boş = rastgele)</value></data>
+  <data name="World_Reset" xml:space="preserve"><value>Yeni dünya oluştur</value></data>
+  <data name="World_ResetBody" xml:space="preserve"><value>Mevcut dünyalar old-worlds/ klasörüne taşınır ve bir sonraki başlatmada bu seed ile yeni dünya oluşur. Devam edilsin mi?</value></data>
+  <data name="World_ResetDone" xml:space="preserve"><value>Tamam. Bir sonraki başlatmada yeni dünya oluşacak.</value></data>
+  <data name="Inventory_Title" xml:space="preserve"><value>Oyuncu envanteri</value></data>
+  <data name="Inventory_Reload" xml:space="preserve"><value>Yenile</value></data>
+  <data name="Inventory_Ender" xml:space="preserve"><value>Ender sandığı</value></data>
+  <data name="Inventory_NoData" xml:space="preserve"><value>{0} için henüz kayıtlı veri yok (oyuncunun bir kez girmesi gerekir).</value></data>
+  <data name="Inventory_Summary" xml:space="preserve"><value>{0} eşya · ender sandığı {1} · can {2} · seviye {3}</value></data>
+  <data name="Inventory_LastSave" xml:space="preserve"><value>(son dünya kaydına göre)</value></data>
+  <data name="Map_Title" xml:space="preserve"><value>Canlı harita (BlueMap)</value></data>
+  <data name="Map_Hint" xml:space="preserve"><value>BlueMap'i Modrinth'ten kurar (SHA-512 ile doğrulanır) ve 3B haritayı tarayıcıda açar. İlk çizimde Minecraft dokuları Mojang'dan indirilir.</value></data>
+  <data name="Map_Install" xml:space="preserve"><value>BlueMap'i kur</value></data>
+  <data name="Map_Open" xml:space="preserve"><value>Haritayı aç</value></data>
+  <data name="Map_Unsupported" xml:space="preserve"><value>BlueMap'in bu platform için sürümü yok.</value></data>
+  <data name="Map_Installing" xml:space="preserve"><value>BlueMap indiriliyor…</value></data>
+  <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap'in Minecraft {0} için henüz sürümü yok.</value></data>
+  <data name="Map_Installed" xml:space="preserve"><value>BlueMap kuruldu. Sunucuyu başlat, sonra haritayı aç.</value></data>
+  <data name="Map_Opened" xml:space="preserve"><value>{0} açıldı. İlk çizim birkaç dakika sürebilir.</value></data>
+  <data name="Map_StartFirst" xml:space="preserve"><value>Haritanın açılması için sunucuyu başlat.</value></data>
 </root>
