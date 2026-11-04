@@ -155,7 +155,7 @@
                         <TextBlock FontSize="12" Foreground="{DynamicResource TextMutedBrush}"><Run Text="localhost:" /><Run Text="{Binding Definition.Port, Mode=OneWay}" /></TextBlock>
                     </Border>
                 </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        <WrapPanel>
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Tab_Overview}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=0}" AutomationProperties.AutomationId="TabOverview" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" AutomationProperties.AutomationId="TabProperties" />
@@ -181,8 +181,9 @@
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Perf_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=9}" AutomationProperties.AutomationId="TabPerformance" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Players_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=8}" AutomationProperties.AutomationId="TabPlayers" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc World_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=11}" AutomationProperties.AutomationId="TabWorld" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Insights_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=12}" AutomationProperties.AutomationId="TabInsights" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Identity_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=7}" AutomationProperties.AutomationId="TabIdentity" />
-        </StackPanel>
+        </WrapPanel>
         </StackPanel>
 
         <!-- Crash banner -->
@@ -1375,6 +1376,100 @@
         </Border>
 
         <!-- Identity: icon + MOTD -->
+
+        <!-- Insights: activity, scoreboard, storage -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=12}" AutomationProperties.AutomationId="InsightsPage">
+            <StackPanel>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Command="{Binding RefreshInsightsCommand}">
+                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconRefresh}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc Inventory_Reload}" /></StackPanel>
+                            </Button>
+                            <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconActivity}" Style="{StaticResource IconPath}" Margin="0,0,8,0" /><TextBlock Text="{l:Loc Activity_Title}" Style="{StaticResource H2}" FontSize="16" /></StackPanel>
+                        </DockPanel>
+                        <DockPanel Margin="0,8,0,8">
+                            <ComboBox DockPanel.Dock="Left" Width="150" Margin="0,0,8,0" ItemsSource="{Binding ActivityFilters}" SelectedItem="{Binding ActivityFilter}" AutomationProperties.Name="{l:Loc Activity_Title}">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBox Text="{Binding ActivitySearch, UpdateSourceTrigger=PropertyChanged, Delay=250}" Tag="{l:Loc Activity_Search}" AutomationProperties.Name="{l:Loc Activity_Search}" />
+                        </DockPanel>
+                        <TextBlock Text="{l:Loc Activity_Empty}" Style="{StaticResource Muted}" Visibility="{Binding ActivityRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding ActivityRows}" MaxHeight="300" AutomationProperties.AutomationId="ActivityList">
+                            <ItemsControl.Template><ControlTemplate><ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsPresenter /></ScrollViewer></ControlTemplate></ItemsControl.Template>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,1">
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Time, StringFormat='dd.MM HH:mm'}" Width="80" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" />
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Kind, Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_}" Width="90" FontSize="11.5" Foreground="{DynamicResource PrimaryBrush}" />
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Player}" Width="120" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding Text}" TextTrimming="CharacterEllipsis" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconTrophy}" Style="{StaticResource IconPath}" Margin="0,0,8,0" /><TextBlock Text="{l:Loc Score_Title}" Style="{StaticResource H2}" FontSize="16" /></StackPanel>
+                        <TextBlock Text="{l:Loc Score_Empty}" Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding ScoreRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ListView ItemsSource="{Binding ScoreRows}" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" MaxHeight="300" AutomationProperties.AutomationId="Scoreboard"
+                                  >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="{l:Loc Score_Player}" DisplayMemberBinding="{Binding Name}" Width="150" />
+                                    <GridViewColumn Header="{l:Loc Score_Hours}" DisplayMemberBinding="{Binding HoursPlayed, StringFormat='0.0'}" Width="90" />
+                                    <GridViewColumn Header="{l:Loc Score_Deaths}" DisplayMemberBinding="{Binding Deaths}" Width="70" />
+                                    <GridViewColumn Header="{l:Loc Score_MobKills}" DisplayMemberBinding="{Binding MobKills}" Width="80" />
+                                    <GridViewColumn Header="PvP" DisplayMemberBinding="{Binding PlayerKills}" Width="55" />
+                                    <GridViewColumn Header="{l:Loc Score_Diamonds}" DisplayMemberBinding="{Binding DiamondsMined}" Width="80" />
+                                    <GridViewColumn Header="km" DisplayMemberBinding="{Binding KmWalked, StringFormat='0.0'}" Width="60" />
+                                    <GridViewColumn Header="{l:Loc Score_Jumps}" DisplayMemberBinding="{Binding Jumps}" Width="70" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Storage_Clean}" Style="{StaticResource DangerButton}" Command="{Binding CleanStorageCommand}" IsEnabled="{Binding CanCleanStorage}" />
+                            <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconStorage}" Style="{StaticResource IconPath}" Margin="0,0,8,0" /><TextBlock Text="{l:Loc Storage_Title}" Style="{StaticResource H2}" FontSize="16" /></StackPanel>
+                        </DockPanel>
+                        <TextBlock Text="{Binding StorageSummary}" Style="{StaticResource Muted}" Margin="0,6,0,8" AutomationProperties.AutomationId="StorageSummary" />
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="20" /><ColumnDefinition /></Grid.ColumnDefinitions>
+                            <ItemsControl ItemsSource="{Binding StorageFolders}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="0,1">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Size, Converter={x:Static l:Bytes.Instance}}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding Path}" TextTrimming="CharacterEllipsis" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{l:Loc Storage_Largest}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                                <ItemsControl ItemsSource="{Binding StorageFiles}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,1">
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Size, Converter={x:Static l:Bytes.Instance}}" FontSize="12" />
+                                                <TextBlock Text="{Binding Path}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- World: controls, library, fresh seed, inventory, BlueMap -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=11}" AutomationProperties.AutomationId="WorldPage">

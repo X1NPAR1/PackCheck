@@ -1329,4 +1329,31 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs found no known problem in this log.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Shared: {0} (link copied)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>Open on mclo.gs</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Insights</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Activity</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Search player or text</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>No activity in the last two weeks of logs.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>All</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Chat</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Joined</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Left</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Death</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Advancement</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Command</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Server</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Scoreboard</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>No statistics yet; players appear after the world was saved with them on it.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Player</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Hours</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Deaths</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Mob kills</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Diamonds</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Jumps</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Storage</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>{0} in total · {1} can be cleaned (old logs, crash reports, caches)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>Largest files</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Clean up</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Clean up storage</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Delete old logs, crash reports and caches ({0})? Worlds, configs and the current log are not touched.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>Freed {0}.</value></data>
 </root>

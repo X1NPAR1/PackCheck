@@ -1329,4 +1329,31 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs hat in diesem Log kein bekanntes Problem gefunden.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Geteilt: {0} (Link kopiert)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>Auf mclo.gs öffnen</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Einblicke</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Aktivität</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Spieler oder Text suchen</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Keine Aktivität in den Logs der letzten zwei Wochen.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>Alle</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Chat</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Beigetreten</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Verlassen</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Tod</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Fortschritt</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Befehl</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Server</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Bestenliste</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>Noch keine Statistiken; Spieler erscheinen, nachdem die Welt mit ihnen gespeichert wurde.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Spieler</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Stunden</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Tode</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Mob-Kills</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Diamanten</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Sprünge</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Speicher</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>{0} insgesamt · {1} lassen sich bereinigen (alte Logs, Absturzberichte, Caches)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>Größte Dateien</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Aufräumen</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Speicher aufräumen</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Alte Logs, Absturzberichte und Caches ({0}) löschen? Welten, Konfigurationen und das aktuelle Log bleiben.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>{0} freigegeben.</value></data>
 </root>

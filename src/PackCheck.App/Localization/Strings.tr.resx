@@ -1329,4 +1329,31 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs bu logda bilinen bir sorun bulmadı.</value></data>
   <data name="Mclogs_Copied" xml:space="preserve"><value>Paylaşıldı: {0} (link kopyalandı)</value></data>
   <data name="Mclogs_Open" xml:space="preserve"><value>mclo.gs'te aç</value></data>
+  <data name="Insights_Tab" xml:space="preserve"><value>Analiz</value></data>
+  <data name="Activity_Title" xml:space="preserve"><value>Aktivite</value></data>
+  <data name="Activity_Search" xml:space="preserve"><value>Oyuncu veya metin ara</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Son iki haftanın loglarında aktivite yok.</value></data>
+  <data name="Activity_All" xml:space="preserve"><value>Tümü</value></data>
+  <data name="Activity_Chat" xml:space="preserve"><value>Sohbet</value></data>
+  <data name="Activity_Join" xml:space="preserve"><value>Girdi</value></data>
+  <data name="Activity_Leave" xml:space="preserve"><value>Çıktı</value></data>
+  <data name="Activity_Death" xml:space="preserve"><value>Ölüm</value></data>
+  <data name="Activity_Advancement" xml:space="preserve"><value>Başarım</value></data>
+  <data name="Activity_Command" xml:space="preserve"><value>Komut</value></data>
+  <data name="Activity_Server" xml:space="preserve"><value>Sunucu</value></data>
+  <data name="Score_Title" xml:space="preserve"><value>Skor tablosu</value></data>
+  <data name="Score_Empty" xml:space="preserve"><value>Henüz istatistik yok; oyuncular dünya onlarla birlikte kaydedildikten sonra görünür.</value></data>
+  <data name="Score_Player" xml:space="preserve"><value>Oyuncu</value></data>
+  <data name="Score_Hours" xml:space="preserve"><value>Saat</value></data>
+  <data name="Score_Deaths" xml:space="preserve"><value>Ölüm</value></data>
+  <data name="Score_MobKills" xml:space="preserve"><value>Canavar</value></data>
+  <data name="Score_Diamonds" xml:space="preserve"><value>Elmas</value></data>
+  <data name="Score_Jumps" xml:space="preserve"><value>Zıplama</value></data>
+  <data name="Storage_Title" xml:space="preserve"><value>Depolama</value></data>
+  <data name="Storage_Summary" xml:space="preserve"><value>Toplam {0} · {1} temizlenebilir (eski loglar, çökme raporları, önbellekler)</value></data>
+  <data name="Storage_Largest" xml:space="preserve"><value>En büyük dosyalar</value></data>
+  <data name="Storage_Clean" xml:space="preserve"><value>Temizle</value></data>
+  <data name="Storage_CleanTitle" xml:space="preserve"><value>Depolamayı temizle</value></data>
+  <data name="Storage_CleanBody" xml:space="preserve"><value>Eski loglar, çökme raporları ve önbellekler ({0}) silinsin mi? Dünyalara, ayarlara ve güncel loga dokunulmaz.</value></data>
+  <data name="Storage_Freed" xml:space="preserve"><value>{0} boşaltıldı.</value></data>
 </root>
