@@ -60,10 +60,12 @@ public sealed partial class DashboardViewModel : ObservableObject
         var items = _servers.Items.ToList();
         Total = items.Count;
         Running = items.Count(s => s.IsRunning);
-        Players = items.Sum(s => s.Players.Count);
+        // The ping's count is authoritative; without a reply the names seen in the console are the best estimate.
+        Players = items.Where(s => s.IsRunning).Sum(s => s.PingOnline ?? s.Players.Count);
         AllottedMb = items.Where(s => s.IsRunning).Sum(s => s.Definition.MaxMemoryMb);
         Crashes24h = items.Sum(s => CountRecentCrashes(s.Definition.Directory, TimeSpan.FromDays(1)));
-        StatusLine = Loc.F("Dash_Status", Running, Total - Running, items.Count(s => s.IsCrashed));
+        var crashed = items.Count(s => s.IsCrashed);
+        StatusLine = Loc.F("Dash_Status", Running, Total - Running - crashed, crashed);
         OnPropertyChanged(nameof(IsEmpty));
         OnPropertyChanged(nameof(RunningText));
         OnPropertyChanged(nameof(AllottedText));

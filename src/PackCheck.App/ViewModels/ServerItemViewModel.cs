@@ -242,6 +242,9 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
     public Gauge Ping { get; } = new("Gauge_Ping");
 
+    /// <summary>Players online as reported by the last successful server-list ping; null when there is none.</summary>
+    public int? PingOnline { get; private set; }
+
     public IReadOnlyList<Gauge> Gauges => [Tps, Cpu, Ram, Ping];
 
     public static IReadOnlyList<string> QuickCommands { get; } =
@@ -368,6 +371,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
 
             Uptime = "–";
             PlayersText = "–";
+            PingOnline = null;
             _players.Clear();
             Players.Clear();
             ClosePlayerSessions();
@@ -685,6 +689,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             {
                 Ping.Set(1 - (Math.Min(ping.LatencyMs, 300) / 300d), $"{ping.LatencyMs} ms", Health.Ping(ping.LatencyMs), historyValue: ping.LatencyMs);
                 PlayersText = $"{ping.Online} / {ping.Max}";
+                PingOnline = ping.Online;
                 if (ping.Sample.Count > 0)
                 {
                     SyncPlayers(ping.Sample.Union(_players, StringComparer.OrdinalIgnoreCase));
