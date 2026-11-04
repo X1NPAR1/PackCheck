@@ -4,6 +4,7 @@
              xmlns:l="clr-namespace:PackCheck.App.Infrastructure"
              xmlns:c="clr-namespace:PackCheck.App.Controls"
              xmlns:v="clr-namespace:PackCheck.App.Views"
+             xmlns:vm="clr-namespace:PackCheck.App.ViewModels"
              AutomationProperties.AutomationId="ServerDetail">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -179,6 +180,7 @@
             </RadioButton>
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Perf_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=9}" AutomationProperties.AutomationId="TabPerformance" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Players_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=8}" AutomationProperties.AutomationId="TabPlayers" />
+            <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc World_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=11}" AutomationProperties.AutomationId="TabWorld" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Identity_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=7}" AutomationProperties.AutomationId="TabIdentity" />
         </StackPanel>
         </StackPanel>
@@ -1326,6 +1328,179 @@
         </Border>
 
         <!-- Identity: icon + MOTD -->
+
+        <!-- World: controls, library, fresh seed, inventory, BlueMap -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=11}" AutomationProperties.AutomationId="WorldPage">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="12" /><ColumnDefinition /></Grid.ColumnDefinitions>
+
+                    <!-- controls -->
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{l:Loc World_Controls}" Style="{StaticResource H2}" FontSize="16" />
+                            <TextBlock Text="{l:Loc World_ControlsHint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,10" />
+                            <TextBlock Text="{l:Loc World_Time}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <WrapPanel>
+                                <Button Command="{Binding SetTimeCommand}" CommandParameter="day" Margin="0,0,6,6" AutomationProperties.AutomationId="WorldDay">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconSun}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Day}" /></StackPanel>
+                                </Button>
+                                <Button Command="{Binding SetTimeCommand}" CommandParameter="noon" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconSunrise}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Noon}" /></StackPanel>
+                                </Button>
+                                <Button Command="{Binding SetTimeCommand}" CommandParameter="night" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconMoon}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Night}" /></StackPanel>
+                                </Button>
+                                <Button Command="{Binding SetTimeCommand}" CommandParameter="midnight" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconSunset}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Midnight}" /></StackPanel>
+                                </Button>
+                            </WrapPanel>
+                            <TextBlock Text="{l:Loc World_Weather}" FontWeight="SemiBold" FontSize="12" Margin="0,6,0,4" />
+                            <WrapPanel>
+                                <Button Command="{Binding SetWeatherCommand}" CommandParameter="clear" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconSun}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Clear}" /></StackPanel>
+                                </Button>
+                                <Button Command="{Binding SetWeatherCommand}" CommandParameter="rain" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconRain}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Rain}" /></StackPanel>
+                                </Button>
+                                <Button Command="{Binding SetWeatherCommand}" CommandParameter="thunder" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconThunder}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_Thunder}" /></StackPanel>
+                                </Button>
+                            </WrapPanel>
+                            <TextBlock Text="{l:Loc World_Difficulty}" FontWeight="SemiBold" FontSize="12" Margin="0,6,0,4" />
+                            <WrapPanel>
+                                <Button Content="{l:Loc Difficulty_peaceful}" Command="{Binding SetDifficultyCommand}" CommandParameter="peaceful" Margin="0,0,6,6" />
+                                <Button Content="{l:Loc Difficulty_easy}" Command="{Binding SetDifficultyCommand}" CommandParameter="easy" Margin="0,0,6,6" />
+                                <Button Content="{l:Loc Difficulty_normal}" Command="{Binding SetDifficultyCommand}" CommandParameter="normal" Margin="0,0,6,6" />
+                                <Button Content="{l:Loc Difficulty_hard}" Command="{Binding SetDifficultyCommand}" CommandParameter="hard" Margin="0,0,6,6" />
+                                <Button Command="{Binding SaveWorldNowCommand}" Margin="0,0,6,6">
+                                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconSave}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc World_SaveNow}" /></StackPanel>
+                                </Button>
+                            </WrapPanel>
+                            <TextBlock Text="{l:Loc World_Rules}" FontWeight="SemiBold" FontSize="12" Margin="0,6,0,4" />
+                            <ItemsControl ItemsSource="{x:Static vm:ServerItemViewModel.GameRules}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="0,0,0,4">
+                                            <Button DockPanel.Dock="Right" Content="{l:Loc World_Off}" Padding="10,3" Margin="4,0,0,0"
+                                                    Command="{Binding DataContext.RuleOffCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" />
+                                            <Button DockPanel.Dock="Right" Content="{l:Loc World_On}" Padding="10,3"
+                                                    Command="{Binding DataContext.RuleOnCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" />
+                                            <TextBlock Text="{Binding Label}" VerticalAlignment="Center" ToolTip="{Binding Rule}" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Column="2">
+                        <!-- inventory -->
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{l:Loc Inventory_Title}" Style="{StaticResource H2}" FontSize="16" />
+                                <DockPanel Margin="0,8,0,0">
+                                    <Button DockPanel.Dock="Right" Content="{l:Loc Inventory_Reload}" Command="{Binding ReloadInventoryCommand}" Margin="6,0,0,0" />
+                                    <ComboBox ItemsSource="{Binding InventoryPlayers}" SelectedItem="{Binding InventoryPlayer}" AutomationProperties.AutomationId="InventoryPlayer" AutomationProperties.Name="{l:Loc Inventory_Title}" />
+                                </DockPanel>
+                                <TextBlock Text="{Binding InventorySummary}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,6" />
+                                <ItemsControl ItemsSource="{Binding InventoryItems}" MaxHeight="260">
+                                    <ItemsControl.Template><ControlTemplate><ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsPresenter /></ScrollViewer></ControlTemplate></ItemsControl.Template>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,1">
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Count, StringFormat='×{0}'}" FontWeight="SemiBold" />
+                                                <TextBlock DockPanel.Dock="Left" Text="{Binding Place}" Width="70" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding DisplayName}" ToolTip="{Binding Id}" TextTrimming="CharacterEllipsis" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="{l:Loc Inventory_Ender}" FontWeight="SemiBold" FontSize="12" Margin="0,8,0,2" />
+                                <ItemsControl ItemsSource="{Binding EnderItems}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,1">
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Count, StringFormat='×{0}'}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding DisplayName}" ToolTip="{Binding Id}" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- BlueMap -->
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Data="{StaticResource IconMap}" Style="{StaticResource IconPath}" Margin="0,0,8,0" />
+                                    <TextBlock Text="{l:Loc Map_Title}" Style="{StaticResource H2}" FontSize="16" />
+                                </StackPanel>
+                                <TextBlock Text="{l:Loc Map_Hint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{l:Loc Map_Install}" Command="{Binding InstallBlueMapCommand}" Margin="0,0,8,0" IsEnabled="{Binding BlueMapSupported}"
+                                            Visibility="{Binding HasBlueMap, Converter={x:Static l:Inverse.Visibility}}" AutomationProperties.AutomationId="MapInstall" />
+                                    <Button Content="{l:Loc Map_Open}" Style="{StaticResource PrimaryButton}" Command="{Binding OpenMapCommand}" Visibility="{Binding HasBlueMap, Converter={StaticResource BoolVis}}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding MapStatus}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="{Binding MapStatus, Converter={StaticResource NullVis}}" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- library -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconLibrary}" Style="{StaticResource IconPath}" Margin="0,0,8,0" />
+                            <TextBlock Text="{l:Loc World_Library}" Style="{StaticResource H2}" FontSize="16" />
+                        </StackPanel>
+                        <TextBlock Text="{l:Loc World_LibraryHint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,10" />
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:Loc World_Import}" Command="{Binding ImportWorldCommand}" Margin="6,0,0,0" />
+                            <Button DockPanel.Dock="Right" Content="{l:Loc World_SaveToLibrary}" Style="{StaticResource PrimaryButton}" Command="{Binding SaveToLibraryCommand}" Margin="6,0,0,0" AutomationProperties.AutomationId="WorldSaveToLibrary" />
+                            <TextBox Text="{Binding WorldSaveName, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc World_SaveNameHint}" AutomationProperties.Name="{l:Loc World_SaveNameHint}" />
+                        </DockPanel>
+                        <TextBlock Text="{Binding WorldStatus}" Margin="0,8,0,0" TextWrapping="Wrap" Visibility="{Binding WorldStatus, Converter={StaticResource NullVis}}" AutomationProperties.AutomationId="WorldStatus" />
+                        <TextBlock Text="{l:Loc World_LibraryEmpty}" Style="{StaticResource Muted}" Margin="0,10,0,0" Visibility="{Binding LibraryWorlds.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <ItemsControl ItemsSource="{Binding LibraryWorlds}" Margin="0,10,0,0" AutomationProperties.AutomationId="WorldLibrary">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="12,8" Margin="0,0,0,6">
+                                        <DockPanel>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button Content="{l:Loc World_Install}" Command="{Binding DataContext.InstallWorldCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" Margin="0,0,6,0" />
+                                                <Button Content="{l:Loc World_Export}" Command="{Binding DataContext.ExportWorldCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" Margin="0,0,6,0" />
+                                                <Button Content="{l:Loc World_Delete}" Style="{StaticResource GhostButton}" Foreground="{DynamicResource FailBrush}" Command="{Binding DataContext.DeleteWorldCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" />
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                <TextBlock FontSize="12" Foreground="{DynamicResource TextMutedBrush}">
+                                                    <Run Text="{Binding Compatibility, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding SourceServer, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding Created, Mode=OneWay, StringFormat='g'}" /><Run Text=" · " /><Run Text="{Binding Size, Mode=OneWay, Converter={x:Static l:Bytes.Instance}}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- fresh world -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{l:Loc World_ResetTitle}" Style="{StaticResource H2}" FontSize="16" />
+                        <TextBlock Text="{l:Loc World_ResetHint}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,8" />
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:Loc World_Reset}" Style="{StaticResource DangerButton}" Command="{Binding ResetWorldCommand}" Margin="6,0,0,0" />
+                            <TextBox Text="{Binding NewSeed, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc World_SeedHint}" AutomationProperties.Name="{l:Loc World_SeedHint}" />
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Visibility="{Binding Tab, Converter={StaticResource IndexVis}, ConverterParameter=7}" AutomationProperties.AutomationId="IdentityPage">
             <StackPanel>
                 <Border Style="{StaticResource Card}" Margin="0,0,0,12">

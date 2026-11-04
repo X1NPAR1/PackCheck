@@ -1228,4 +1228,80 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Dash_LiveUsage" xml:space="preserve"><value>Live-Auslastung je Server</value></data>
   <data name="Dash_Open" xml:space="preserve"><value>Öffnen</value></data>
   <data name="Dash_PlayersShort" xml:space="preserve"><value>Spieler</value></data>
+  <data name="World_Tab" xml:space="preserve"><value>Welt</value></data>
+  <data name="World_Controls" xml:space="preserve"><value>Welt-Steuerung</value></data>
+  <data name="World_ControlsHint" xml:space="preserve"><value>Wird als Konsolenbefehl gesendet, der Server muss also laufen. Spielregeln gelten sofort.</value></data>
+  <data name="World_Time" xml:space="preserve"><value>Zeit</value></data>
+  <data name="World_Day" xml:space="preserve"><value>Tag</value></data>
+  <data name="World_Noon" xml:space="preserve"><value>Mittag</value></data>
+  <data name="World_Night" xml:space="preserve"><value>Nacht</value></data>
+  <data name="World_Midnight" xml:space="preserve"><value>Mitternacht</value></data>
+  <data name="World_Weather" xml:space="preserve"><value>Wetter</value></data>
+  <data name="World_Clear" xml:space="preserve"><value>Klar</value></data>
+  <data name="World_Rain" xml:space="preserve"><value>Regen</value></data>
+  <data name="World_Thunder" xml:space="preserve"><value>Gewitter</value></data>
+  <data name="World_Difficulty" xml:space="preserve"><value>Schwierigkeit und Speichern</value></data>
+  <data name="Difficulty_peaceful" xml:space="preserve"><value>Friedlich</value></data>
+  <data name="Difficulty_easy" xml:space="preserve"><value>Einfach</value></data>
+  <data name="Difficulty_normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Difficulty_hard" xml:space="preserve"><value>Schwer</value></data>
+  <data name="World_SaveNow" xml:space="preserve"><value>Welt speichern</value></data>
+  <data name="World_Rules" xml:space="preserve"><value>Spielregeln</value></data>
+  <data name="World_On" xml:space="preserve"><value>An</value></data>
+  <data name="World_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Rule_KeepInventory" xml:space="preserve"><value>Inventar beim Tod behalten</value></data>
+  <data name="Rule_DaylightCycle" xml:space="preserve"><value>Tag-Nacht-Zyklus</value></data>
+  <data name="Rule_WeatherCycle" xml:space="preserve"><value>Wetterwechsel</value></data>
+  <data name="Rule_MobSpawning" xml:space="preserve"><value>Mob-Spawning</value></data>
+  <data name="Rule_MobGriefing" xml:space="preserve"><value>Mob-Zerstörung (Creeper, Endermen)</value></data>
+  <data name="Rule_FireTick" xml:space="preserve"><value>Feuerausbreitung</value></data>
+  <data name="Rule_NaturalRegeneration" xml:space="preserve"><value>Natürliche Regeneration</value></data>
+  <data name="Rule_Phantoms" xml:space="preserve"><value>Phantome</value></data>
+  <data name="Rule_FallDamage" xml:space="preserve"><value>Fallschaden</value></data>
+  <data name="Rule_ImmediateRespawn" xml:space="preserve"><value>Sofortiger Respawn</value></data>
+  <data name="Rule_DeathMessages" xml:space="preserve"><value>Todesnachrichten</value></data>
+  <data name="Rule_Advancements" xml:space="preserve"><value>Fortschritt-Meldungen</value></data>
+  <data name="World_NeedsRunning" xml:space="preserve"><value>Starte zuerst den Server; das sind Konsolenbefehle.</value></data>
+  <data name="World_Sent" xml:space="preserve"><value>Gesendet: {0}</value></data>
+  <data name="World_StopFirst" xml:space="preserve"><value>Stoppe zuerst den Server.</value></data>
+  <data name="World_Library" xml:space="preserve"><value>Weltbibliothek</value></data>
+  <data name="World_LibraryHint" xml:space="preserve"><value>Welten dieses Servers speichern, eine gespeicherte Welt auf einem beliebigen Server installieren, Welt-Zips importieren oder exportieren. Beim Installieren bleiben die aktuellen Welten in old-worlds/.</value></data>
+  <data name="World_SaveToLibrary" xml:space="preserve"><value>In Bibliothek speichern</value></data>
+  <data name="World_SaveNameHint" xml:space="preserve"><value>Name (optional)</value></data>
+  <data name="World_Import" xml:space="preserve"><value>Zip importieren…</value></data>
+  <data name="World_Export" xml:space="preserve"><value>Exportieren</value></data>
+  <data name="World_Install" xml:space="preserve"><value>Hier installieren</value></data>
+  <data name="World_Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="World_LibraryEmpty" xml:space="preserve"><value>Noch keine gespeicherten Welten.</value></data>
+  <data name="World_Saving" xml:space="preserve"><value>Welt wird gespeichert…</value></data>
+  <data name="World_Saved" xml:space="preserve"><value>In der Bibliothek gespeichert: {0}</value></data>
+  <data name="World_InstallTitle" xml:space="preserve"><value>Welt installieren</value></data>
+  <data name="World_InstallBody" xml:space="preserve"><value>"{0}" auf {1} installieren? Die aktuellen Welten wandern nach old-worlds/, nichts wird gelöscht.</value></data>
+  <data name="World_Installed" xml:space="preserve"><value>{0} installiert.</value></data>
+  <data name="World_OldKept" xml:space="preserve"><value>Die bisherigen Welten liegen in {0}.</value></data>
+  <data name="World_Exported" xml:space="preserve"><value>Exportiert nach {0}</value></data>
+  <data name="World_DeleteTitle" xml:space="preserve"><value>Gespeicherte Welt löschen</value></data>
+  <data name="World_DeleteBody" xml:space="preserve"><value>"{0}" aus der Bibliothek löschen? Das lässt sich nicht rückgängig machen.</value></data>
+  <data name="World_ResetTitle" xml:space="preserve"><value>Neue Welt</value></data>
+  <data name="World_ResetHint" xml:space="preserve"><value>Mit einer frischen Welt neu anfangen. Seed leer lassen für eine zufällige. Die aktuellen Welten wandern nach old-worlds/.</value></data>
+  <data name="World_SeedHint" xml:space="preserve"><value>Seed (leer = zufällig)</value></data>
+  <data name="World_Reset" xml:space="preserve"><value>Neue Welt erstellen</value></data>
+  <data name="World_ResetBody" xml:space="preserve"><value>Die aktuellen Welten wandern nach old-worlds/, beim nächsten Start entsteht eine neue Welt mit diesem Seed. Fortfahren?</value></data>
+  <data name="World_ResetDone" xml:space="preserve"><value>Fertig. Beim nächsten Start entsteht die neue Welt.</value></data>
+  <data name="Inventory_Title" xml:space="preserve"><value>Spielerinventar</value></data>
+  <data name="Inventory_Reload" xml:space="preserve"><value>Neu laden</value></data>
+  <data name="Inventory_Ender" xml:space="preserve"><value>Endertruhe</value></data>
+  <data name="Inventory_NoData" xml:space="preserve"><value>Noch keine Daten für {0} (der Spieler muss einmal beitreten).</value></data>
+  <data name="Inventory_Summary" xml:space="preserve"><value>{0} Gegenstände · Endertruhe {1} · Leben {2} · Level {3}</value></data>
+  <data name="Inventory_LastSave" xml:space="preserve"><value>(Stand der letzten Speicherung)</value></data>
+  <data name="Map_Title" xml:space="preserve"><value>Live-Karte (BlueMap)</value></data>
+  <data name="Map_Hint" xml:space="preserve"><value>Installiert BlueMap von Modrinth (SHA-512-geprüft) und öffnet die 3D-Karte im Browser. Beim ersten Rendern werden Minecraft-Texturen von Mojang geladen.</value></data>
+  <data name="Map_Install" xml:space="preserve"><value>BlueMap installieren</value></data>
+  <data name="Map_Open" xml:space="preserve"><value>Karte öffnen</value></data>
+  <data name="Map_Unsupported" xml:space="preserve"><value>BlueMap gibt es für diese Plattform nicht.</value></data>
+  <data name="Map_Installing" xml:space="preserve"><value>BlueMap wird geladen…</value></data>
+  <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap gibt es noch nicht für Minecraft {0}.</value></data>
+  <data name="Map_Installed" xml:space="preserve"><value>BlueMap installiert. Starte den Server und öffne dann die Karte.</value></data>
+  <data name="Map_Opened" xml:space="preserve"><value>{0} geöffnet. Das erste Rendern kann einige Minuten dauern.</value></data>
+  <data name="Map_StartFirst" xml:space="preserve"><value>Starte den Server, damit BlueMap die Karte liefern kann.</value></data>
 </root>
