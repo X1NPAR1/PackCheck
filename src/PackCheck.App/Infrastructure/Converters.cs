@@ -499,3 +499,13 @@ public static class AboutKeys
     public const string F5 = "About_F5";
     public const string F6 = "About_F6";
 }
+
+/// <summary>Shows only the file name of a path.</summary>
+public sealed class FileNameOnly : IValueConverter
+{
+    public static FileNameOnly Instance { get; } = new();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string s ? System.IO.Path.GetFileName(s) : string.Empty;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
+}

@@ -190,6 +190,9 @@
                 BorderBrush="{DynamicResource FailBrush}" BorderThickness="1" Visibility="{Binding IsCrashed, Converter={StaticResource BoolVis}}" l:Anim.PopIn="True">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Content="{l:Loc Console_OpenLog}" Command="{Binding OpenLatestLogCommand}" Padding="10,5" />
+                <Button DockPanel.Dock="Right" Command="{Binding ShareCrashCommand}" Padding="10,5" Margin="0,0,8,0" ToolTip="{l:Loc Mclogs_Tip}" AutomationProperties.AutomationId="ShareCrash">
+                    <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconShare}" Style="{StaticResource IconPath}" Width="13" Height="13" Margin="0,0,6,0" /><TextBlock Text="{l:Loc Mclogs_Share}" /></StackPanel>
+                </Button>
                 <Button DockPanel.Dock="Right" Content="{l:Loc Console_AskAi}" Command="{Binding AskAiCommand}" Padding="10,5" Margin="0,0,8,0"
                         AutomationProperties.AutomationId="CrashAskAi" />
                 <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{Binding DiagnosisFixText}" Command="{Binding ApplyCrashFixCommand}" Padding="10,5" Margin="0,0,8,0"
@@ -841,6 +844,50 @@
                     <Button DockPanel.Dock="Right" Content="{l:Loc Plugins_AddFile}" Command="{Binding AddPluginFileCommand}" />
                     <TextBlock Text="{l:Loc Plugins_Installed_List}" Style="{StaticResource H2}" FontSize="15" VerticalAlignment="Center" />
                 </DockPanel>
+                <!-- add by link, updates, revert -->
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12" IsEnabled="{Binding ContentBusy, Converter={x:Static l:Inverse.Bool}}">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Command="{Binding CheckAddonUpdatesCommand}" Margin="8,0,0,0" AutomationProperties.AutomationId="CheckAddonUpdates">
+                            <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconRefresh}" Style="{StaticResource IconPath}" Width="14" Height="14" Margin="0,0,6,0" /><TextBlock Text="{l:Loc Content_Check}" /></StackPanel>
+                        </Button>
+                        <Button DockPanel.Dock="Right" Command="{Binding AddFromLinkCommand}" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" AutomationProperties.AutomationId="AddFromLink">
+                            <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconLink}" Style="{StaticResource IconPath}" Width="14" Height="14" Stroke="White" Margin="0,0,6,0" /><TextBlock Text="{l:Loc Content_AddLink}" /></StackPanel>
+                        </Button>
+                        <TextBox Text="{Binding AddLink, UpdateSourceTrigger=PropertyChanged}" Tag="{l:Loc Content_LinkHint}" AutomationProperties.Name="{l:Loc Content_LinkHint}" AutomationProperties.AutomationId="AddLinkBox" />
+                    </DockPanel>
+                    <TextBlock Text="{Binding ContentStatus}" Style="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="2,6,0,0" Visibility="{Binding ContentStatus, Converter={StaticResource NullVis}}" AutomationProperties.AutomationId="ContentStatus" />
+                    <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="12,8" Margin="0,8,0,0" Visibility="{Binding HasAddonUpdates, Converter={StaticResource BoolVis}}">
+                        <StackPanel>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Content="{l:Loc Content_UpdateAll}" Style="{StaticResource PrimaryButton}" Command="{Binding UpdateAllAddonsCommand}" />
+                                <TextBlock Text="{l:Loc Content_UpdatesTitle}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <ItemsControl ItemsSource="{Binding AddonUpdatesList}" Margin="0,6,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="0,2">
+                                            <Button DockPanel.Dock="Right" Content="{l:Loc Content_Update}" Padding="10,3"
+                                                    Command="{Binding DataContext.UpdateAddonCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}" CommandParameter="{Binding}" />
+                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →  " /><Run Text="{Binding UpdateVersion, Mode=OneWay}" Foreground="{DynamicResource PassBrush}" /></TextBlock>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                    <ItemsControl ItemsSource="{Binding RevertRows}" Margin="0,6,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0,2">
+                                    <Button DockPanel.Dock="Right" Padding="10,3" Command="{Binding DataContext.RevertAddonCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}" CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconUndo}" Style="{StaticResource IconPath}" Width="13" Height="13" Margin="0,0,6,0" /><TextBlock Text="{l:Loc Content_Revert}" /></StackPanel>
+                                    </Button>
+                                    <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"><Run Text="{Binding File, Mode=OneWay, Converter={x:Static l:FileNameOnly.Instance}}" /><Run Text="  ←  " /><Run Text="{Binding Previous, Mode=OneWay}" /></TextBlock>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding PluginList}" l:Anim.Stagger="True">
                         <ItemsControl.ItemTemplate>

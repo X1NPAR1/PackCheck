@@ -1304,4 +1304,29 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap kuruldu. Sunucuyu başlat, sonra haritayı aç.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} açıldı. İlk çizim birkaç dakika sürebilir.</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Haritanın açılması için sunucuyu başlat.</value></data>
+  <data name="Content_LinkHint" xml:space="preserve"><value>Modrinth, Hangar, SpigotMC veya GitHub linki, Modrinth kısa adı ya da .jar adresi yapıştır</value></data>
+  <data name="Content_AddLink" xml:space="preserve"><value>Ekle</value></data>
+  <data name="Content_Check" xml:space="preserve"><value>Güncellemeleri kontrol et</value></data>
+  <data name="Content_LinkUnknown" xml:space="preserve"><value>Bu link tanınmadı. Modrinth, Hangar, SpigotMC veya GitHub sayfası, Modrinth kısa adı ya da doğrudan .jar adresi kullan.</value></data>
+  <data name="Content_Resolving" xml:space="preserve"><value>{0} üzerinde aranıyor…</value></data>
+  <data name="Content_Added" xml:space="preserve"><value>{0} eklendi ({1}).</value></data>
+  <data name="Content_NoHash" xml:space="preserve"><value>Kaynak hash yayınlamıyor; dosya yalnızca eklenti/mod jar'ı olup olmadığına göre kontrol edildi.</value></data>
+  <data name="Content_Checking" xml:space="preserve"><value>Modrinth'te yeni sürümler aranıyor…</value></data>
+  <data name="Content_UpToDate" xml:space="preserve"><value>Modrinth'in tanıdığı her şey güncel.</value></data>
+  <data name="Content_UpdatesFound" xml:space="preserve"><value>{0} güncelleme var.</value></data>
+  <data name="Content_UpdatesTitle" xml:space="preserve"><value>Güncellemeler</value></data>
+  <data name="Content_UpdateAll" xml:space="preserve"><value>Hepsini güncelle</value></data>
+  <data name="Content_Update" xml:space="preserve"><value>Güncelle</value></data>
+  <data name="Content_Updating" xml:space="preserve"><value>{0} güncelleniyor ({1}/{2})…</value></data>
+  <data name="Content_Updated" xml:space="preserve"><value>{0} güncellendi. Eski jar'lar saklanıyor, geri alabilirsin.</value></data>
+  <data name="Content_Revert" xml:space="preserve"><value>Geri al</value></data>
+  <data name="Content_Reverted" xml:space="preserve"><value>{0} geri yüklendi.</value></data>
+  <data name="Content_StopFirst" xml:space="preserve"><value>Jar'ları değiştirmeden önce sunucuyu durdur.</value></data>
+  <data name="Mclogs_Share" xml:space="preserve"><value>mclo.gs'te paylaş</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Çökme raporunu herkese açık bir paste olarak yükler ve mclo.gs'in otomatik analizini gösterir.</value></data>
+  <data name="Mclogs_Title" xml:space="preserve"><value>mclo.gs'te paylaşılsın mı?</value></data>
+  <data name="Mclogs_Body" xml:space="preserve"><value>{0} mclo.gs'e yüklenecek ve linki olan herkes okuyabilecek. mclo.gs IP adreslerini gizler ama özel bilgi olmadığından emin ol.</value></data>
+  <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs bu logda bilinen bir sorun bulmadı.</value></data>
+  <data name="Mclogs_Copied" xml:space="preserve"><value>Paylaşıldı: {0} (link kopyalandı)</value></data>
+  <data name="Mclogs_Open" xml:space="preserve"><value>mclo.gs'te aç</value></data>
 </root>

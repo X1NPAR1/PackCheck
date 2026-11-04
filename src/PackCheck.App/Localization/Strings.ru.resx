@@ -1304,4 +1304,29 @@ F1 · этот список
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap установлен. Запустите сервер и откройте карту.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>Открыто {0}. Первая отрисовка может занять несколько минут.</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Запустите сервер, чтобы BlueMap показал карту.</value></data>
+  <data name="Content_LinkHint" xml:space="preserve"><value>Вставьте ссылку Modrinth, Hangar, SpigotMC или GitHub, слаг Modrinth или URL .jar</value></data>
+  <data name="Content_AddLink" xml:space="preserve"><value>Добавить</value></data>
+  <data name="Content_Check" xml:space="preserve"><value>Проверить обновления</value></data>
+  <data name="Content_LinkUnknown" xml:space="preserve"><value>Ссылка не распознана. Используйте страницу Modrinth, Hangar, SpigotMC или GitHub, слаг Modrinth или прямой URL .jar.</value></data>
+  <data name="Content_Resolving" xml:space="preserve"><value>Поиск на {0}…</value></data>
+  <data name="Content_Added" xml:space="preserve"><value>Добавлено: {0} ({1}).</value></data>
+  <data name="Content_NoHash" xml:space="preserve"><value>Источник не публикует хэш, поэтому файл проверен только как jar плагина/мода.</value></data>
+  <data name="Content_Checking" xml:space="preserve"><value>Поиск новых версий на Modrinth…</value></data>
+  <data name="Content_UpToDate" xml:space="preserve"><value>Всё, что знает Modrinth, обновлено.</value></data>
+  <data name="Content_UpdatesFound" xml:space="preserve"><value>Доступно обновлений: {0}.</value></data>
+  <data name="Content_UpdatesTitle" xml:space="preserve"><value>Обновления</value></data>
+  <data name="Content_UpdateAll" xml:space="preserve"><value>Обновить все</value></data>
+  <data name="Content_Update" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Content_Updating" xml:space="preserve"><value>Обновление {0} ({1}/{2})…</value></data>
+  <data name="Content_Updated" xml:space="preserve"><value>Обновлено: {0}. Старые jar сохранены, можно откатить.</value></data>
+  <data name="Content_Revert" xml:space="preserve"><value>Откатить</value></data>
+  <data name="Content_Reverted" xml:space="preserve"><value>Восстановлено: {0}.</value></data>
+  <data name="Content_StopFirst" xml:space="preserve"><value>Остановите сервер перед заменой jar.</value></data>
+  <data name="Mclogs_Share" xml:space="preserve"><value>Поделиться в mclo.gs</value></data>
+  <data name="Mclogs_Tip" xml:space="preserve"><value>Загружает отчёт о сбое как публичную вставку и показывает автоанализ mclo.gs.</value></data>
+  <data name="Mclogs_Title" xml:space="preserve"><value>Поделиться в mclo.gs?</value></data>
+  <data name="Mclogs_Body" xml:space="preserve"><value>{0} будет загружен в mclo.gs, и любой со ссылкой сможет его прочитать. mclo.gs скрывает IP-адреса, но проверьте, что там нет личного.</value></data>
+  <data name="Mclogs_NoInsights" xml:space="preserve"><value>mclo.gs не нашёл известных проблем в этом логе.</value></data>
+  <data name="Mclogs_Copied" xml:space="preserve"><value>Опубликовано: {0} (ссылка скопирована)</value></data>
+  <data name="Mclogs_Open" xml:space="preserve"><value>Открыть в mclo.gs</value></data>
 </root>
