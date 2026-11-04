@@ -61,6 +61,9 @@ public sealed partial class ServerItemViewModel
 
     public bool HasBlueMap => Directory.Exists(BlueMapSetup.ConfigDir(Definition)) || FindBlueMapJar() is not null;
 
+    /// <summary>The BlueMap jar itself is installed (its config folder can outlive a removed jar).</summary>
+    public bool HasBlueMapJar => FindBlueMapJar() is not null;
+
     public bool BlueMapSupported => BlueMapSetup.Loader(Definition.Platform) is not null;
 
     [RelayCommand]
@@ -212,8 +215,15 @@ public sealed partial class ServerItemViewModel
         var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "World zip (*.zip)|*.zip", FileName = w.Name + ".zip" };
         if (dialog.ShowDialog() == true)
         {
-            File.Copy(Library.ZipPath(w), dialog.FileName, overwrite: true);
-            MainViewModel.Shell?.Toast(Loc.F("World_Exported", dialog.FileName));
+            try
+            {
+                File.Copy(Library.ZipPath(w), dialog.FileName, overwrite: true);
+                MainViewModel.Shell?.Toast(Loc.F("World_Exported", dialog.FileName));
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                WorldStatus = ex.Message;
+            }
         }
     }
 
@@ -226,7 +236,15 @@ public sealed partial class ServerItemViewModel
             return;
         }
 
-        Library.Delete(w);
+        try
+        {
+            Library.Delete(w);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            WorldStatus = ex.Message;
+        }
+
         RefreshWorlds();
     }
 
@@ -238,7 +256,17 @@ public sealed partial class ServerItemViewModel
             return;
         }
 
-        var aside = WorldLibrary.ResetWithSeed(Definition, NewSeed);
+        string? aside;
+        try
+        {
+            aside = WorldLibrary.ResetWithSeed(Definition, NewSeed);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            WorldStatus = ex.Message;
+            return;
+        }
+
         LoadProperties();
         WorldStatus = Loc.T("World_ResetDone") + (aside is null ? string.Empty : " " + Loc.F("World_OldKept", Path.GetRelativePath(Definition.Directory, aside)));
     }
@@ -339,6 +367,7 @@ public sealed partial class ServerItemViewModel
             await File.WriteAllBytesAsync(Path.Combine(dir, Path.GetFileName(file.GetProperty("filename").GetString()!)), bytes).ConfigureAwait(true);
             MapStatus = Loc.T("Map_Installed");
             OnPropertyChanged(nameof(HasBlueMap));
+            OnPropertyChanged(nameof(HasBlueMapJar));
             RefreshPlugins();
         }
         catch (Exception ex) when (ex is HttpRequestException or IOException or JsonException or InvalidDataException or InvalidOperationException or TaskCanceledException)

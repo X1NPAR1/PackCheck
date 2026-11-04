@@ -63,6 +63,12 @@ public sealed partial class ServerItemViewModel
             return;
         }
 
+        if (IsBusy)
+        {
+            ContentStatus = Loc.T("Content_StopFirst");
+            return;
+        }
+
         ContentBusy = true;
         try
         {
@@ -73,7 +79,7 @@ public sealed partial class ServerItemViewModel
             AddLink = string.Empty;
             RefreshPlugins();
         }
-        catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or InvalidDataException or IOException or JsonException or TaskCanceledException or UriFormatException)
+        catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or InvalidDataException or IOException or JsonException or TaskCanceledException or UriFormatException or UnauthorizedAccessException)
         {
             ContentStatus = ex.Message;
         }
@@ -125,16 +131,17 @@ public sealed partial class ServerItemViewModel
         {
             foreach (var u in items)
             {
-                ContentStatus = Loc.F("Content_Updating", u.Name, ++done, items.Count);
+                ContentStatus = Loc.F("Content_Updating", u.Name, done + 1, items.Count);
                 await AddonUpdates.ApplyAsync(AppHttp, Definition, u, CancellationToken.None).ConfigureAwait(true);
+                done++;
                 AddonUpdatesList.Remove(u);
             }
 
             ContentStatus = Loc.F("Content_Updated", done);
         }
-        catch (Exception ex) when (ex is HttpRequestException or IOException or InvalidDataException or UnauthorizedAccessException or TaskCanceledException)
+        catch (Exception ex) when (ex is HttpRequestException or IOException or InvalidDataException or UnauthorizedAccessException or TaskCanceledException or InvalidOperationException)
         {
-            ContentStatus = ex.Message;
+            ContentStatus = Loc.F("Content_Updated", done) + " " + ex.Message;
         }
         finally
         {

@@ -109,9 +109,16 @@ public static partial class ContentLinks
                     var q = loaders.Length == 0 ? string.Empty : "loaders=" + Uri.EscapeDataString(JsonSerializer.Serialize(loaders)) + "&";
                     var arr = await Get<JsonArray>(http, $"https://api.modrinth.com/v2/project/{Uri.EscapeDataString(link.Id)}/version?{q}game_versions=" + Uri.EscapeDataString(JsonSerializer.Serialize(new[] { mc })), ct).ConfigureAwait(false);
                     var v = arr.OfType<JsonObject>().FirstOrDefault() ?? throw new InvalidOperationException($"No build of {link.Id} for {server.Platform} {mc} on Modrinth.");
-                    var files = v["files"]!.AsArray().OfType<JsonObject>().ToList();
+                    var files = (v["files"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
+                    if (files.Count == 0)
+                    {
+                        throw new InvalidOperationException($"The Modrinth build of {link.Id} has no files.");
+                    }
+
                     var f = files.FirstOrDefault(x => x["primary"]?.GetValue<bool>() == true) ?? files[0];
-                    return new ContentDownload(f["url"]!.GetValue<string>(), f["filename"]!.GetValue<string>(), Sha512: f["hashes"]?["sha512"]?.GetValue<string>(), Version: v["version_number"]?.GetValue<string>());
+                    var fileUrl = f["url"]?.GetValue<string>() ?? throw new InvalidOperationException("Modrinth lists no download link for this file.");
+                    var fileName = f["filename"]?.GetValue<string>() ?? throw new InvalidOperationException("Modrinth lists no file name for this file.");
+                    return new ContentDownload(fileUrl, fileName, Sha512: f["hashes"]?["sha512"]?.GetValue<string>(), Version: v["version_number"]?.GetValue<string>());
                 }
 
             case LinkSource.Hangar:
@@ -169,7 +176,13 @@ public static partial class ContentLinks
     /// <summary>Downloads into plugins/ or mods/, checks the hash and that the file is a real plugin or mod jar.</summary>
     public static async Task<string> InstallAsync(HttpClient http, ContentDownload d, ServerDefinition server, CancellationToken ct)
     {
-        var bytes = await http.GetByteArrayAsync(new Uri(d.Url), ct).ConfigureAwait(false);
+        var uri = new Uri(d.Url);
+        if (uri.Scheme != Uri.UriSchemeHttps)
+        {
+            throw new InvalidOperationException("Only HTTPS downloads are allowed.");
+        }
+
+        var bytes = await http.GetByteArrayAsync(uri, ct).ConfigureAwait(false);
         if (d.Sha512 is { } s512 && !Convert.ToHexStringLower(SHA512.HashData(bytes)).Equals(s512, StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidDataException("The download does not match its SHA-512 hash.");
@@ -180,9 +193,17 @@ public static partial class ContentLinks
             throw new InvalidDataException("The download does not match its SHA-256 hash.");
         }
 
-        if (!IsAddonJar(bytes))
+        var (plugin, mod) = AddonKinds(bytes);
+        var hybrid = PlatformInfo.IsHybrid(server.Platform);
+        var usesMods = PlatformInfo.UsesMods(server.Platform);
+        if (!(plugin || mod))
         {
             throw new InvalidDataException("The download is not a plugin or mod jar.");
+        }
+
+        if (!hybrid && (usesMods ? !mod : !plugin))
+        {
+            throw new InvalidDataException(usesMods ? "This is a plugin, but the server runs mods." : "This is a mod, but the server runs plugins.");
         }
 
         var name = string.Concat(Path.GetFileName(d.FileName).Select(c => Path.GetInvalidFileNameChars().Contains(c) ? '_' : c));
@@ -194,20 +215,26 @@ public static partial class ContentLinks
         return target;
     }
 
-    private static readonly string[] AddonMarkers = ["plugin.yml", "paper-plugin.yml", "bungee.yml", "velocity-plugin.json", "fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "META-INF/neoforge.mods.toml", "mcmod.info"];
+    private static readonly string[] PluginMarkers = ["plugin.yml", "paper-plugin.yml", "bungee.yml", "velocity-plugin.json"];
 
-    public static bool IsAddonJar(byte[] bytes)
+    private static readonly string[] ModMarkers = ["fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "META-INF/neoforge.mods.toml", "mcmod.info"];
+
+    /// <summary>Whether the jar carries plugin markers, mod markers, both or neither.</summary>
+    public static (bool Plugin, bool Mod) AddonKinds(byte[] bytes)
     {
         try
         {
             using var zip = new ZipArchive(new MemoryStream(bytes), ZipArchiveMode.Read);
-            return zip.Entries.Any(e => AddonMarkers.Contains(e.FullName, StringComparer.OrdinalIgnoreCase));
+            var names = zip.Entries.Select(e => e.FullName).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            return (PluginMarkers.Any(names.Contains), ModMarkers.Any(names.Contains));
         }
         catch (InvalidDataException)
         {
-            return false;
+            return (false, false);
         }
     }
+
+    public static bool IsAddonJar(byte[] bytes) => AddonKinds(bytes) is (true, _) or (_, true);
 }
 
 /// <summary>Updates installed plugins/mods to their newest Modrinth build for the server's version, keeping the old jar so it can be restored.</summary>
@@ -219,18 +246,41 @@ public static class AddonUpdates
     public static async Task<IReadOnlyList<AddonCheck>> CheckAsync(HttpClient http, ServerDefinition s, CancellationToken ct) =>
         (await UpgradeAdvisor.CheckAsync(s, s.MinecraftVersion, http, ct).ConfigureAwait(false)).Addons.Where(a => a.Status == AddonStatus.UpdateAvailable).ToList();
 
-    /// <summary>Keeps the old jar in the history (newest per file), then installs the update.</summary>
+    /// <summary>
+    /// Downloads and verifies the update first; only then is the old jar kept in the history (with a marker naming it)
+    /// and replaced. A failed download, hash check or cancellation leaves the history and the live jar untouched.
+    /// </summary>
     public static async Task ApplyAsync(HttpClient http, ServerDefinition s, AddonCheck update, CancellationToken ct)
     {
+        var newName = update.UpdateFileName is { } n ? Path.GetFileName(n) : null;
+        if (update.UpdateUrl is null || string.IsNullOrEmpty(newName))
+        {
+            return;
+        }
+
+        var uri = new Uri(update.UpdateUrl);
+        if (uri.Scheme != Uri.UriSchemeHttps)
+        {
+            throw new InvalidOperationException("Only HTTPS downloads are allowed.");
+        }
+
+        var bytes = await http.GetByteArrayAsync(uri, ct).ConfigureAwait(false);
+        if (update.UpdateSha512 is { } want && !string.Equals(Convert.ToHexStringLower(SHA512.HashData(bytes)), want, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException("Downloaded file does not match Modrinth's hash: " + newName);
+        }
+
+        ct.ThrowIfCancellationRequested();
+        var dir = Path.GetDirectoryName(update.FilePath)!;
+        var temp = Path.Combine(dir, newName + ".download");
+        await File.WriteAllBytesAsync(temp, bytes, CancellationToken.None).ConfigureAwait(false);
+
         var hist = HistoryDir(s);
         Directory.CreateDirectory(hist);
         File.Copy(update.FilePath, Path.Combine(hist, Path.GetFileName(update.FilePath)), overwrite: true);
-        if (update.UpdateFileName is { } newName)
-        {
-            File.WriteAllText(Path.Combine(hist, newName + ".previous"), Path.GetFileName(update.FilePath));
-        }
-
-        await UpgradeAdvisor.ApplyUpdateAsync(http, update, ct).ConfigureAwait(false);
+        File.WriteAllText(Path.Combine(hist, newName + ".previous"), Path.GetFileName(update.FilePath));
+        File.Delete(update.FilePath);
+        File.Move(temp, Path.Combine(dir, newName), overwrite: true);
     }
 
     /// <summary>The jar this file replaced, if it came from an update.</summary>
@@ -278,8 +328,17 @@ public static class MclogsShare
             throw new HttpRequestException("mclo.gs did not accept the log: " + json?["error"]);
         }
 
-        var insights = await http.GetFromJsonAsync<JsonObject>(new Uri("https://api.mclo.gs/1/insights/" + Uri.EscapeDataString(id)), ct).ConfigureAwait(false);
-        return new Result(json["url"]?.GetValue<string>() ?? "https://mclo.gs/" + id, ParseInsights(insights));
+        var url = json["url"]?.GetValue<string>() ?? "https://mclo.gs/" + id;
+        try
+        {
+            var insights = await http.GetFromJsonAsync<JsonObject>(new Uri("https://api.mclo.gs/1/insights/" + Uri.EscapeDataString(id)), ct).ConfigureAwait(false);
+            return new Result(url, ParseInsights(insights));
+        }
+        catch (Exception ex) when (!ct.IsCancellationRequested && ex is HttpRequestException or JsonException or TaskCanceledException or NotSupportedException)
+        {
+            // The log is shared even when the analysis is unavailable.
+            return new Result(url, []);
+        }
     }
 
     public static IReadOnlyList<(string Problem, IReadOnlyList<string> Fixes)> ParseInsights(JsonObject? insights) =>
