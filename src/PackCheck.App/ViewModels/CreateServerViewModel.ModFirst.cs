@@ -20,9 +20,17 @@ public sealed partial class CreateServerViewModel
 
     private static HttpClient Http => (HttpClient)App.Services.GetService(typeof(HttpClient))!;
 
+    /// <summary>A changed list must be solved again before it is installed.</summary>
+    partial void OnModListChanged(string value)
+    {
+        _pendingMods = [];
+        ModSolveStatus = null;
+    }
+
     [RelayCommand]
     private async Task SolveModsAsync()
     {
+        _pendingMods = [];
         var slugs = ModList.Split([',', '\n', '\r', ' ', ';'], StringSplitOptions.RemoveEmptyEntries)
             .Select(ContentLinks.Parse).Where(l => l?.Source == LinkSource.Modrinth).Select(l => l!.Id).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         if (slugs.Count == 0)
@@ -56,11 +64,13 @@ public sealed partial class CreateServerViewModel
                 await Task.Delay(100).ConfigureAwait(true);
             }
 
-            if (Versions.Contains(solution.MinecraftVersion))
+            if (!Versions.Contains(solution.MinecraftVersion))
             {
-                Version = solution.MinecraftVersion;
+                ModSolveStatus = Loc.F("ModFirst_VersionMissing", Platform, solution.MinecraftVersion);
+                return;
             }
 
+            Version = solution.MinecraftVersion;
             _pendingMods = slugs;
             ModSolveStatus = Loc.F("ModFirst_Solved", Platform, solution.MinecraftVersion, slugs.Count);
         }
@@ -71,11 +81,12 @@ public sealed partial class CreateServerViewModel
     }
 
     /// <summary>After the server exists, the chosen mods are installed for its loader and version.</summary>
-    private async Task InstallPendingModsAsync(ServerDefinition def)
+    private async Task<IReadOnlyList<string>> InstallPendingModsAsync(ServerDefinition def, CancellationToken ct)
     {
+        var failed = new List<string>();
         if (_pendingMods.Count == 0 || def.Platform != Platform)
         {
-            return;
+            return failed;
         }
 
         var done = 0;
@@ -84,13 +95,16 @@ public sealed partial class CreateServerViewModel
             Status = Loc.F("ModFirst_Installing", slug, ++done, _pendingMods.Count);
             try
             {
-                var d = await ContentLinks.ResolveAsync(Http, new ContentLink(LinkSource.Modrinth, slug), def, CancellationToken.None).ConfigureAwait(true);
-                await ContentLinks.InstallAsync(Http, d, def, CancellationToken.None).ConfigureAwait(true);
+                var d = await ContentLinks.ResolveAsync(Http, new ContentLink(LinkSource.Modrinth, slug), def, ct).ConfigureAwait(true);
+                await ContentLinks.InstallAsync(Http, d, def, ct).ConfigureAwait(true);
             }
-            catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or System.IO.InvalidDataException or System.IO.IOException or JsonException or TaskCanceledException)
+            catch (Exception ex) when (!ct.IsCancellationRequested && ex is HttpRequestException or InvalidOperationException or System.IO.InvalidDataException or System.IO.IOException or JsonException or TaskCanceledException)
             {
                 Serilog.Log.Warning(ex, "Mod {Slug} could not be installed", slug);
+                failed.Add(slug);
             }
         }
+
+        return failed;
     }
 }

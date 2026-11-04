@@ -1364,4 +1364,6 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="ModFirst_NoCommon" xml:space="preserve"><value>Diese Mods haben keine gemeinsame Version und keinen gemeinsamen Loader. Entferne einen und versuche es erneut.</value></data>
   <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} unterstützt alle {2} Mods; sie werden beim Erstellen installiert.</value></data>
   <data name="ModFirst_Installing" xml:space="preserve"><value>{0} wird installiert ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>Für {0} gibt es noch keinen Server für Minecraft {1}; die Mods lassen sich so nicht einrichten. Wähle die Version selbst oder entferne einen Mod.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Der Server wurde erstellt, aber diese Mods ließen sich nicht installieren: {0}</value></data>
 </root>

@@ -95,4 +95,19 @@ public class AnalyticsTests
 
         Assert.Null(ModSolver.Solve([a, b]));
     }
+
+    [Fact]
+    public void ForgeChatLines_AreRead() =>
+        Assert.Equal(ActivityKind.Chat, ActivityLog.Classify("[10:00:01] [Server thread/INFO] [minecraft/MinecraftServer]: <Steve> hi", Day)!.Kind);
+
+    [Fact]
+    public void LatestLog_AcrossMidnight_GetsTheRightDays()
+    {
+        var day = new DateTime(2026, 11, 5);
+        ActivityEvent E(int h) => new(day.AddHours(h), ActivityKind.Chat, "a", "x");
+
+        var fixedEvents = ActivityLog.FixMidnight([E(23), E(1), E(2)]);
+
+        Assert.Equal([day.AddDays(-1).AddHours(23), day.AddHours(1), day.AddHours(2)], fixedEvents.Select(e => e.Time));
+    }
 }

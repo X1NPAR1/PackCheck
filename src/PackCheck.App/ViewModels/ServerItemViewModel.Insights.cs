@@ -48,7 +48,18 @@ public sealed partial class ServerItemViewModel
     private async Task RefreshInsightsAsync()
     {
         var dir = Definition.Directory;
-        var (activity, scores, storage) = await Task.Run(() => (ActivityLog.Read(dir, 14), Scoreboard.Read(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
+        (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<PlayerStats> scores, StorageReport? storage) data;
+        try
+        {
+            data = await Task.Run(() => (ActivityLog.Read(dir, 14), Scoreboard.Read(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or System.Text.Json.JsonException)
+        {
+            MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            return;
+        }
+
+        var (activity, scores, storage) = data;
         _activity = activity;
         ApplyActivityFilter();
         ScoreRows.Clear();

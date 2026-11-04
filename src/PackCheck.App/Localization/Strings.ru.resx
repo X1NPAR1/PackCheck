@@ -1364,4 +1364,6 @@ F1 · этот список
   <data name="ModFirst_NoCommon" xml:space="preserve"><value>У этих модов нет общей версии и загрузчика. Уберите один и попробуйте снова.</value></data>
   <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} поддерживает все моды ({2}); они установятся при создании сервера.</value></data>
   <data name="ModFirst_Installing" xml:space="preserve"><value>Установка {0} ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>Для {0} ещё нет сервера Minecraft {1}, поэтому моды не установить. Выберите версию вручную или уберите мод.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Сервер создан, но эти моды установить не удалось: {0}</value></data>
 </root>

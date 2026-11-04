@@ -21,7 +21,7 @@ public sealed record ActivityEvent(DateTime Time, ActivityKind Kind, string? Pla
 /// <summary>Reads logs/latest.log and the gzipped older logs into a searchable timeline (chat, joins, leaves, deaths, advancements).</summary>
 public static partial class ActivityLog
 {
-    [GeneratedRegex(@"^\[(\d{2}:\d{2}:\d{2})\] \[[^\]]+/INFO\]: (?:\[[^\]]+\]: )?(.*)$")]
+    [GeneratedRegex(@"^\[(\d{2}:\d{2}:\d{2})\] \[[^\]]+/INFO\](?: \[[^\]]+\])?: (?:\[[^\]]+\]: )?(.*)$")]
     private static partial Regex LineRx();
 
     [GeneratedRegex(@"^(?:\[Not Secure\] )?<([A-Za-z0-9_]{1,16})> (.*)$")]
@@ -123,10 +123,37 @@ public static partial class ActivityLog
         if (File.Exists(latest))
         {
             using var r = new StreamReader(new FileStream(latest, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete));
-            ReadLines(r, File.GetLastWriteTime(latest).Date, events);
+            var current = new List<ActivityEvent>();
+            ReadLines(r, File.GetLastWriteTime(latest).Date, current);
+            events.AddRange(FixMidnight(current));
         }
 
         return events.OrderByDescending(e => e.Time).ToList();
+    }
+
+    /// <summary>
+    /// latest.log has times only; every event got the file's last-write date. Walking back from the newest event, a time
+    /// later than the one after it means the log crossed midnight, so earlier events move one day back. Gaps longer than a
+    /// day without events cannot be seen.
+    /// </summary>
+    public static IReadOnlyList<ActivityEvent> FixMidnight(IReadOnlyList<ActivityEvent> chronological)
+    {
+        var fixedEvents = new ActivityEvent[chronological.Count];
+        var offset = 0;
+        TimeSpan? later = null;
+        for (var i = chronological.Count - 1; i >= 0; i--)
+        {
+            var e = chronological[i];
+            if (later is { } l && e.Time.TimeOfDay > l)
+            {
+                offset--;
+            }
+
+            later = e.Time.TimeOfDay;
+            fixedEvents[i] = e with { Time = e.Time.AddDays(offset) };
+        }
+
+        return fixedEvents;
     }
 
     private static void ReadLines(StreamReader r, DateTime day, List<ActivityEvent> into)

@@ -1364,4 +1364,6 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="ModFirst_NoCommon" xml:space="preserve"><value>Ces mods n'ont ni version ni loader en commun. Retirez-en un et réessayez.</value></data>
   <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} prend en charge les {2} mods ; ils seront installés à la création.</value></data>
   <data name="ModFirst_Installing" xml:space="preserve"><value>Installation de {0} ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>{0} n'a pas encore de serveur pour Minecraft {1} : impossible d'installer les mods. Choisissez la version vous-même ou retirez un mod.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Le serveur a été créé, mais ces mods n'ont pas pu être installés : {0}</value></data>
 </root>

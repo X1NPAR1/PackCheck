@@ -1364,4 +1364,6 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="ModFirst_NoCommon" xml:space="preserve"><value>Bu modların ortak bir Minecraft sürümü ve loader'ı yok. Birini çıkarıp tekrar dene.</value></data>
   <data name="ModFirst_Solved" xml:space="preserve"><value>{0} {1} {2} modun hepsini destekliyor; sunucu oluşturulunca kurulacaklar.</value></data>
   <data name="ModFirst_Installing" xml:space="preserve"><value>{0} kuruluyor ({1}/{2})…</value></data>
+  <data name="ModFirst_VersionMissing" xml:space="preserve"><value>{0} için Minecraft {1} sunucu dosyası henüz yok; modlar kurulamaz. Sürümü kendin seç ya da bir modu çıkar.</value></data>
+  <data name="ModFirst_Partial" xml:space="preserve"><value>Sunucu oluşturuldu ama şu modlar kurulamadı: {0}</value></data>
 </root>
