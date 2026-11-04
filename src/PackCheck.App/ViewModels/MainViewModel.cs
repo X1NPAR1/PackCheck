@@ -23,6 +23,7 @@ public sealed partial class MainViewModel : ObservableObject
         Assistant = assistant;
         Settings = settings;
         About = about;
+        Dashboard = new DashboardViewModel(servers);
         _updates = updates;
         _currentPage = servers;
         Shell = this;
@@ -79,6 +80,8 @@ public sealed partial class MainViewModel : ObservableObject
     public SettingsViewModel Settings { get; }
     public AboutViewModel About { get; }
 
+    public DashboardViewModel Dashboard { get; }
+
     [ObservableProperty]
     private object _currentPage;
 
@@ -126,8 +129,15 @@ public sealed partial class MainViewModel : ObservableObject
         6 => ActivateOnline(),
         7 => ActivateProxy(),
         8 => ActivateAssistant(),
+        9 => ActivateDashboard(),
         _ => Servers,
     };
+
+    private DashboardViewModel ActivateDashboard()
+    {
+        Dashboard.Activate();
+        return Dashboard;
+    }
 
     private ModsViewModel RefreshMods()
     {
@@ -171,6 +181,7 @@ public sealed partial class MainViewModel : ObservableObject
             OnlineViewModel => 6,
             ProxyViewModel => 7,
             AssistantViewModel => 8,
+            DashboardViewModel => 9,
             _ => 0,
         };
     }

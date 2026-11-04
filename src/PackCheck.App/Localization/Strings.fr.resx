@@ -1216,4 +1216,16 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse pour vos amis (remplie quand l'agent la signale ; sinon collez-la depuis playit.gg) :</value></data>
   <data name="Tunnel_ShowLog" xml:space="preserve"><value>Afficher / masquer le journal de l'agent</value></data>
   <data name="Tunnel_GoToCard" xml:space="preserve"><value>Utiliser le tunnel playit ↓</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Tableau de bord</value></data>
+  <data name="Nav_ServersSection" xml:space="preserve"><value>SERVEURS</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>Tableau de bord</value></data>
+  <data name="Dash_Subtitle" xml:space="preserve"><value>Tous les serveurs d'un coup d'œil : ce qui tourne, qui joue, la mémoire utilisée et les plantages récents.</value></data>
+  <data name="Dash_ServersOnline" xml:space="preserve"><value>Serveurs démarrés</value></data>
+  <data name="Dash_Players" xml:space="preserve"><value>Joueurs en ligne</value></data>
+  <data name="Dash_Memory" xml:space="preserve"><value>Mémoire des serveurs démarrés</value></data>
+  <data name="Dash_Crashes" xml:space="preserve"><value>Plantages sur 24 h</value></data>
+  <data name="Dash_Status" xml:space="preserve"><value>{0} démarrés · {1} arrêtés · {2} plantés</value></data>
+  <data name="Dash_LiveUsage" xml:space="preserve"><value>Utilisation en direct par serveur</value></data>
+  <data name="Dash_Open" xml:space="preserve"><value>Ouvrir</value></data>
+  <data name="Dash_PlayersShort" xml:space="preserve"><value>Joueurs</value></data>
 </root>

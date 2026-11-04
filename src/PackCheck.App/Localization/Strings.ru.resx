@@ -1216,4 +1216,16 @@ F1 · этот список
   <data name="Tunnel_Step3" xml:space="preserve"><value>Адрес для друзей (заполнится, когда агент его сообщит; иначе вставьте с playit.gg):</value></data>
   <data name="Tunnel_ShowLog" xml:space="preserve"><value>Показать / скрыть журнал агента</value></data>
   <data name="Tunnel_GoToCard" xml:space="preserve"><value>Использовать туннель playit ↓</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Сводка</value></data>
+  <data name="Nav_ServersSection" xml:space="preserve"><value>СЕРВЕРЫ</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>Сводка</value></data>
+  <data name="Dash_Subtitle" xml:space="preserve"><value>Все серверы сразу: что запущено, кто играет, сколько памяти занято и недавние сбои.</value></data>
+  <data name="Dash_ServersOnline" xml:space="preserve"><value>Запущено серверов</value></data>
+  <data name="Dash_Players" xml:space="preserve"><value>Игроков онлайн</value></data>
+  <data name="Dash_Memory" xml:space="preserve"><value>Память запущенных серверов</value></data>
+  <data name="Dash_Crashes" xml:space="preserve"><value>Сбоев за 24 ч</value></data>
+  <data name="Dash_Status" xml:space="preserve"><value>{0} запущено · {1} остановлено · {2} упало</value></data>
+  <data name="Dash_LiveUsage" xml:space="preserve"><value>Нагрузка по серверам</value></data>
+  <data name="Dash_Open" xml:space="preserve"><value>Открыть</value></data>
+  <data name="Dash_PlayersShort" xml:space="preserve"><value>Игроки</value></data>
 </root>

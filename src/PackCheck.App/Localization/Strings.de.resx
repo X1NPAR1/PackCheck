@@ -1216,4 +1216,16 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Tunnel_Step3" xml:space="preserve"><value>Adresse für deine Freunde (wird ausgefüllt, wenn der Agent sie meldet; sonst von playit.gg einfügen):</value></data>
   <data name="Tunnel_ShowLog" xml:space="preserve"><value>Agent-Protokoll ein-/ausblenden</value></data>
   <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit-Tunnel nutzen ↓</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Übersicht</value></data>
+  <data name="Nav_ServersSection" xml:space="preserve"><value>SERVER</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>Übersicht</value></data>
+  <data name="Dash_Subtitle" xml:space="preserve"><value>Alle Server auf einen Blick: was läuft, wer spielt, belegter Speicher und letzte Abstürze.</value></data>
+  <data name="Dash_ServersOnline" xml:space="preserve"><value>Laufende Server</value></data>
+  <data name="Dash_Players" xml:space="preserve"><value>Spieler online</value></data>
+  <data name="Dash_Memory" xml:space="preserve"><value>Speicher der laufenden Server</value></data>
+  <data name="Dash_Crashes" xml:space="preserve"><value>Abstürze in 24 Std.</value></data>
+  <data name="Dash_Status" xml:space="preserve"><value>{0} laufen · {1} gestoppt · {2} abgestürzt</value></data>
+  <data name="Dash_LiveUsage" xml:space="preserve"><value>Live-Auslastung je Server</value></data>
+  <data name="Dash_Open" xml:space="preserve"><value>Öffnen</value></data>
+  <data name="Dash_PlayersShort" xml:space="preserve"><value>Spieler</value></data>
 </root>

@@ -11,7 +11,7 @@ public sealed record NavState(int NavIndex, ServerItemViewModel? Server, int Tab
 public sealed partial class MainViewModel
 {
     /// <summary>Side menu pages in the order they are shown (Ctrl+1…9).</summary>
-    public static IReadOnlyList<int> MenuOrder { get; } = [0, 1, 2, 5, 7, 6, 8, 3, 4];
+    public static IReadOnlyList<int> MenuOrder { get; } = [9, 0, 1, 2, 5, 7, 6, 8, 3, 4];
 
     /// <summary>Server tabs in the order of the tab bar (Ctrl+Tab); 3 is the plugins/mods tab and 10 the upgrade wizard (not in the bar).</summary>
     private static readonly int[] TabOrder = [0, 1, 2, 5, 3, 4, 6, 9, 8, 7];
@@ -32,6 +32,11 @@ public sealed partial class MainViewModel
         {
             if (e.PropertyName == nameof(NavIndex))
             {
+                if (NavIndex != 9)
+                {
+                    Dashboard.Deactivate();
+                }
+
                 Record();
             }
         };
@@ -195,6 +200,19 @@ public sealed partial class MainViewModel
 
             NavIndex = index;
         }
+    }
+
+    /// <summary>Sidebar and dashboard: open a server's page directly.</summary>
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void OpenServer(ServerItemViewModel? server)
+    {
+        if (server is null)
+        {
+            return;
+        }
+
+        Servers.Selected = server;
+        NavIndex = 0;
     }
 
     public void ShowShortcuts() => _ = ConfirmAsync(Loc.T("Shortcuts_Title"), Loc.T("Shortcuts_Body"), "OK");

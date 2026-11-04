@@ -13,6 +13,7 @@ namespace PackCheck.UiTests;
 public sealed class PageTests(AppFixture app)
 {
     [Theory]
+    [InlineData("NavDashboard", "DashboardPage")]
     [InlineData("NavServers", "ServersPage")]
     [InlineData("NavValidate", "ValidatePage")]
     [InlineData("NavPlugins", "BrowsePage")]
