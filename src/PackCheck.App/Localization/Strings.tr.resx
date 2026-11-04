@@ -1216,4 +1216,16 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Tunnel_Step3" xml:space="preserve"><value>Arkadaşlarının adresi (program bildirince dolar; bildirmezse playit.gg'den yapıştır):</value></data>
   <data name="Tunnel_ShowLog" xml:space="preserve"><value>Program günlüğünü göster / gizle</value></data>
   <data name="Tunnel_GoToCard" xml:space="preserve"><value>playit tünelini kullan ↓</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Özet</value></data>
+  <data name="Nav_ServersSection" xml:space="preserve"><value>SUNUCULAR</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>Özet</value></data>
+  <data name="Dash_Subtitle" xml:space="preserve"><value>Tüm sunucular tek bakışta: neyin çalıştığı, kimin oynadığı, kullanılan bellek ve son çökmeler.</value></data>
+  <data name="Dash_ServersOnline" xml:space="preserve"><value>Çalışan sunucular</value></data>
+  <data name="Dash_Players" xml:space="preserve"><value>Çevrimiçi oyuncular</value></data>
+  <data name="Dash_Memory" xml:space="preserve"><value>Çalışan sunuculara ayrılan bellek</value></data>
+  <data name="Dash_Crashes" xml:space="preserve"><value>Son 24 saatteki çökmeler</value></data>
+  <data name="Dash_Status" xml:space="preserve"><value>{0} çalışıyor · {1} durdu · {2} çöktü</value></data>
+  <data name="Dash_LiveUsage" xml:space="preserve"><value>Sunucu başına canlı kullanım</value></data>
+  <data name="Dash_Open" xml:space="preserve"><value>Aç</value></data>
+  <data name="Dash_PlayersShort" xml:space="preserve"><value>Oyuncu</value></data>
 </root>

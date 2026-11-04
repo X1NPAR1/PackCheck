@@ -1216,4 +1216,16 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Tunnel_Step3" xml:space="preserve"><value>Address for your friends (filled in when the agent reports it; otherwise paste it from playit.gg):</value></data>
   <data name="Tunnel_ShowLog" xml:space="preserve"><value>Show / hide agent log</value></data>
   <data name="Tunnel_GoToCard" xml:space="preserve"><value>Use the playit tunnel ↓</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav_ServersSection" xml:space="preserve"><value>SERVERS</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Dash_Subtitle" xml:space="preserve"><value>Every server at a glance: what runs, who plays, memory in use and recent crashes.</value></data>
+  <data name="Dash_ServersOnline" xml:space="preserve"><value>Servers running</value></data>
+  <data name="Dash_Players" xml:space="preserve"><value>Players online</value></data>
+  <data name="Dash_Memory" xml:space="preserve"><value>Memory given to running servers</value></data>
+  <data name="Dash_Crashes" xml:space="preserve"><value>Crashes in the last 24 h</value></data>
+  <data name="Dash_Status" xml:space="preserve"><value>{0} running · {1} stopped · {2} crashed</value></data>
+  <data name="Dash_LiveUsage" xml:space="preserve"><value>Live usage per server</value></data>
+  <data name="Dash_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Dash_PlayersShort" xml:space="preserve"><value>Players</value></data>
 </root>

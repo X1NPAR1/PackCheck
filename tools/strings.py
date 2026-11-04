@@ -1216,6 +1216,18 @@ S = {
     "Tunnel_Step3": ["Address for your friends (filled in when the agent reports it; otherwise paste it from playit.gg):", "Arkadaşlarının adresi (program bildirince dolar; bildirmezse playit.gg'den yapıştır):", "Adresse für deine Freunde (wird ausgefüllt, wenn der Agent sie meldet; sonst von playit.gg einfügen):", "Adresse pour vos amis (remplie quand l'agent la signale ; sinon collez-la depuis playit.gg) :", "Адрес для друзей (заполнится, когда агент его сообщит; иначе вставьте с playit.gg):"],
     "Tunnel_ShowLog": ["Show / hide agent log", "Program günlüğünü göster / gizle", "Agent-Protokoll ein-/ausblenden", "Afficher / masquer le journal de l'agent", "Показать / скрыть журнал агента"],
     "Tunnel_GoToCard": ["Use the playit tunnel ↓", "playit tünelini kullan ↓", "playit-Tunnel nutzen ↓", "Utiliser le tunnel playit ↓", "Использовать туннель playit ↓"],
+    "Nav_Dashboard": ["Dashboard", "Özet", "Übersicht", "Tableau de bord", "Сводка"],
+    "Nav_ServersSection": ["SERVERS", "SUNUCULAR", "SERVER", "SERVEURS", "СЕРВЕРЫ"],
+    "Dash_Title": ["Dashboard", "Özet", "Übersicht", "Tableau de bord", "Сводка"],
+    "Dash_Subtitle": ["Every server at a glance: what runs, who plays, memory in use and recent crashes.", "Tüm sunucular tek bakışta: neyin çalıştığı, kimin oynadığı, kullanılan bellek ve son çökmeler.", "Alle Server auf einen Blick: was läuft, wer spielt, belegter Speicher und letzte Abstürze.", "Tous les serveurs d'un coup d'œil : ce qui tourne, qui joue, la mémoire utilisée et les plantages récents.", "Все серверы сразу: что запущено, кто играет, сколько памяти занято и недавние сбои."],
+    "Dash_ServersOnline": ["Servers running", "Çalışan sunucular", "Laufende Server", "Serveurs démarrés", "Запущено серверов"],
+    "Dash_Players": ["Players online", "Çevrimiçi oyuncular", "Spieler online", "Joueurs en ligne", "Игроков онлайн"],
+    "Dash_Memory": ["Memory given to running servers", "Çalışan sunuculara ayrılan bellek", "Speicher der laufenden Server", "Mémoire des serveurs démarrés", "Память запущенных серверов"],
+    "Dash_Crashes": ["Crashes in the last 24 h", "Son 24 saatteki çökmeler", "Abstürze in 24 Std.", "Plantages sur 24 h", "Сбоев за 24 ч"],
+    "Dash_Status": ["{0} running · {1} stopped · {2} crashed", "{0} çalışıyor · {1} durdu · {2} çöktü", "{0} laufen · {1} gestoppt · {2} abgestürzt", "{0} démarrés · {1} arrêtés · {2} plantés", "{0} запущено · {1} остановлено · {2} упало"],
+    "Dash_LiveUsage": ["Live usage per server", "Sunucu başına canlı kullanım", "Live-Auslastung je Server", "Utilisation en direct par serveur", "Нагрузка по серверам"],
+    "Dash_Open": ["Open", "Aç", "Öffnen", "Ouvrir", "Открыть"],
+    "Dash_PlayersShort": ["Players", "Oyuncu", "Spieler", "Joueurs", "Игроки"],
 }
 
 HEADER = """<?xml version="1.0" encoding="utf-8"?>
