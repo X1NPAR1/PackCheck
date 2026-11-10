@@ -1303,6 +1303,7 @@ F1 · этот список
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap для Minecraft {0} пока нет.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap установлен. Запустите сервер и откройте карту.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>Открыто {0}. Первая отрисовка может занять несколько минут.</value></data>
+  <data name="Map_RenderProgress" xml:space="preserve"><value>Отрисовка карты: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Запустите сервер, чтобы BlueMap показал карту.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Вставьте ссылку Modrinth, Hangar, SpigotMC или GitHub, слаг Modrinth или URL .jar</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Добавить</value></data>

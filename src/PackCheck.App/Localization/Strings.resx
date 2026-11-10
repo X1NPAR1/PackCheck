@@ -1303,6 +1303,7 @@ Assistant: Enter send · Shift+Enter new line · Ctrl+V paste screenshot · Ctrl
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap has no build for Minecraft {0} yet.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap installed. Start the server, then open the map.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>Opened {0}. The first render can take a few minutes.</value></data>
+  <data name="Map_RenderProgress" xml:space="preserve"><value>Harita render ediliyor: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Start the server so BlueMap can serve the map.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Paste a Modrinth, Hangar, SpigotMC or GitHub link, a Modrinth slug or a .jar URL</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Add</value></data>

@@ -1303,6 +1303,7 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap n'existe pas encore pour Minecraft {0}.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap installé. Démarrez le serveur puis ouvrez la carte.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} ouvert. Le premier rendu peut prendre quelques minutes.</value></data>
+  <data name="Map_RenderProgress" xml:space="preserve"><value>Rendu de la carte : %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Démarrez le serveur pour que BlueMap affiche la carte.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Collez un lien Modrinth, Hangar, SpigotMC ou GitHub, un slug Modrinth ou une URL .jar</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Ajouter</value></data>

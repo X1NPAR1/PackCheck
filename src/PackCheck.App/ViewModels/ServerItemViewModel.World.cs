@@ -151,6 +151,9 @@ public sealed partial class ServerItemViewModel
     [ObservableProperty]
     private string? _mapStatus;
 
+    [ObservableProperty]
+    private string? _mapUrl;
+
     public IEnumerable<string> InventoryPlayers => PlayerRows.Select(p => p.Name).Concat(Players).Distinct(StringComparer.OrdinalIgnoreCase).Order(StringComparer.OrdinalIgnoreCase);
 
     public bool HasBlueMap => Directory.Exists(BlueMapSetup.ConfigDir(Definition)) || FindBlueMapJar() is not null;
@@ -480,8 +483,35 @@ public sealed partial class ServerItemViewModel
             _ = _process.SendCommandAsync("bluemap reload");
         }
 
-        var url = $"http://localhost:{BlueMapSetup.Port(Definition)}";
-        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
-        MapStatus = IsRunning ? Loc.F("Map_Opened", url) : Loc.T("Map_StartFirst");
+        MapUrl = $"http://localhost:{BlueMapSetup.Port(Definition)}";
+        MapStatus = IsRunning ? Loc.F("Map_Opened", MapUrl) : Loc.T("Map_StartFirst");
+
+        // Read BlueMap render progress from its local web API (best effort, no UI block).
+        _ = ReadRenderProgressAsync();
+    }
+
+    /// <summary>Polls BlueMap's render progress endpoint and updates <see cref="MapStatus" />.</summary>
+    private async Task ReadRenderProgressAsync()
+    {
+        try
+        {
+            var port = BlueMapSetup.Port(Definition);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var json = await AppHttp.GetStringAsync(new Uri($"http://localhost:{port}/api/progress"), cts.Token).ConfigureAwait(false);
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("renderProgress", out var progress) && progress.TryGetProperty("percent", out var pct))
+            {
+                MapStatus = Loc.F("Map_RenderProgress", pct.GetDouble());
+            }
+            else if (root.TryGetProperty("status", out var status))
+            {
+                MapStatus = status.GetString() ?? MapStatus;
+            }
+        }
+        catch
+        {
+            // Progress endpoint may not be ready yet; keep the last known status.
+        }
     }
 }
