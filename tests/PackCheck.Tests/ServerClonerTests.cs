@@ -112,6 +112,52 @@ public sealed class ServerClonerTests : IDisposable
     }
 
     [Fact]
+    public async Task Clone_velocity_proxy_rewrites_port_in_velocity_toml()
+    {
+        var dir = Path.Combine(_root, "proxy");
+        Write(dir, "server.properties", "server-port=25565\n");
+        Write(dir, "velocity.toml", "# Written by PackCheck.\nbind = \"0.0.0.0:25565\"\nmotd = \"proxy\"\n\n[query]\nenabled = false\nport = 25565\n");
+        var def = _def with { Platform = ServerPlatform.Velocity, Port = 25565, Directory = dir, JarFile = "velocity.jar" };
+        var copy = await ServerCloner.CloneAsync(def, "Copy", includeWorlds: false, port: 25599, CancellationToken.None);
+        var text = File.ReadAllText(Path.Combine(copy.Directory, "velocity.toml"));
+        Assert.Contains("bind = \"0.0.0.0:25599\"", text, StringComparison.Ordinal);
+        Assert.Contains("port = 25599", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("25565", text, StringComparison.Ordinal);
+        Assert.Contains("server-port=25599", File.ReadAllText(Path.Combine(copy.Directory, "server.properties")), StringComparison.Ordinal);
+        // Source untouched
+        Assert.Contains("bind = \"0.0.0.0:25565\"", File.ReadAllText(Path.Combine(dir, "velocity.toml")), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Clone_bungee_proxy_rewrites_port_in_config_yml()
+    {
+        var dir = Path.Combine(_root, "proxy");
+        Write(dir, "server.properties", "server-port=25565\n");
+        Write(dir, "config.yml", "# Written by PackCheck.\nlisteners:\n- query_port: 25565\n  host: 0.0.0.0:25565\n  motd: 'proxy'\n");
+        var def = _def with { Platform = ServerPlatform.BungeeCord, Port = 25565, Directory = dir, JarFile = "bungee.jar" };
+        var copy = await ServerCloner.CloneAsync(def, "Copy", includeWorlds: false, port: 25599, CancellationToken.None);
+        var text = File.ReadAllText(Path.Combine(copy.Directory, "config.yml"));
+        Assert.Contains("query_port: 25599", text, StringComparison.Ordinal);
+        Assert.Contains("host: 0.0.0.0:25599", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("25565", text, StringComparison.Ordinal);
+        Assert.Contains("server-port=25599", File.ReadAllText(Path.Combine(copy.Directory, "server.properties")), StringComparison.Ordinal);
+        // Source untouched
+        Assert.Contains("query_port: 25565", File.ReadAllText(Path.Combine(dir, "config.yml")), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Clone_non_proxy_leaves_proxy_files_alone()
+    {
+        var dir = Path.Combine(_root, "srv");
+        Write(dir, "server.properties", "server-port=25565\n");
+        Write(dir, "velocity.toml", "bind = \"0.0.0.0:25565\"\n");
+        var copy = await ServerCloner.CloneAsync(_def, "Copy", includeWorlds: false, port: 25599, CancellationToken.None);
+        // velocity.toml copied verbatim (not a proxy), port not rewritten there
+        Assert.Contains("bind = \"0.0.0.0:25565\"", File.ReadAllText(Path.Combine(copy.Directory, "velocity.toml")), StringComparison.Ordinal);
+        Assert.Contains("server-port=25599", File.ReadAllText(Path.Combine(copy.Directory, "server.properties")), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void SetPort_updates_query_port_when_present()
     {
         var dir = Path.Combine(_root, "q");

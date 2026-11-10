@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -30,6 +32,98 @@ public sealed partial class ServerItemViewModel
         new("naturalRegeneration", "Rule_NaturalRegeneration"), new("doInsomnia", "Rule_Phantoms"), new("fallDamage", "Rule_FallDamage"),
         new("doImmediateRespawn", "Rule_ImmediateRespawn"), new("showDeathMessages", "Rule_DeathMessages"), new("announceAdvancements", "Rule_Advancements"),
     ];
+
+    private readonly Dictionary<string, bool?> _gameRuleStates = new();
+    private readonly Dictionary<string, TaskCompletionSource<bool?>> _pendingGameRuleReads = new();
+    private readonly object _gameRuleGate = new();
+
+    /// <summary>Last known on/off state of a game rule, or null when it has not been read yet.</summary>
+    public bool? this[string rule] => _gameRuleStates.TryGetValue(rule, out var value) ? value : null;
+
+    /// <summary>Parses a console reply to `gamerule <rule>`, e.g. `keepInventory is enabled` or `keepInventory = true`.</summary>
+    public static bool TryParseGameRuleReply(string line, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string? rule, out bool isOn)
+    {
+        rule = null;
+        isOn = false;
+
+        var m = Regex.Match(line, @"^(\w[\w-]*)\s+is\s+(enabled|disabled)\b", RegexOptions.IgnoreCase);
+        if (m.Success)
+        {
+            rule = m.Groups[1].Value;
+            isOn = m.Groups[2].Value.Equals("enabled", StringComparison.OrdinalIgnoreCase);
+            return true;
+        }
+
+        m = Regex.Match(line, @"^(\w[\w-]*)\s*=\s*(true|false)\b", RegexOptions.IgnoreCase);
+        if (m.Success)
+        {
+            rule = m.Groups[1].Value;
+            isOn = m.Groups[2].Value.Equals("true", StringComparison.OrdinalIgnoreCase);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnGameRuleOutputLine(object? sender, string line)
+    {
+        if (!TryParseGameRuleReply(line, out var rule, out var isOn) || rule is null)
+        {
+            return;
+        }
+
+        TaskCompletionSource<bool?>? tcs;
+        lock (_gameRuleGate)
+        {
+            if (!_pendingGameRuleReads.TryGetValue(rule, out tcs))
+            {
+                return;
+            }
+            _pendingGameRuleReads.Remove(rule);
+        }
+
+        tcs.TrySetResult(isOn);
+    }
+
+    /// <summary>Reads the current value of one game rule from the running server console.</summary>
+    private async Task<bool?> ReadGameRuleAsync(string rule)
+    {
+        var tcs = new TaskCompletionSource<bool?>();
+        lock (_gameRuleGate)
+        {
+            _pendingGameRuleReads[rule] = tcs;
+        }
+
+        try
+        {
+            await _process.SendCommandAsync($"gamerule {rule}").ConfigureAwait(false);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var result = await tcs.Task.WaitAsync(cts.Token).ConfigureAwait(false);
+            _gameRuleStates[rule] = result;
+            return result;
+        }
+        catch
+        {
+            lock (_gameRuleGate) { _pendingGameRuleReads.Remove(rule); }
+            return null;
+        }
+    }
+
+    /// <summary>Reads the current value of every tracked game rule while the server is running.</summary>
+    private async Task RefreshGameRulesAsync()
+    {
+        if (!IsRunning)
+        {
+            return;
+        }
+
+        foreach (var rule in GameRules)
+        {
+            await ReadGameRuleAsync(rule.Rule).ConfigureAwait(false);
+        }
+
+        OnPropertyChanged("Item"); // refresh indexer-bound bindings
+    }
 
     private WorldLibrary Library => new(Path.Combine(Core.AppPaths.DataRoot, "worlds"));
 
@@ -74,6 +168,7 @@ public sealed partial class ServerItemViewModel
     {
         Tab = WorldTab;
         RefreshWorlds();
+        _ = RefreshGameRulesAsync();
     }
 
     private void RefreshWorlds()
