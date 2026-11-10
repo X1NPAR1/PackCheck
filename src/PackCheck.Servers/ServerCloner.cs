@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using PackCheck.Core;
 using PackCheck.Validation;
 
@@ -121,6 +122,37 @@ public static class ServerCloner
         File.WriteAllText(file, ServerProperties.Update(original, values));
     }
 
+    /// <summary>Updates the listen port in a cloned proxy's velocity.toml / config.yml, so the clone listens on its own port instead of the source's.</summary>
+    public static void SetProxyPort(string dir, ServerPlatform platform, int oldPort, int newPort)
+    {
+        if (platform != ServerPlatform.Velocity && platform != ServerPlatform.BungeeCord)
+        {
+            return;
+        }
+
+        var file = platform == ServerPlatform.Velocity
+            ? Path.Combine(dir, "velocity.toml")
+            : Path.Combine(dir, "config.yml");
+
+        if (!File.Exists(file))
+        {
+            return;
+        }
+
+        var old = oldPort.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var value = newPort.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var text = File.ReadAllText(file);
+
+        // bind = "0.0.0.0:PORT"  (velocity.toml)   host: 0.0.0.0:PORT  (config.yml)
+        text = Regex.Replace(text, $@"(0\.0\.0\.0:){Regex.Escape(old)}(?!\d)", $"${{1}}{value}");
+        // query_port: PORT  (config.yml)
+        text = Regex.Replace(text, $@"(query_port:\s*){Regex.Escape(old)}(?!\d)", $"${{1}}{value}");
+        // port = PORT  under [query]  (velocity.toml)
+        text = Regex.Replace(text, $@"(^\s*port\s*=\s*){Regex.Escape(old)}(?!\d)", $"${{1}}{value}", RegexOptions.Multiline);
+
+        File.WriteAllText(file, text);
+    }
+
     /// <summary>Copies <paramref name="source"/> into a new folder next to it and returns the new definition (not registered).</summary>
     public static async Task<ServerDefinition> CloneAsync(ServerDefinition source, string name, bool includeWorlds, int port, CancellationToken ct)
     {
@@ -142,6 +174,7 @@ public static class ServerCloner
             }
 
             SetPort(target, port);
+            SetProxyPort(target, source.Platform, source.Port, port);
         }
         catch
         {
