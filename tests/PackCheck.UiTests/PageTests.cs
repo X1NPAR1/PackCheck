@@ -160,6 +160,93 @@ public sealed class PageTests(AppFixture app)
         Assert.True(Retry.WhileFalse(() => !app.Find(page).IsOffscreen, TimeSpan.FromSeconds(5)).Result, $"{page} is not visible after {tab}");
     }
 
+    [Fact]
+    public void WorldTab_ShowsGameRulesAndBlueMap()
+    {
+        app.Navigate("NavServers");
+        var first = app.Find("ServerList").FindFirstChild();
+        if (first is null)
+        {
+            return;
+        }
+
+        first.AsListBoxItem().Select();
+        app.Find("TabWorld").AsRadioButton().IsChecked = true;
+
+        Assert.True(Retry.WhileFalse(() => !app.Find("WorldPage").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "World page not visible");
+        Assert.NotNull(app.Find("MapInstall"));
+        Assert.NotNull(app.Find("MapOpen"));
+    }
+
+    [Fact]
+    public void InsightsTab_ShowsPage()
+    {
+        app.Navigate("NavServers");
+        var first = app.Find("ServerList").FindFirstChild();
+        if (first is null)
+        {
+            return;
+        }
+
+        first.AsListBoxItem().Select();
+        app.Find("TabInsights").AsRadioButton().IsChecked = true;
+
+        Assert.True(Retry.WhileFalse(() => !app.Find("InsightsPage").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "Insights page not visible");
+    }
+
+    [Fact]
+    public void WorldTab_AddByLink_SetsContentStatus()
+    {
+        app.Navigate("NavServers");
+        var first = app.Find("ServerList").FindFirstChild();
+        if (first is null)
+        {
+            return;
+        }
+
+        first.AsListBoxItem().Select();
+        app.Find("TabWorld").AsRadioButton().IsChecked = true;
+
+        var box = app.Find("AddLinkBox").AsTextBox();
+        box.Focus();
+        box.Text = "https://modrinth.com/plugin/essentialsx";
+
+        app.Find("AddFromLink").AsButton().Invoke();
+
+        Assert.True(
+            Retry.WhileFalse(() => app.Find("ContentStatus").IsOffscreen == false, TimeSpan.FromSeconds(15)).Result,
+            "content status did not appear after add-by-link");
+    }
+
+    [Fact]
+    public void ServerDetail_CloneDialog_OpensWithFields()
+    {
+        app.Navigate("NavServers");
+        var first = app.Find("ServerList").FindFirstChild();
+        if (first is null)
+        {
+            return;
+        }
+
+        first.AsListBoxItem().Select();
+        app.Find("CloneServer").AsButton().Invoke();
+
+        Assert.True(Retry.WhileFalse(() => !app.Find("CloneDialog").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "clone dialog did not open");
+        Assert.NotNull(app.Find("CloneName"));
+        Assert.NotNull(app.Find("ClonePort"));
+        Assert.NotNull(app.Find("CloneWorlds"));
+        Assert.NotNull(app.Find("CloneConfirm"));
+    }
+
+    [Fact]
+    public void Dashboard_NewServerWizard_Opens()
+    {
+        app.Navigate("NavDashboard");
+        app.Find("DashNewServer").AsButton().Invoke();
+
+        Assert.True(Retry.WhileFalse(() => !app.Find("CreateWizard").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "wizard panel did not open");
+    }
+
     private static int Visible(AutomationElement list) => list.FindAllChildren().Count(c => !c.IsOffscreen);
 
     private static string AllText(AutomationElement root)
