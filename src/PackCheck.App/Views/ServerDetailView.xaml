@@ -5,6 +5,7 @@
              xmlns:c="clr-namespace:PackCheck.App.Controls"
              xmlns:v="clr-namespace:PackCheck.App.Views"
              xmlns:vm="clr-namespace:PackCheck.App.ViewModels"
+             xmlns:cv="clr-namespace:PackCheck.App.Converters"
              AutomationProperties.AutomationId="ServerDetail">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVis" />
@@ -12,6 +13,7 @@
         <l:StatusBrush x:Key="StatusBrush" />
         <l:IndexToBool x:Key="IndexBool" />
         <l:IndexToVisibility x:Key="IndexVis" />
+        <cv:GameRuleStateConverter x:Key="RuleState" />
 
         <!-- Toggle chip used for console filters/options -->
         <Style x:Key="Chip" TargetType="ToggleButton">
@@ -1528,7 +1530,15 @@
                                                     Command="{Binding DataContext.RuleOffCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" />
                                             <Button DockPanel.Dock="Right" Content="{l:Loc World_On}" Padding="10,3"
                                                     Command="{Binding DataContext.RuleOnCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" CommandParameter="{Binding}" />
-                                            <TextBlock Text="{Binding Label}" VerticalAlignment="Center" ToolTip="{Binding Rule}" />
+                                            <TextBlock Text="{Binding Label}" VerticalAlignment="Center" ToolTip="{Binding Rule}" Margin="0,0,8,0" />
+                                            <TextBlock VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextMutedBrush}">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource RuleState}">
+                                                        <Binding Path="Rule" />
+                                                        <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

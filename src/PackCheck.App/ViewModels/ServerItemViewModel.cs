@@ -107,10 +107,15 @@ public sealed partial class ServerItemViewModel : ObservableObject
         _process = new ServerProcess(def);
         _console.SetFilter(Visible, IsMatch);
         _process.Output += (_, line) => QueueOutput(line);
+        _process.Output += OnGameRuleOutputLine;
         _process.StateChanged += (_, s) => Application.Current?.Dispatcher.BeginInvoke(() =>
         {
             FlushConsole(); // lines written before the state change (crash output) come first
             State = s;
+            if (s is ServerState.Running)
+            {
+                _ = RefreshGameRulesAsync();
+            }
         });
         _statsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _statsTimer.Tick += async (_, _) => await SampleAsync().ConfigureAwait(true);
