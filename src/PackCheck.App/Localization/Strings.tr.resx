@@ -1303,6 +1303,7 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap'in Minecraft {0} için henüz sürümü yok.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap kuruldu. Sunucuyu başlat, sonra haritayı aç.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} açıldı. İlk çizim birkaç dakika sürebilir.</value></data>
+  <data name="Map_RenderProgress" xml:space="preserve"><value>Harita render ediliyor: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Haritanın açılması için sunucuyu başlat.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Modrinth, Hangar, SpigotMC veya GitHub linki, Modrinth kısa adı ya da .jar adresi yapıştır</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Ekle</value></data>
