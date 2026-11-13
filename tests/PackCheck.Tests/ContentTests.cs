@@ -107,7 +107,13 @@ public class ContentTests
 
     private static ServerDefinition PaperServer(string mc) => new()
     {
-        Id = "s", Name = "s", Directory = Path.GetTempPath(), Platform = ServerPlatform.Paper, MinecraftVersion = mc, JarFile = "paper.jar", JavaPath = "java",
+        Id = "s",
+        Name = "s",
+        Directory = Path.GetTempPath(),
+        Platform = ServerPlatform.Paper,
+        MinecraftVersion = mc,
+        JarFile = "paper.jar",
+        JavaPath = "java"
     };
 
     /// <summary>Read-only: resolves a well-known plugin's download for a real Paper version against the live Modrinth API.</summary>
