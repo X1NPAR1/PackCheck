@@ -1,5 +1,5 @@
 # CodeRabbit: automatic review of every pull request (free for public repositories).
-language: tr-TR
+language: tr
 reviews:
   profile: chill
   request_changes_workflow: false
