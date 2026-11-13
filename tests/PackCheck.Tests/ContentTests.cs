@@ -93,4 +93,71 @@ public class ContentTests
         Assert.Equal(["Install Vault"], p.Fixes);
         Assert.Empty(MclogsShare.ParseInsights(null));
     }
+
+    private static HttpClient NetworkClient() => new() { Timeout = TimeSpan.FromSeconds(15) };
+
+    private static ServerDefinition PaperServer(string mc) => new()
+    {
+        Id = "s", Name = "s", Directory = Path.GetTempPath(), Platform = ServerPlatform.Paper, MinecraftVersion = mc, JarFile = "paper.jar", JavaPath = "java",
+    };
+
+    /// <summary>Read-only: resolves a well-known plugin's download for a real Paper version against the live Modrinth API.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task Modrinth_ResolvesARealDownload()
+    {
+        using var http = NetworkClient();
+        var d = await ContentLinks.ResolveAsync(http, ContentLinks.Parse("https://modrinth.com/plugin/chunky")!, PaperServer("1.21.4"), CancellationToken.None);
+
+        Assert.StartsWith("https://", d.Url, StringComparison.Ordinal);
+        Assert.EndsWith(".jar", d.FileName, StringComparison.OrdinalIgnoreCase);
+        Assert.NotNull(d.Sha512);
+    }
+
+    /// <summary>Read-only: resolves a Hangar (PaperMC) project's Paper build against the live Hangar API.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task Hangar_ResolvesARealDownload()
+    {
+        using var http = NetworkClient();
+        var d = await ContentLinks.ResolveAsync(http, ContentLinks.Parse("https://hangar.papermc.io/HelpChat/PlaceholderAPI")!, PaperServer("1.21.4"), CancellationToken.None);
+
+        Assert.StartsWith("https://", d.Url, StringComparison.Ordinal);
+        Assert.NotNull(d.FileName);
+    }
+
+    /// <summary>Read-only: resolves a SpigotMC resource through the live Spiget API. Spiget never publishes a hash, so none is asserted.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task Spiget_ResolvesARealDownload()
+    {
+        using var http = NetworkClient();
+        var d = await ContentLinks.ResolveAsync(http, ContentLinks.Parse("https://www.spigotmc.org/resources/luckperms.28140/")!, PaperServer("1.21.4"), CancellationToken.None);
+
+        Assert.Equal("https://api.spiget.org/v2/resources/28140/download", d.Url);
+        Assert.EndsWith(".jar", d.FileName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>Read-only: resolves a GitHub-hosted plugin's latest release asset through the live GitHub API.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task GitHub_ResolvesARealDownload()
+    {
+        using var http = NetworkClient();
+        var d = await ContentLinks.ResolveAsync(http, ContentLinks.Parse("EssentialsX/Essentials")!, PaperServer("1.21.4"), CancellationToken.None);
+
+        Assert.StartsWith("https://", d.Url, StringComparison.Ordinal);
+        Assert.EndsWith(".jar", d.FileName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>Shares a short log on the live mclo.gs API and reads back its paste URL.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task Mclogs_SharesALogAndReturnsAUrl()
+    {
+        using var http = NetworkClient();
+        var result = await MclogsShare.ShareAsync(http, "[INFO]: PackCheck network test log " + Guid.NewGuid().ToString("N"), CancellationToken.None);
+
+        Assert.StartsWith("https://mclo.gs/", result.Url, StringComparison.Ordinal);
+    }
 }
