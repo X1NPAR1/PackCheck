@@ -66,7 +66,16 @@ public class ContentTests
     {
         var dir = Path.Combine(Path.GetTempPath(), "pc-rev-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Path.Combine(dir, "plugins"));
-        var s = new ServerDefinition { Id = "s", Name = "s", Directory = dir, Platform = ServerPlatform.Paper, MinecraftVersion = "1.21.4", JarFile = "p.jar", JavaPath = "java" };
+        var s = new ServerDefinition
+        {
+            Id = "s",
+            Name = "s",
+            Directory = dir,
+            Platform = ServerPlatform.Paper,
+            MinecraftVersion = "1.21.4",
+            JarFile = "p.jar",
+            JavaPath = "java"
+        };
         var hist = AddonUpdates.HistoryDir(s);
         Directory.CreateDirectory(hist);
         File.WriteAllText(Path.Combine(hist, "Shop-1.0.jar"), "old");
