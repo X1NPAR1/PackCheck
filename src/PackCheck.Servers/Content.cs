@@ -324,7 +324,9 @@ public static class AddonSources
     private static void Save(string serverDir, Dictionary<string, AddonSource> map)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(FileFor(serverDir))!);
-        File.WriteAllText(FileFor(serverDir), JsonSerializer.Serialize(map, Json));
+        var temp = FileFor(serverDir) + ".tmp";
+        File.WriteAllText(temp, JsonSerializer.Serialize(map, Json));
+        File.Move(temp, FileFor(serverDir), overwrite: true); // a crash mid-write never leaves a half file
     }
 }
 
@@ -366,9 +368,10 @@ public static class AddonUpdates
                     });
                 }
             }
-            catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or JsonException or IOException or UriFormatException)
+            catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or JsonException or IOException or UriFormatException
+                                       || (ex is TaskCanceledException && !ct.IsCancellationRequested))
             {
-                // That source is down or has no build for this version; the other jars are still checked.
+                // That source is down, timed out or has no build for this version; the other jars are still checked.
             }
         }
 

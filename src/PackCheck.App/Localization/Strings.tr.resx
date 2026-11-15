@@ -1312,7 +1312,7 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Content_Added" xml:space="preserve"><value>{0} eklendi ({1}).</value></data>
   <data name="Content_NoHash" xml:space="preserve"><value>Kaynak hash yayınlamıyor; dosya yalnızca eklenti/mod jar'ı olup olmadığına göre kontrol edildi.</value></data>
   <data name="Content_Checking" xml:space="preserve"><value>Modrinth'te yeni sürümler aranıyor…</value></data>
-  <data name="Content_UpToDate" xml:space="preserve"><value>Modrinth'in tanıdığı her şey güncel.</value></data>
+  <data name="Content_UpToDate" xml:space="preserve"><value>Her şey güncel (Modrinth'te ve her dosyanın kurulduğu yerde kontrol edildi).</value></data>
   <data name="Content_UpdatesFound" xml:space="preserve"><value>{0} güncelleme var.</value></data>
   <data name="Content_UpdatesTitle" xml:space="preserve"><value>Güncellemeler</value></data>
   <data name="Content_UpdateAll" xml:space="preserve"><value>Hepsini güncelle</value></data>
