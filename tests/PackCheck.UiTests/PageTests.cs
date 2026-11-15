@@ -174,8 +174,8 @@ public sealed class PageTests(AppFixture app)
         app.Find("TabWorld").AsRadioButton().IsChecked = true;
 
         Assert.True(Retry.WhileFalse(() => !app.Find("WorldPage").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "World page not visible");
+        // The seeded server has no BlueMap, so only the install button is shown; "Open map" appears once it is installed.
         Assert.NotNull(app.Find("MapInstall"));
-        Assert.NotNull(app.Find("MapOpen"));
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public sealed class PageTests(AppFixture app)
         }
 
         first.AsListBoxItem().Select();
-        app.Find("TabWorld").AsRadioButton().IsChecked = true;
+        app.Find("TabContent").AsRadioButton().IsChecked = true;
 
         var box = app.Find("AddLinkBox").AsTextBox();
         box.Focus();
@@ -231,8 +231,8 @@ public sealed class PageTests(AppFixture app)
         first.AsListBoxItem().Select();
         app.Find("CloneServer").AsButton().Invoke();
 
-        Assert.True(Retry.WhileFalse(() => !app.Find("CloneDialog").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "clone dialog did not open");
-        Assert.NotNull(app.Find("CloneName"));
+        // CloneDialog is a Grid, which UI Automation does not expose; its first field shows the dialog is open.
+        Assert.True(Retry.WhileFalse(() => !app.Find("CloneName").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "clone dialog did not open");
         Assert.NotNull(app.Find("ClonePort"));
         Assert.NotNull(app.Find("CloneWorlds"));
         Assert.NotNull(app.Find("CloneConfirm"));
@@ -244,7 +244,8 @@ public sealed class PageTests(AppFixture app)
         app.Navigate("NavDashboard");
         app.Find("DashNewServer").AsButton().Invoke();
 
-        Assert.True(Retry.WhileFalse(() => !app.Find("CreateWizard").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "wizard panel did not open");
+        // CreateWizard is a Border, which UI Automation does not expose; its first control shows the wizard is open.
+        Assert.True(Retry.WhileFalse(() => !app.Find("WizardSourcePlatform").IsOffscreen, TimeSpan.FromSeconds(5)).Result, "wizard panel did not open");
     }
 
     private static int Visible(AutomationElement list) => list.FindAllChildren().Count(c => !c.IsOffscreen);
