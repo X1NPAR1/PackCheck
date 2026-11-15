@@ -163,7 +163,7 @@
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" AutomationProperties.AutomationId="TabProperties" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Files_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=5}" AutomationProperties.AutomationId="TabFiles" />
-            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}">
+            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="TabContent">
                 <TextBlock>
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
