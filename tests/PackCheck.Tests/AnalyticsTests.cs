@@ -80,7 +80,7 @@ public class AnalyticsTests
     {
         const string json = """
             {"stats":{"minecraft:custom":{"minecraft:time_since_death":72000,"minecraft:fish_caught":12},
-            "minecraft:used":{"minecraft:stone":30,"minecraft:torch":8,"minecraft:diamond_pickaxe":4}}}
+            "minecraft:used":{"minecraft:stone":30,"minecraft:torch":8,"minecraft:diamond_pickaxe":4,"minecraft:bad":null}}}
             """;
 
         var s = Scoreboard.Parse("u", "Alex", json);

@@ -285,7 +285,7 @@ public static class Scoreboard
         {
             foreach (var item in u.EnumerateObject())
             {
-                used += item.Value.TryGetInt64(out var n) ? n : 0;
+                used += item.Value.ValueKind == JsonValueKind.Number && item.Value.TryGetInt64(out var n) ? n : 0;
             }
         }
 

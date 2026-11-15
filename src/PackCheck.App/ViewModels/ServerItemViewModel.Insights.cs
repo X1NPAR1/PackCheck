@@ -20,6 +20,8 @@ public sealed partial class ServerItemViewModel
 
     private bool _loadingScoreWorlds;
 
+    private int _scoreLoad;
+
     public ObservableCollection<PlayerStats> ScoreRows { get; } = [];
 
     public ObservableCollection<string> ScoreWorlds { get; } = [];
@@ -78,7 +80,6 @@ public sealed partial class ServerItemViewModel
     private async Task RefreshInsightsAsync()
     {
         var dir = Definition.Directory;
-        var world = ScoreWorld;
         (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<string> worlds, StorageReport? storage) data;
         try
         {
@@ -93,6 +94,7 @@ public sealed partial class ServerItemViewModel
         var (activity, worlds, storage) = data;
         _activity = activity;
         ApplyActivityFilter();
+        var world = ScoreWorld; // read after the background work so a pick made meanwhile is kept
         _loadingScoreWorlds = true;
         ScoreWorlds.Clear();
         foreach (var w in worlds)
@@ -127,16 +129,28 @@ public sealed partial class ServerItemViewModel
     {
         var dir = Definition.Directory;
         var world = ScoreWorld;
+        var load = ++_scoreLoad;
+        IReadOnlyList<PlayerStats> scores;
         try
         {
-            _scores = world is null ? [] : await Task.Run(() => Scoreboard.Read(dir, world)).ConfigureAwait(true);
+            scores = world is null ? [] : await Task.Run(() => Scoreboard.Read(dir, world)).ConfigureAwait(true);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            MainViewModel.Shell?.Toast(ex.Message, isError: true);
-            _scores = [];
+            if (load == _scoreLoad)
+            {
+                MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            }
+
+            scores = [];
         }
 
+        if (load != _scoreLoad)
+        {
+            return; // a newer world pick is loading; its result wins
+        }
+
+        _scores = scores;
         ApplyScoreSort();
     }
 
