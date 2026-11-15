@@ -7,14 +7,14 @@
   <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows-1B1E1C?style=for-the-badge"></a>
 </p>
 
-<p align="center"><b>Current version: 4.0.0</b> · <a href="CHANGELOG.md">changelog</a></p>
+<p align="center"><b>Current version: 4.1.0</b> · <a href="CHANGELOG.md">changelog</a></p>
 
 <p align="center">
   <b>Free Minecraft server manager for Windows: create, run and validate Minecraft Java servers, and catch broken plugin and mod packs before they go live.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 4.0.0" src="https://img.shields.io/badge/download-v4.0.0-5E9A3E"></a>
+  <a href="https://github.com/X1NPAR1/PackCheck/releases/latest"><img alt="Download version 4.1.0" src="https://img.shields.io/badge/download-v4.1.0-5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/X1NPAR1/PackCheck/total?color=5E9A3E"></a>
   <a href="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/X1NPAR1/PackCheck/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/X1NPAR1/PackCheck?color=5E9A3E"></a>
@@ -94,6 +94,10 @@ Static checks never execute plugin code. A real startup test is available, but y
 | ![Settings with section sidebar and search](docs/media/settings.png) | ![About with system information](docs/media/about.png) |
 
 ## Features
+
+**New in 4.1**
+- **Insights**: a scoreboard with a world picker, more columns and sorting by any column; an activity timeline with a time range, paging, CSV export and the starts, stops and backups done in PackCheck (with who did them).
+- **Content**: plugins added from Hangar, SpigotMC or GitHub are checked for updates at their source, not only on Modrinth.
 
 **New in 4.0**
 - **Look**: pixel-font titles (Press Start 2P), Lucide icons, every server in the sidebar with its status, and a dashboard with players, memory, crashes and live TPS/CPU/RAM per server.
@@ -240,7 +244,7 @@ packcheck version
 Example output:
 
 ```text
-PackCheck 4.0.0 - demo-pack
+PackCheck 4.1.0 - demo-pack
   [FAIL ] PC040 Missing dependency: 'EconomyShop' requires 'ProtocolLib', which is not installed. The plugin will not enable.
            plugin.yml: depend: [Vault, ProtocolLib]
            fix: Install 'ProtocolLib' or remove 'EconomyShop'.
