@@ -163,7 +163,7 @@
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Console}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=1}" AutomationProperties.AutomationId="TabConsole" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Servers_Properties}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=2}" AutomationProperties.AutomationId="TabProperties" />
             <RadioButton Style="{StaticResource TabPill}" Content="{l:Loc Files_Tab}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=5}" AutomationProperties.AutomationId="TabFiles" />
-            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}">
+            <RadioButton Style="{StaticResource TabPill}" IsChecked="{Binding Tab, Converter={StaticResource IndexBool}, ConverterParameter=3}" Visibility="{Binding HasContentTab, Converter={StaticResource BoolVis}}" AutomationProperties.AutomationId="TabContent">
                 <TextBlock>
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -872,7 +872,7 @@
                                         <DockPanel Margin="0,2">
                                             <Button DockPanel.Dock="Right" Content="{l:Loc Content_Update}" Padding="10,3"
                                                     Command="{Binding DataContext.UpdateAddonCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}" CommandParameter="{Binding}" />
-                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →  " /><Run Text="{Binding UpdateVersion, Mode=OneWay}" Foreground="{DynamicResource PassBrush}" /></TextBlock>
+                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →  " /><Run Text="{Binding UpdateVersion, Mode=OneWay}" Foreground="{DynamicResource PassBrush}" /><Run Text="  · " Foreground="{DynamicResource TextMutedBrush}" /><Run Text="{Binding UpdateSource, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /></TextBlock>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

@@ -75,6 +75,7 @@ public sealed partial class ServerItemViewModel
             ContentStatus = Loc.F("Content_Resolving", link.Source);
             var d = await ContentLinks.ResolveAsync(AppHttp, link, Definition, CancellationToken.None).ConfigureAwait(true);
             var path = await ContentLinks.InstallAsync(AppHttp, d, Definition, CancellationToken.None).ConfigureAwait(true);
+            AddonSources.Remember(Definition.Directory, Path.GetFileName(path), link, d.Version);
             ContentStatus = Loc.F("Content_Added", Path.GetFileName(path), d.Version ?? "?") + (d.Sha512 is null && d.Sha256 is null ? " " + Loc.T("Content_NoHash") : string.Empty);
             AddLink = string.Empty;
             RefreshPlugins();
