@@ -29,6 +29,8 @@ public sealed partial class ServerItemViewModel
 
     private const int ActivityPageSize = 500;
 
+    private int _insightsRefresh;
+
     private List<ActivityEvent> _activityFiltered = [];
 
     [ObservableProperty]
@@ -74,6 +76,7 @@ public sealed partial class ServerItemViewModel
     private async Task RefreshInsightsAsync()
     {
         var dir = Definition.Directory;
+        var refresh = ++_insightsRefresh;
         (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<PlayerStats> scores, StorageReport? storage) data;
         try
         {
@@ -82,8 +85,17 @@ public sealed partial class ServerItemViewModel
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or System.Text.Json.JsonException)
         {
-            MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            if (refresh == _insightsRefresh)
+            {
+                MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            }
+
             return;
+        }
+
+        if (refresh != _insightsRefresh)
+        {
+            return; // the range changed meanwhile; the newer refresh fills the tab
         }
 
         var (activity, scores, storage) = data;
