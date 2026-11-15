@@ -42,7 +42,33 @@ public sealed partial class ServerItemViewModel
 
     public ObservableCollection<StorageEntry> StorageFiles { get; } = [];
 
-    public IReadOnlyList<string> ActivityFilters { get; } = ["All", "Chat", "Join", "Leave", "Death", "Advancement", "Command", "Server"];
+    public IReadOnlyList<string> ActivityFilters { get; } = ["All", "Chat", "Join", "Leave", "Death", "Advancement", "Command", "Server", "PackCheck"];
+
+    /// <summary>How many days back the timeline reads (0 = every log on disk); shown via Activity_Range_{n}.</summary>
+    public IReadOnlyList<int> ActivityRanges { get; } = [1, 7, 14, 30, 90, 0];
+
+    private const int ActivityPageSize = 500;
+
+    private int _insightsRefresh;
+
+    private List<ActivityEvent> _activityFiltered = [];
+
+    [ObservableProperty]
+    private int _activityRange = 14;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ActivityPageText))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousActivityPageCommand), nameof(NextActivityPageCommand))]
+    private int _activityPage;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ActivityPageText))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousActivityPageCommand), nameof(NextActivityPageCommand), nameof(ExportActivityCommand))]
+    private int _activityTotal;
+
+    private int ActivityPageCount => Math.Max(1, (ActivityTotal + ActivityPageSize - 1) / ActivityPageSize);
+
+    public string ActivityPageText => Loc.F("Activity_Page", ActivityPage + 1, ActivityPageCount, ActivityTotal);
 
     [ObservableProperty]
     private string _activityFilter = "All";
@@ -57,6 +83,8 @@ public sealed partial class ServerItemViewModel
     private long _cleanableBytes;
 
     public bool CanCleanStorage => CleanableBytes > 0;
+
+    partial void OnActivityRangeChanged(int value) => _ = RefreshInsightsAsync();
 
     partial void OnActivityFilterChanged(string value) => ApplyActivityFilter();
 
@@ -80,15 +108,26 @@ public sealed partial class ServerItemViewModel
     private async Task RefreshInsightsAsync()
     {
         var dir = Definition.Directory;
+        var refresh = ++_insightsRefresh;
         (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<string> worlds, StorageReport? storage) data;
         try
         {
-            data = await Task.Run(() => (ActivityLog.Read(dir, 14), Scoreboard.Worlds(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
+            var from = ActivityRange > 0 ? DateTime.Now.AddDays(-ActivityRange) : DateTime.MinValue;
+            data = await Task.Run(() => (ActivityLog.Read(dir, from, DateTime.MaxValue), Scoreboard.Worlds(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or System.Text.Json.JsonException)
         {
-            MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            if (refresh == _insightsRefresh)
+            {
+                MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            }
+
             return;
+        }
+
+        if (refresh != _insightsRefresh)
+        {
+            return; // the range changed meanwhile; the newer refresh fills the tab
         }
 
         var (activity, worlds, storage) = data;
@@ -105,6 +144,10 @@ public sealed partial class ServerItemViewModel
         ScoreWorld = world is not null && worlds.Contains(world) ? world : worlds.FirstOrDefault();
         _loadingScoreWorlds = false;
         await LoadScoresAsync().ConfigureAwait(true);
+        if (refresh != _insightsRefresh)
+        {
+            return; // a newer refresh started while the scores loaded; it fills storage too
+        }
 
         StorageFolders.Clear();
         StorageFiles.Clear();
@@ -181,14 +224,72 @@ public sealed partial class ServerItemViewModel
 
     private void ApplyActivityFilter()
     {
-        ActivityRows.Clear();
         var q = ActivitySearch.Trim();
-        foreach (var e in _activity.Where(e => ActivityFilter == "All" || e.Kind.ToString() == ActivityFilter)
-                     .Where(e => q.Length == 0 || e.Text.Contains(q, StringComparison.OrdinalIgnoreCase) || (e.Player?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false))
-                     .Take(500))
+        _activityFiltered = _activity.Where(e => ActivityFilter == "All" || e.Kind.ToString() == ActivityFilter)
+            .Where(e => q.Length == 0 || e.Text.Contains(q, StringComparison.OrdinalIgnoreCase) || (e.Player?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+        ActivityTotal = _activityFiltered.Count;
+        ActivityPage = 0;
+        ShowActivityPage();
+    }
+
+    private void ShowActivityPage()
+    {
+        ActivityRows.Clear();
+        foreach (var e in _activityFiltered.Skip(ActivityPage * ActivityPageSize).Take(ActivityPageSize))
         {
             ActivityRows.Add(e);
         }
+    }
+
+    private bool CanPreviousActivityPage() => ActivityPage > 0;
+
+    [RelayCommand(CanExecute = nameof(CanPreviousActivityPage))]
+    private void PreviousActivityPage()
+    {
+        ActivityPage--;
+        ShowActivityPage();
+    }
+
+    private bool CanNextActivityPage() => ActivityPage + 1 < ActivityPageCount;
+
+    [RelayCommand(CanExecute = nameof(CanNextActivityPage))]
+    private void NextActivityPage()
+    {
+        ActivityPage++;
+        ShowActivityPage();
+    }
+
+    private bool CanExportActivity() => ActivityTotal > 0;
+
+    /// <summary>Saves every row that matches the current filter (all pages) as CSV.</summary>
+    [RelayCommand(CanExecute = nameof(CanExportActivity))]
+    private async Task ExportActivityAsync()
+    {
+        var dlg = new SaveFileDialog { FileName = $"{Name}-activity-{DateTime.Now:yyyyMMdd}.csv", Filter = "CSV (*.csv)|*.csv" };
+        if (dlg.ShowDialog() != true)
+        {
+            return;
+        }
+
+        var rows = _activityFiltered;
+        try
+        {
+            await File.WriteAllTextAsync(dlg.FileName, ActivityLog.ToCsv(rows), new System.Text.UTF8Encoding(true)).ConfigureAwait(true);
+            MainViewModel.Shell?.Toast(Loc.F("Activity_Exported", rows.Count));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            MainViewModel.Shell?.Toast(ex.Message, isError: true);
+        }
+    }
+
+    /// <summary>Records a PackCheck action (start, stop, backup) for the timeline.</summary>
+    private void Journal(string text, string? actor = null)
+    {
+        var dir = Definition.Directory;
+        var who = actor ?? Environment.UserName;
+        _ = Task.Run(() => ActionJournal.Append(dir, who, text));
     }
 
     [RelayCommand]

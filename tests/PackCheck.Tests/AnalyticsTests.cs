@@ -116,6 +116,54 @@ public class AnalyticsTests
     }
 
     [Fact]
+    public void Activity_ReadsDateRangeAndJournal()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-range-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var logs = Directory.CreateDirectory(Path.Combine(dir, "logs")).FullName;
+            foreach (var day in new[] { "2026-01-01", "2026-01-10", "2026-02-01" })
+            {
+                using var gz = new System.IO.Compression.GZipStream(File.Create(Path.Combine(logs, day + "-1.log.gz")), System.IO.Compression.CompressionLevel.Fastest);
+                using var w = new StreamWriter(gz);
+                w.WriteLine("[12:00:00] [Server thread/INFO]: Steve joined the game");
+            }
+
+            ActionJournal.Append(dir, "admin", "Started the server", new DateTime(2026, 1, 10, 9, 0, 0));
+            ActionJournal.Append(dir, "admin\tx", "Backup\nnote", new DateTime(2026, 3, 1, 9, 0, 0));
+
+            var events = ActivityLog.Read(dir, new DateTime(2026, 1, 5), new DateTime(2026, 1, 31));
+
+            Assert.Equal(2, events.Count);
+            Assert.Equal((ActivityKind.Join, new DateTime(2026, 1, 10, 12, 0, 0)), (events[0].Kind, events[0].Time));
+            Assert.Equal((ActivityKind.PackCheck, "admin", "Started the server"), (events[1].Kind, events[1].Player, events[1].Text));
+            var all = ActivityLog.Read(dir, DateTime.MinValue, DateTime.MaxValue);
+            Assert.Equal(5, all.Count);
+            Assert.Equal(("admin x", "Backup note"), (all[0].Player, all[0].Text));
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
+
+    [Fact]
+    public void Activity_CsvQuotesAndNeutralizesFormulas()
+    {
+        var csv = ActivityLog.ToCsv([
+            new ActivityEvent(new DateTime(2026, 1, 2, 3, 4, 5), ActivityKind.Chat, "Steve", "hi, \"you\""),
+            new ActivityEvent(new DateTime(2026, 1, 2, 3, 4, 6), ActivityKind.Chat, "Alex", "=HYPERLINK(\"x\")"),
+            new ActivityEvent(new DateTime(2026, 1, 2, 3, 4, 7), ActivityKind.Server, null, "Done"),
+        ]);
+
+        var lines = csv.Split("\r\n");
+        Assert.Equal("time,kind,player,text", lines[0]);
+        Assert.Equal("2026-01-02 03:04:05,Chat,Steve,\"hi, \"\"you\"\"\"", lines[1]);
+        Assert.Equal("2026-01-02 03:04:06,Chat,Alex,\"'=HYPERLINK(\"\"x\"\")\"", lines[2]);
+        Assert.Equal("2026-01-02 03:04:07,Server,,Done", lines[3]);
+    }
+
+    [Fact]
     public void Solver_PicksNewestCommonVersion()
     {
         IReadOnlyCollection<(string, string)> a = [("fabric", "1.21.1"), ("fabric", "1.21.4"), ("neoforge", "1.21.1"), ("fabric", "25w10a")];

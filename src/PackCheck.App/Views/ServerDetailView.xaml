@@ -1395,9 +1395,18 @@
                             <ComboBox DockPanel.Dock="Left" Width="150" Margin="0,0,8,0" ItemsSource="{Binding ActivityFilters}" SelectedItem="{Binding ActivityFilter}" AutomationProperties.Name="{l:Loc Activity_Title}">
                                 <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_}" /></DataTemplate></ComboBox.ItemTemplate>
                             </ComboBox>
+                            <ComboBox DockPanel.Dock="Left" Width="150" Margin="0,0,8,0" ItemsSource="{Binding ActivityRanges}" SelectedItem="{Binding ActivityRange}" AutomationProperties.Name="{l:Loc Activity_RangeName}" AutomationProperties.AutomationId="ActivityRange">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_Range_}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="{l:Loc Activity_Export}" Command="{Binding ExportActivityCommand}" AutomationProperties.AutomationId="ActivityExport" />
                             <TextBox Text="{Binding ActivitySearch, UpdateSourceTrigger=PropertyChanged, Delay=250}" Tag="{l:Loc Activity_Search}" AutomationProperties.Name="{l:Loc Activity_Search}" />
                         </DockPanel>
                         <TextBlock Text="{l:Loc Activity_Empty}" Style="{StaticResource Muted}" Visibility="{Binding ActivityRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <DockPanel Margin="0,0,0,6">
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Activity_Next}" Margin="6,0,0,0" Command="{Binding NextActivityPageCommand}" AutomationProperties.AutomationId="ActivityNext" />
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Activity_Previous}" Command="{Binding PreviousActivityPageCommand}" AutomationProperties.AutomationId="ActivityPrevious" />
+                            <TextBlock Text="{Binding ActivityPageText}" Style="{StaticResource Muted}" VerticalAlignment="Center" AutomationProperties.AutomationId="ActivityPageText" />
+                        </DockPanel>
                         <ItemsControl ItemsSource="{Binding ActivityRows}" MaxHeight="300" AutomationProperties.AutomationId="ActivityList">
                             <ItemsControl.Template><ControlTemplate><ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsPresenter /></ScrollViewer></ControlTemplate></ItemsControl.Template>
                             <ItemsControl.ItemTemplate>

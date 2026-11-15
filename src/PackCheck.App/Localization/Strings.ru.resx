@@ -1332,7 +1332,7 @@ F1 · этот список
   <data name="Insights_Tab" xml:space="preserve"><value>Аналитика</value></data>
   <data name="Activity_Title" xml:space="preserve"><value>Активность</value></data>
   <data name="Activity_Search" xml:space="preserve"><value>Поиск игрока или текста</value></data>
-  <data name="Activity_Empty" xml:space="preserve"><value>За две недели в логах нет активности.</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>За этот период активности нет.</value></data>
   <data name="Activity_All" xml:space="preserve"><value>Все</value></data>
   <data name="Activity_Chat" xml:space="preserve"><value>Чат</value></data>
   <data name="Activity_Join" xml:space="preserve"><value>Вход</value></data>
@@ -1341,6 +1341,23 @@ F1 · этот список
   <data name="Activity_Advancement" xml:space="preserve"><value>Достижение</value></data>
   <data name="Activity_Command" xml:space="preserve"><value>Команда</value></data>
   <data name="Activity_Server" xml:space="preserve"><value>Сервер</value></data>
+  <data name="Activity_PackCheck" xml:space="preserve"><value>PackCheck</value></data>
+  <data name="Activity_RangeName" xml:space="preserve"><value>Период</value></data>
+  <data name="Activity_Range_1" xml:space="preserve"><value>Последние 24 часа</value></data>
+  <data name="Activity_Range_7" xml:space="preserve"><value>Последние 7 дней</value></data>
+  <data name="Activity_Range_14" xml:space="preserve"><value>Последние 14 дней</value></data>
+  <data name="Activity_Range_30" xml:space="preserve"><value>Последние 30 дней</value></data>
+  <data name="Activity_Range_90" xml:space="preserve"><value>Последние 90 дней</value></data>
+  <data name="Activity_Range_0" xml:space="preserve"><value>Все логи</value></data>
+  <data name="Activity_Page" xml:space="preserve"><value>Страница {0} из {1} · записей: {2}</value></data>
+  <data name="Activity_Previous" xml:space="preserve"><value>Предыдущая страница</value></data>
+  <data name="Activity_Next" xml:space="preserve"><value>Следующая страница</value></data>
+  <data name="Activity_Export" xml:space="preserve"><value>Экспорт в CSV</value></data>
+  <data name="Activity_Exported" xml:space="preserve"><value>Экспортировано записей: {0}.</value></data>
+  <data name="Journal_Started" xml:space="preserve"><value>Запустил сервер</value></data>
+  <data name="Journal_Stopped" xml:space="preserve"><value>Остановил сервер</value></data>
+  <data name="Journal_Killed" xml:space="preserve"><value>Принудительно остановил сервер</value></data>
+  <data name="Journal_Backup" xml:space="preserve"><value>Резервная копия ({0}, {1})</value></data>
   <data name="Score_Title" xml:space="preserve"><value>Таблица лидеров</value></data>
   <data name="Score_Empty" xml:space="preserve"><value>Статистики пока нет; игроки появятся после сохранения мира.</value></data>
   <data name="Score_Player" xml:space="preserve"><value>Игрок</value></data>

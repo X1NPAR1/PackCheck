@@ -796,6 +796,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
             ClearConsole();
             await EnsureJavaAsync().ConfigureAwait(true);
             await _process.StartAsync().ConfigureAwait(true);
+            Journal(Loc.T("Journal_Started"));
         }
         catch (System.Net.Http.HttpRequestException ex)
         {
@@ -814,12 +815,14 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private Task StopAsync()
     {
         _automation.UserStopped(); // a manual stop must not trigger crash or idle rules
+        Journal(Loc.T("Journal_Stopped"));
         return _process.StopAsync(TimeSpan.FromSeconds(60));
     }
 
     [RelayCommand]
     private async Task RestartAsync()
     {
+        Journal(Loc.T("Journal_Stopped"));
         await _process.StopAsync(TimeSpan.FromSeconds(60)).ConfigureAwait(true);
         await StartAsync().ConfigureAwait(true);
     }
@@ -830,6 +833,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         if (MainViewModel.Shell is { } shell && await shell.ConfirmAsync(Loc.T("Servers_Kill"), Name, Loc.T("Servers_Kill"), danger: true).ConfigureAwait(true))
         {
             _automation.UserStopped(); // a forced stop is not a crash
+            Journal(Loc.T("Journal_Killed"));
             _process.Kill();
         }
     }

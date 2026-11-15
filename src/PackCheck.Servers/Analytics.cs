@@ -13,6 +13,9 @@ public enum ActivityKind
     Advancement,
     Command,
     Server,
+
+    /// <summary>Something done through PackCheck (start, stop, backup), from <see cref="ActionJournal"/>.</summary>
+    PackCheck,
 }
 
 /// <summary>One classified log line.</summary>
@@ -92,20 +95,51 @@ public static partial class ActivityLog
     }
 
     /// <summary>Newest first, from up to <paramref name="days"/> days of logs.</summary>
-    public static IReadOnlyList<ActivityEvent> Read(string serverDir, int days = 7)
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir, int days = 7) => Read(serverDir, DateTime.Today.AddDays(-days), DateTime.MaxValue);
+
+    /// <summary>Newest first: log events and PackCheck actions between <paramref name="from"/> and <paramref name="to"/> (inclusive).</summary>
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir, DateTime from, DateTime to)
     {
         var logs = Path.Combine(serverDir, "logs");
-        var events = new List<ActivityEvent>();
-        if (!Directory.Exists(logs))
+        var events = new List<ActivityEvent>(ActionJournal.Read(serverDir));
+        if (Directory.Exists(logs))
         {
-            return events;
+            ReadLogs(logs, from, to, events);
         }
 
-        var since = DateTime.Today.AddDays(-days);
+        return events.Where(e => e.Time >= from && e.Time <= to).OrderByDescending(e => e.Time).ToList();
+    }
+
+    /// <summary>CSV (RFC 4180) with a header row; cells starting with = + - @ get a leading quote so spreadsheets do not run them as formulas.</summary>
+    public static string ToCsv(IEnumerable<ActivityEvent> events)
+    {
+        static string Cell(string? v)
+        {
+            v ??= string.Empty;
+            if (v.Length > 0 && v[0] is '=' or '+' or '-' or '@' or '\t' or '\r')
+            {
+                v = "'" + v;
+            }
+
+            return v.IndexOfAny([',', '"', '\n', '\r']) >= 0 ? "\"" + v.Replace("\"", "\"\"", StringComparison.Ordinal) + "\"" : v;
+        }
+
+        var sb = new System.Text.StringBuilder("time,kind,player,text\r\n");
+        foreach (var e in events)
+        {
+            sb.Append(e.Time.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)).Append(',')
+              .Append(e.Kind).Append(',').Append(Cell(e.Player)).Append(',').Append(Cell(e.Text)).Append("\r\n");
+        }
+
+        return sb.ToString();
+    }
+
+    private static void ReadLogs(string logs, DateTime from, DateTime to, List<ActivityEvent> events)
+    {
         foreach (var gz in Directory.EnumerateFiles(logs, "*.log.gz"))
         {
             if (GzNameRx().Match(Path.GetFileName(gz)) is { Success: true } n
-                && DateTime.TryParse(n.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var day) && day >= since)
+                && DateTime.TryParse(n.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var day) && day >= from.Date && day <= to)
             {
                 try
                 {
@@ -127,8 +161,6 @@ public static partial class ActivityLog
             ReadLines(r, File.GetLastWriteTime(latest).Date, current);
             events.AddRange(FixMidnight(current));
         }
-
-        return events.OrderByDescending(e => e.Time).ToList();
     }
 
     /// <summary>
@@ -251,6 +283,66 @@ public static class StorageAnalyzer
         }
 
         return freed;
+    }
+}
+
+/// <summary>
+/// What was done through PackCheck (start, stop, backup) and by whom, one tab-separated line per action in
+/// .packcheck/actions.log inside the server folder. Server logs do not record who pressed the button.
+/// </summary>
+public static class ActionJournal
+{
+    private static readonly Lock Gate = new();
+
+    public static string FileFor(string serverDir) => Path.Combine(serverDir, ".packcheck", "actions.log");
+
+    public static void Append(string serverDir, string actor, string text, DateTime? time = null)
+    {
+        static string Clean(string v) => v.Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
+        var line = $"{(time ?? DateTime.Now).ToString("s", System.Globalization.CultureInfo.InvariantCulture)}\t{Clean(actor)}\t{Clean(text)}{Environment.NewLine}";
+        try
+        {
+            lock (Gate)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(FileFor(serverDir))!);
+                File.AppendAllText(FileFor(serverDir), line);
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // The journal is a convenience; a read-only folder must not break start/stop/backup.
+        }
+    }
+
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir)
+    {
+        var file = FileFor(serverDir);
+        var list = new List<ActivityEvent>();
+        if (!File.Exists(file))
+        {
+            return list;
+        }
+
+        try
+        {
+            lock (Gate)
+            {
+                foreach (var line in File.ReadLines(file))
+                {
+                    var parts = line.Split('\t', 3);
+                    if (parts.Length == 3 && DateTime.TryParse(parts[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
+                    {
+                        list.Add(new ActivityEvent(t, ActivityKind.PackCheck, parts[1], parts[2]));
+                    }
+                }
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // Being written; the next refresh reads it.
+        }
+
+        return list;
     }
 }
 
