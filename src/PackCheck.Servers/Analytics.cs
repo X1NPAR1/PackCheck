@@ -344,7 +344,12 @@ public static class ActionJournal
 }
 
 /// <summary>One player's numbers from world/stats/{uuid}.json.</summary>
-public sealed record PlayerStats(string Uuid, string Name, double HoursPlayed, int Deaths, int MobKills, int PlayerKills, int DiamondsMined, double KmWalked, int Jumps);
+/// <remarks>
+/// Vanilla has no "blocks placed" counter: placing a block counts as using its item, so <see cref="ItemsUsed"/> is the sum
+/// of minecraft:used (blocks, tools, food). <see cref="HoursSinceDeath"/> is time_since_death in hours.
+/// </remarks>
+public sealed record PlayerStats(string Uuid, string Name, double HoursPlayed, int Deaths, int MobKills, int PlayerKills, int DiamondsMined, double KmWalked, int Jumps,
+    double HoursSinceDeath = 0, long ItemsUsed = 0, int FishCaught = 0);
 
 /// <summary>Reads the vanilla statistics files (written by every server type) into a scoreboard.</summary>
 public static class Scoreboard
@@ -364,16 +369,31 @@ public static class Scoreboard
         var ticks = Math.Max(GetLong(Custom, "minecraft:play_time"), GetLong(Custom, "minecraft:play_one_minute"));
         var cm = GetLong(Custom, "minecraft:walk_one_cm") + GetLong(Custom, "minecraft:sprint_one_cm");
         var diamonds = Get("minecraft:mined", "minecraft:diamond_ore") + Get("minecraft:mined", "minecraft:deepslate_diamond_ore");
+        long used = 0;
+        if (stats.ValueKind == JsonValueKind.Object && stats.TryGetProperty("minecraft:used", out var u) && u.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var item in u.EnumerateObject())
+            {
+                used += item.Value.ValueKind == JsonValueKind.Number && item.Value.TryGetInt64(out var n) ? n : 0;
+            }
+        }
+
         return new PlayerStats(uuid, name, ticks / 20d / 3600d, Get(Custom, "minecraft:deaths"), Get(Custom, "minecraft:mob_kills"), Get(Custom, "minecraft:player_kills"),
-            diamonds, cm / 100_000d, Get(Custom, "minecraft:jump"));
+            diamonds, cm / 100_000d, Get(Custom, "minecraft:jump"), GetLong(Custom, "minecraft:time_since_death") / 20d / 3600d, used, Get(Custom, "minecraft:fish_caught"));
     }
 
-    /// <summary>All players with a stats file; names come from usercache.json (else the UUID is shown).</summary>
-    public static IReadOnlyList<PlayerStats> Read(string serverDir)
+    /// <summary>World folders that have a stats folder; "world" (the default level-name) first, then shortest name.</summary>
+    public static IReadOnlyList<string> Worlds(string serverDir) =>
+        Backups.WorldFolders(serverDir).Where(w => Directory.Exists(Path.Combine(serverDir, w, "stats")))
+            .OrderBy(w => !string.Equals(w, "world", StringComparison.OrdinalIgnoreCase)).ThenBy(w => w.Length).ThenBy(w => w, StringComparer.OrdinalIgnoreCase).ToList();
+
+    /// <summary>All players with a stats file in <paramref name="world"/> (default: the main world); names come from usercache.json (else the UUID is shown).</summary>
+    public static IReadOnlyList<PlayerStats> Read(string serverDir, string? world = null)
     {
         var lists = new PlayerLists(serverDir);
         var list = new List<PlayerStats>();
-        foreach (var w in Backups.WorldFolders(serverDir).OrderBy(w => w.Length).Take(1))
+        var worlds = world is null ? Backups.WorldFolders(serverDir).OrderBy(w => w.Length).Take(1) : Backups.WorldFolders(serverDir).Where(w => string.Equals(w, world, StringComparison.OrdinalIgnoreCase));
+        foreach (var w in worlds)
         {
             var dir = Path.Combine(serverDir, w, "stats");
             if (!Directory.Exists(dir))

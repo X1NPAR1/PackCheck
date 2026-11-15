@@ -1366,6 +1366,23 @@ F1 · этот список
   <data name="Score_MobKills" xml:space="preserve"><value>Убито мобов</value></data>
   <data name="Score_Diamonds" xml:space="preserve"><value>Алмазы</value></data>
   <data name="Score_Jumps" xml:space="preserve"><value>Прыжки</value></data>
+  <data name="Score_SinceDeath" xml:space="preserve"><value>Часов с гибели</value></data>
+  <data name="Score_Used" xml:space="preserve"><value>Использовано</value></data>
+  <data name="Score_Fish" xml:space="preserve"><value>Рыба</value></data>
+  <data name="Score_World" xml:space="preserve"><value>Мир</value></data>
+  <data name="Score_SortBy" xml:space="preserve"><value>Сортировка</value></data>
+  <data name="Score_Descending" xml:space="preserve"><value>Сначала больше</value></data>
+  <data name="Score_Sort_Hours" xml:space="preserve"><value>Часы в игре</value></data>
+  <data name="Score_Sort_Name" xml:space="preserve"><value>Игрок</value></data>
+  <data name="Score_Sort_Deaths" xml:space="preserve"><value>Смерти</value></data>
+  <data name="Score_Sort_SinceDeath" xml:space="preserve"><value>Часов с гибели</value></data>
+  <data name="Score_Sort_MobKills" xml:space="preserve"><value>Убито мобов</value></data>
+  <data name="Score_Sort_PvP" xml:space="preserve"><value>PvP</value></data>
+  <data name="Score_Sort_Diamonds" xml:space="preserve"><value>Алмазы</value></data>
+  <data name="Score_Sort_Km" xml:space="preserve"><value>Дистанция (км)</value></data>
+  <data name="Score_Sort_Jumps" xml:space="preserve"><value>Прыжки</value></data>
+  <data name="Score_Sort_Used" xml:space="preserve"><value>Использовано</value></data>
+  <data name="Score_Sort_Fish" xml:space="preserve"><value>Рыба</value></data>
   <data name="Storage_Title" xml:space="preserve"><value>Хранилище</value></data>
   <data name="Storage_Summary" xml:space="preserve"><value>Всего {0} · можно очистить {1} (старые логи, отчёты о сбоях, кэш)</value></data>
   <data name="Storage_Largest" xml:space="preserve"><value>Самые большие файлы</value></data>

@@ -16,7 +16,27 @@ public sealed partial class ServerItemViewModel
 
     public ObservableCollection<ActivityEvent> ActivityRows { get; } = [];
 
+    private IReadOnlyList<PlayerStats> _scores = [];
+
+    private bool _loadingScoreWorlds;
+
+    private int _scoreLoad;
+
     public ObservableCollection<PlayerStats> ScoreRows { get; } = [];
+
+    public ObservableCollection<string> ScoreWorlds { get; } = [];
+
+    /// <summary>Sort keys; each maps to a column in <see cref="ScoreKey"/> and is shown via Score_Sort_{key}.</summary>
+    public IReadOnlyList<string> ScoreSorts { get; } = ["Hours", "Name", "Deaths", "SinceDeath", "MobKills", "PvP", "Diamonds", "Km", "Jumps", "Used", "Fish"];
+
+    [ObservableProperty]
+    private string? _scoreWorld;
+
+    [ObservableProperty]
+    private string _scoreSort = "Hours";
+
+    [ObservableProperty]
+    private bool _scoreDescending = true;
 
     public ObservableCollection<StorageEntry> StorageFolders { get; } = [];
 
@@ -70,6 +90,18 @@ public sealed partial class ServerItemViewModel
 
     partial void OnActivitySearchChanged(string value) => ApplyActivityFilter();
 
+    partial void OnScoreWorldChanged(string? value)
+    {
+        if (!_loadingScoreWorlds)
+        {
+            _ = LoadScoresAsync();
+        }
+    }
+
+    partial void OnScoreSortChanged(string value) => ApplyScoreSort();
+
+    partial void OnScoreDescendingChanged(bool value) => ApplyScoreSort();
+
     partial void OnCleanableBytesChanged(long value) => OnPropertyChanged(nameof(CanCleanStorage));
 
     [RelayCommand]
@@ -77,11 +109,11 @@ public sealed partial class ServerItemViewModel
     {
         var dir = Definition.Directory;
         var refresh = ++_insightsRefresh;
-        (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<PlayerStats> scores, StorageReport? storage) data;
+        (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<string> worlds, StorageReport? storage) data;
         try
         {
             var from = ActivityRange > 0 ? DateTime.Today.AddDays(-ActivityRange) : DateTime.MinValue;
-            data = await Task.Run(() => (ActivityLog.Read(dir, from, DateTime.MaxValue), Scoreboard.Read(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
+            data = await Task.Run(() => (ActivityLog.Read(dir, from, DateTime.MaxValue), Scoreboard.Worlds(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or System.Text.Json.JsonException)
         {
@@ -98,14 +130,20 @@ public sealed partial class ServerItemViewModel
             return; // the range changed meanwhile; the newer refresh fills the tab
         }
 
-        var (activity, scores, storage) = data;
+        var (activity, worlds, storage) = data;
         _activity = activity;
         ApplyActivityFilter();
-        ScoreRows.Clear();
-        foreach (var s in scores)
+        var world = ScoreWorld; // read after the background work so a pick made meanwhile is kept
+        _loadingScoreWorlds = true;
+        ScoreWorlds.Clear();
+        foreach (var w in worlds)
         {
-            ScoreRows.Add(s);
+            ScoreWorlds.Add(w);
         }
+
+        ScoreWorld = world is not null && worlds.Contains(world) ? world : worlds.FirstOrDefault();
+        _loadingScoreWorlds = false;
+        await LoadScoresAsync().ConfigureAwait(true);
 
         StorageFolders.Clear();
         StorageFiles.Clear();
@@ -123,6 +161,60 @@ public sealed partial class ServerItemViewModel
 
             CleanableBytes = storage.Cleanable;
             StorageSummary = Loc.F("Storage_Summary", Bytes.Format(storage.Total), Bytes.Format(storage.Cleanable));
+        }
+    }
+
+    private async Task LoadScoresAsync()
+    {
+        var dir = Definition.Directory;
+        var world = ScoreWorld;
+        var load = ++_scoreLoad;
+        IReadOnlyList<PlayerStats> scores;
+        try
+        {
+            scores = world is null ? [] : await Task.Run(() => Scoreboard.Read(dir, world)).ConfigureAwait(true);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            if (load == _scoreLoad)
+            {
+                MainViewModel.Shell?.Toast(ex.Message, isError: true);
+            }
+
+            scores = [];
+        }
+
+        if (load != _scoreLoad)
+        {
+            return; // a newer world pick is loading; its result wins
+        }
+
+        _scores = scores;
+        ApplyScoreSort();
+    }
+
+    private static IComparable ScoreKey(PlayerStats p, string sort) => sort switch
+    {
+        "Name" => p.Name,
+        "Deaths" => p.Deaths,
+        "SinceDeath" => p.HoursSinceDeath,
+        "MobKills" => p.MobKills,
+        "PvP" => p.PlayerKills,
+        "Diamonds" => p.DiamondsMined,
+        "Km" => p.KmWalked,
+        "Jumps" => p.Jumps,
+        "Used" => p.ItemsUsed,
+        "Fish" => p.FishCaught,
+        _ => p.HoursPlayed,
+    };
+
+    private void ApplyScoreSort()
+    {
+        var sorted = ScoreDescending ? _scores.OrderByDescending(p => ScoreKey(p, ScoreSort)) : _scores.OrderBy(p => ScoreKey(p, ScoreSort));
+        ScoreRows.Clear();
+        foreach (var p in sorted.ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase))
+        {
+            ScoreRows.Add(p);
         }
     }
 

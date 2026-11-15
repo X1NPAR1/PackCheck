@@ -76,6 +76,46 @@ public class AnalyticsTests
     }
 
     [Fact]
+    public void Stats_ReadExtraColumns()
+    {
+        const string json = """
+            {"stats":{"minecraft:custom":{"minecraft:time_since_death":72000,"minecraft:fish_caught":12},
+            "minecraft:used":{"minecraft:stone":30,"minecraft:torch":8,"minecraft:diamond_pickaxe":4,"minecraft:bad":null}}}
+            """;
+
+        var s = Scoreboard.Parse("u", "Alex", json);
+
+        Assert.Equal(1, s.HoursSinceDeath, 3);
+        Assert.Equal((42L, 12), (s.ItemsUsed, s.FishCaught));
+    }
+
+    [Fact]
+    public void Stats_ReadSelectedWorld()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-score-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            foreach (var (world, uuid) in new[] { ("world", "aaaa"), ("world_nether", "bbbb"), ("lobby", "cccc") })
+            {
+                Directory.CreateDirectory(Path.Combine(dir, world, "stats"));
+                File.WriteAllText(Path.Combine(dir, world, "level.dat"), "");
+                File.WriteAllText(Path.Combine(dir, world, "stats", uuid + ".json"), """{"stats":{}}""");
+            }
+
+            Directory.CreateDirectory(Path.Combine(dir, "plugins"));
+
+            Assert.Equal(["world", "lobby", "world_nether"], Scoreboard.Worlds(dir));
+            Assert.Equal("aaaa", Assert.Single(Scoreboard.Read(dir, "world")).Uuid);
+            Assert.Equal("bbbb", Assert.Single(Scoreboard.Read(dir, "world_nether")).Uuid);
+            Assert.Empty(Scoreboard.Read(dir, "missing"));
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
+
+    [Fact]
     public void Activity_ReadsDateRangeAndJournal()
     {
         var dir = Path.Combine(Path.GetTempPath(), "pc-range-" + Guid.NewGuid().ToString("N"));
