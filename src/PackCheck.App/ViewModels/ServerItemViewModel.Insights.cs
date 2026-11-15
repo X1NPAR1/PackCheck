@@ -112,7 +112,7 @@ public sealed partial class ServerItemViewModel
         (IReadOnlyList<ActivityEvent> activity, IReadOnlyList<string> worlds, StorageReport? storage) data;
         try
         {
-            var from = ActivityRange > 0 ? DateTime.Today.AddDays(-ActivityRange) : DateTime.MinValue;
+            var from = ActivityRange > 0 ? DateTime.Now.AddDays(-ActivityRange) : DateTime.MinValue;
             data = await Task.Run(() => (ActivityLog.Read(dir, from, DateTime.MaxValue), Scoreboard.Worlds(dir), Directory.Exists(dir) ? StorageAnalyzer.Analyze(dir) : null)).ConfigureAwait(true);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or System.Text.Json.JsonException)
@@ -144,6 +144,10 @@ public sealed partial class ServerItemViewModel
         ScoreWorld = world is not null && worlds.Contains(world) ? world : worlds.FirstOrDefault();
         _loadingScoreWorlds = false;
         await LoadScoresAsync().ConfigureAwait(true);
+        if (refresh != _insightsRefresh)
+        {
+            return; // a newer refresh started while the scores loaded; it fills storage too
+        }
 
         StorageFolders.Clear();
         StorageFiles.Clear();

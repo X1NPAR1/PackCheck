@@ -325,12 +325,15 @@ public static class ActionJournal
 
         try
         {
-            foreach (var line in File.ReadLines(file))
+            lock (Gate)
             {
-                var parts = line.Split('\t', 3);
-                if (parts.Length == 3 && DateTime.TryParse(parts[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
+                foreach (var line in File.ReadLines(file))
                 {
-                    list.Add(new ActivityEvent(t, ActivityKind.PackCheck, parts[1], parts[2]));
+                    var parts = line.Split('\t', 3);
+                    if (parts.Length == 3 && DateTime.TryParse(parts[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
+                    {
+                        list.Add(new ActivityEvent(t, ActivityKind.PackCheck, parts[1], parts[2]));
+                    }
                 }
             }
         }

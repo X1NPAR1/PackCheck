@@ -791,12 +791,12 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private async Task StartAsync()
     {
         _automation.UserStarted();
-        Journal(Loc.T("Journal_Started"));
         try
         {
             ClearConsole();
             await EnsureJavaAsync().ConfigureAwait(true);
             await _process.StartAsync().ConfigureAwait(true);
+            Journal(Loc.T("Journal_Started"));
         }
         catch (System.Net.Http.HttpRequestException ex)
         {
@@ -822,6 +822,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     [RelayCommand]
     private async Task RestartAsync()
     {
+        Journal(Loc.T("Journal_Stopped"));
         await _process.StopAsync(TimeSpan.FromSeconds(60)).ConfigureAwait(true);
         await StartAsync().ConfigureAwait(true);
     }
