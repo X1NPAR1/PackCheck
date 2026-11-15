@@ -1303,7 +1303,6 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap gibt es noch nicht für Minecraft {0}.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap installiert. Starte den Server und öffne dann die Karte.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} geöffnet. Das erste Rendern kann einige Minuten dauern.</value></data>
-  <data name="Map_RenderProgress" xml:space="preserve"><value>Karte wird gerendert: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Starte den Server, damit BlueMap die Karte liefern kann.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Modrinth-, Hangar-, SpigotMC- oder GitHub-Link, Modrinth-Slug oder .jar-URL einfügen</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Hinzufügen</value></data>
@@ -1333,7 +1332,7 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Insights_Tab" xml:space="preserve"><value>Einblicke</value></data>
   <data name="Activity_Title" xml:space="preserve"><value>Aktivität</value></data>
   <data name="Activity_Search" xml:space="preserve"><value>Spieler oder Text suchen</value></data>
-  <data name="Activity_Empty" xml:space="preserve"><value>Keine Aktivität in den Logs der letzten zwei Wochen.</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Keine Aktivität in diesem Zeitraum.</value></data>
   <data name="Activity_All" xml:space="preserve"><value>Alle</value></data>
   <data name="Activity_Chat" xml:space="preserve"><value>Chat</value></data>
   <data name="Activity_Join" xml:space="preserve"><value>Beigetreten</value></data>
@@ -1342,6 +1341,23 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Activity_Advancement" xml:space="preserve"><value>Fortschritt</value></data>
   <data name="Activity_Command" xml:space="preserve"><value>Befehl</value></data>
   <data name="Activity_Server" xml:space="preserve"><value>Server</value></data>
+  <data name="Activity_PackCheck" xml:space="preserve"><value>PackCheck</value></data>
+  <data name="Activity_RangeName" xml:space="preserve"><value>Zeitraum</value></data>
+  <data name="Activity_Range_1" xml:space="preserve"><value>Letzte 24 Stunden</value></data>
+  <data name="Activity_Range_7" xml:space="preserve"><value>Letzte 7 Tage</value></data>
+  <data name="Activity_Range_14" xml:space="preserve"><value>Letzte 14 Tage</value></data>
+  <data name="Activity_Range_30" xml:space="preserve"><value>Letzte 30 Tage</value></data>
+  <data name="Activity_Range_90" xml:space="preserve"><value>Letzte 90 Tage</value></data>
+  <data name="Activity_Range_0" xml:space="preserve"><value>Alle Logs</value></data>
+  <data name="Activity_Page" xml:space="preserve"><value>Seite {0} von {1} · {2} Einträge</value></data>
+  <data name="Activity_Previous" xml:space="preserve"><value>Vorherige Seite</value></data>
+  <data name="Activity_Next" xml:space="preserve"><value>Nächste Seite</value></data>
+  <data name="Activity_Export" xml:space="preserve"><value>Als CSV exportieren</value></data>
+  <data name="Activity_Exported" xml:space="preserve"><value>{0} Einträge exportiert.</value></data>
+  <data name="Journal_Started" xml:space="preserve"><value>Server gestartet</value></data>
+  <data name="Journal_Stopped" xml:space="preserve"><value>Server gestoppt</value></data>
+  <data name="Journal_Killed" xml:space="preserve"><value>Server zwangsweise beendet</value></data>
+  <data name="Journal_Backup" xml:space="preserve"><value>Backup ({0}, {1})</value></data>
   <data name="Score_Title" xml:space="preserve"><value>Bestenliste</value></data>
   <data name="Score_Empty" xml:space="preserve"><value>Noch keine Statistiken; Spieler erscheinen, nachdem die Welt mit ihnen gespeichert wurde.</value></data>
   <data name="Score_Player" xml:space="preserve"><value>Spieler</value></data>
@@ -1350,6 +1366,23 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Score_MobKills" xml:space="preserve"><value>Mob-Kills</value></data>
   <data name="Score_Diamonds" xml:space="preserve"><value>Diamanten</value></data>
   <data name="Score_Jumps" xml:space="preserve"><value>Sprünge</value></data>
+  <data name="Score_SinceDeath" xml:space="preserve"><value>Std. seit Tod</value></data>
+  <data name="Score_Used" xml:space="preserve"><value>Benutzte Items</value></data>
+  <data name="Score_Fish" xml:space="preserve"><value>Fische</value></data>
+  <data name="Score_World" xml:space="preserve"><value>Welt</value></data>
+  <data name="Score_SortBy" xml:space="preserve"><value>Sortieren nach</value></data>
+  <data name="Score_Descending" xml:space="preserve"><value>Höchste zuerst</value></data>
+  <data name="Score_Sort_Hours" xml:space="preserve"><value>Gespielte Stunden</value></data>
+  <data name="Score_Sort_Name" xml:space="preserve"><value>Spieler</value></data>
+  <data name="Score_Sort_Deaths" xml:space="preserve"><value>Tode</value></data>
+  <data name="Score_Sort_SinceDeath" xml:space="preserve"><value>Std. seit Tod</value></data>
+  <data name="Score_Sort_MobKills" xml:space="preserve"><value>Mob-Kills</value></data>
+  <data name="Score_Sort_PvP" xml:space="preserve"><value>PvP</value></data>
+  <data name="Score_Sort_Diamonds" xml:space="preserve"><value>Diamanten</value></data>
+  <data name="Score_Sort_Km" xml:space="preserve"><value>Strecke (km)</value></data>
+  <data name="Score_Sort_Jumps" xml:space="preserve"><value>Sprünge</value></data>
+  <data name="Score_Sort_Used" xml:space="preserve"><value>Benutzte Items</value></data>
+  <data name="Score_Sort_Fish" xml:space="preserve"><value>Fische</value></data>
   <data name="Storage_Title" xml:space="preserve"><value>Speicher</value></data>
   <data name="Storage_Summary" xml:space="preserve"><value>{0} insgesamt · {1} lassen sich bereinigen (alte Logs, Absturzberichte, Caches)</value></data>
   <data name="Storage_Largest" xml:space="preserve"><value>Größte Dateien</value></data>

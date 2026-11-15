@@ -1303,7 +1303,6 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap'in Minecraft {0} için henüz sürümü yok.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap kuruldu. Sunucuyu başlat, sonra haritayı aç.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} açıldı. İlk çizim birkaç dakika sürebilir.</value></data>
-  <data name="Map_RenderProgress" xml:space="preserve"><value>Harita render ediliyor: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Haritanın açılması için sunucuyu başlat.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Modrinth, Hangar, SpigotMC veya GitHub linki, Modrinth kısa adı ya da .jar adresi yapıştır</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Ekle</value></data>
@@ -1333,7 +1332,7 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Insights_Tab" xml:space="preserve"><value>Analiz</value></data>
   <data name="Activity_Title" xml:space="preserve"><value>Aktivite</value></data>
   <data name="Activity_Search" xml:space="preserve"><value>Oyuncu veya metin ara</value></data>
-  <data name="Activity_Empty" xml:space="preserve"><value>Son iki haftanın loglarında aktivite yok.</value></data>
+  <data name="Activity_Empty" xml:space="preserve"><value>Bu zaman aralığında aktivite yok.</value></data>
   <data name="Activity_All" xml:space="preserve"><value>Tümü</value></data>
   <data name="Activity_Chat" xml:space="preserve"><value>Sohbet</value></data>
   <data name="Activity_Join" xml:space="preserve"><value>Girdi</value></data>
@@ -1342,6 +1341,23 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Activity_Advancement" xml:space="preserve"><value>Başarım</value></data>
   <data name="Activity_Command" xml:space="preserve"><value>Komut</value></data>
   <data name="Activity_Server" xml:space="preserve"><value>Sunucu</value></data>
+  <data name="Activity_PackCheck" xml:space="preserve"><value>PackCheck</value></data>
+  <data name="Activity_RangeName" xml:space="preserve"><value>Zaman aralığı</value></data>
+  <data name="Activity_Range_1" xml:space="preserve"><value>Son 24 saat</value></data>
+  <data name="Activity_Range_7" xml:space="preserve"><value>Son 7 gün</value></data>
+  <data name="Activity_Range_14" xml:space="preserve"><value>Son 14 gün</value></data>
+  <data name="Activity_Range_30" xml:space="preserve"><value>Son 30 gün</value></data>
+  <data name="Activity_Range_90" xml:space="preserve"><value>Son 90 gün</value></data>
+  <data name="Activity_Range_0" xml:space="preserve"><value>Tüm loglar</value></data>
+  <data name="Activity_Page" xml:space="preserve"><value>Sayfa {0}/{1} · {2} kayıt</value></data>
+  <data name="Activity_Previous" xml:space="preserve"><value>Önceki sayfa</value></data>
+  <data name="Activity_Next" xml:space="preserve"><value>Sonraki sayfa</value></data>
+  <data name="Activity_Export" xml:space="preserve"><value>CSV olarak aktar</value></data>
+  <data name="Activity_Exported" xml:space="preserve"><value>{0} kayıt aktarıldı.</value></data>
+  <data name="Journal_Started" xml:space="preserve"><value>Sunucuyu başlattı</value></data>
+  <data name="Journal_Stopped" xml:space="preserve"><value>Sunucuyu durdurdu</value></data>
+  <data name="Journal_Killed" xml:space="preserve"><value>Sunucuyu zorla kapattı</value></data>
+  <data name="Journal_Backup" xml:space="preserve"><value>Yedek ({0}, {1})</value></data>
   <data name="Score_Title" xml:space="preserve"><value>Skor tablosu</value></data>
   <data name="Score_Empty" xml:space="preserve"><value>Henüz istatistik yok; oyuncular dünya onlarla birlikte kaydedildikten sonra görünür.</value></data>
   <data name="Score_Player" xml:space="preserve"><value>Oyuncu</value></data>
@@ -1350,6 +1366,23 @@ Asistan: Enter gönder · Shift+Enter yeni satır · Ctrl+V ekran görüntüsü 
   <data name="Score_MobKills" xml:space="preserve"><value>Canavar</value></data>
   <data name="Score_Diamonds" xml:space="preserve"><value>Elmas</value></data>
   <data name="Score_Jumps" xml:space="preserve"><value>Zıplama</value></data>
+  <data name="Score_SinceDeath" xml:space="preserve"><value>Ölümden beri saat</value></data>
+  <data name="Score_Used" xml:space="preserve"><value>Kullanılan eşya</value></data>
+  <data name="Score_Fish" xml:space="preserve"><value>Balık</value></data>
+  <data name="Score_World" xml:space="preserve"><value>Dünya</value></data>
+  <data name="Score_SortBy" xml:space="preserve"><value>Sırala</value></data>
+  <data name="Score_Descending" xml:space="preserve"><value>Büyükten küçüğe</value></data>
+  <data name="Score_Sort_Hours" xml:space="preserve"><value>Oynanan saat</value></data>
+  <data name="Score_Sort_Name" xml:space="preserve"><value>Oyuncu</value></data>
+  <data name="Score_Sort_Deaths" xml:space="preserve"><value>Ölüm</value></data>
+  <data name="Score_Sort_SinceDeath" xml:space="preserve"><value>Ölümden beri saat</value></data>
+  <data name="Score_Sort_MobKills" xml:space="preserve"><value>Canavar</value></data>
+  <data name="Score_Sort_PvP" xml:space="preserve"><value>PvP</value></data>
+  <data name="Score_Sort_Diamonds" xml:space="preserve"><value>Elmas</value></data>
+  <data name="Score_Sort_Km" xml:space="preserve"><value>Mesafe (km)</value></data>
+  <data name="Score_Sort_Jumps" xml:space="preserve"><value>Zıplama</value></data>
+  <data name="Score_Sort_Used" xml:space="preserve"><value>Kullanılan eşya</value></data>
+  <data name="Score_Sort_Fish" xml:space="preserve"><value>Balık</value></data>
   <data name="Storage_Title" xml:space="preserve"><value>Depolama</value></data>
   <data name="Storage_Summary" xml:space="preserve"><value>Toplam {0} · {1} temizlenebilir (eski loglar, çökme raporları, önbellekler)</value></data>
   <data name="Storage_Largest" xml:space="preserve"><value>En büyük dosyalar</value></data>

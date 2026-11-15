@@ -1395,9 +1395,18 @@
                             <ComboBox DockPanel.Dock="Left" Width="150" Margin="0,0,8,0" ItemsSource="{Binding ActivityFilters}" SelectedItem="{Binding ActivityFilter}" AutomationProperties.Name="{l:Loc Activity_Title}">
                                 <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_}" /></DataTemplate></ComboBox.ItemTemplate>
                             </ComboBox>
+                            <ComboBox DockPanel.Dock="Left" Width="150" Margin="0,0,8,0" ItemsSource="{Binding ActivityRanges}" SelectedItem="{Binding ActivityRange}" AutomationProperties.Name="{l:Loc Activity_RangeName}" AutomationProperties.AutomationId="ActivityRange">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Activity_Range_}" /></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="{l:Loc Activity_Export}" Command="{Binding ExportActivityCommand}" AutomationProperties.AutomationId="ActivityExport" />
                             <TextBox Text="{Binding ActivitySearch, UpdateSourceTrigger=PropertyChanged, Delay=250}" Tag="{l:Loc Activity_Search}" AutomationProperties.Name="{l:Loc Activity_Search}" />
                         </DockPanel>
                         <TextBlock Text="{l:Loc Activity_Empty}" Style="{StaticResource Muted}" Visibility="{Binding ActivityRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
+                        <DockPanel Margin="0,0,0,6">
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Activity_Next}" Margin="6,0,0,0" Command="{Binding NextActivityPageCommand}" AutomationProperties.AutomationId="ActivityNext" />
+                            <Button DockPanel.Dock="Right" Content="{l:Loc Activity_Previous}" Command="{Binding PreviousActivityPageCommand}" AutomationProperties.AutomationId="ActivityPrevious" />
+                            <TextBlock Text="{Binding ActivityPageText}" Style="{StaticResource Muted}" VerticalAlignment="Center" AutomationProperties.AutomationId="ActivityPageText" />
+                        </DockPanel>
                         <ItemsControl ItemsSource="{Binding ActivityRows}" MaxHeight="300" AutomationProperties.AutomationId="ActivityList">
                             <ItemsControl.Template><ControlTemplate><ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsPresenter /></ScrollViewer></ControlTemplate></ItemsControl.Template>
                             <ItemsControl.ItemTemplate>
@@ -1416,7 +1425,16 @@
 
                 <Border Style="{StaticResource Card}" Margin="0,0,0,12">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconTrophy}" Style="{StaticResource IconPath}" Margin="0,0,8,0" /><TextBlock Text="{l:Loc Score_Title}" Style="{StaticResource H2}" FontSize="16" /></StackPanel>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <ComboBox Width="150" Margin="0,0,8,0" ItemsSource="{Binding ScoreWorlds}" SelectedItem="{Binding ScoreWorld}" AutomationProperties.Name="{l:Loc Score_World}" AutomationProperties.AutomationId="ScoreWorld" />
+                                <ComboBox Width="170" Margin="0,0,8,0" ItemsSource="{Binding ScoreSorts}" SelectedItem="{Binding ScoreSort}" AutomationProperties.Name="{l:Loc Score_SortBy}" AutomationProperties.AutomationId="ScoreSort">
+                                    <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Converter={x:Static l:LocKey.Prefixed}, ConverterParameter=Score_Sort_}" /></DataTemplate></ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <CheckBox Content="{l:Loc Score_Descending}" IsChecked="{Binding ScoreDescending}" VerticalAlignment="Center" AutomationProperties.AutomationId="ScoreDescending" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"><Path Data="{StaticResource IconTrophy}" Style="{StaticResource IconPath}" Margin="0,0,8,0" /><TextBlock Text="{l:Loc Score_Title}" Style="{StaticResource H2}" FontSize="16" /></StackPanel>
+                        </DockPanel>
                         <TextBlock Text="{l:Loc Score_Empty}" Style="{StaticResource Muted}" Margin="0,8,0,0" Visibility="{Binding ScoreRows.Count, Converter={x:Static l:Inverse.Visibility}}" />
                         <ListView ItemsSource="{Binding ScoreRows}" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" MaxHeight="300" AutomationProperties.AutomationId="Scoreboard"
                                   >
@@ -1430,6 +1448,9 @@
                                     <GridViewColumn Header="{l:Loc Score_Diamonds}" DisplayMemberBinding="{Binding DiamondsMined}" Width="80" />
                                     <GridViewColumn Header="km" DisplayMemberBinding="{Binding KmWalked, StringFormat='0.0'}" Width="60" />
                                     <GridViewColumn Header="{l:Loc Score_Jumps}" DisplayMemberBinding="{Binding Jumps}" Width="70" />
+                                    <GridViewColumn Header="{l:Loc Score_SinceDeath}" DisplayMemberBinding="{Binding HoursSinceDeath, StringFormat='0.0'}" Width="110" />
+                                    <GridViewColumn Header="{l:Loc Score_Used}" DisplayMemberBinding="{Binding ItemsUsed}" Width="90" />
+                                    <GridViewColumn Header="{l:Loc Score_Fish}" DisplayMemberBinding="{Binding FishCaught}" Width="70" />
                                 </GridView>
                             </ListView.View>
                         </ListView>

@@ -13,6 +13,9 @@ public enum ActivityKind
     Advancement,
     Command,
     Server,
+
+    /// <summary>Something done through PackCheck (start, stop, backup), from <see cref="ActionJournal"/>.</summary>
+    PackCheck,
 }
 
 /// <summary>One classified log line.</summary>
@@ -92,20 +95,51 @@ public static partial class ActivityLog
     }
 
     /// <summary>Newest first, from up to <paramref name="days"/> days of logs.</summary>
-    public static IReadOnlyList<ActivityEvent> Read(string serverDir, int days = 7)
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir, int days = 7) => Read(serverDir, DateTime.Today.AddDays(-days), DateTime.MaxValue);
+
+    /// <summary>Newest first: log events and PackCheck actions between <paramref name="from"/> and <paramref name="to"/> (inclusive).</summary>
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir, DateTime from, DateTime to)
     {
         var logs = Path.Combine(serverDir, "logs");
-        var events = new List<ActivityEvent>();
-        if (!Directory.Exists(logs))
+        var events = new List<ActivityEvent>(ActionJournal.Read(serverDir));
+        if (Directory.Exists(logs))
         {
-            return events;
+            ReadLogs(logs, from, to, events);
         }
 
-        var since = DateTime.Today.AddDays(-days);
+        return events.Where(e => e.Time >= from && e.Time <= to).OrderByDescending(e => e.Time).ToList();
+    }
+
+    /// <summary>CSV (RFC 4180) with a header row; cells starting with = + - @ get a leading quote so spreadsheets do not run them as formulas.</summary>
+    public static string ToCsv(IEnumerable<ActivityEvent> events)
+    {
+        static string Cell(string? v)
+        {
+            v ??= string.Empty;
+            if (v.Length > 0 && v[0] is '=' or '+' or '-' or '@' or '\t' or '\r')
+            {
+                v = "'" + v;
+            }
+
+            return v.IndexOfAny([',', '"', '\n', '\r']) >= 0 ? "\"" + v.Replace("\"", "\"\"", StringComparison.Ordinal) + "\"" : v;
+        }
+
+        var sb = new System.Text.StringBuilder("time,kind,player,text\r\n");
+        foreach (var e in events)
+        {
+            sb.Append(e.Time.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)).Append(',')
+              .Append(e.Kind).Append(',').Append(Cell(e.Player)).Append(',').Append(Cell(e.Text)).Append("\r\n");
+        }
+
+        return sb.ToString();
+    }
+
+    private static void ReadLogs(string logs, DateTime from, DateTime to, List<ActivityEvent> events)
+    {
         foreach (var gz in Directory.EnumerateFiles(logs, "*.log.gz"))
         {
             if (GzNameRx().Match(Path.GetFileName(gz)) is { Success: true } n
-                && DateTime.TryParse(n.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var day) && day >= since)
+                && DateTime.TryParse(n.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var day) && day >= from.Date && day <= to)
             {
                 try
                 {
@@ -127,8 +161,6 @@ public static partial class ActivityLog
             ReadLines(r, File.GetLastWriteTime(latest).Date, current);
             events.AddRange(FixMidnight(current));
         }
-
-        return events.OrderByDescending(e => e.Time).ToList();
     }
 
     /// <summary>
@@ -254,8 +286,73 @@ public static class StorageAnalyzer
     }
 }
 
+/// <summary>
+/// What was done through PackCheck (start, stop, backup) and by whom, one tab-separated line per action in
+/// .packcheck/actions.log inside the server folder. Server logs do not record who pressed the button.
+/// </summary>
+public static class ActionJournal
+{
+    private static readonly Lock Gate = new();
+
+    public static string FileFor(string serverDir) => Path.Combine(serverDir, ".packcheck", "actions.log");
+
+    public static void Append(string serverDir, string actor, string text, DateTime? time = null)
+    {
+        static string Clean(string v) => v.Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
+        var line = $"{(time ?? DateTime.Now).ToString("s", System.Globalization.CultureInfo.InvariantCulture)}\t{Clean(actor)}\t{Clean(text)}{Environment.NewLine}";
+        try
+        {
+            lock (Gate)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(FileFor(serverDir))!);
+                File.AppendAllText(FileFor(serverDir), line);
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // The journal is a convenience; a read-only folder must not break start/stop/backup.
+        }
+    }
+
+    public static IReadOnlyList<ActivityEvent> Read(string serverDir)
+    {
+        var file = FileFor(serverDir);
+        var list = new List<ActivityEvent>();
+        if (!File.Exists(file))
+        {
+            return list;
+        }
+
+        try
+        {
+            lock (Gate)
+            {
+                foreach (var line in File.ReadLines(file))
+                {
+                    var parts = line.Split('\t', 3);
+                    if (parts.Length == 3 && DateTime.TryParse(parts[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
+                    {
+                        list.Add(new ActivityEvent(t, ActivityKind.PackCheck, parts[1], parts[2]));
+                    }
+                }
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // Being written; the next refresh reads it.
+        }
+
+        return list;
+    }
+}
+
 /// <summary>One player's numbers from world/stats/{uuid}.json.</summary>
-public sealed record PlayerStats(string Uuid, string Name, double HoursPlayed, int Deaths, int MobKills, int PlayerKills, int DiamondsMined, double KmWalked, int Jumps);
+/// <remarks>
+/// Vanilla has no "blocks placed" counter: placing a block counts as using its item, so <see cref="ItemsUsed"/> is the sum
+/// of minecraft:used (blocks, tools, food). <see cref="HoursSinceDeath"/> is time_since_death in hours.
+/// </remarks>
+public sealed record PlayerStats(string Uuid, string Name, double HoursPlayed, int Deaths, int MobKills, int PlayerKills, int DiamondsMined, double KmWalked, int Jumps,
+    double HoursSinceDeath = 0, long ItemsUsed = 0, int FishCaught = 0);
 
 /// <summary>Reads the vanilla statistics files (written by every server type) into a scoreboard.</summary>
 public static class Scoreboard
@@ -275,16 +372,31 @@ public static class Scoreboard
         var ticks = Math.Max(GetLong(Custom, "minecraft:play_time"), GetLong(Custom, "minecraft:play_one_minute"));
         var cm = GetLong(Custom, "minecraft:walk_one_cm") + GetLong(Custom, "minecraft:sprint_one_cm");
         var diamonds = Get("minecraft:mined", "minecraft:diamond_ore") + Get("minecraft:mined", "minecraft:deepslate_diamond_ore");
+        long used = 0;
+        if (stats.ValueKind == JsonValueKind.Object && stats.TryGetProperty("minecraft:used", out var u) && u.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var item in u.EnumerateObject())
+            {
+                used += item.Value.ValueKind == JsonValueKind.Number && item.Value.TryGetInt64(out var n) ? n : 0;
+            }
+        }
+
         return new PlayerStats(uuid, name, ticks / 20d / 3600d, Get(Custom, "minecraft:deaths"), Get(Custom, "minecraft:mob_kills"), Get(Custom, "minecraft:player_kills"),
-            diamonds, cm / 100_000d, Get(Custom, "minecraft:jump"));
+            diamonds, cm / 100_000d, Get(Custom, "minecraft:jump"), GetLong(Custom, "minecraft:time_since_death") / 20d / 3600d, used, Get(Custom, "minecraft:fish_caught"));
     }
 
-    /// <summary>All players with a stats file; names come from usercache.json (else the UUID is shown).</summary>
-    public static IReadOnlyList<PlayerStats> Read(string serverDir)
+    /// <summary>World folders that have a stats folder; "world" (the default level-name) first, then shortest name.</summary>
+    public static IReadOnlyList<string> Worlds(string serverDir) =>
+        Backups.WorldFolders(serverDir).Where(w => Directory.Exists(Path.Combine(serverDir, w, "stats")))
+            .OrderBy(w => !string.Equals(w, "world", StringComparison.OrdinalIgnoreCase)).ThenBy(w => w.Length).ThenBy(w => w, StringComparer.OrdinalIgnoreCase).ToList();
+
+    /// <summary>All players with a stats file in <paramref name="world"/> (default: the main world); names come from usercache.json (else the UUID is shown).</summary>
+    public static IReadOnlyList<PlayerStats> Read(string serverDir, string? world = null)
     {
         var lists = new PlayerLists(serverDir);
         var list = new List<PlayerStats>();
-        foreach (var w in Backups.WorldFolders(serverDir).OrderBy(w => w.Length).Take(1))
+        var worlds = world is null ? Backups.WorldFolders(serverDir).OrderBy(w => w.Length).Take(1) : Backups.WorldFolders(serverDir).Where(w => string.Equals(w, world, StringComparison.OrdinalIgnoreCase));
+        foreach (var w in worlds)
         {
             var dir = Path.Combine(serverDir, w, "stats");
             if (!Directory.Exists(dir))

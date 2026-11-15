@@ -124,6 +124,7 @@ public sealed partial class ServerItemViewModel
 
             var b = await Backups.CreateAsync(Definition, kind, note, Retention, _settings.BackupMirrorDir, CancellationToken.None).ConfigureAwait(true);
             RefreshBackups();
+            Journal(Loc.F("Journal_Backup", Loc.T("BackupKind_" + kind), Bytes.Format(b.Size)) + (string.IsNullOrWhiteSpace(note) ? string.Empty : " · " + note));
             PostDiscord(DiscordEvent.BackupDone, Loc.F("Discord_BackupDone", Bytes.Format(b.Size)), detail: note);
             return b;
         }
