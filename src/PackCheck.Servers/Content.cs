@@ -237,14 +237,146 @@ public static partial class ContentLinks
     public static bool IsAddonJar(byte[] bytes) => AddonKinds(bytes) is (true, _) or (_, true);
 }
 
-/// <summary>Updates installed plugins/mods to their newest Modrinth build for the server's version, keeping the old jar so it can be restored.</summary>
+/// <summary>Where an installed jar came from. <see cref="Version"/> is null when the installer did not know it; the file hash is compared instead.</summary>
+public sealed record AddonSource(LinkSource Source, string Id, string? Owner, string? Version);
+
+/// <summary>
+/// Remembers the source of jars installed from Hangar, SpigotMC or GitHub (.packcheck/addon-sources.json, keyed by file
+/// name) so "Check for updates" can ask that source; Modrinth finds its own files by hash.
+/// </summary>
+public static class AddonSources
+{
+    private static readonly JsonSerializerOptions Json = new() { WriteIndented = true, Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() } };
+
+    public static string FileFor(string serverDir) => Path.Combine(serverDir, ".packcheck", "addon-sources.json");
+
+    public static bool IsTracked(LinkSource source) => source is LinkSource.Hangar or LinkSource.Spigot or LinkSource.GitHub;
+
+    public static Dictionary<string, AddonSource> Load(string serverDir)
+    {
+        var map = new Dictionary<string, AddonSource>(StringComparer.OrdinalIgnoreCase);
+        try
+        {
+            if (File.Exists(FileFor(serverDir)) && JsonSerializer.Deserialize<Dictionary<string, AddonSource>>(File.ReadAllText(FileFor(serverDir)), Json) is { } read)
+            {
+                foreach (var (k, v) in read)
+                {
+                    map[k] = v;
+                }
+            }
+        }
+        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
+        {
+            // A damaged file only means these jars are checked on Modrinth alone.
+        }
+
+        return map;
+    }
+
+    /// <summary>Records <paramref name="fileName"/> as installed from <paramref name="link"/>; <paramref name="replaces"/> drops the entry of the jar it replaced.</summary>
+    public static void Remember(string serverDir, string fileName, ContentLink link, string? version, string? replaces = null)
+    {
+        if (!IsTracked(link.Source))
+        {
+            return;
+        }
+
+        var map = Load(serverDir);
+        if (replaces is not null)
+        {
+            map.Remove(replaces);
+        }
+
+        map[Path.GetFileName(fileName)] = new AddonSource(link.Source, link.Id, link.Owner, version);
+        Save(serverDir, map);
+    }
+
+    /// <summary>Moves an entry to another file name (update or revert) with the version now on disk.</summary>
+    public static void Move(string serverDir, string fromName, string toName, string? version)
+    {
+        var map = Load(serverDir);
+        if (map.Remove(fromName, out var src))
+        {
+            map[toName] = src with { Version = version };
+            Save(serverDir, map);
+        }
+    }
+
+    public static ContentLink ToLink(AddonSource s) => new(s.Source, s.Id, s.Owner);
+
+    /// <summary>Whether <paramref name="latest"/> is newer than the installed jar: by version when known, else by SHA-256.</summary>
+    public static bool IsNewer(AddonSource src, ContentDownload latest, string installedPath)
+    {
+        if (src.Version is { } v)
+        {
+            return latest.Version is { } lv && !string.Equals(v, lv, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (latest.Sha256 is { } want && File.Exists(installedPath))
+        {
+            using var f = File.OpenRead(installedPath);
+            return !Convert.ToHexStringLower(SHA256.HashData(f)).Equals(want, StringComparison.OrdinalIgnoreCase);
+        }
+
+        return false;
+    }
+
+    private static void Save(string serverDir, Dictionary<string, AddonSource> map)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(FileFor(serverDir))!);
+        var temp = FileFor(serverDir) + ".tmp";
+        File.WriteAllText(temp, JsonSerializer.Serialize(map, Json));
+        File.Move(temp, FileFor(serverDir), overwrite: true); // a crash mid-write never leaves a half file
+    }
+}
+
+/// <summary>
+/// Updates installed plugins/mods to their newest build for the server's version, keeping the old jar so it can be
+/// restored. Modrinth is asked by file hash; jars installed from Hangar, SpigotMC or GitHub are asked at that source.
+/// </summary>
 public static class AddonUpdates
 {
     public static string HistoryDir(ServerDefinition s) => Path.Combine(s.Directory, ".packcheck", "addon-history");
 
-    /// <summary>Same Modrinth lookup the version wizard uses, for the current version.</summary>
-    public static async Task<IReadOnlyList<AddonCheck>> CheckAsync(HttpClient http, ServerDefinition s, CancellationToken ct) =>
-        (await UpgradeAdvisor.CheckAsync(s, s.MinecraftVersion, http, ct).ConfigureAwait(false)).Addons.Where(a => a.Status == AddonStatus.UpdateAvailable).ToList();
+    /// <summary>The Modrinth lookup the version wizard uses, plus each remembered source for jars Modrinth has no update for.</summary>
+    public static async Task<IReadOnlyList<AddonCheck>> CheckAsync(HttpClient http, ServerDefinition s, CancellationToken ct)
+    {
+        var addons = (await UpgradeAdvisor.CheckAsync(s, s.MinecraftVersion, http, ct).ConfigureAwait(false)).Addons;
+        var updates = addons.Where(a => a.Status == AddonStatus.UpdateAvailable).ToList();
+        foreach (var (file, src) in AddonSources.Load(s.Directory))
+        {
+            if (!AddonSources.IsTracked(src.Source) || updates.Any(u => string.Equals(u.FileName, file, StringComparison.OrdinalIgnoreCase))
+                || addons.FirstOrDefault(a => string.Equals(a.FileName, file, StringComparison.OrdinalIgnoreCase)) is not { } a)
+            {
+                continue;
+            }
+
+            try
+            {
+                var d = await ContentLinks.ResolveAsync(http, AddonSources.ToLink(src), s, ct).ConfigureAwait(false);
+                if (AddonSources.IsNewer(src, d, a.FilePath))
+                {
+                    updates.Add(a with
+                    {
+                        Status = AddonStatus.UpdateAvailable,
+                        UpdateUrl = d.Url,
+                        UpdateFileName = d.FileName,
+                        UpdateVersion = d.Version,
+                        UpdateSha512 = d.Sha512,
+                        UpdateSha256 = d.Sha256,
+                        UpdateSource = src.Source,
+                    });
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or JsonException or IOException or UriFormatException
+                                       || (ex is TaskCanceledException && !ct.IsCancellationRequested))
+            {
+                // That source is down, timed out or has no build for this version; the other jars are still checked.
+            }
+        }
+
+        return updates;
+    }
 
     /// <summary>
     /// Downloads and verifies the update first; only then is the old jar kept in the history (with a marker naming it)
@@ -267,7 +399,17 @@ public static class AddonUpdates
         var bytes = await http.GetByteArrayAsync(uri, ct).ConfigureAwait(false);
         if (update.UpdateSha512 is { } want && !string.Equals(Convert.ToHexStringLower(SHA512.HashData(bytes)), want, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidDataException("Downloaded file does not match Modrinth's hash: " + newName);
+            throw new InvalidDataException($"Downloaded file does not match {update.UpdateSource}'s hash: " + newName);
+        }
+
+        if (update.UpdateSha256 is { } want256 && !string.Equals(Convert.ToHexStringLower(SHA256.HashData(bytes)), want256, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException($"Downloaded file does not match {update.UpdateSource}'s hash: " + newName);
+        }
+
+        if (!ContentLinks.IsAddonJar(bytes))
+        {
+            throw new InvalidDataException("The download is not a plugin or mod jar: " + newName);
         }
 
         ct.ThrowIfCancellationRequested();
@@ -281,6 +423,7 @@ public static class AddonUpdates
         File.WriteAllText(Path.Combine(hist, newName + ".previous"), Path.GetFileName(update.FilePath));
         File.Delete(update.FilePath);
         File.Move(temp, Path.Combine(dir, newName), overwrite: true);
+        AddonSources.Move(s.Directory, Path.GetFileName(update.FilePath), newName, update.UpdateVersion);
     }
 
     /// <summary>The jar this file replaced, if it came from an update.</summary>
@@ -309,6 +452,7 @@ public static class AddonUpdates
         }
 
         File.Delete(Path.Combine(HistoryDir(s), Path.GetFileName(jarPath) + ".previous"));
+        AddonSources.Move(s.Directory, Path.GetFileName(jarPath), Path.GetFileName(restored), null); // version unknown again: compared by hash
         return restored;
     }
 }

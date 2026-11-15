@@ -531,6 +531,10 @@ public abstract partial class ContentBrowserViewModel : ObservableObject
                     {
                         row.InstalledFile = Path.GetFileName(f.FileName);
                         row.HasUpdate = false;
+                        if (row.Item.Provider == "Hangar" && row.Item.Id.Split('/') is [var owner, var slug])
+                        {
+                            AddonSources.Remember(def.Directory, row.InstalledFile, new ContentLink(LinkSource.Hangar, slug, owner), null, old is null ? null : Path.GetFileName(old));
+                        }
                     }
                 }
 

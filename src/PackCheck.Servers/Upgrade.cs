@@ -31,6 +31,10 @@ public sealed record AddonCheck(string FileName, string FilePath, string Name, b
     public string? UpdateFileName { get; init; }
     public string? UpdateVersion { get; init; }
     public string? UpdateSha512 { get; init; }
+    public string? UpdateSha256 { get; init; }
+
+    /// <summary>Where the update comes from; Modrinth unless the jar was installed from a remembered source (<see cref="AddonSources"/>).</summary>
+    public LinkSource UpdateSource { get; init; } = LinkSource.Modrinth;
 }
 
 /// <summary>What a downgrade does with the worlds: an older game version cannot load worlds saved by a newer one.</summary>

@@ -103,6 +103,71 @@ public class ContentTests
         Assert.Empty(MclogsShare.ParseInsights(null));
     }
 
+    [Fact]
+    public void AddonSources_RememberMoveAndCompare()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-src-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            Directory.CreateDirectory(dir);
+            AddonSources.Remember(dir, "Direct.jar", new ContentLink(LinkSource.DirectJar, "https://x/Direct.jar"), null);
+            AddonSources.Remember(dir, "PlaceholderAPI-2.11.5.jar", new ContentLink(LinkSource.Hangar, "PlaceholderAPI", "HelpChat"), "2.11.5");
+
+            var map = AddonSources.Load(dir);
+            Assert.Equal(new AddonSource(LinkSource.Hangar, "PlaceholderAPI", "HelpChat", "2.11.5"), Assert.Single(map).Value);
+
+            AddonSources.Move(dir, "placeholderapi-2.11.5.jar", "PlaceholderAPI-2.11.6.jar", "2.11.6");
+            var moved = Assert.Single(AddonSources.Load(dir));
+            Assert.Equal(("PlaceholderAPI-2.11.6.jar", "2.11.6"), (moved.Key, moved.Value.Version));
+
+            var jar = Path.Combine(dir, "a.jar");
+            File.WriteAllBytes(jar, [1, 2, 3]);
+            var sha = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(new byte[] { 1, 2, 3 }));
+            var known = new AddonSource(LinkSource.Spigot, "1", null, "100");
+            Assert.False(AddonSources.IsNewer(known, new ContentDownload("https://x", "a.jar", Version: "100"), jar));
+            Assert.True(AddonSources.IsNewer(known, new ContentDownload("https://x", "a.jar", Version: "101"), jar));
+            var unknown = known with { Version = null };
+            Assert.False(AddonSources.IsNewer(unknown, new ContentDownload("https://x", "a.jar", Sha256: sha), jar));
+            Assert.True(AddonSources.IsNewer(unknown, new ContentDownload("https://x", "a.jar", Sha256: new string('0', 64)), jar));
+            Assert.False(AddonSources.IsNewer(unknown, new ContentDownload("https://x", "a.jar"), jar));
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
+
+    /// <summary>Live: a jar remembered as installed from Hangar at an old version is offered the current Hangar build.</summary>
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task Hangar_RememberedSourceOffersUpdate()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "pc-hangar-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var plugins = Directory.CreateDirectory(Path.Combine(dir, "plugins")).FullName;
+            using (var zip = System.IO.Compression.ZipFile.Open(Path.Combine(plugins, "PlaceholderAPI-0.0.1.jar"), System.IO.Compression.ZipArchiveMode.Create))
+            {
+                using var w = new StreamWriter(zip.CreateEntry("plugin.yml").Open());
+                w.Write("name: PlaceholderAPI\nversion: 0.0.1\nmain: me.clip.placeholderapi.PlaceholderAPIPlugin\napi-version: '1.13'\n");
+            }
+
+            AddonSources.Remember(dir, "PlaceholderAPI-0.0.1.jar", ContentLinks.Parse("https://hangar.papermc.io/HelpChat/PlaceholderAPI")!, "0.0.1");
+            using var http = NetworkClient();
+
+            var updates = await AddonUpdates.CheckAsync(http, PaperServer("1.21.4") with { Directory = dir }, CancellationToken.None);
+
+            var u = Assert.Single(updates, x => x.FileName == "PlaceholderAPI-0.0.1.jar");
+            Assert.Equal(LinkSource.Hangar, u.UpdateSource);
+            Assert.StartsWith("https://", u.UpdateUrl, StringComparison.Ordinal);
+            Assert.NotEqual("0.0.1", u.UpdateVersion);
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
+
     private static HttpClient NetworkClient() => new() { Timeout = TimeSpan.FromSeconds(15) };
 
     private static ServerDefinition PaperServer(string mc) => new()

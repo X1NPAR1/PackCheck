@@ -1312,7 +1312,7 @@ Assistant : Entrée envoyer · Maj+Entrée nouvelle ligne · Ctrl+V coller une c
   <data name="Content_Added" xml:space="preserve"><value>{0} ajouté ({1}).</value></data>
   <data name="Content_NoHash" xml:space="preserve"><value>La source ne publie pas de hash : le fichier a seulement été vérifié comme jar de plugin/mod.</value></data>
   <data name="Content_Checking" xml:space="preserve"><value>Recherche de versions plus récentes sur Modrinth…</value></data>
-  <data name="Content_UpToDate" xml:space="preserve"><value>Tout ce que Modrinth connaît est à jour.</value></data>
+  <data name="Content_UpToDate" xml:space="preserve"><value>Tout est à jour (vérifié sur Modrinth et à la source de chaque fichier).</value></data>
   <data name="Content_UpdatesFound" xml:space="preserve"><value>{0} mises à jour disponibles.</value></data>
   <data name="Content_UpdatesTitle" xml:space="preserve"><value>Mises à jour</value></data>
   <data name="Content_UpdateAll" xml:space="preserve"><value>Tout mettre à jour</value></data>

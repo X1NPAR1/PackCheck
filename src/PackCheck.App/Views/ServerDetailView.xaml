@@ -872,7 +872,7 @@
                                         <DockPanel Margin="0,2">
                                             <Button DockPanel.Dock="Right" Content="{l:Loc Content_Update}" Padding="10,3"
                                                     Command="{Binding DataContext.UpdateAddonCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}" CommandParameter="{Binding}" />
-                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →  " /><Run Text="{Binding UpdateVersion, Mode=OneWay}" Foreground="{DynamicResource PassBrush}" /></TextBlock>
+                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" /><Run Text="  →  " /><Run Text="{Binding UpdateVersion, Mode=OneWay}" Foreground="{DynamicResource PassBrush}" /><Run Text="  · " Foreground="{DynamicResource TextMutedBrush}" /><Run Text="{Binding UpdateSource, Mode=OneWay}" Foreground="{DynamicResource TextMutedBrush}" /></TextBlock>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
