@@ -1303,7 +1303,6 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Map_NoBuild" xml:space="preserve"><value>BlueMap gibt es noch nicht für Minecraft {0}.</value></data>
   <data name="Map_Installed" xml:space="preserve"><value>BlueMap installiert. Starte den Server und öffne dann die Karte.</value></data>
   <data name="Map_Opened" xml:space="preserve"><value>{0} geöffnet. Das erste Rendern kann einige Minuten dauern.</value></data>
-  <data name="Map_RenderProgress" xml:space="preserve"><value>Karte wird gerendert: %{0}</value></data>
   <data name="Map_StartFirst" xml:space="preserve"><value>Starte den Server, damit BlueMap die Karte liefern kann.</value></data>
   <data name="Content_LinkHint" xml:space="preserve"><value>Modrinth-, Hangar-, SpigotMC- oder GitHub-Link, Modrinth-Slug oder .jar-URL einfügen</value></data>
   <data name="Content_AddLink" xml:space="preserve"><value>Hinzufügen</value></data>
@@ -1350,6 +1349,23 @@ Assistent: Enter senden · Umschalt+Enter neue Zeile · Strg+V Screenshot einfü
   <data name="Score_MobKills" xml:space="preserve"><value>Mob-Kills</value></data>
   <data name="Score_Diamonds" xml:space="preserve"><value>Diamanten</value></data>
   <data name="Score_Jumps" xml:space="preserve"><value>Sprünge</value></data>
+  <data name="Score_SinceDeath" xml:space="preserve"><value>Std. seit Tod</value></data>
+  <data name="Score_Used" xml:space="preserve"><value>Benutzte Items</value></data>
+  <data name="Score_Fish" xml:space="preserve"><value>Fische</value></data>
+  <data name="Score_World" xml:space="preserve"><value>Welt</value></data>
+  <data name="Score_SortBy" xml:space="preserve"><value>Sortieren nach</value></data>
+  <data name="Score_Descending" xml:space="preserve"><value>Höchste zuerst</value></data>
+  <data name="Score_Sort_Hours" xml:space="preserve"><value>Gespielte Stunden</value></data>
+  <data name="Score_Sort_Name" xml:space="preserve"><value>Spieler</value></data>
+  <data name="Score_Sort_Deaths" xml:space="preserve"><value>Tode</value></data>
+  <data name="Score_Sort_SinceDeath" xml:space="preserve"><value>Std. seit Tod</value></data>
+  <data name="Score_Sort_MobKills" xml:space="preserve"><value>Mob-Kills</value></data>
+  <data name="Score_Sort_PvP" xml:space="preserve"><value>PvP</value></data>
+  <data name="Score_Sort_Diamonds" xml:space="preserve"><value>Diamanten</value></data>
+  <data name="Score_Sort_Km" xml:space="preserve"><value>Strecke (km)</value></data>
+  <data name="Score_Sort_Jumps" xml:space="preserve"><value>Sprünge</value></data>
+  <data name="Score_Sort_Used" xml:space="preserve"><value>Benutzte Items</value></data>
+  <data name="Score_Sort_Fish" xml:space="preserve"><value>Fische</value></data>
   <data name="Storage_Title" xml:space="preserve"><value>Speicher</value></data>
   <data name="Storage_Summary" xml:space="preserve"><value>{0} insgesamt · {1} lassen sich bereinigen (alte Logs, Absturzberichte, Caches)</value></data>
   <data name="Storage_Largest" xml:space="preserve"><value>Größte Dateien</value></data>
