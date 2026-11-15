@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0 - 2026-11-15
+
+See [release-notes/v4.1.0.md](release-notes/v4.1.0.md).
+
 ## 4.0.0 - 2026-11-04
 
 See [release-notes/v4.0.0.md](release-notes/v4.0.0.md).
