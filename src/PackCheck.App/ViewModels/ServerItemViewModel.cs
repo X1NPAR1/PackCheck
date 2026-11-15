@@ -791,6 +791,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private async Task StartAsync()
     {
         _automation.UserStarted();
+        Journal(Loc.T("Journal_Started"));
         try
         {
             ClearConsole();
@@ -814,6 +815,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
     private Task StopAsync()
     {
         _automation.UserStopped(); // a manual stop must not trigger crash or idle rules
+        Journal(Loc.T("Journal_Stopped"));
         return _process.StopAsync(TimeSpan.FromSeconds(60));
     }
 
@@ -830,6 +832,7 @@ public sealed partial class ServerItemViewModel : ObservableObject
         if (MainViewModel.Shell is { } shell && await shell.ConfirmAsync(Loc.T("Servers_Kill"), Name, Loc.T("Servers_Kill"), danger: true).ConfigureAwait(true))
         {
             _automation.UserStopped(); // a forced stop is not a crash
+            Journal(Loc.T("Journal_Killed"));
             _process.Kill();
         }
     }
