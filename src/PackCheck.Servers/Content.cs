@@ -194,13 +194,13 @@ public static partial class ContentLinks
         return result;
     }
 
-    /// <summary>What a CurseForge mod supports, read from up to 150 of its newest files.</summary>
+    /// <summary>What a CurseForge mod supports, read from all of its files (the API stops paging at index 10000).</summary>
     public static async Task<HashSet<(string Loader, string MinecraftVersion)>> CurseForgeSupportAsync(HttpClient http, string slug, string? key, CancellationToken ct)
     {
         var k = CleanKey(key);
         var id = await CurseForgeProjectIdAsync(http, slug, k, ct).ConfigureAwait(false);
         var all = new JsonArray();
-        for (var index = 0; index < 150; index += 50)
+        for (var index = 0; index < 10000; index += 50)
         {
             var page = await CurseForgeGet(http, FormattableString.Invariant($"/v1/mods/{id}/files?pageSize=50&index={index}"), k, ct).ConfigureAwait(false);
             var data = (page["data"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
