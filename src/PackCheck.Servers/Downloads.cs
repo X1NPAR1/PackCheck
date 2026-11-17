@@ -132,7 +132,15 @@ public sealed class ServerSources(HttpClient http)
                 }
 
             case ServerPlatform.NeoForge:
-                return Newest((await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Select(PlatformInfo.NeoForgeToMinecraft).OfType<string>());
+                {
+                    var minecraft = (await NeoForgeVersionsAsync(ct).ConfigureAwait(false)).Select(PlatformInfo.NeoForgeToMinecraft).OfType<string>().ToList();
+                    if (await HasLegacyNeoForgeAsync(ct).ConfigureAwait(false))
+                    {
+                        minecraft.Add(LegacyNeoForgeMinecraft);
+                    }
+
+                    return Newest(minecraft);
+                }
         }
 
         if (platform == ServerPlatform.Paper)
@@ -162,6 +170,19 @@ public sealed class ServerSources(HttpClient http)
     {
         var xml = await http.GetStringAsync(NeoForgeMetadata, ct).ConfigureAwait(false);
         return System.Xml.Linq.XDocument.Parse(xml).Descendants("version").Select(v => v.Value).ToList();
+    }
+
+    private async Task<bool> HasLegacyNeoForgeAsync(CancellationToken ct)
+    {
+        try
+        {
+            var xml = await http.GetStringAsync(NeoForgeLegacyMetadata, ct).ConfigureAwait(false);
+            return System.Xml.Linq.XDocument.Parse(xml).Descendants("version").Any(v => v.Value.StartsWith(LegacyNeoForgeMinecraft + "-", StringComparison.Ordinal));
+        }
+        catch (Exception ex) when (ex is HttpRequestException or System.Xml.XmlException)
+        {
+            return false;
+        }
     }
 
     private async Task<string> Sha1Async(Uri file, CancellationToken ct) =>

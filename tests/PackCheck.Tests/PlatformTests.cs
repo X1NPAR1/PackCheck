@@ -67,6 +67,16 @@ public class PlatformTests
         }
     }
 
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task NeoForgeVersionListIncludesLegacy1201()
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("PackCheck-tests/2.0");
+        var versions = await new ServerSources(http).GetVersionsAsync(ServerPlatform.NeoForge, CancellationToken.None);
+        Assert.Contains("1.20.1", versions);
+    }
+
     [Theory]
     [Trait("Category", "Network")]
     [InlineData("47.1.106")]
