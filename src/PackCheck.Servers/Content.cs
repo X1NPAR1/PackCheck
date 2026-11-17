@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using PackCheck.Core;
 
 namespace PackCheck.Servers;
 
@@ -159,6 +160,64 @@ public static partial class ContentLinks
         }
     }
 
+    private static string CleanKey(string? key)
+    {
+        var k = key is null ? null : string.Concat(key.Where(c => !char.IsWhiteSpace(c) && !char.IsControl(c))).Trim('"', '\'', '`');
+        return string.IsNullOrEmpty(k) ? throw new InvalidOperationException("CurseForge links need a CurseForge API key (Settings).") : k;
+    }
+
+    private static async Task<int> CurseForgeProjectIdAsync(HttpClient http, string slug, string key, CancellationToken ct)
+    {
+        var project = await CurseForgeGet(http, $"/v1/mods/search?gameId=432&slug={Uri.EscapeDataString(slug)}&pageSize=5", key, ct).ConfigureAwait(false);
+        return (project["data"] as JsonArray)?.OfType<JsonObject>()
+            .FirstOrDefault(m => string.Equals(m["slug"]?.GetValue<string>(), slug, StringComparison.OrdinalIgnoreCase))?["id"]?.GetValue<int>()
+            ?? throw new InvalidOperationException($"CurseForge project '{slug}' was not found.");
+    }
+
+    /// <summary>The (loader, Minecraft version) pairs a CurseForge file list covers; its "gameVersions" mix both kinds of names.</summary>
+    public static HashSet<(string Loader, string MinecraftVersion)> CurseForgeSupport(JsonArray files)
+    {
+        var loaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["Fabric"] = "fabric", ["Forge"] = "forge", ["NeoForge"] = "neoforge", ["Quilt"] = "quilt" };
+        var result = new HashSet<(string, string)>();
+        foreach (var f in files.OfType<JsonObject>())
+        {
+            var names = (f["gameVersions"] as JsonArray)?.Select(x => x?.GetValue<string>()).OfType<string>().ToList() ?? [];
+            foreach (var l in names.Where(loaders.ContainsKey))
+            {
+                foreach (var v in names.Where(n => MinecraftVersion.TryParse(n, out _)))
+                {
+                    result.Add((loaders[l], v));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>What a CurseForge mod supports, read from up to 150 of its newest files.</summary>
+    public static async Task<HashSet<(string Loader, string MinecraftVersion)>> CurseForgeSupportAsync(HttpClient http, string slug, string? key, CancellationToken ct)
+    {
+        var k = CleanKey(key);
+        var id = await CurseForgeProjectIdAsync(http, slug, k, ct).ConfigureAwait(false);
+        var all = new JsonArray();
+        for (var index = 0; index < 150; index += 50)
+        {
+            var page = await CurseForgeGet(http, FormattableString.Invariant($"/v1/mods/{id}/files?pageSize=50&index={index}"), k, ct).ConfigureAwait(false);
+            var data = (page["data"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
+            foreach (var d in data)
+            {
+                all.Add(d.DeepClone());
+            }
+
+            if (data.Count < 50)
+            {
+                break;
+            }
+        }
+
+        return CurseForgeSupport(all);
+    }
+
     private static int CurseForgeLoaderType(string? loader) => loader switch
     {
         "forge" => 1,
@@ -170,17 +229,9 @@ public static partial class ContentLinks
 
     private static async Task<ContentDownload> ResolveCurseForgeAsync(HttpClient http, ContentLink link, ServerDefinition server, string? key, CancellationToken ct)
     {
-        key = key is null ? null : string.Concat(key.Where(c => !char.IsWhiteSpace(c) && !char.IsControl(c))).Trim('"', '\'', '`');
-        if (string.IsNullOrEmpty(key))
-        {
-            throw new InvalidOperationException("CurseForge links need a CurseForge API key (Settings).");
-        }
-
+        key = CleanKey(key);
+        var projectId = await CurseForgeProjectIdAsync(http, link.Id, key, ct).ConfigureAwait(false);
         var mc = Uri.EscapeDataString(server.MinecraftVersion);
-        var project = await CurseForgeGet(http, $"/v1/mods/search?gameId=432&slug={Uri.EscapeDataString(link.Id)}&pageSize=5", key, ct).ConfigureAwait(false);
-        var projectId = (project["data"] as JsonArray)?.OfType<JsonObject>()
-            .FirstOrDefault(m => string.Equals(m["slug"]?.GetValue<string>(), link.Id, StringComparison.OrdinalIgnoreCase))?["id"]?.GetValue<int>()
-            ?? throw new InvalidOperationException($"CurseForge project '{link.Id}' was not found.");
 
         var loaderType = PlatformInfo.UsesMods(server.Platform) ? CurseForgeLoaderType(UpgradeAdvisor.Loaders(server.Platform).FirstOrDefault()) : 0;
         var loaderQuery = loaderType == 0 ? string.Empty : $"&modLoaderType={loaderType}";

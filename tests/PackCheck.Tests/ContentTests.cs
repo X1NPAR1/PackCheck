@@ -201,6 +201,19 @@ public class ContentTests
     }
 
     [Fact]
+    public void CurseForgeSupport_PairsEachLoaderWithEachMinecraftVersion()
+    {
+        var files = JsonNode.Parse("""[{"gameVersions":["1.20.1","Forge","Java 17"]},{"gameVersions":["1.21.1","1.21","Fabric","NeoForge"]}]""")!.AsArray();
+        var s = ContentLinks.CurseForgeSupport(files);
+
+        Assert.Contains(("forge", "1.20.1"), s);
+        Assert.Contains(("fabric", "1.21.1"), s);
+        Assert.Contains(("neoforge", "1.21"), s);
+        Assert.DoesNotContain(("forge", "1.21.1"), s);
+        Assert.Equal(5, s.Count);
+    }
+
+    [Fact]
     public async Task CurseForge_WithoutKeyAsksForOne()
     {
         using var http = new HttpClient(new CurseForgeHandler("{}"));
