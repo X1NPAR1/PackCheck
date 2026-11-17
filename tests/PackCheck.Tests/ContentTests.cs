@@ -168,6 +168,90 @@ public class ContentTests
         }
     }
 
+    private sealed class CurseForgeHandler(string filesJson) : HttpMessageHandler
+    {
+        private readonly List<HttpResponseMessage> _responses = [];
+
+        public List<string> Requests { get; } = [];
+
+        public string? Key { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Requests.Add(request.RequestUri!.PathAndQuery);
+            Key = request.Headers.TryGetValues("x-api-key", out var v) ? v.First() : null;
+            var body = request.RequestUri.AbsolutePath.EndsWith("/search", StringComparison.Ordinal)
+                ? """{"data":[{"id":42,"slug":"other"},{"id":394468,"slug":"luckperms"}]}"""
+                : filesJson;
+            var response = new HttpResponseMessage { Content = new StringContent(body) };
+            _responses.Add(response);
+            return Task.FromResult(response);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var r in _responses)
+                {
+                    r.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+    }
+
+    [Fact]
+    public async Task CurseForge_ResolvesTheFileForTheServersVersion()
+    {
+        var handler = new CurseForgeHandler("""{"data":[{"fileName":"LuckPerms.jar","displayName":"LuckPerms 5","downloadUrl":"https://edge.forgecdn.net/files/1/LuckPerms.jar","hashes":[{"algo":2,"value":"md5"},{"algo":1,"value":"abc123"}]}]}""");
+        using var http = new HttpClient(handler);
+        var d = await ContentLinks.ResolveAsync(http, ContentLinks.Parse("https://www.curseforge.com/minecraft/bukkit-plugins/luckperms")!, PaperServer("1.21.4"), CancellationToken.None, () => " key\n");
+
+        Assert.Equal("https://edge.forgecdn.net/files/1/LuckPerms.jar", d.Url);
+        Assert.Equal("LuckPerms.jar", d.FileName);
+        Assert.Equal("abc123", d.Sha1);
+        Assert.Equal("key", handler.Key);
+        Assert.Contains("/v1/mods/394468/files?gameVersion=1.21.4", handler.Requests[1], StringComparison.Ordinal);
+        Assert.DoesNotContain("modLoaderType", handler.Requests[1], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CurseForgeSupport_PairsEachLoaderWithEachMinecraftVersion()
+    {
+        var files = JsonNode.Parse("""[{"gameVersions":["1.20.1","Forge","Java 17"]},{"gameVersions":["1.21.1","1.21","Fabric","NeoForge"]}]""")!.AsArray();
+        var s = ContentLinks.CurseForgeSupport(files);
+
+        Assert.Contains(("forge", "1.20.1"), s);
+        Assert.Contains(("fabric", "1.21.1"), s);
+        Assert.Contains(("neoforge", "1.21"), s);
+        Assert.DoesNotContain(("forge", "1.21.1"), s);
+        Assert.Equal(5, s.Count);
+    }
+
+    [Fact]
+    public async Task CurseForge_WithoutKeyAsksForOne()
+    {
+        using var http = new HttpClient(new CurseForgeHandler("{}"));
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            ContentLinks.ResolveAsync(http, new ContentLink(LinkSource.CurseForge, "luckperms"), PaperServer("1.21.4"), CancellationToken.None));
+        Assert.Contains("API key", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task CurseForge_RefusesDisabledDownloadsAndForeignHosts()
+    {
+        using var disabled = new HttpClient(new CurseForgeHandler("""{"data":[{"fileName":"a.jar","downloadUrl":null,"hashes":[]}]}"""));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            ContentLinks.ResolveAsync(disabled, new ContentLink(LinkSource.CurseForge, "luckperms"), PaperServer("1.21.4"), CancellationToken.None, () => "k"));
+
+        using var foreign = new HttpClient(new CurseForgeHandler("""{"data":[{"fileName":"a.jar","downloadUrl":"https://evil.example/a.jar","hashes":[]}]}"""));
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            ContentLinks.ResolveAsync(foreign, new ContentLink(LinkSource.CurseForge, "luckperms"), PaperServer("1.21.4"), CancellationToken.None, () => "k"));
+        Assert.Contains("unexpected host", ex.Message, StringComparison.Ordinal);
+    }
+
     private static HttpClient NetworkClient() => new() { Timeout = TimeSpan.FromSeconds(15) };
 
     private static ServerDefinition PaperServer(string mc) => new()
