@@ -21,7 +21,7 @@ public enum LinkSource
 public sealed record ContentLink(LinkSource Source, string Id, string? Owner = null);
 
 /// <summary>A resolved download: one jar file, with a hash when the source publishes one.</summary>
-public sealed record ContentDownload(string Url, string FileName, string? Sha512 = null, string? Sha256 = null, string? Version = null);
+public sealed record ContentDownload(string Url, string FileName, string? Sha512 = null, string? Sha256 = null, string? Version = null, string? Sha1 = null);
 
 /// <summary>Turns a pasted project page, repository, slug or .jar link into a download for the server's loader and version.</summary>
 public static partial class ContentLinks
@@ -98,7 +98,7 @@ public static partial class ContentLinks
     }
 
     /// <summary>Resolves the link for the server's platform and Minecraft version.</summary>
-    public static async Task<ContentDownload> ResolveAsync(HttpClient http, ContentLink link, ServerDefinition server, CancellationToken ct)
+    public static async Task<ContentDownload> ResolveAsync(HttpClient http, ContentLink link, ServerDefinition server, CancellationToken ct, Func<string?>? curseForgeKey = null)
     {
         var loaders = UpgradeAdvisor.Loaders(server.Platform);
         var mc = server.MinecraftVersion;
@@ -155,8 +155,67 @@ public static partial class ContentLinks
                 return new ContentDownload(link.Id, Path.GetFileName(new Uri(link.Id).AbsolutePath));
 
             default:
-                throw new InvalidOperationException("CurseForge links: search the project on the Plugins or Mods page (needs a CurseForge key).");
+                return await ResolveCurseForgeAsync(http, link, server, curseForgeKey?.Invoke(), ct).ConfigureAwait(false);
         }
+    }
+
+    private static int CurseForgeLoaderType(string? loader) => loader switch
+    {
+        "forge" => 1,
+        "fabric" => 4,
+        "quilt" => 5,
+        "neoforge" => 6,
+        _ => 0,
+    };
+
+    private static async Task<ContentDownload> ResolveCurseForgeAsync(HttpClient http, ContentLink link, ServerDefinition server, string? key, CancellationToken ct)
+    {
+        key = key is null ? null : string.Concat(key.Where(c => !char.IsWhiteSpace(c) && !char.IsControl(c))).Trim('"', '\'', '`');
+        if (string.IsNullOrEmpty(key))
+        {
+            throw new InvalidOperationException("CurseForge links need a CurseForge API key (Settings).");
+        }
+
+        var mc = Uri.EscapeDataString(server.MinecraftVersion);
+        var project = await CurseForgeGet(http, $"/v1/mods/search?gameId=432&slug={Uri.EscapeDataString(link.Id)}&pageSize=5", key, ct).ConfigureAwait(false);
+        var projectId = (project["data"] as JsonArray)?.OfType<JsonObject>()
+            .FirstOrDefault(m => string.Equals(m["slug"]?.GetValue<string>(), link.Id, StringComparison.OrdinalIgnoreCase))?["id"]?.GetValue<int>()
+            ?? throw new InvalidOperationException($"CurseForge project '{link.Id}' was not found.");
+
+        var loaderType = PlatformInfo.UsesMods(server.Platform) ? CurseForgeLoaderType(UpgradeAdvisor.Loaders(server.Platform).FirstOrDefault()) : 0;
+        var loaderQuery = loaderType == 0 ? string.Empty : $"&modLoaderType={loaderType}";
+        var files = await CurseForgeGet(http, FormattableString.Invariant($"/v1/mods/{projectId}/files?gameVersion={mc}{loaderQuery}&pageSize=20"), key, ct).ConfigureAwait(false);
+        var list = (files["data"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
+        if (list.Count == 0)
+        {
+            throw new InvalidOperationException($"No build of {link.Id} for {server.Platform} {server.MinecraftVersion} on CurseForge.");
+        }
+
+        var f = list.FirstOrDefault(x => x["downloadUrl"] is JsonValue)
+            ?? throw new InvalidOperationException("The author disabled third-party downloads for this file; download it from the CurseForge page.");
+        var url = f["downloadUrl"]!.GetValue<string>();
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var u) || !u.IdnHost.EndsWith(".forgecdn.net", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("CurseForge returned a download link from an unexpected host.");
+        }
+
+        var sha1 = (f["hashes"] as JsonArray)?.OfType<JsonObject>().FirstOrDefault(h => h["algo"]?.GetValue<int>() == 1)?["value"]?.GetValue<string>();
+        return new ContentDownload(url, f["fileName"]?.GetValue<string>() ?? Path.GetFileName(u.AbsolutePath), Version: f["displayName"]?.GetValue<string>(), Sha1: sha1);
+    }
+
+    private static async Task<JsonObject> CurseForgeGet(HttpClient http, string path, string key, CancellationToken ct)
+    {
+        using var req = new HttpRequestMessage(HttpMethod.Get, "https://api.curseforge.com" + path);
+        req.Headers.TryAddWithoutValidation("x-api-key", key);
+        req.Headers.UserAgent.ParseAdd("PackCheck (github.com/X1NPAR1/PackCheck)");
+        using var res = await http.SendAsync(req, ct).ConfigureAwait(false);
+        if (res.StatusCode is System.Net.HttpStatusCode.Forbidden or System.Net.HttpStatusCode.Unauthorized)
+        {
+            throw new InvalidOperationException($"CurseForge API key rejected (HTTP {(int)res.StatusCode}).");
+        }
+
+        res.EnsureSuccessStatusCode();
+        return await res.Content.ReadFromJsonAsync<JsonNode>(ct).ConfigureAwait(false) as JsonObject ?? throw new InvalidOperationException("Unexpected answer from api.curseforge.com");
     }
 
     private static async Task<T> Get<T>(HttpClient http, string url, CancellationToken ct)
@@ -193,6 +252,11 @@ public static partial class ContentLinks
             throw new InvalidDataException("The download does not match its SHA-256 hash.");
         }
 
+        if (d.Sha1 is { } s1 && !Convert.ToHexStringLower(HashBytes(HashAlgorithmName.SHA1, bytes)).Equals(s1, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException("The download does not match its SHA-1 hash.");
+        }
+
         var (plugin, mod) = AddonKinds(bytes);
         var hybrid = PlatformInfo.IsHybrid(server.Platform);
         var usesMods = PlatformInfo.UsesMods(server.Platform);
@@ -213,6 +277,13 @@ public static partial class ContentLinks
         var target = Path.Combine(dir, name);
         await File.WriteAllBytesAsync(target, bytes, ct).ConfigureAwait(false);
         return target;
+    }
+
+    private static byte[] HashBytes(HashAlgorithmName algorithm, byte[] bytes)
+    {
+        using var hasher = IncrementalHash.CreateHash(algorithm);
+        hasher.AppendData(bytes);
+        return hasher.GetHashAndReset();
     }
 
     private static readonly string[] PluginMarkers = ["plugin.yml", "paper-plugin.yml", "bungee.yml", "velocity-plugin.json"];
