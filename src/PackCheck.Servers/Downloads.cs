@@ -93,6 +93,8 @@ public sealed class ServerSources(HttpClient http)
     private static readonly Uri PurpurVersions = new("https://api.purpurmc.org/v2/purpur");
     private static readonly Uri FabricGame = new("https://meta.fabricmc.net/v2/versions/game");
     private static readonly Uri ForgePromotions = new("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json");
+    private const string LegacyNeoForgeMinecraft = "1.20.1";
+    private static readonly Uri NeoForgeLegacyMetadata = new("https://maven.neoforged.net/releases/net/neoforged/forge/maven-metadata.xml");
     private static readonly Uri NeoForgeMetadata = new("https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml");
 
     private static List<string> Newest(IEnumerable<string> versions) =>
@@ -252,6 +254,24 @@ public sealed class ServerSources(HttpClient http)
                     {
                         LoaderVersion = full[(version.Length + 1)..],
                         LoaderWarning = forgeWarning,
+                    };
+                }
+
+            case ServerPlatform.NeoForge when version == LegacyNeoForgeMinecraft:
+                {
+                    var xml = await http.GetStringAsync(NeoForgeLegacyMetadata, ct).ConfigureAwait(false);
+                    var all = System.Xml.Linq.XDocument.Parse(xml).Descendants("version").Select(v => v.Value)
+                        .Where(v => v.StartsWith(version + "-", StringComparison.Ordinal)).ToList();
+                    var full = (loaderVersion is { Length: > 0 } ? PickLoader(all, ForgeFullVersion(version, loaderVersion)) : null)
+                        ?? all.LastOrDefault(n => !n.Contains("beta", StringComparison.OrdinalIgnoreCase)) ?? all.LastOrDefault()
+                        ?? throw new InvalidOperationException($"No NeoForge build for Minecraft {version}.");
+                    var legacyWarning = loaderVersion is { Length: > 0 } && full != ForgeFullVersion(version, loaderVersion)
+                        ? LoaderFallbackWarning(platform, loaderVersion, full[(version.Length + 1)..]) : null;
+                    var url = new Uri($"https://maven.neoforged.net/releases/net/neoforged/forge/{full}/forge-{full}-installer.jar");
+                    return new ServerDownload($"neoforge-{full}-installer.jar", url, await Sha1Async(url, ct).ConfigureAwait(false), HashAlgorithmName.SHA1, 0, IsInstaller: true)
+                    {
+                        LoaderVersion = full[(version.Length + 1)..],
+                        LoaderWarning = legacyWarning,
                     };
                 }
 
