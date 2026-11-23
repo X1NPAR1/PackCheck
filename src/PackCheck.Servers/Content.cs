@@ -200,16 +200,16 @@ public static partial class ContentLinks
         var k = CleanKey(key);
         var id = await CurseForgeProjectIdAsync(http, slug, k, ct).ConfigureAwait(false);
         var all = new JsonArray();
-        for (var index = 0; index < 10000; index += 50)
+        for (var index = 0; index < 10000; index += 100)
         {
-            var page = await CurseForgeGet(http, FormattableString.Invariant($"/v1/mods/{id}/files?pageSize=50&index={index}"), k, ct).ConfigureAwait(false);
+            var page = await CurseForgeGet(http, FormattableString.Invariant($"/v1/mods/{id}/files?pageSize=100&index={index}"), k, ct).ConfigureAwait(false);
             var data = (page["data"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
             foreach (var d in data)
             {
                 all.Add(d.DeepClone());
             }
 
-            if (data.Count < 50)
+            if (data.Count < 100)
             {
                 break;
             }

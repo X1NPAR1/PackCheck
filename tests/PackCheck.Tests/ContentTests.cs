@@ -170,8 +170,6 @@ public class ContentTests
 
     private sealed class CurseForgeHandler(string filesJson) : HttpMessageHandler
     {
-        private readonly List<HttpResponseMessage> _responses = [];
-
         public List<string> Requests { get; } = [];
 
         public string? Key { get; private set; }
@@ -183,21 +181,11 @@ public class ContentTests
             var body = request.RequestUri.AbsolutePath.EndsWith("/search", StringComparison.Ordinal)
                 ? """{"data":[{"id":42,"slug":"other"},{"id":394468,"slug":"luckperms"}]}"""
                 : filesJson;
-            var response = new HttpResponseMessage { Content = new StringContent(body) };
-            _responses.Add(response);
-            return Task.FromResult(response);
+            return Task.FromResult(new HttpResponseMessage { Content = new StringContent(body) });
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var r in _responses)
-                {
-                    r.Dispose();
-                }
-            }
-
             base.Dispose(disposing);
         }
     }
