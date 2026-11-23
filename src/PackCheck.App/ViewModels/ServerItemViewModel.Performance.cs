@@ -239,9 +239,11 @@ public sealed partial class ServerItemViewModel
         try
         {
             await _process.SendCommandAsync("spark profiler start --timeout 30").ConfigureAwait(true);
-            var done = await Task.WhenAny(link.Task, Task.Delay(TimeSpan.FromSeconds(75))).ConfigureAwait(true);
+            using var cts = new CancellationTokenSource();
+            var done = await Task.WhenAny(link.Task, Task.Delay(TimeSpan.FromSeconds(75), cts.Token)).ConfigureAwait(true);
             if (done == link.Task)
             {
+                cts.Cancel();
                 SparkReportUrl = link.Task.Result;
                 SparkStatus = Loc.T("Perf_ProfileReady");
             }

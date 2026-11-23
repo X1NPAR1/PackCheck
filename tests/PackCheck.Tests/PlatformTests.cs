@@ -66,4 +66,28 @@ public class PlatformTests
             Assert.True(res.IsSuccessStatusCode, $"{platform} {v} -> {dl.Url} {(int)res.StatusCode}");
         }
     }
+
+    [Fact]
+    [Trait("Category", "Network")]
+    public async Task NeoForgeVersionListIncludesLegacy1201()
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("PackCheck-tests/2.0");
+        var versions = await new ServerSources(http).GetVersionsAsync(ServerPlatform.NeoForge, CancellationToken.None);
+        Assert.Contains("1.20.1", versions);
+    }
+
+    [Theory]
+    [Trait("Category", "Network")]
+    [InlineData("47.1.106")]
+    [InlineData("1.20.1-47.1.106")]
+    public async Task NeoForge1201UsesLegacyForgeCoordinate(string requested)
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("PackCheck-tests/2.0");
+        var dl = await new ServerSources(http).ResolveAsync(ServerPlatform.NeoForge, "1.20.1", CancellationToken.None, requested);
+        Assert.Equal("47.1.106", dl.LoaderVersion);
+        Assert.Contains("/net/neoforged/forge/1.20.1-47.1.106/", dl.Url.AbsoluteUri, StringComparison.Ordinal);
+        Assert.Null(dl.LoaderWarning);
+    }
 }

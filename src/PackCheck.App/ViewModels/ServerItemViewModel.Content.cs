@@ -73,10 +73,10 @@ public sealed partial class ServerItemViewModel
         try
         {
             ContentStatus = Loc.F("Content_Resolving", link.Source);
-            var d = await ContentLinks.ResolveAsync(AppHttp, link, Definition, CancellationToken.None).ConfigureAwait(true);
+            var d = await ContentLinks.ResolveAsync(AppHttp, link, Definition, CancellationToken.None, () => _settings.CurseForgeApiKey).ConfigureAwait(true);
             var path = await ContentLinks.InstallAsync(AppHttp, d, Definition, CancellationToken.None).ConfigureAwait(true);
             AddonSources.Remember(Definition.Directory, Path.GetFileName(path), link, d.Version);
-            ContentStatus = Loc.F("Content_Added", Path.GetFileName(path), d.Version ?? "?") + (d.Sha512 is null && d.Sha256 is null ? " " + Loc.T("Content_NoHash") : string.Empty);
+            ContentStatus = Loc.F("Content_Added", Path.GetFileName(path), d.Version ?? "?") + (d.Sha512 is null && d.Sha256 is null && d.Sha1 is null ? " " + Loc.T("Content_NoHash") : string.Empty);
             AddLink = string.Empty;
             RefreshPlugins();
         }
