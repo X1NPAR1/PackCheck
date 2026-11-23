@@ -114,7 +114,9 @@ public sealed partial class ServerItemViewModel
                     await _process.SendCommandAsync("save-off").ConfigureAwait(true);
                     paused = true;
                     await _process.SendCommandAsync("save-all flush").ConfigureAwait(true);
-                    await Task.WhenAny(saved.Task, Task.Delay(TimeSpan.FromSeconds(30))).ConfigureAwait(true);
+                    using var cts2 = new CancellationTokenSource();
+                    var done = await Task.WhenAny(saved.Task, Task.Delay(TimeSpan.FromSeconds(30), cts2.Token)).ConfigureAwait(true);
+                    if (done == saved.Task) cts2.Cancel();
                 }
                 finally
                 {
